@@ -11,28 +11,46 @@ import HostObject from 'app/HostObject';
  * matching type is added to the host and will stop being listened for when one
  * is removed. If the feature is already present when constructed, events will
  * be listened for right away.
+ *
+ * @interface
+ *
+ * @property {Object} EVENT_DEPENDENCIES - Events that the feature should start/stop
+ * listening for when a feature of type FeatureName is added/removed from the host.
+ * Event dependencies should follow the signature:
+ *  { FeatureName: { eventName: callbackName, ... }, ... }
  */
-export default class FeatureDependentInterface {
+class FeatureDependentInterface {
   /**
-   * @private
-   *
    * Start listening for event dependencies that match the given feature type.
+   *
+   * @private
    *
    * @param {string} typeName - type of feature to listen for.
    */
   _onFeatureAdded(typeName) {}
 
   /**
-   * @private
-   *
    * Stop listening for event dependencies that match the given feature type.
+   *
+   * @private
    *
    * @param {string} typeName - type of feature to stop listening for.
    */
   _onFeatureRemoved(typeName) {}
 
+  /**
+   * @augments {@link AbstractHostFeature#discard}
+   */
   discard() {}
 
+  /**
+   * Creates a class that implements {@link FeatureDependentInterface} and extends
+   * a specified base class.
+   *
+   * @param {Class} BaseClass - The class to extend.
+   *
+   * @return {Class} A class that extends `BaseClass` and implements {@link FeatureDependentInterface}.
+   */
   static Mixin(BaseClass) {
     const FeatureDependentMixin = class extends BaseClass {
       constructor(host) {
@@ -148,3 +166,5 @@ Object.defineProperties(FeatureDependentInterface, {
     writable: false,
   },
 });
+
+export default FeatureDependentInterface;

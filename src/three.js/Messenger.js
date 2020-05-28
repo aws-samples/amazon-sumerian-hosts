@@ -3,12 +3,12 @@
 import CoreMessenger from 'core/Messenger';
 
 /**
- * Class that can execute functions when local messages are received. Local messages
- * are prefixed with the instance's id.
+ * @extends core/Messenger
+ * @alias three.js/Messenger
  */
 class Messenger extends CoreMessenger {
   /**
-   * @private
+   * @constructor
    *
    * @param {any=} id - Id for the object. If none is provided a new id will
    * be created. Id should be able to be represented as a string.
@@ -18,14 +18,6 @@ class Messenger extends CoreMessenger {
     this._dispatcher = this;
   }
 
-  /**
-   * @private
-   *
-   * Create an event object and send it to listeners.
-   *
-   * @param {string} message - Event type name.
-   * @param {any=} value - Value to send to listeners.
-   */
   _createEvent(message, value) {
     return {detail: value, type: message};
   }

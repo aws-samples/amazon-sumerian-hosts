@@ -5,20 +5,30 @@ import Messenger from 'app/Messenger';
 /**
  * Base class for all host features. Keeps a reference to the host object managing
  * the feature.
+ *
+ * @abstract
+ *
+ * @property {Object} EVENTS - Built-in messages that the feature emits. When the
+ * feature is added to a {@link core/HostObject}, event names will be prefixed by the
+ * name of the feature class + '.'.
+ * @property {string} [EVENTS.update=onUpdate] - Message that is emitted after
+ * each call to [update]{@link AbstractHostFeature#update}.
+ * @property {Object} SERVICES - Any AWS services that are necessary for the
+ * feature to function.
  */
-export default class AbstractHostFeature {
+class AbstractHostFeature {
   /**
-   * @private
+   * @constructor
    *
-   * @param {HostObject} host - Host object managing the feature.
+   * @param {core/HostObject} host - The HostObject managing the feature.
    */
   constructor(host) {
     this._host = host;
   }
 
   /**
-   * Add a namespace to the host to contain anything from the feature that users
-   * of the host need access to.
+   * Adds a namespace to the host with the name of the feature to contain properties
+   * and methods from the feature that users of the host need access to.
    */
   installApi() {
     const events = {};
@@ -36,6 +46,8 @@ export default class AbstractHostFeature {
 
   /**
    * Gets the host that manages the feature.
+   *
+   * @readonly
    */
   get host() {
     return this._host;
@@ -43,6 +55,8 @@ export default class AbstractHostFeature {
 
   /**
    * Gets the engine owner object of the host.
+   *
+   * @readonly
    */
   get owner() {
     return this._host.owner;
@@ -111,7 +125,8 @@ export default class AbstractHostFeature {
   }
 
   /**
-   * Clean up once the feature is no longer in use
+   * Clean up once the feature is no longer in use. Remove the feature namespace
+   * from the host and remove reference to the host.
    */
   discard() {
     Object.keys(this._host[this.constructor.name]).forEach(name => {
@@ -132,8 +147,8 @@ export default class AbstractHostFeature {
    * @param {...Function} mixinClassFactories Class factory functions that will
    * be applied.
    *
-   * @return {typeof AbstractHostFeature} A class that is the result of applying the
-   * factory functions.
+   * @returns {Class} A class that is the result of applying the factory functions.
+   * The resulting class will always inherit from AbstractHostFeature.
    */
   static mix(...mixinClassFactories) {
     let ResultClass = this;
@@ -158,3 +173,5 @@ Object.defineProperties(AbstractHostFeature, {
     writable: false,
   },
 });
+
+export default AbstractHostFeature;

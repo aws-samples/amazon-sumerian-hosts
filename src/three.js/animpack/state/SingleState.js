@@ -2,29 +2,27 @@
 // SPDX-License-Identifier: MIT-0
 import CoreSingleState from 'core/animpack/state/SingleState';
 
+/**
+ * Threejs AnimationAction object
+ * @external "THREE.AnimationAction"
+ * @see https://threejs.org/docs/#api/en/animation/AnimationAction
+ */
+
 const threeBlendModes = {
   Override: THREE.NormalAnimationBlendMode,
   Additive: THREE.AdditiveAnimationBlendMode,
 };
 
 /**
- * Class for playing a single animation
+ * @extends core/SingleState
+ * @alias three.js/SingleState
  */
-export default class SingleState extends CoreSingleState {
+class SingleState extends CoreSingleState {
   /**
-   * @private
+   * @constructor
    *
    * @param {Object=} options - Options for the animation state.
-   * @param {string=} options.name - Name for the animation state. Names must be
-   * unique for the layer the state is applied to.
-   * @param {weight} [options.weight=0] - The 0-1 amount of influence the state will have.
-   * @param {timeScale} [timeScale=1] - Factor to scale the playback speed of the
-   * animation.
-   * @param {number} [options.loopCount=Infinity] - Number of times the animation should
-   * repeat before finishing.
-   * @param {string} [options.blendMode=LayerBlendModes[DefaultLayerBlendMode]] - Type of
-   * blending the animation should use.
-   * @param {THREE.AnimationAction} threeAction - Animation action that controls
+   * @param {external:"THREE.AnimationAction"} threeAction - Animation action that controls
    * playback of the clip.
    */
   constructor(options = {}, threeAction) {
@@ -63,7 +61,10 @@ export default class SingleState extends CoreSingleState {
   }
 
   /**
-   * Gets the THREE.AnimationAction object
+   * Gets the THREE.AnimationAction object.
+   *
+   * @readonly
+   * @type {external:"THREE.AnimationAction"}
    */
   get threeAction() {
     return this._threeAction;
@@ -160,3 +161,5 @@ export default class SingleState extends CoreSingleState {
     super.discard();
   }
 }
+
+export default SingleState;

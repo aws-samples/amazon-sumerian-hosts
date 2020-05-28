@@ -2,23 +2,31 @@
 // SPDX-License-Identifier: MIT-0
 import CoreTextToSpeechFeature from 'core/awspack/TextToSpeechFeature';
 
-export default class TextToSpeechFeature extends CoreTextToSpeechFeature {
+/**
+ * Threejs PositionalAudio object
+ * @external "THREE.AudioListener"
+ * @see https://threejs.org/docs/#api/en/audio/AudioListener
+ */
+
+/**
+ * Threejs Audio object
+ * @external "THREE.Object3D"
+ * @see https://threejs.org/docs/#api/en/core/Object3D
+ */
+
+/**
+ * @extends core/TextToSpeechFeature
+ * @alias three.js/TextToSpeechFeature
+ */
+class TextToSpeechFeature extends CoreTextToSpeechFeature {
   /**
-   * @private
+   * @constructor
    *
-   * @param {HostObject} host - Host object managing the feature.
+   * @param {three/HostObject} host - Host object managing the feature.
    * @param {Object=} options - Options that will be sent to Polly for each speech.
-   * @param {string=} options.voice - The name of the Polly voice to use for all speech.
-   * @param {string=} options.engine - The name of the Polly engine to use for all speech.
-   * @param {string=} options.language - The name of the language to use for all speech.
-   * @param {audioFormat} [options.audioFormat=mp3] - The format to use for generated
-   * audio for all speeches.
-   * @param {string=} options.sampleRate - The sample rate for audio files for all
-   * speeches.
-   * each speech audio URL to expire.
-   * @param {THREE.AudioListener} options.listener - Three audio listener to use with
+   * @param {external:"THREE.AudioListener"} options.listener - Three audio listener to use with
    * audio.
-   * @param {THREE.Object3D=} options.attachTo - Optional object to attach the speech
+   * @param {external:"THREE.Object3D"=} options.attachTo - Optional object to attach the speech
    * audio to.
    */
   constructor(
@@ -50,6 +58,8 @@ export default class TextToSpeechFeature extends CoreTextToSpeechFeature {
    * Create an Audio object and Three.js audio object of speech audio for the
    * given speech text.
    *
+   * @private
+   *
    * @param {Object} params - Parameters object compatible with Polly.synthesizeSpeech.
    *
    * @returns {Promise} Resolves with an object containing the audio URL and Audio
@@ -73,3 +83,5 @@ export default class TextToSpeechFeature extends CoreTextToSpeechFeature {
     });
   }
 }
+
+export default TextToSpeechFeature;

@@ -1,14 +1,26 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: MIT-0
+
+/**
+ * Threejs Clock object
+ *
+ * @external "THREE.Clock"
+ * @see https://threejs.org/docs/#api/en/core/Clock
+ */
+
 import CoreHostObject from 'core/HostObject';
 
-export default class HostObject extends CoreHostObject {
+/**
+ * @alias three.js/HostObject
+ * @extends core/HostObject
+ */
+class HostObject extends CoreHostObject {
   /**
-   * @private
+   * @constructor
    *
    * @param {Object=} options - Options for the host.
    * @param {Object=} options.owner - Optional engine-specific owner of the host.
-   * @param {THREE.Clock=} options.clock - Optional clock to manage time.
+   * @param {external:"THREE.Clock"=} options.clock - Optional clock to manage time.
    */
   constructor(options = {}) {
     super(options);
@@ -26,3 +38,5 @@ export default class HostObject extends CoreHostObject {
     }
   }
 }
+
+export default HostObject;

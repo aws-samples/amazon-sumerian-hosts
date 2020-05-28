@@ -6,11 +6,14 @@ import {validateBlendMode} from '../AnimationLayer';
 import AnimationUtils from '../AnimationUtils';
 
 /**
- * Class for playing a single animation
+ * Class for playing a single animation clip.
+ *
+ * @extends AbstractState
+ * @alias core/SingleState
  */
 class SingleState extends AbstractState {
   /**
-   * @private
+   * @constructor
    *
    * @param {Object=} options - Options for the animation state.
    * @param {string=} options.name - Name for the animation state. Names must be
@@ -20,7 +23,7 @@ class SingleState extends AbstractState {
    * animation.
    * @param {number} [options.loopCount=Infinity] - Number of times the animation should
    * repeat before finishing.
-   * @param {string} [options.blendMode=LayerBlendModes[DefaultLayerBlendMode]] - Type of
+   * @param {string} [options.blendMode=DefaultLayerBlendMode] - Type of
    * blending the animation should use.
    */
   constructor(options = {}) {
@@ -35,6 +38,8 @@ class SingleState extends AbstractState {
 
   /**
    * Gets and sets the a factor to scale animation playback speed with.
+   *
+   * @type {number}
    */
   get timeScale() {
     return this._timeScale;
@@ -46,6 +51,9 @@ class SingleState extends AbstractState {
 
   /**
    * Gets whether or not the timeScale is currently being animated.
+   *
+   * @readonly
+   * @type {boolean}
    */
   get timeScalePending() {
     return this._promises.timeScale.pending;
@@ -76,6 +84,8 @@ class SingleState extends AbstractState {
 
   /**
    * Gets and sets the number of times the animation will repeat before finishing.
+   *
+   * @type {number}
    */
   get loopCount() {
     return this._loopCount;
@@ -87,6 +97,9 @@ class SingleState extends AbstractState {
 
   /**
    * Gets the type of blending used for the animation.
+   *
+   * @readonly
+   * @type {string}
    */
   get blendMode() {
     return this._blendMode;

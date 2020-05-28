@@ -2,35 +2,29 @@
 // SPDX-License-Identifier: MIT-0
 import CoreSingleState from 'core/animpack/state/SingleState';
 
+/**
+ * Babylonjs AnimationGroup object
+ * @external "BABYLON.AnimationGroup"
+ * @see https://doc.babylonjs.com/api/classes/babylon.animationgroup
+ */
+
 const babylonBlendModes = {
   Override: false,
   Additive: true,
 };
 
 /**
- * Class for playing a single animation
+ * @extends core/SingleState
+ * @alias Babylon.js/SingleState
  */
-export default class SingleState extends CoreSingleState {
+class SingleState extends CoreSingleState {
   /**
-   * @private
+   * @constructor
    *
    * @param {Object=} options - Options for the animation state.
-   * @param {string=} options.name - Name for the animation state. Names must be
-   * unique for the layer the state is applied to.
-   * @param {weight} [options.weight=0] - The 0-1 amount of influence the state will have.
-   * @param {timeScale} [timeScale=1] - Factor to scale the playback speed of the
-   * animation.
-   * @param {number} [options.loopCount=Infinity] - Number of times the animation should
-   * repeat before finishing.
-   * @param {string} [options.blendMode=LayerBlendModes[DefaultLayerBlendMode]] - Type of
-   * blending the animation should use.
-   * @param {number=} from - Start time in seconds for playback of the animation.
-   * Defaults to the time of the earliest frame in the group.
-   * @param {number=} to - End time in seconds for playback of the animataion.
-   * Defaults to the time of the latest frame in the group.
-   * @param {BABYLON.AnimationGroup} babylonGroup - The animation group that controls
+   * @param {external:"BABYLON.AnimationGroup"} babylonGroup - The animation group that controls
    * playback of the animation.
-   * @param {BABYLON.Scene} babylonScene - The scene containing the babylonGroup.
+   * @param {external:"BABYLON.Scene"} babylonScene - The scene containing the babylonGroup.
    **/
   constructor(options = {}, babylonGroup, babylonScene) {
     super(options);
@@ -78,10 +72,10 @@ export default class SingleState extends CoreSingleState {
   }
 
   /**
-   * @private
-   *
    * Stop and discard of currently stored animatables and generate new ones that
    * are paused.
+   *
+   * @private
    */
   _createAnimatables() {
     // Create new animatables
@@ -111,10 +105,10 @@ export default class SingleState extends CoreSingleState {
   }
 
   /**
-   * @private
-   *
    * Reset variables and animations. Should be called before playing from the
    * beginning and if calling stop.
+   *
+   * @private
    */
   _reset() {
     this._looped = 0;
@@ -124,9 +118,9 @@ export default class SingleState extends CoreSingleState {
   }
 
   /**
-   * @private
-   *
    * Pause the animation and reset counters once the animation finishes.
+   *
+   * @private
    */
   _onFinishedEvent() {
     this._finished += 1;
@@ -150,10 +144,10 @@ export default class SingleState extends CoreSingleState {
   }
 
   /**
-   * @private
-   *
    * Increment loop counter for each animation loop. If loop counter meets
    * loopCount, notifiy that the animation has finished.
+   *
+   * @private
    */
   _onLoopEvent() {
     this._looped += 1;
@@ -230,3 +224,5 @@ export default class SingleState extends CoreSingleState {
     this._createAnimatables();
   }
 }
+
+export default SingleState;

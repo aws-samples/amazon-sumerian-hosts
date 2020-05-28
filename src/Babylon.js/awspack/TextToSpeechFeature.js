@@ -3,21 +3,30 @@
 import AbstractTextToSpeechFeature from 'core/awspack/AbstractTextToSpeechFeature';
 import CoreTextToSpeechFeature from 'core/awspack/TextToSpeechFeature';
 
-export default class TextToSpeechFeature extends CoreTextToSpeechFeature {
+/**
+ * Babylonjs Scene object
+ * @external "BABYLON.Scene"
+ * @see https://doc.babylonjs.com/api/classes/babylon.scene
+ */
+
+/**
+ * Babylonjs Mesh object
+ * @external "BABYLON.Mesh"
+ * @see https://doc.babylonjs.com/api/classes/babylon.mesh
+ */
+
+/**
+ * @extends core/TextToSpeechFeature
+ * @alias Babylon.js/TextToSpeechFeature
+ */
+class TextToSpeechFeature extends CoreTextToSpeechFeature {
   /**
-   * @private
+   * @constructor
    *
-   * @param {HostObject} host - Host object managing the feature.
+   * @param {Babylon.js/HostObject} host - Host object managing the feature.
    * @param {Object=} options - Options that will be sent to Polly for each speech.
-   * @param {string=} options.voice - The name of the Polly voice to use for all speech.
-   * @param {string=} options.engine - The name of the Polly engine to use for all speech.
-   * @param {string=} options.language - The name of the language to use for all speech.
-   * @param {audioFormat} [options.audioFormat=mp3] - The format to use for generated
-   * audio for all speeches.
-   * @param {string=} options.sampleRate - The sample rate for audio files for all
-   * speeches.
-   * @param {BABYLON.Scene} options.scene - Babylon scene containing the host owner.
-   * @param {BABYLON.Mesh=} options.attachTo - Optional mesh to attach the speech
+   * @param {external:"BABYLON.Scene"} options.scene - Babylon scene containing the host owner.
+   * @param {external:"BABYLON.Mesh"=} options.attachTo - Optional mesh to attach the speech
    * audio to.
    */
   constructor(
@@ -55,15 +64,6 @@ export default class TextToSpeechFeature extends CoreTextToSpeechFeature {
     }
   }
 
-  /**
-   * Create a streaming Babylon.js audio object of speech audio for the given speech
-   * text.
-   *
-   * @param {Object} params - Parameters object compatible with Polly.synthesizeSpeech.
-   *
-   * @returns {Promise} Resolves with an object containing the audio URL and Audio
-   * objects.
-   */
   _synthesizeAudio(params) {
     // Babylon audio will create the web Audio object, so we don't need coreAws.TextToSpeechFeature
     // to create it. Use AbstractTextToSpeechFeature.prototype._synthesizeAudio instead.
@@ -91,3 +91,5 @@ export default class TextToSpeechFeature extends CoreTextToSpeechFeature {
       });
   }
 }
+
+export default TextToSpeechFeature;

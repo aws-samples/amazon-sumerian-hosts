@@ -6,8 +6,28 @@ import ManagedAnimationLayerInterface from './animpack/ManagedAnimationLayerInte
 import TextToSpeechFeatureDependentInterface from './awspack/TextToSpeechFeatureDependentInterface';
 import AbstractHostFeature from './AbstractHostFeature';
 
-// Default mapping of Polly viseme names to animation options objects
-export const DefaultVisemeMap = {
+/**
+ * Default mapping of Polly viseme names to animation options objects.
+ *
+ * @property {Object} [sil={name: 'sil'}]
+ * @property {Object} [p={name: 'p', overrideWeight: 0.9}]
+ * @property {Object} [t={name: 't', blendTime: 0.2}]
+ * @property {Object} [S={name: 'S'}]
+ * @property {Object} [T={name: 'T'}]
+ * @property {Object} [f={name: 'f', overrideWeight: 0.75}]
+ * @property {Object} [k={name: 'k'}]
+ * @property {Object} [i={name: 'i'}]
+ * @property {Object} [r={name: 'r'}]
+ * @property {Object} [s={name: 's', blendTime: 0.25}]
+ * @property {Object} [u={name: 'u'}]
+ * @property {Object} [@={name: '@'}]
+ * @property {Object} [a={name: 'a'}]
+ * @property {Object} [e={name: 'e', blendTime: 0.2}]
+ * @property {Object} [E={name: 'E'}]
+ * @property {Object} [o={name: 'o'}]
+ * @property {Object} [O={name: 'O'}]
+ */
+const DefaultVisemeMap = {
   sil: {name: 'sil'},
   p: {name: 'p', overrideWeight: 0.9},
   t: {name: 't', blendTime: 0.2},
@@ -33,15 +53,20 @@ export const DefaultVisemeMap = {
  * weights should be turned on and off as they are encountered in the Polly SSML
  * transcript. Layers owned by this feature will be enabled while speech is playing
  * and disabled once it stops.
+ *
+ * @extends AbstractHostFeature
+ * @alias core/LipsyncFeature
+ * @implements TextToSpeechFeatureDependentInterface
+ * @implements ManagedAnimationLayerInterface
  */
-export default class LipsyncFeature extends AbstractHostFeature.mix(
+class LipsyncFeature extends AbstractHostFeature.mix(
   TextToSpeechFeatureDependentInterface.Mixin,
   ManagedAnimationLayerInterface.Mixin
 ) {
   /**
-   * @private
+   * @constructor
    *
-   * @param {HostObject} host - Host that owns the feature.
+   * @param {core/HostObject} host - Host that owns the feature.
    * @param {Object=} visemeOptions - Options for the viseme layers.
    * @param {number} [visemeOptions.blendTime=0.15] - Default amount of time it
    * will take to manipulate each freeBlend weight on the viseme states.
@@ -107,9 +132,9 @@ export default class LipsyncFeature extends AbstractHostFeature.mix(
   }
 
   /**
-   * @private
-   *
    * Ensure that registered viseme animations are FreeBlendStates.
+   *
+   * @private
    *
    * @param {string} layerName - Name of the layer that contains the viseme animation.
    * @param {string} animationName - Name of the animation.
@@ -147,9 +172,9 @@ export default class LipsyncFeature extends AbstractHostFeature.mix(
   }
 
   /**
-   * @private
-   *
    * If the added feature is TextToSpeech, update its speechMarkOffset variable.
+   *
+   * @private
    *
    * @param {string} typeName - Name of the type of feature that was added.
    */
@@ -220,10 +245,10 @@ export default class LipsyncFeature extends AbstractHostFeature.mix(
   }
 
   /**
-   * @private
-   *
    * When viseme events are caught, turn on weight of the new viseme for the duration
    * of the speech mark, then turn weight back off.
+   *
+   * @private
    *
    * @param {Object} event - Event data passed from the speech.
    * @param {Object} event.mark - Speechmark object.
@@ -316,6 +341,8 @@ export default class LipsyncFeature extends AbstractHostFeature.mix(
   /**
    * Animate a viseme blend weight towards a value and then back to zero.
    *
+   * @private
+   *
    * @param {string} layerName - Name of the layer that contains the viseme.
    * @param {string} animName - Name of the freeblend animation that contains
    * the viseme.
@@ -363,6 +390,8 @@ export default class LipsyncFeature extends AbstractHostFeature.mix(
 
   /**
    * Animate a viseme blend weight towards a value and then back to zero.
+   *
+   * @private
    *
    * @param {string} layerName - Name of the layer that contains the viseme.
    * @param {string} animName - Name of the freeblend animation that contains
@@ -430,7 +459,10 @@ export default class LipsyncFeature extends AbstractHostFeature.mix(
   }
 
   /**
-   * Gets and sets the amount of time to negatively offset speechmark emission by.
+   * Gets and sets the amount of time in seconds to negatively offset speechmark
+   * emission by.
+   *
+   * @type {number}
    */
   get visemeLeadTime() {
     return this._visemeLeadTime;
@@ -450,14 +482,19 @@ export default class LipsyncFeature extends AbstractHostFeature.mix(
    *
    * @param {string} layerName - Name of the layer to keep track of.
    * @param {Object=} options - Options for the layer.
-   * @param {string} [options.animation=visemes] - Name of the animation on the
+   * @param {string} [options.animation='visemes'] - Name of the animation on the
    * layer that will be played during speech. This animation must be of type
    * freeBlend.
-   * @param {number=} options.blendTime - Default amount of time to use when
-   * manipulating animation blendWeights.
+   * @param {Object=} decayRate
+   * @param {number} [decayRate.amount=0.5] - The percentage to decrease the viseme's
+   * peak value by over time once the peak value has been reached.
+   * @param {number} [decayRate.seconds=0.5] - The amount of time in seconds to
+   * decrease the viseme's weight once it has reached its peak value.
+   * @param {number=} [options.blendTime=[LipsyncFeature.DEFAULT_LAYER_OPTIONS.blendTime]{@link LipsyncFeature#DEFAULT_LAYER_OPTIONS#blendTime}] -
+   * Default amount of time to use when manipulating animation blendWeights.
    * @param {Function=} options.easingFn - Default easing function to use when
    * manipulating animation blendWeights.
-   * @param {Object=} options.visemeMap - Object containing key/value pairs of
+   * @param {Object} [options.visemeMap=DefaultVisemeMap] - Object containing key/value pairs of
    * Polly viseme names mapped to objects containing the name of the corresponding
    * animation blendWeight and any other animation options to use such as viseme
    * specific blend times and easing functions.
@@ -491,10 +528,10 @@ export default class LipsyncFeature extends AbstractHostFeature.mix(
    *
    * @param {string} layerName - Name of the layer to keep track of.
    * @param {Object=} options - Options for the layer.
-   * @param {string} [options.animation=stand_talk] - Name of the animation on the
+   * @param {string} [options.animation='stand_talk'] - Name of the animation on the
    * layer that will be played during speech.
-   * @param {number=} options.blendTime - Default amount of time to use when
-   * manipulating the layer's weights.
+   * @param {number} [options.blendTime=[LipsyncFeature.DEFAULT_LAYER_OPTIONS.blendTime]{@link LipsyncFeature#DEFAULT_LAYER_OPTIONS#blendTime}] -
+   * Default amount of time to use when manipulating the layer's weights.
    * @param {Function=} options.easingFn - Default easing function to use when
    * manipulating the layer's weights.
    */
@@ -515,14 +552,82 @@ export default class LipsyncFeature extends AbstractHostFeature.mix(
     this._talkingLayers[layerName] = animation;
   }
 
+  /**
+   * Adds a namespace to the host with the name of the feature to contain properties
+   * and methods from the feature that users of the host need access to.
+   *
+   * @see LipsyncFeature
+   */
   installApi() {
+    /**
+     * @inner
+     * @namespace LipsyncFeature
+     */
     const api = super.installApi();
 
+    /**
+     * @memberof LipsyncFeature
+     * @name registerLayer
+     * @instance
+     * @method
+     * @see ManagedAnimationLayerInterface#registerLayer
+     */
+
+    /**
+     * @memberof LipsyncFeature
+     * @name registerAnimation
+     * @instance
+     * @method
+     * @see ManagedAnimationLayerInterface#registerAnimation
+     */
+
+    /**
+     * @memberof LipsyncFeature
+     * @name setLayerWeights
+     * @instance
+     * @method
+     * @see ManagedAnimationLayerInterface#setLayerWeights
+     */
+
+    /**
+     * @memberof LipsyncFeature
+     * @name enable
+     * @instance
+     * @method
+     * @see ManagedAnimationLayerInterface#enable
+     */
+
+    /**
+     * @memberof LipsyncFeature
+     * @name disable
+     * @instance
+     * @method
+     * @see ManagedAnimationLayerInterface#disable
+     */
+
     Object.assign(api, {
+      /**
+       * @memberof LipsyncFeature
+       * @instance
+       * @method
+       * @see core/LipsyncFeature#registerVisemeLayer
+       */
       registerVisemeLayer: this.registerVisemeLayer.bind(this),
+      /**
+       * @memberof LipsyncFeature
+       * @instance
+       * @method
+       * @see core/LipsyncFeature#registerTalkingLayer
+       */
       registerTalkingLayer: this.registerTalkingLayer.bind(this),
     });
 
+    /**
+     * @memberof LipsyncFeature
+     * @instance
+     * @name visemeLeadTime
+     * @see core/LipsyncFeature#visemeLeadTime
+     */
     Object.defineProperty(api, 'visemeLeadTime', {
       get: () => this.visemeLeadTime,
       set: seconds => {
@@ -533,3 +638,6 @@ export default class LipsyncFeature extends AbstractHostFeature.mix(
     return api;
   }
 }
+
+export default LipsyncFeature;
+export {DefaultVisemeMap};

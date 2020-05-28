@@ -4,7 +4,11 @@ import Speech from 'app/awspack/Speech';
 import Deferred from 'core/Deferred';
 import AbstractTextToSpeechFeature from './AbstractTextToSpeechFeature';
 
-export default class TextToSpeechFeature extends AbstractTextToSpeechFeature {
+/**
+ * @extends AbstractTextToSpeechFeature
+ * @alias core/TextToSpeechFeature
+ */
+class TextToSpeechFeature extends AbstractTextToSpeechFeature {
   constructor(...args) {
     super(...args);
 
@@ -14,19 +18,19 @@ export default class TextToSpeechFeature extends AbstractTextToSpeechFeature {
   }
 
   /**
-   * @private
-   *
    * Store the audio context that will be used to ensure audio can be played.
+   *
+   * @private
    */
   _setAudioContext() {
     this._audioContext = new AudioContext();
   }
 
   /**
-   * @private
-   *
    * Listen for state changes on the audio context to determine whether the feature
    * is enabled.
+   *
+   * @private
    */
   _observeAudioContext() {
     if (this._audioContext) {
@@ -46,9 +50,9 @@ export default class TextToSpeechFeature extends AbstractTextToSpeechFeature {
   }
 
   /**
-   * @private
-   *
    * Create an Audio object of speech audio for the given speech text.
+   *
+   * @private
    *
    * @param {Object} params - Parameters object compatible with Polly.synthesizeSpeech.
    *
@@ -80,16 +84,16 @@ export default class TextToSpeechFeature extends AbstractTextToSpeechFeature {
   }
 
   /**
-   * @private
-   *
    * Create a new Speech object for the speaker.
+   *
+   * @private
    *
    * @param {TextToSpeech} speaker - The TextToSpeech instance that will own the speech.
    * @param {string} text - Text of the speech.
    * @param {Object} speechmarks - Speechmarks for the speech.
    * @param {Object} audioConfig - Audio for the speech.
    *
-   * @returns {Speech}
+   * @returns {AbstractSpeech}
    */
   _createSpeech(text, speechmarks, audioConfig) {
     return new Speech(this, text, speechmarks, audioConfig);
@@ -97,17 +101,20 @@ export default class TextToSpeechFeature extends AbstractTextToSpeechFeature {
 
   /**
    * Gets whether or not the audio context is running and speech can be played.
+   *
+   * @readonly
+   * @type {boolean}
    */
   get enabled() {
     return this._enabled;
   }
 
   /**
-   * Try to resume the audio context. This will be automatically each time speech
-   * is played. If using manually, it should be called after a user interaction
-   * occurs.
+   * Try to resume the audio context. This will be automatically executed each time
+   * speech is played or resumed. If using manually, it should be called after a
+   * user interaction occurs.
    *
-   * @returns {Deferred}
+   * @returns {Deferred} - Resolves once the audio context has resumed.
    */
   resumeAudio() {
     const promise = new Deferred((resolve, reject) => {
@@ -170,10 +177,18 @@ export default class TextToSpeechFeature extends AbstractTextToSpeechFeature {
   installApi() {
     const api = super.installApi();
 
-    Object.defineProperty(api, 'enabled', {
+    /**
+     * @name enabled
+     * @memberof TextToSpeechFeature
+     * @instance
+     * @see core/TextToSpeechFeature#enabled
+     */
+    Object.defineProperties(api, 'enabled', {
       get: () => this._enabled,
     });
 
     return api;
   }
 }
+
+export default TextToSpeechFeature;

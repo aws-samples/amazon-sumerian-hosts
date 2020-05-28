@@ -2,9 +2,13 @@
 // SPDX-License-Identifier: MIT-0
 import CoreHostObject from 'core/HostObject';
 
-export default class HostObject extends CoreHostObject {
+/**
+ * @extends core/HostObject
+ * @alias Babylon.js/HostObject
+ */
+class HostObject extends CoreHostObject {
   /**
-   * @private
+   * @constructor
    *
    * @param {Object=} options - Options for the host.
    * @param {Object=} options.owner - Optional engine-specific owner of the host.
@@ -25,3 +29,5 @@ export default class HostObject extends CoreHostObject {
     return BABYLON.PrecisionDate.Now;
   }
 }
+
+export default HostObject;

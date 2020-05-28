@@ -2,9 +2,13 @@
 // SPDX-License-Identifier: MIT-0
 /**
  * A collection of useful generic functions.
+ *
+ * @hideconstructor
  */
-export default class Utils {
+class Utils {
   /**
+   * @static
+   *
    * Generate a unique id
    *
    * @returns {String}
@@ -21,6 +25,8 @@ export default class Utils {
   }
 
   /**
+   * @static
+   *
    * Check a name string against an array of strings to determine if it is unique.
    * If it isn't, append incremented trailing integers to the end of the name
    * until it is unique.
@@ -61,3 +67,5 @@ export default class Utils {
     return `${baseName}${increment + 1}`;
   }
 }
+
+export default Utils;

@@ -7,20 +7,93 @@ import SingleState from './state/SingleState';
 import AnimationLayer, {LayerBlendModes} from './AnimationLayer';
 import Deferred from '../Deferred';
 
+/**
+ * Enum for animation state classes.
+ *
+ * @readonly
+ * @enum {Class}
+ */
 export const AnimationTypes = {
   single: SingleState,
   freeBlend: FreeBlendState,
 };
 
 /**
- * Base class for managing animations on an object.
+ * Feature for managing animations on an object.
+ *
+ * @extends AbstractHostFeature
+ * @alias core/AnimationFeature
+ *
+ * @property {Object} EVENTS - Built-in messages that the feature emits. When the
+ * feature is added to a {@link core/HostObject}, event names will be prefixed by the
+ * name of the feature class + '.'.
+ * @property {string} [EVENTS.addLayer=onAddLayerEvent] - Message that is emitted after
+ * [addLayer]{@link core/AnimationFeature#addLayer} has been successfully executed.
+ * An object representing the name of the layer that was added and its index in
+ * the layer stack with the signature {name: string, index: number} is supplied
+ * as an argument to listener functions.
+ * @property {string} [EVENTS.removeLayer=onRemoveLayerEvent] - Message that is
+ * emitted after [removeLayer]{@link core/AnimationFeature#removeLayer} has been
+ * successfully executed. An object representing the name of the layer that was
+ * removed and its index in the layer stack with the signature {name: string, index: number}
+ * is supplied as an argument to listener functions.
+ * @property {string} [EVENTS.renameLayer=onRenameLayerEvent] - Message that is
+ * emitted after [renameLayer]{@link core/AnimationFeature#renameLayer} has been
+ * successfully executed. An object representing the original name of the layer
+ * that was renamed and its updated name with the signature {oldName: string, newName: string}
+ * is supplied as an argument to listener functions.
+ * @property {string} [EVENTS.addAnimation=onAddAnimationEvent] - Message that is
+ * emitted after [addAnimation]{@link core/AnimationFeature#addAnimation} has been
+ * successfully executed. An object representing the name of the layer that the
+ * animation was added to and the name of the animation that was added with the
+ * signature {layerName: string, animationName: string} is supplied as an argument
+ * to listener functions.
+ * @property {string} [EVENTS.removeAnimation=onRemovedAnimationEvent] - Message
+ * that is emitted after [removeAnimation]{@link core/AnimationFeature#removeAnimation}
+ * has been successfully executed. An object representing the name of the layer
+ * that the animation was removed from and the name of the animation that was removed
+ * with the signature {layerName: string, animationName: string} is supplied as
+ * an argument to listener functions.
+ * @property {string} [EVENTS.renameAnimation=onRenameAnimationEvent] - Message
+ * that is emitted after [renameAnimation]{@link core/AnimationFeature#renameAnimation}
+ * has been successfully executed. An object representing the name of the layer
+ * that contains the animation that was renamed, the original name of the animation
+ * that was renamed and its updated name with the signature {layerName: string, oldName: string, newName: string}
+ * is supplied as an argument to listener functions.
+ * @property {string} [EVENTS.play=onPlayEvent] - Message that is emitted after
+ * each call to [play]{@link core/AnimationFeature#playAnimation}. An object representing
+ * the name of the layer contains the animation that was played and the name of
+ * the animation that was played with the signature {layerName: string, animationName: string}
+ * is supplied as an argument to listener functions.
+ * @property {string} [EVENTS.pause=onPauseEvent] - Message that is emitted after
+ * each call to [pause]{@link core/AnimationFeature#pauseAnimation}. An object representing
+ * the name of the layer contains the animation that was paused and the name of
+ * the animation that was paused with the signature {layerName: string, animationName: string}
+ * is supplied as an argument to listener functions.
+ * @property {string} [EVENTS.resume=onResumeEvent] - Message that is emitted after
+ * each call to [resume]{@link core/AnimationFeature#resumeAnimation}. An object representing
+ * the name of the layer contains the animation that was resumed and the name of
+ * the animation that was resumed with the signature {layerName: string, animationName: string}
+ * is supplied as an argument to listener functions.
+ * @property {string} [EVENTS.interrupt=onInterruptEvent] - Message that is emitted
+ * if there is a current speech in progress and [play]{@link core/AnimationFeature#playAnimation}
+ * or [resume]{@link core/AnimationFeature#resumeAnimation} are executed for a new speech.
+ * An object representing the name of the layer contains the animation that was
+ * interrupted and the name of the animation that was interrupted with the signature
+ * {layerName: string, animationName: string} is supplied as an argument to listener
+ * functions.
+ * @property {string} [EVENTS.stop=onStopEvent] - Message that is emitted after
+ * each call to [stop]{@link core/AnimationFeature#stopAnimation} and when a speech reaches
+ * the end of playback. An object representing
+ * the name of the layer contains the animation that was stopped and the name of
+ * the animation that was stopped with the signature {layerName: string, animationName: string}
+ * is supplied as an argument to listener functions.
  */
-export default class AnimationFeature extends AbstractHostFeature {
+class AnimationFeature extends AbstractHostFeature {
   /**
-   * @private
+   * @constructor
    *
-   * @param {HostObject} host - Host object that owns the feature.
-   * @param {...any} args - Arguments to send to the super class constructor.
+   * @param {core/HostObject} host - Host object that owns the feature.
    */
   constructor(host) {
     super(host);
@@ -31,9 +104,9 @@ export default class AnimationFeature extends AbstractHostFeature {
   }
 
   /**
-   * @private
-   *
    * Make sure a supplied layer index is within the range of layers.
+   *
+   * @private
    *
    * @param {number} index
    * @param {boolean} [existing=true] - Whether the index represents and existing
@@ -62,11 +135,11 @@ export default class AnimationFeature extends AbstractHostFeature {
   }
 
   /**
-   * @private
-   *
    * Re-evaluate internal weight values of layers starting from the top of the
    * stack. Override layers' weights affect the values of all layers lower in the
    * stack.
+   *
+   * @private
    */
   _updateInternalWeights() {
     const numLayers = this._layers.length;
@@ -85,9 +158,9 @@ export default class AnimationFeature extends AbstractHostFeature {
   }
 
   /**
-   * @private
-   *
    * Return a new instance of a SingleState.
+   *
+   * @private
    *
    * @param {Object} options - Options to pass to the SingleState constructor.
    * @param {string=} options.name - Name for the animation state. Names must be
@@ -100,16 +173,16 @@ export default class AnimationFeature extends AbstractHostFeature {
    * @param {string} [options.blendMode=LayerBlendModes[DefaultLayerBlendMode]] - Type of
    * blending the animation should use.
    *
-   * @returns {SingleState}
+   * @returns {core/SingleState}
    */
   _createSingleState(options) {
     return new SingleState(options);
   }
 
   /**
-   * @private
-   *
    * Return a new instance of a FreeBlendState.
+   *
+   * @private
    *
    * @param {Object} options - Options to pass to the FreeBlendState constructor.
    * @param {string=} options.name - Name for the animation state. Names must be
@@ -140,10 +213,10 @@ export default class AnimationFeature extends AbstractHostFeature {
   }
 
   /**
-   * @private
-   *
    * Make sure the layer with the given name exists and return a unique version
    * of the animation name supplied for that layer.
+   *
+   * @private
    *
    * @param {string} layerName - Name of the layer to check against.
    * @param {string} animationName - Name of the animation to validate.
@@ -174,6 +247,9 @@ export default class AnimationFeature extends AbstractHostFeature {
 
   /**
    * Gets whether or not all animations are paused.
+   *
+   * @readonly
+   * @type {boolean}
    */
   get paused() {
     return this._paused;
@@ -181,6 +257,9 @@ export default class AnimationFeature extends AbstractHostFeature {
 
   /**
    * Gets an array of names of animation layers.
+   *
+   * @readonly
+   * @type {Array.<string>}
    */
   get layers() {
     return this._layers.map(layer => layer.name);
@@ -189,7 +268,8 @@ export default class AnimationFeature extends AbstractHostFeature {
   /**
    * Create and store a new animation layer.
    *
-   * @param {string=} name - Name for the layer.
+   * @param {string} [name='NewLayer'] - Name for the layer.
+   * @param {Object} [options={}] - Options to pass to {@link AnimationLayer#constructor}
    * @param {index=} index - Index to insert the new layer at. If none is provided
    * it will be added to the end of the stack.
    *
@@ -502,7 +582,7 @@ export default class AnimationFeature extends AbstractHostFeature {
    *
    * @param {string} name - Name of the layer to pause.
    *
-   * @returns {boolean} Whether or not there was an existing interpolation to pause.
+   * @returns {boolean} - Whether or not there was an existing interpolation to pause.
    */
   pauseLayerWeight(name) {
     // Make sure the name is valid
@@ -522,7 +602,7 @@ export default class AnimationFeature extends AbstractHostFeature {
    *
    * @param {string} name - Name of the layer to resume.
    *
-   * @returns {Deferred}
+   * @returns {Deferred} - Resolves once the layer's weight reaches its target value.
    */
   resumeLayerWeight(name) {
     // Make sure the name is valid
@@ -542,7 +622,7 @@ export default class AnimationFeature extends AbstractHostFeature {
    *
    * @param {string} name - Name of the layer to pause.
    *
-   * @returns {boolean} Whether or not there was an existing interpolation or
+   * @returns {boolean} - Whether or not there was an existing interpolation or
    * current animation to pause.
    */
   pauseLayer(name) {
@@ -564,7 +644,8 @@ export default class AnimationFeature extends AbstractHostFeature {
    *
    * @param {string} name - Name of the layer to resume.
    *
-   * @returns {Deferred}
+   * @returns {Deferred} - Resolves once the layer's weight reaches its target value
+   * and it's current animation finishes playing.
    */
   resumeLayer(name) {
     // Make sure the name is valid
@@ -641,7 +722,7 @@ export default class AnimationFeature extends AbstractHostFeature {
   }
 
   /**
-   * Return the type name of the given animation.
+   * Return the type name of the given animation. @see AnimationTypes.
    *
    * @param {string} layerName - Name of the layer that contains the animation.
    * @param {string} animationName - Name of the animation to check.
@@ -681,7 +762,7 @@ export default class AnimationFeature extends AbstractHostFeature {
    * @param {Object=} options - Options to pass to the constructor for the new
    * SingleState animation.
    *
-   * @returns {string} The name of the animation that was added
+   * @returns {string} - The name of the animation that was added
    */
   addAnimation(
     layerName,
@@ -753,7 +834,7 @@ export default class AnimationFeature extends AbstractHostFeature {
    * @param {string} currentAnimationName - Current name of the animation.
    * @param {string} newAnimationName - New name to set on the animation.
    *
-   * @returns {string} The new name of the animation
+   * @returns {string} - The new name of the animation
    */
   renameAnimation(layerName, currentAnimationName, newAnimationName) {
     const layer = this._layerMap[layerName];
@@ -786,7 +867,9 @@ export default class AnimationFeature extends AbstractHostFeature {
    * @param {Function=} easingFn - The easing function to use while transitioning
    * between animations. Default is Easing.Linear.InOut.
    *
-   * @returns {Deferred}
+   * @returns {Deferred} - Resolves once the animation reaches the end of its
+   * timeline. Looping animations can only resolve if they are interrupted or
+   * manually stopped.
    */
   playAnimation(layerName, animationName, seconds, easingFn) {
     const layer = this._layerMap[layerName];
@@ -867,7 +950,9 @@ export default class AnimationFeature extends AbstractHostFeature {
    * @param {Function=} easingFn - The easing function to use while transitioning
    * between animations. Default is Easing.Linear.InOut.
    *
-   * @returns {Deferred}
+   * @returns {Deferred} - Resolves once the animation reaches the end of its
+   * timeline. Looping animations can only resolve if they are interrupted or
+   * manually stopped.
    */
   resumeAnimation(layerName, animationName, seconds, easingFn) {
     const layer = this._layerMap[layerName];
@@ -929,7 +1014,7 @@ export default class AnimationFeature extends AbstractHostFeature {
   /**
    * Pause current animation and weight interpolation animation on all layers.
 
-   * @returns {boolean} Whether or not there was an existing interpolation or
+   * @returns {boolean} - Whether or not there was an existing interpolation or
    * current animations to pause.
    */
   pause() {
@@ -941,7 +1026,7 @@ export default class AnimationFeature extends AbstractHostFeature {
   /**
    * Resume current animation and weight interpolation animation on all layers.
 
-   * @returns {boolean} Whether or not there was an existing interpolation or
+   * @returns {boolean} - Whether or not there was an existing interpolation or
    * current animations to resume.
    */
   resume() {
@@ -951,53 +1036,224 @@ export default class AnimationFeature extends AbstractHostFeature {
   }
 
   /**
-   * Add a namespace to the host to contain anything from the feature that users
-   * of the host need access to.
+   * Adds a namespace to the host with the name of the feature to contain properties
+   * and methods from the feature that users of the host need access to.
+   *
+   * @see AnimationFeature
    */
   installApi() {
+    /**
+     * @inner
+     * @namespace AnimationFeature
+     */
     const api = super.installApi();
 
     Object.defineProperties(api, {
+      /**
+       * @memberof AnimationFeature
+       * @instance
+       * @see core/AnimationFeature#paused
+       */
       paused: {
         get: () => this.paused,
       },
-
+      /**
+       * @memberof AnimationFeature
+       * @instance
+       * @see core/AnimationFeature#layers
+       */
       layers: {
         get: () => this.layers,
       },
     });
 
     Object.assign(api, {
+      /**
+       * @memberof AnimationFeature
+       * @instance
+       * @method
+       * @see core/AnimationFeature#addLayer
+       */
       addLayer: this.addLayer.bind(this),
+      /**
+       * @memberof AnimationFeature
+       * @instance
+       * @method
+       * @see core/AnimationFeature#removeLayer
+       */
       removeLayer: this.removeLayer.bind(this),
+      /**
+       * @memberof AnimationFeature
+       * @instance
+       * @method
+       * @see core/AnimationFeature#moveLayer
+       */
       moveLayer: this.moveLayer.bind(this),
+      /**
+       * @memberof AnimationFeature
+       * @instance
+       * @method
+       * @see core/AnimationFeature#renameLayer
+       */
       renameLayer: this.renameLayer.bind(this),
 
+      /**
+       * @memberof AnimationFeature
+       * @instance
+       * @method
+       * @see core/AnimationFeature#getLayerWeight
+       */
       getLayerWeight: this.getLayerWeight.bind(this),
+      /**
+       * @memberof AnimationFeature
+       * @instance
+       * @method
+       * @see core/AnimationFeature#setLayerWeight
+       */
       setLayerWeight: this.setLayerWeight.bind(this),
+      /**
+       * @memberof AnimationFeature
+       * @instance
+       * @method
+       * @see core/AnimationFeature#pauseLayerWeight
+       */
       pauseLayerWeight: this.pauseLayerWeight.bind(this),
+      /**
+       * @memberof AnimationFeature
+       * @instance
+       * @method
+       * @see core/AnimationFeature#resumeLayerWeight
+       */
       resumeLayerWeight: this.resumeLayerWeight.bind(this),
+      /**
+       * @memberof AnimationFeature
+       * @instance
+       * @method
+       * @see core/AnimationFeature#pauseLayer
+       */
       pauseLayer: this.pauseLayer.bind(this),
+      /**
+       * @memberof AnimationFeature
+       * @instance
+       * @method
+       * @see core/AnimationFeature#resumeLayer
+       */
       resumeLayer: this.resumeLayer.bind(this),
 
+      /**
+       * @memberof AnimationFeature
+       * @instance
+       * @method
+       * @see core/AnimationFeature#getTransitioning
+       */
       getTransitioning: this.getTransitioning.bind(this),
+      /**
+       * @memberof AnimationFeature
+       * @instance
+       * @method
+       * @see core/AnimationFeature#getAnimations
+       */
       getAnimations: this.getAnimations.bind(this),
+      /**
+       * @memberof AnimationFeature
+       * @instance
+       * @method
+       * @see core/AnimationFeature#getCurrentAnimation
+       */
       getCurrentAnimation: this.getCurrentAnimation.bind(this),
+      /**
+       * @memberof AnimationFeature
+       * @instance
+       * @method
+       * @see core/AnimationFeature#getAnimationType
+       */
       getAnimationType: this.getAnimationType.bind(this),
+      /**
+       * @memberof AnimationFeature
+       * @instance
+       * @method
+       * @see core/AnimationFeature#addAnimation
+       */
       addAnimation: this.addAnimation.bind(this),
+      /**
+       * @memberof AnimationFeature
+       * @instance
+       * @method
+       * @see core/AnimationFeature#removeAnimation
+       */
       removeAnimation: this.removeAnimation.bind(this),
+      /**
+       * @memberof AnimationFeature
+       * @instance
+       * @method
+       * @see core/AnimationFeature#renameAnimation
+       */
       renameAnimation: this.renameAnimation.bind(this),
 
+      /**
+       * @memberof AnimationFeature
+       * @instance
+       * @method
+       * @see core/AnimationFeature#getAnimationBlendNames
+       */
       getAnimationBlendNames: this.getAnimationBlendNames.bind(this),
+      /**
+       * @memberof AnimationFeature
+       * @instance
+       * @method
+       * @see core/AnimationFeature#getAnimationBlendWeight
+       */
       getAnimationBlendWeight: this.getAnimationBlendWeight.bind(this),
+      /**
+       * @memberof AnimationFeature
+       * @instance
+       * @method
+       * @see core/AnimationFeature#setAnimationBlendWeight
+       */
       setAnimationBlendWeight: this.setAnimationBlendWeight.bind(this),
 
+      /**
+       * @memberof AnimationFeature
+       * @instance
+       * @method
+       * @see core/AnimationFeature#playAnimation
+       */
       playAnimation: this.playAnimation.bind(this),
+      /**
+       * @memberof AnimationFeature
+       * @instance
+       * @method
+       * @see core/AnimationFeature#pauseAnimation
+       */
       pauseAnimation: this.pauseAnimation.bind(this),
+      /**
+       * @memberof AnimationFeature
+       * @instance
+       * @method
+       * @see core/AnimationFeature#resumeAnimation
+       */
       resumeAnimation: this.resumeAnimation.bind(this),
+      /**
+       * @memberof AnimationFeature
+       * @instance
+       * @method
+       * @see core/AnimationFeature#stopAnimation
+       */
       stopAnimation: this.stopAnimation.bind(this),
 
+      /**
+       * @memberof AnimationFeature
+       * @instance
+       * @method
+       * @see core/AnimationFeature#pause
+       */
       pause: this.pause.bind(this),
+      /**
+       * @memberof AnimationFeature
+       * @instance
+       * @method
+       * @see core/AnimationFeature#resume
+       */
       resume: this.resume.bind(this),
     });
   }
@@ -1055,3 +1311,5 @@ Object.defineProperty(AnimationFeature, 'EVENTS', {
     stopAnimation: 'onStopEvent',
   },
 });
+
+export default AnimationFeature;

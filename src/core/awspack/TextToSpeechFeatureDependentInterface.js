@@ -8,64 +8,104 @@ import FeatureDependentInterface from 'core/FeatureDependentInterface';
  * Class factory interface for features that are dependent on the TextToSpeechFeature
  * being present on the host. Speech events will automatically be listened for once a
  * TextToSpeechFeature is added to the host and stopped once it is removed.
+ *
+ * @interface
+ * @extends FeatureDependentInterface
+ *
+ * @property {Object} EVENT_DEPENDENCIES - Events that the feature should start/stop
+ * listening for when a feature of type FeatureName is added/removed from the host.
+ * @property {Object} EVENT_DEPENDENCIES.TextToSpeechFeature - Events that are
+ * specific to the TextToSpeechFeature.
+ * @property {string} [EVENT_DEPENDENCIES.TextToSpeechFeature.play='_onPlay'] -
+ * The name of the method that will be executed when TextToSpeechFeature play
+ * events are emitted.
+ * @property {string} [EVENT_DEPENDENCIES.TextToSpeechFeature.pause='_onPause'] -
+ * The name of the method that will be executed when TextToSpeechFeature pause
+ * events are emitted.
+ * @property {string} [EVENT_DEPENDENCIES.TextToSpeechFeature.resume='_onResume'] -
+ * The name of the method that will be executed when TextToSpeechFeature resume
+ * events are emitted.
+ * @property {string} [EVENT_DEPENDENCIES.TextToSpeechFeature.stop='_onStop'] -
+ * The name of the method that will be executed when TextToSpeechFeature stop
+ * events are emitted.
+ * @property {string} [EVENT_DEPENDENCIES.TextToSpeechFeature.sentence='_onSentence'] -
+ * The name of the method that will be executed when TextToSpeechFeature sentence
+ * events are emitted.
+ * @property {string} [EVENT_DEPENDENCIES.TextToSpeechFeature.word='_onWord'] -
+ * The name of the method that will be executed when TextToSpeechFeature word
+ * events are emitted.
+ * @property {string} [EVENT_DEPENDENCIES.TextToSpeechFeature.viseme='_onViseme'] -
+ * The name of the method that will be executed when TextToSpeechFeature viseme
+ * events are emitted.
+ * @property {string} [EVENT_DEPENDENCIES.TextToSpeechFeature.ssml='_onSsml'] -
+ * The name of the method that will be executed when TextToSpeechFeature ssml
+ * events are emitted.
  */
-export default class TextToSpeechFeatureDependentInterface extends FeatureDependentInterface {
+class TextToSpeechFeatureDependentInterface extends FeatureDependentInterface {
   /**
-   * @private
-   *
    * Executed when speech play events are caught.
+   *
+   * @private
    */
   _onPlay() {}
 
   /**
-   * @private
-   *
    * Executed when speech pause events are caught.
+   *
+   * @private
    */
   _onPause() {}
 
   /**
-   * @private
-   *
    * Executed when speech resume events are caught.
+   *
+   * @private
    */
   _onResume() {}
 
   /**
-   * @private
-   *
    * Executed when speech stop events are caught.
+   *
+   * @private
    */
   _onStop() {}
 
   /**
-   * @private
-   *
    * Executed when speech sentence events are caught.
+   *
+   * @private
    */
   _onSentence() {}
 
   /**
-   * @private
-   *
    * Executed when speech word events are caught.
+   *
+   * @private
    */
   _onWord() {}
 
   /**
-   * @private
-   *
    * Executed when speech viseme events are caught.
+   *
+   * @private
    */
   _onViseme() {}
 
   /**
-   * @private
-   *
    * Executed when speech ssml events are caught.
+   *
+   * @private
    */
   _onSsml() {}
 
+  /**
+   * Creates a class that implements {@link TextToSpeechFeatureDependentInterface}
+   * and extends a specified base class.
+   *
+   * @param {Class} BaseClass - The class to extend.
+   *
+   * @return {Class} A class that extends `BaseClass` and implements {@link TextToSpeechFeatureDependentInterface}.
+   */
   static Mixin(BaseClass) {
     const ParentClass = FeatureDependentInterface.Mixin(BaseClass);
     const TextToSpeechFeatureDependentMixin = class extends ParentClass {
@@ -117,3 +157,5 @@ Object.defineProperties(TextToSpeechFeatureDependentInterface, {
     writable: false,
   },
 });
+
+export default TextToSpeechFeatureDependentInterface;

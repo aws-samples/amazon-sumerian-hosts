@@ -1,15 +1,21 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: MIT-0
-import CoreAnimationFeature, {AnimationTypes} from 'core/animpack/AnimationFeature';
+import CoreAnimationFeature, {
+  AnimationTypes,
+} from 'core/animpack/AnimationFeature';
 import SingleState from './state/SingleState';
 
 export {AnimationTypes};
 
-export default class AnimationFeature extends CoreAnimationFeature {
+/**
+ * @extends core/AnimationFeature
+ * @alias Babylon.js/AnimationFeature
+ */
+class AnimationFeature extends CoreAnimationFeature {
   /**
-   * @private
+   * @constructor
    *
-   * @param {HostObject} host - Host object that owns the feature.
+   * @param {Babylon.js/HostObject} host - Host object that owns the feature.
    */
   constructor(host) {
     super(host);
@@ -27,3 +33,5 @@ export default class AnimationFeature extends CoreAnimationFeature {
     super.discard();
   }
 }
+
+export default AnimationFeature;

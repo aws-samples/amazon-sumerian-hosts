@@ -2,19 +2,20 @@
 // SPDX-License-Identifier: MIT-0
 import AbstractState from './AbstractState';
 import AnimationUtils from '../AnimationUtils';
-import Utils from '../../Utils'
+import Utils from '../../Utils';
 import Deferred from '../../Deferred';
 
 /**
  * Class for blending N number of blend states.
+ *
+ * @extends AbstractState
  */
 class FreeBlendState extends AbstractState {
-
   /**
-   * @private
+   * @constructor
    *
-   * @param {Object=} options - Options for the container state.
-   * @param {Array.<AbstractState>=} blendStates - Blend states to be controlled by
+   * @param {Object} [options={}] - Options for the container state.
+   * @param {Array.<AbstractState>} [blendStates=[]] - Blend states to be controlled by
    * this container.
    */
   constructor(options = {}, blendStates = []) {
@@ -28,14 +29,14 @@ class FreeBlendState extends AbstractState {
 
   /**
    * Gets an array of the names of all states the container controls.
+   *
+   * @readonly
+   * @type {Array.<sring>}
    */
   get animations() {
     return [...this._states.keys()];
   }
 
-  /**
-   * Gets the internal weight.
-   */
   get internalWeight() {
     let blendWeights = 0;
     this._states.forEach(state => {
@@ -55,7 +56,7 @@ class FreeBlendState extends AbstractState {
    */
   addState(state) {
     // Make sure the state is not already in this container
-    if([...this._states.values()].includes(state)) {
+    if ([...this._states.values()].includes(state)) {
       console.warn(
         `Cannot add animation to FreeBlendState ${this.name}. Animation was already added.`
       );
@@ -63,12 +64,11 @@ class FreeBlendState extends AbstractState {
     }
 
     // Make sure the state name is unique
-    const uniqueName = Utils.getUniqueName(
-      state.name,
-      [...this._states.keys()]
-    );
+    const uniqueName = Utils.getUniqueName(state.name, [
+      ...this._states.keys(),
+    ]);
 
-    if(state.name !== uniqueName) {
+    if (state.name !== uniqueName) {
       console.warn(
         `Animation name ${state.name} is not unique for FreeBlendState ${this.name}. New animation will be added with name ${uniqueName}.`
       );
@@ -89,7 +89,7 @@ class FreeBlendState extends AbstractState {
    */
   removeState(name) {
     // Check if the state is in this container
-    if(!this._states.has(name)) {
+    if (!this._states.has(name)) {
       console.warn(
         `Did not remove animation ${name} from FreeBlendState ${this.name}. No animation exists with this name.`
       );
@@ -105,7 +105,7 @@ class FreeBlendState extends AbstractState {
    * Renames a state with the given name in the container. Name must be unique
    * to the container, if it isn't the name will be incremented until it is unique.
    *
-   * A@param {string} currentName - Name of the state to rename.
+   * @param {string} currentName - Name of the state to rename.
    * @param {string} newName - Name to update the state with.
    *
    * @returns {string} - Updated name for the state.
@@ -113,14 +113,14 @@ class FreeBlendState extends AbstractState {
   renameState(currentName, newName) {
     // Make sure the state is in this container
     const state = this._states.get(currentName);
-    if(state === undefined) {
+    if (state === undefined) {
       throw new Error(
         `Cannot rename animation ${currentName} in FreeBlendState ${this.name}. No animation exists with this name.`
       );
     }
 
     // Exit if the names are the same
-    if(currentName === newName) {
+    if (currentName === newName) {
       return currentName;
     }
 
@@ -130,10 +130,10 @@ class FreeBlendState extends AbstractState {
       [...this._states.keys()].filter(s => s.name !== currentName)
     );
 
-    if(newName !== uniqueName) {
+    if (newName !== uniqueName) {
       console.warn(
         `Animation name ${newName} is not unique in FreeBlendState ${this.name}. Animation will be renamed to ${uniqueName}.`
-      )
+      );
       newName = uniqueName;
     }
 
@@ -154,7 +154,7 @@ class FreeBlendState extends AbstractState {
   getBlendWeight(name) {
     // Make sure the name is valid
     const state = this._states.get(name);
-    if(state === undefined) {
+    if (state === undefined) {
       throw new Error(
         `Cannot get weight of state ${name} from FreeBlendState ${this.name}. No state exists with this name.`
       );
@@ -175,21 +175,16 @@ class FreeBlendState extends AbstractState {
     // Make sure the name is valid
     const state = this._states.get(name);
 
-    if(state === undefined) {
+    if (state === undefined) {
       throw new Error(
         `Cannot set weight of state ${name} from FreeBlendState ${this.name}. No state exists with this name.`
-      )
+      );
     }
 
     weight = AnimationUtils.clamp(weight);
     return state.setWeight(weight, seconds, easingFn);
   }
 
-  /**
-   * @private
-   *
-   * @param {number} factor - 0-1 multiplier to apply to the user weights.
-   */
   updateInternalWeight(factor) {
     super.updateInternalWeight(factor);
 
@@ -201,7 +196,7 @@ class FreeBlendState extends AbstractState {
     });
 
     // Ensure the sum of blend state internal weights does not exceed container internal weight
-    factor = factor / Math.max(sumWeights, 1);
+    factor /= Math.max(sumWeights, 1);
 
     // Sum of blend state internal weights should not exceed container internal weight
     this._states.forEach(state => {
@@ -209,13 +204,6 @@ class FreeBlendState extends AbstractState {
     });
   }
 
-  /**
-   * @private
-   *
-   * Update any values that need to be evaluated every frame.
-   *
-   * @param {number} deltaTime - Time in milliseconds since the last update.
-   */
   update(deltaTime) {
     super.update(deltaTime);
     this._states.forEach(state => {
@@ -223,16 +211,6 @@ class FreeBlendState extends AbstractState {
     });
   }
 
-  /**
-   * Start playback of the state from the beginning.
-   *
-   * @param {Function=} onFinish - Function to execute when the state finishes.
-   * @param {Function=} onError - Function to execute if the state encounters
-   * an error during playback.
-   * @param {Function=} onCancel - Function to execute if playback is canceled.
-   *
-   * @returns {Deferred}
-   */
   play(onFinish, onError, onCancel) {
     const promises = [];
     promises.push(super.play());
@@ -242,28 +220,13 @@ class FreeBlendState extends AbstractState {
     return Deferred.all(promises, onFinish, onError, onCancel);
   }
 
-  /**
-   * Pause playback of the state. This prevents pending promises from being executed.
-   *
-   * @returns {boolean}
-   */
   pause() {
     this._states.forEach(state => {
       state.pause();
-    })
+    });
     return super.pause();
   }
 
-  /**
-   * Resume playback of the state.
-   *
-   * @param {Function=} onFinish - Function to execute when the state finishes.
-   * @param {Function=} onError - Function to execute if the state encounters
-   * an error during playback.
-   * @param {Function=} onCancel - Function to execute if playback is canceled.
-   *
-   * @returns {Deferred}
-   */
   resume(onFinish, onError, onCancel) {
     const promises = [];
     promises.push(super.resume());
@@ -273,11 +236,6 @@ class FreeBlendState extends AbstractState {
     return Deferred.all(promises, onFinish, onError, onCancel);
   }
 
-  /**
-   * Cancel playback of the state and cancel any pending promises.
-   *
-   * @returns {boolean}
-   */
   cancel() {
     this._states.forEach(state => {
       state.cancel();
@@ -285,11 +243,6 @@ class FreeBlendState extends AbstractState {
     return super.cancel();
   }
 
-  /**
-   * Stop playback of the state and resolve any pending promises.
-   *
-   * @returns {boolean}
-   */
   stop() {
     this._states.forEach(state => {
       state.stop();
@@ -297,9 +250,6 @@ class FreeBlendState extends AbstractState {
     return super.stop();
   }
 
-  /**
-   * Cancel any pending promises and remove reference to them.
-   */
   discard() {
     super.discard();
 

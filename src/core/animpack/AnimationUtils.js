@@ -3,7 +3,12 @@
 import Deferred from 'core/Deferred';
 import {Linear} from './Easing';
 
-export default class AnimationUtils {
+/**
+ * A collection of useful animation functions.
+ *
+ * @hideconstructor
+ */
+class AnimationUtils {
   /**
    * Linearly interpolate between two values.
    *
@@ -42,16 +47,16 @@ export default class AnimationUtils {
    * @param {Object=} options - Optional options object
    * @param {number} [options.seconds=0] - Number of seconds it will take to reach
    * the target value.
-   * @param {Function} [easingFn=Linear.InOut] - Easing function to use for animation.
-   * @param {Function} [onFinish] - Callback to execute once the animation completes.
+   * @param {Function} [options.easingFn=Linear.InOut] - Easing function to use for animation.
+   * @param {Function} [options.onFinish] - Callback to execute once the animation completes.
    * The target value is passed as a parameter.
-   * @param {Function=} onProgress - Callback to execute each time the animation
+   * @param {Function=} options.onProgress - Callback to execute each time the animation
    * property is updated during the animation. The property's value at the time of
    * the update is passed as a parameter.
-   * @param {Function=} onCancel - Callback to execute if the user cancels the
+   * @param {Function=} options.onCancel - Callback to execute if the user cancels the
    * animation before completion. The animation property's value at the time of
    * cancel is passed as a parameter.
-   * @param {Function=} onError - Callback to execute if the animation stops
+   * @param {Function=} options.onError - Callback to execute if the animation stops
    * because an error is encountered. The error message is passed as a parameter.
    *
    * @returns {Deferred} Resolves with the property's value once it reaches the
@@ -211,3 +216,5 @@ export default class AnimationUtils {
     return new Deferred(onUpdate, onFinish, onError, onCancel);
   }
 }
+
+export default AnimationUtils;

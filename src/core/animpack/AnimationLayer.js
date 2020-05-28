@@ -6,9 +6,30 @@ import Deferred from '../Deferred';
 import Utils from '../Utils';
 import FreeBlendState from './state/FreeBlendState';
 
+/**
+ * Enum for types of {@link AnimationLayer} blending.
+ *
+ * @readonly
+ * @enum {string}
+ */
 export const LayerBlendModes = {Override: 'Override', Additive: 'Additive'};
+
+/**
+ * The default blending mode {@link AnimationLayer}.
+ *
+ * @readonly
+ * @type {string}
+ */
 export const DefaultLayerBlendMode = 'Override';
 
+/**
+ * Checks if a given blendMode is present in the values of {@link LayerBlendModes}.
+ * If it is, return the original value, otherwise return {@link DefaultLayerBlendMode}.
+ *
+ * @param {string} blendMode - The name of the type of blending.
+ *
+ * @returns {(string|DefaultLayerBlendMode)}
+ */
 export function validateBlendMode(blendMode) {
   if (Array.from(Object.values(LayerBlendModes)).includes(blendMode)) {
     return blendMode;
@@ -23,12 +44,12 @@ export function validateBlendMode(blendMode) {
  */
 class AnimationLayer {
   /**
-   * @private
+   * @constructor
    *
    * @param {Object=} options -  Options for the animation layer.
    * @param {string} options.name - Name of the layer. Names must be unique to the
    * animation feature that contains the layer.
-   * @param {LayerBlendModes} [blendMode=LayerBlendModes[DefaultLayerBlendMode]] -
+   * @param {LayerBlendModes} [blendMode=DefaultLayerBlendMode] -
    * Type of blending to use for all states controlled by the layer.
    * @param {number} [weight=1] - The amount of influence the layer's current
    * animation has over the result for the host.
@@ -63,6 +84,9 @@ class AnimationLayer {
 
   /**
    * Gets whether or not the layer is updating states and weights.
+   *
+   * @readonly
+   * @type {boolean}
    */
   get paused() {
     return this._paused;
@@ -70,6 +94,9 @@ class AnimationLayer {
 
   /**
    * Gets the type of blending used for states controlled by the layer.
+   *
+   * @readonly
+   * @type {string}
    */
   get blendMode() {
     return this._blendMode;
@@ -78,6 +105,8 @@ class AnimationLayer {
   /**
    * Gets and sets the default number of seconds it takes to transition to a new
    * animation.
+   *
+   * @type {number}
    */
   get transitionTime() {
     return this._transitionTime;
@@ -98,6 +127,8 @@ class AnimationLayer {
   /**
    * Gets and sets the default easing function to use when transitioning and
    * setting weights.
+   *
+   * @type {Function}
    */
   get easingFn() {
     return this._easingFn;
@@ -110,6 +141,8 @@ class AnimationLayer {
   /**
    * Gets and sets the amount of influence the layer's current animation has over
    * the result for the host.
+   *
+   * @type {number}
    */
   set weight(weight) {
     this._weight = AnimationUtils.clamp(weight, 0, 1);
@@ -121,6 +154,9 @@ class AnimationLayer {
 
   /**
    * Gets whether or not the layer's weight value is currently being animated.
+   *
+   * @readonly
+   * @type {boolean}
    */
   get weightPending() {
     return this._promises.weight && this._promises.weight.pending;
@@ -128,6 +164,9 @@ class AnimationLayer {
 
   /**
    * Gets the state the layer is currently in control of.
+   *
+   * @readonly
+   * @type {AbstractState}
    */
   get currentState() {
     return this._currentState;
@@ -135,6 +174,9 @@ class AnimationLayer {
 
   /**
    * Gets the name of the state the layer is currently in control of.
+   *
+   * @readonly
+   * @type {string}
    */
   get currentAnimation() {
     if (this._currentState) {
@@ -146,6 +188,9 @@ class AnimationLayer {
 
   /**
    * Gets an array of the names of all states the layer controls.
+   *
+   * @readonly
+   * @type {Array.<string>}
    */
   get animations() {
     return [...this._states.keys()];
@@ -153,6 +198,9 @@ class AnimationLayer {
 
   /**
    * Gets whether or not the layer is currently transitioning to a new animation.
+   *
+   * @readonly
+   * @type {boolean}
    */
   get isTransitioning() {
     return this._currentState === this._transitionState;
@@ -253,8 +301,6 @@ class AnimationLayer {
   }
 
   /**
-   * @private
-   *
    * Multiplies the user weight by a factor to determine the internal weight.
    *
    * @param {number} factor - 0-1 multiplier to apply to the user weight.
@@ -458,11 +504,11 @@ class AnimationLayer {
   }
 
   /**
-   * @private
-   *
    * Update the layer's current state to a new value. If transitionTime is defined
    * and greater than zero, perform a smooth blend between any states that currently
    * have non-zero weight values and the new state.
+   *
+   * @private
    *
    * @param {(string|null)} name - Name of the state to transition to.
    * @param {string} playMethod - Name of the operation being prepared for, to be
@@ -636,8 +682,6 @@ class AnimationLayer {
   }
 
   /**
-   * @private
-   *
    * Update any weight interpolators and the current animation.
    *
    * @param {number} deltaTime - Time in milliseconds since the last update.

@@ -9,8 +9,18 @@ import AnimationFeatureDependentInterface from 'core/animpack/AnimationFeatureDe
  * Class factory interface for that keeps track of layers and animations on a host.
  * Tracked assets are marked as inactive until layers and animations with matching
  * names are detected as present on the host.
+ *
+ * @interface
+ * @extends AnimationFeatureDependentInterface
+ *
+ * @property {Object} DEFAULT_LAYER_OPTIONS - Default options to use when executing
+ * {@link AnimationLayer} methods.
+ * @property {number} [DEFAULT_LAYER_OPTIONS.blendTime=0.5] - Default time in seconds
+ * to use when executing {@link AnimationLayer.setBlendWeight}.
+ * @property {Object} [DEFAULT_LAYER_OPTIONS.animations={}] - Maps animation names
+ * to default options objects to use for managed animations.
  */
-export default class ManagedAnimationLayerInterface extends AnimationFeatureDependentInterface {
+class ManagedAnimationLayerInterface extends AnimationFeatureDependentInterface {
   /**
    * Start tracking keeping track of whether a layer with the given name is present
    * on the host.
@@ -70,6 +80,14 @@ export default class ManagedAnimationLayerInterface extends AnimationFeatureDepe
    */
   disable(seconds, easingFn) {}
 
+  /**
+   * Creates a class that implements {@link ManagedAnimationLayerInterface}
+   * and extends a specified base class.
+   *
+   * @param {Class} BaseClass - The class to extend.
+   *
+   * @return {Class} A class that extends `BaseClass` and implements {@link ManagedAnimationLayerInterface}.
+   */
   static Mixin(BaseClass) {
     const ParentClass = AnimationFeatureDependentInterface.Mixin(BaseClass);
     const ManagedAnimationLayerMixin = class extends ParentClass {
@@ -290,3 +308,5 @@ Object.defineProperties(ManagedAnimationLayerInterface, {
     writable: false,
   },
 });
+
+export default ManagedAnimationLayerInterface;

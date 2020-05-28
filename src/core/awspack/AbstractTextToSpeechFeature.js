@@ -5,6 +5,18 @@ import AnimationUtils from 'core/animpack/AnimationUtils';
 import Deferred from 'core/Deferred';
 import Speech from './AbstractSpeech';
 
+/**
+ * The Amazon Polly service object.
+ * @external Polly
+ * @see https://docs.aws.amazon.com/AWSJavaScriptSDK/latest/AWS/Polly.html
+ */
+
+/**
+ * The presigner object that can be used to generate presigned urls for the Polly service.
+ * @external Presigner
+ * @see https://docs.aws.amazon.com/AWSJavaScriptSDK/latest/AWS/Polly/Presigner.html
+ */
+
 // Available options for Polly
 const engines = ['standard', 'neural'];
 const audioFormats = ['mp3', 'ogg_vorbis', 'pcm'];
@@ -31,17 +43,98 @@ let awsVersion;
 /**
  * Base class for turning text input into playable audio. There should be one instance
  * per speaker, each instance can play only one piece of text at a time.
+ *
+ * @extends AbstractHostFeature
+ * @abstract
+ *
+ * @property {(number|undefined)} AWS_VERSION - Gets the version of AWS SDK being
+ * used. Will be undefined until [initializeService]{@link AbstractTextToSpeechFeature.initializeService}
+ * has been successfully executed.
+ * @property {string} [POLLY_MIN_NEURAL_VERSION='2.503'] - Gets the minimum version
+ * of the AWS SDK that is necessary to use neural voices with AWS Polly.
+ * @property {Object} POLLY_DEFAULTS - Default values to use with calls to {@link external:Polly}.
+ * @property {string} [POLLY_DEFAULTS.Engine='standard']
+ * @property {Array.<string>} [POLLY_DEFAULTS.LexiconNames=[]]
+ * @property {string} [POLLY_DEFAULTS.OutputFormat='mp3']
+ * @property {string} [POLLY_DEFAULTS.SampleRate='22050']
+ * @property {string} [POLLY_DEFAULTS.Text='']
+ * @property {string} [POLLY_DEFAULTS.TextType='ssml']
+ * @property {string} [POLLY_DEFAULTS.VoiceId='Amy']
+ * @property {string} [POLLY_DEFAULTS.LanguageCode='en-GB']
+ * @property {string} [POLLY_DEFAULTS.LanguageName='British English']
+ * @property {Array.<string>} [POLLY_VOICES=[]] - An array of voices available in
+ * Polly. Will be empty until [initializeService]{@link AbstractTextToSpeechFeature.initializeService}
+ * has been successfully executed. See [Polly Documentation]{@link https://docs.aws.amazon.com/polly/latest/dg/voicelist.html}
+ * for a full list of available voices.
+ * @property {Object} [POLLY_LANGUAGES={}] - An object that maps language names
+ * to language codes that are available in Polly. Will be empty until
+ * [initializeService]{@link AbstractTextToSpeechFeature.initializeService}
+ * has been successfully executed. See [Polly Documentation]{@link https://docs.aws.amazon.com/polly/latest/dg/SupportedLanguage.html}
+ * for a full list of available languages and corresponding codes.
+ * @property {Object} [POLLY_LANGUAGE_CODES={}] - An object that maps language codes
+ * to language names that are available in Polly. Will be empty until
+ * [initializeService]{@link AbstractTextToSpeechFeature.initializeService}
+ * has been successfully executed. See [Polly Documentation]{@link https://docs.aws.amazon.com/polly/latest/dg/SupportedLanguage.html}
+ * for a full list of available languages and corresponding codes.
+ * @property {Object} EVENTS - Built-in messages that the feature emits. When the
+ * feature is added to a {@link core/HostObject}, event names will be prefixed by the
+ * name of the feature class + '.'.
+ * @property {string} [EVENTS.ready=onReadyEvent] - Message that is emitted after
+ * [initializeService]{@link AbstractTextToSpeechFeature.initializeService} has been
+ * successfully executed.
+ * @property {string} [EVENTS.play=onPlayEvent] - Message that is emitted after
+ * each call to [play]{@link AbstractTextToSpeechFeature#play}. The speech that was played
+ * is supplied as an argument to listener functions.
+ * @property {string} [EVENTS.pause=onPauseEvent] - Message that is emitted after
+ * each call to [pause]{@link AbstractTextToSpeechFeature#pause}. The speech that was paused
+ * is supplied as an argument to listener functions.
+ * @property {string} [EVENTS.resume=onResumeEvent] - Message that is emitted after
+ * each call to [resume]{@link AbstractTextToSpeechFeature#resume}. The speech that was
+ * resumed is supplied as an argument to listener functions.
+ * @property {string} [EVENTS.interrupt=onInterruptEvent] - Message that is emitted
+ * if there is a current speech in progress and [play]{@link AbstractTextToSpeechFeature#play}
+ * or [resume]{@link AbstractTextToSpeechFeature#resume} are executed for a new speech.
+ * The speech that was interrupted is supplied as an argument to listener functions.
+ * @property {string} [EVENTS.stop=onStopEvent] - Message that is emitted after
+ * each call to [stop]{@link AbstractTextToSpeechFeature#stop} and when a speech reaches
+ * the end of playback. The speech that was stopped is supplied as an argument
+ * to listener functions.
+ * @property {string} [EVENTS.sentence=onSentenceEvent] - Message that is emitted
+ * each time a sentence speechmark is encountered whose timestamp matches up with
+ * the speech audio's current time. The sentence speechmark object is supplied as
+ * an argument to listener functions.
+ * @property {string} [EVENTS.word=onWordEvent] - Message that is emitted
+ * each time a word speechmark is encountered whose timestamp matches up with
+ * the speech audio's current time. The word speechmark object is supplied as
+ * an argument to listener functions.
+ * @property {string} [EVENTS.viseme=onVisemeEvent] - Message that is emitted
+ * each time a viseme speechmark is encountered whose timestamp matches up with
+ * the speech audio's current time. The viseme speechmark object is supplied as
+ * an argument to listener functions.
+ * @property {string} [EVENTS.ssml=onSsmlEvent] - Message that is emitted
+ * each time a ssml speechmark is encountered whose timestamp matches up with
+ * the speech audio's current time. The ssml speechmark object is supplied as
+ * an argument to listener functions.
+ * @property {Object} SERVICES - AWS services that are necessary for the feature
+ * to function.
+ * @property {external:Polly} SERVICES.polly - The Polly service that is used
+ * to synthesize speechmarks. Will be undefined until [initializeService]{@link AbstractTextToSpeechFeature.initializeService}
+ * has been successfully executed
+ * @property {external:Presigner} SERVICES.presigner - The Polly Presigner
+ * object that is used to synthesize speech audio. Will be undefined until
+ * [initializeService]{@link AbstractTextToSpeechFeature.initializeService}
+ * has been successfully executed.
  */
-export default class AbstractTextToSpeechFeature extends AbstractHostFeature {
+class AbstractTextToSpeechFeature extends AbstractHostFeature {
   /**
-   * @private
+   * @constructor
    *
-   * @param {HostObject} host - Host object managing the feature.
+   * @param {core/HostObject} host - Host object managing the feature.
    * @param {Object=} options - Options that will be sent to Polly for each speech.
    * @param {string=} options.voice - The name of the Polly voice to use for all speech.
    * @param {string=} options.engine - The name of the Polly engine to use for all speech.
    * @param {string=} options.language - The name of the language to use for all speech.
-   * @param {audioFormat} [options.audioFormat=mp3] - The format to use for generated
+   * @param {audioFormat} [options.audioFormat='mp3'] - The format to use for generated
    * audio for all speeches.
    * @param {string=} options.sampleRate - The sample rate for audio files for all
    * speeches.
@@ -50,6 +143,8 @@ export default class AbstractTextToSpeechFeature extends AbstractHostFeature {
    * @param {number} [options.minEndMarkDuration=.05] - The minimum amount of time
    * in seconds that the last speechmark of each type in a speech can have its
    * duration property set to.
+   * @param {number} [options.volume=1] - The default volume to play speech audio
+   * with.
    */
   constructor(
     host,
@@ -75,10 +170,12 @@ export default class AbstractTextToSpeechFeature extends AbstractHostFeature {
     this.minEndMarkDuration = Number.isNaN(Number(options.minEndMarkDuration))
       ? 0
       : Number(options.minEndMarkDuration);
-    this.volume = Number.isNaN(Number(options.volume)) ? 1 : Number(options.volume);
+    this.volume = Number.isNaN(Number(options.volume))
+      ? 1
+      : Number(options.volume);
     this._promises = {
-      volume: Deferred.resolve()
-    }
+      volume: Deferred.resolve(),
+    };
     this._volumePaused = false;
 
     // Set default options for each speech
@@ -101,8 +198,8 @@ export default class AbstractTextToSpeechFeature extends AbstractHostFeature {
   /**
    * Store Polly, Presigner and AWS SDK Version for use across all instances.
    *
-   * @param {AWS.Polly} polly - Polly instance to use to generate speechmarks.
-   * @param {AWS.Polly.Presigner} presigner - Presigner instance to use to generate
+   * @param {external:Polly} polly - Polly instance to use to generate speechmarks.
+   * @param {external:Presigner} presigner - Presigner instance to use to generate
    * audio URLs.
    * @param {string} version - Version of the AWS SDK to use to validate voice options.
    */
@@ -190,7 +287,11 @@ export default class AbstractTextToSpeechFeature extends AbstractHostFeature {
 
   /**
    * Indicates whether or not the class is capable of generating speech audio. Polly,
-   * Presigner and AWS SDK version number must have been defined using intializeService.
+   * Presigner and AWS SDK version number must have been defined using
+   * [initializeService]{@link AbstractTextToSpeechFeature.initializeService}.
+   *
+   * @readonly
+   * @type {boolean}
    */
   static get isReady() {
     return this._isReady;
@@ -198,6 +299,9 @@ export default class AbstractTextToSpeechFeature extends AbstractHostFeature {
 
   /**
    * Gets the text of the currently playing speech.
+   *
+   * @readonly
+   * @type {string}
    */
   get currentSpeech() {
     if (this._currentSpeech) {
@@ -209,6 +313,8 @@ export default class AbstractTextToSpeechFeature extends AbstractHostFeature {
 
   /**
    * Gets and sets the number of seconds to offset speechmark emission.
+   *
+   * @type {number}
    */
   get speechmarkOffset() {
     return this._speechmarkOffset;
@@ -225,6 +331,8 @@ export default class AbstractTextToSpeechFeature extends AbstractHostFeature {
   /**
    * Gets and sets the The minimum amount of time in seconds that the last
    * speechmark of each type in a speech can have its duration property set to.
+   *
+   * @type number
    */
   get minEndMarkDuration() {
     return this._minEndMarkDuration / 1000;
@@ -235,10 +343,10 @@ export default class AbstractTextToSpeechFeature extends AbstractHostFeature {
   }
 
   /**
-   * @private
-   *
    * Checks if a given engine type is compatible with the AWS SDK version. If it
    * is, return the original value. Otherwise return a default.
+   *
+   * @private
    *
    * @param {string} engine - The type of Polly voice engine to validate.
    *
@@ -257,10 +365,10 @@ export default class AbstractTextToSpeechFeature extends AbstractHostFeature {
   }
 
   /**
-   * @private
-   *
    * Checks if a given audio format type is compatible with Polly. If it is, return
    * the original value. Otherwise return a default.
+   *
+   * @private
    *
    * @param {string} engine - The type of Polly voice engine to validate.
    *
@@ -275,10 +383,10 @@ export default class AbstractTextToSpeechFeature extends AbstractHostFeature {
   }
 
   /**
-   * @private
-   *
    * Checks if a given audio sampling rate is compatible with the current audio
    * format. If it is, return the original value. Otherwise return a default.
+   *
+   * @private
    *
    * @param {string} engine - The type of Polly voice engine to validate.
    *
@@ -297,10 +405,10 @@ export default class AbstractTextToSpeechFeature extends AbstractHostFeature {
   }
 
   /**
-   * @private
-   *
    * Checks if a given Polly voice id is compatible with the current Polly engine.
    * If it is, return the original value. Otherwise return a default.
+   *
+   * @private
    *
    * @param {string} engine - The type of Polly voice engine to validate.
    *
@@ -318,10 +426,10 @@ export default class AbstractTextToSpeechFeature extends AbstractHostFeature {
   }
 
   /**
-   * @private
-   *
    * Checks if a given Polly language is compatible with the current Polly voice.
    * If it is, return the original value. Otherwise return a default.
+   *
+   * @private
    *
    * @param {string} engine - The type of Polly voice engine to validate.
    *
@@ -346,10 +454,10 @@ export default class AbstractTextToSpeechFeature extends AbstractHostFeature {
   }
 
   /**
-   * @private
-   *
    * Validate the current Polly options to make sure they are compatible with each
    * other.
+   *
+   * @private
    */
   _validate() {
     // Validate speech parameters
@@ -362,9 +470,9 @@ export default class AbstractTextToSpeechFeature extends AbstractHostFeature {
   }
 
   /**
-   * @private
-   *
    * Return an object containing parameters compatible with Polly.synthesizeSpeech.
+   *
+   * @private
    *
    * @returns {Object}
    */
@@ -385,11 +493,11 @@ export default class AbstractTextToSpeechFeature extends AbstractHostFeature {
   }
 
   /**
-   * @private
-   *
    * Update Polly parameters with options from a given config. All stored speeches
    * will be updated to use the new parameters, unless the speech text is contained
    * in the 'skipSpeeches' parameter.
+   *
+   * @private
    *
    * @param {Object} config - Polly parameter options to overwrite.
    * @param {Array.<string>} skipSpeeches - Text of any speeches that should not
@@ -456,17 +564,17 @@ export default class AbstractTextToSpeechFeature extends AbstractHostFeature {
   }
 
   /**
-   * @private
-   *
    * Update an existing speech, or add a new speech with new Polly parameters with
    * options from a given config.
+   *
+   * @private
    *
    * @param {string} text - The text of the speech to update.
    * @param {Object} config - Polly parameter options to update.
    * @param {boolean} [force=false] - Whether to force the speech to be updated
    * if no parameters have changes.
    *
-   * @returns {Speech}
+   * @returns {AbstractSpeech}
    */
   _updateSpeech(text, config, force = false) {
     const speech = this._speechCache[text] || {};
@@ -506,25 +614,25 @@ export default class AbstractTextToSpeechFeature extends AbstractHostFeature {
   }
 
   /**
-   * @private
-   *
    * Create a new Speech object for the speaker.
+   *
+   * @private
    *
    * @param {TextToSpeech} speaker - The TextToSpeech instance that will own the speech.
    * @param {string} text - Text of the speech.
    * @param {Object} speechmarks - Speechmarks for the speech.
    * @param {Object} audioConfig - Audio for the speech.
    *
-   * @returns {Speech}
+   * @returns {AbstractSpeech}
    */
   _createSpeech(text, speechmarks, audioConfig) {
     return new Speech(this, text, speechmarks, audioConfig);
   }
 
   /**
-   * @private
-   *
    * Generate a version of given text that is enclosed by Polly ssml speak tags.
+   *
+   * @private
    *
    * @param {string} text - The text to update.
    *
@@ -543,9 +651,9 @@ export default class AbstractTextToSpeechFeature extends AbstractHostFeature {
   }
 
   /**
-   * @private
-   *
    * Create presigned URL of speech audio for the given speech text.
+   *
+   * @private
    *
    * @param {Object} params - Parameters object compatible with Polly.synthesizeSpeech.
    *
@@ -567,9 +675,9 @@ export default class AbstractTextToSpeechFeature extends AbstractHostFeature {
   }
 
   /**
-   * @private
-   *
    * Retrieves and parses speechmarks for the given speech text.
+   *
+   * @private
    *
    * @param {Object} params - Parameters object compatible with Polly.synthesizeSpeech.
    *
@@ -663,9 +771,9 @@ export default class AbstractTextToSpeechFeature extends AbstractHostFeature {
   }
 
   /**
-   * @private
-   *
    * Returns a Speech object that has the given text.
+   *
+   * @private
    *
    * @param {string} text - The text content of the Speech.
    * @param {Object=} config - Options to update the Speech with.
@@ -693,24 +801,83 @@ export default class AbstractTextToSpeechFeature extends AbstractHostFeature {
   }
 
   /**
-   * Add a namespace to the host to contain anything from the feature that users
-   * of the host need access to.
+   * Adds a namespace to the host with the name of the feature to contain properties
+   * and methods from the feature that users of the host need access to.
+   *
+   * @see TextToSpeechFeature
    */
   installApi() {
+    /**
+     * @inner
+     * @namespace TextToSpeechFeature
+     */
     const api = super.installApi();
 
     Object.assign(api, {
+      /**
+       * @memberof TextToSpeechFeature
+       * @instance
+       * @method
+       * @see AbstractTextToSpeechFeature#play
+       */
       play: this.play.bind(this),
+      /**
+       * @memberof TextToSpeechFeature
+       * @instance
+       * @method
+       * @see AbstractTextToSpeechFeature#pause
+       */
       pause: this.pause.bind(this),
+      /**
+       * @memberof TextToSpeechFeature
+       * @instance
+       * @method
+       * @see AbstractTextToSpeechFeature#resume
+       */
       resume: this.resume.bind(this),
+      /**
+       * @memberof TextToSpeechFeature
+       * @instance
+       * @method
+       * @see AbstractTextToSpeechFeature#stop
+       */
       stop: this.stop.bind(this),
+      /**
+       * @memberof TextToSpeechFeature
+       * @instance
+       * @method
+       * @see AbstractTextToSpeechFeature#getVolume
+       */
       getVolume: this.getVolume.bind(this),
+      /**
+       * @memberof TextToSpeechFeature
+       * @instance
+       * @method
+       * @see AbstractTextToSpeechFeature#setVolume
+       */
       setVolume: this.setVolume.bind(this),
+      /**
+       * @memberof TextToSpeechFeature
+       * @instance
+       * @method
+       * @see AbstractTextToSpeechFeature#pauseVolume
+       */
       pauseVolume: this.pauseVolume.bind(this),
-      resumeVolume: this.resumeVolume.bind(this)
+      /**
+       * @memberof TextToSpeechFeature
+       * @instance
+       * @method
+       * @see AbstractTextToSpeechFeature#resumeVolume
+       */
+      resumeVolume: this.resumeVolume.bind(this),
     });
 
     Object.defineProperties(api, {
+      /**
+       * @memberof TextToSpeechFeature
+       * @instance
+       * @see AbstractTextToSpeechFeature#speechmarkOffset
+       */
       speechmarkOffset: {
         get: () => this.speechmarkOffset,
         set: offset => {
@@ -723,21 +890,23 @@ export default class AbstractTextToSpeechFeature extends AbstractHostFeature {
   }
 
   /**
-   * Sets the volume used for all audio clips played by the speaker.
+   * Gets and sets the volume used for all audio clips played by the speaker.
+   *
+   * @type {number}
    */
   set volume(volume) {
     this._volume = AnimationUtils.clamp(volume);
   }
 
-  /**
-   * Gets the volume used for all audio clips played by the speaker.
-   */
   get volume() {
     return this._volume;
   }
 
   /**
    * Gets whether or not the speaker's volume value is currently being tweened.
+   *
+   * @readonly
+   * @type {boolean}
    */
   get volumePending() {
     return this._promises.volume && this._promises.volume.pending;
@@ -763,7 +932,7 @@ export default class AbstractTextToSpeechFeature extends AbstractHostFeature {
    * @returns {Deferred}
    */
   setVolume(volume, seconds = 0, easingFn) {
-    if(this.volumePending) {
+    if (this.volumePending) {
       this._promises.volume.cancel();
     }
 
@@ -806,7 +975,7 @@ export default class AbstractTextToSpeechFeature extends AbstractHostFeature {
    * @param {number} deltaTime - Time since the last update.
    */
   update(deltaTime) {
-    if(!this._volumePaused) {
+    if (!this._volumePaused) {
       this._promises.volume.execute(deltaTime);
     }
 
@@ -818,12 +987,12 @@ export default class AbstractTextToSpeechFeature extends AbstractHostFeature {
   }
 
   /**
-   * @private
-   *
    * Set the current speech to a new asset and update the speech's speechmark
    * offset value to match that of the feature.
    *
-   * @param {typeof AbstractSpeech} speech - Speech to set as current.
+   * @private
+   *
+   * @param {AbstractSpeech} speech - Speech to set as current.
    */
   _setCurrentSpeech(speech) {
     speech.speechmarkOffset = this._speechmarkOffset;
@@ -877,6 +1046,12 @@ export default class AbstractTextToSpeechFeature extends AbstractHostFeature {
   /**
    * Stop any speeches currently playing and resume a new speech from the current
    * time.
+   *
+   * @param {string=} text - The text of the new speech to play. If undefined and
+   * there is a current speech that is paused, the current speech will be resumed.
+   * @param {Object=} config - Optional parameters for the speech.
+   *
+   * @returns {Deferred}
    */
   resume(text, config) {
     // If no text is provided, try to use the current speech
@@ -996,3 +1171,5 @@ Object.defineProperties(AbstractTextToSpeechFeature, {
     },
   },
 });
+
+export default AbstractTextToSpeechFeature;

@@ -2,7 +2,22 @@
 // SPDX-License-Identifier: MIT-0
 import CoreSpeech from 'core/awspack/Speech';
 
-export default class Speech extends CoreSpeech {
+/**
+ * @extends core/Speech
+ * @alias Babylon.js/Speech
+ */
+class Speech extends CoreSpeech {
+  /**
+   * @constructor
+   *
+   * @param {Babylon.js/TextToSpeechFeature} speaker - The owner of the Speech
+   * that will emit speechmark messages.
+   * @param {string} text - The text of the speech.
+   * @param {Array.<Object>} [speechmarks=[]] - An array of speechmark objects representing
+   * the text and timing of the speech.
+   * @param {Object} audioConfig - Object containing audio and url.
+   * @param {external:Audio} audioConfig.audio - Playable audio object.
+   */
   constructor(...args) {
     super(...args);
 
@@ -19,16 +34,10 @@ export default class Speech extends CoreSpeech {
     }
   }
 
-  /**
-   * Gets the audio volume for the speech.
-   */
   get volume() {
     return this._audio.getVolume();
   }
 
-  /**
-   * Sets the audio volume for the speech.
-   */
   set volume(volume) {
     this._audio.setVolume(volume);
   }
@@ -45,3 +54,5 @@ export default class Speech extends CoreSpeech {
     super.stop();
   }
 }
+
+export default Speech;

@@ -4,16 +4,20 @@ import Deferred from 'core/Deferred';
 import AnimationUtils from '../AnimationUtils';
 
 /**
- * Base class for a state in our animation system
+ * Base class for a state in our animation system.
+ *
+ * @abstract
  */
 class AbstractState {
   /**
-   * @private
+   * @constructor
    *
    * @param {Object=} options - Options for the animation state.
    * @param {string=} options.name - Name for the animation state. Names must be
-   * unique for the layer the state is applied to.
-   * @param {weight} [weight=0] - The 0-1 amount of influence the state will have.
+   * unique for the container the state is applied to and should be validated at
+   * the container level. If no name is given it will default to the constructor
+   * name.
+   * @param {weight} [options.weight=0] - The 0-1 amount of influence the state will have.
    */
   constructor(options = {}) {
     this.name =
@@ -40,6 +44,8 @@ class AbstractState {
 
   /**
    * Gets and sets the user defined weight.
+   *
+   * @type {number}
    */
   get weight() {
     return this._weight;
@@ -51,6 +57,9 @@ class AbstractState {
 
   /**
    * Gets whether or not the weight is currently being animated.
+   *
+   * @readonly
+   * @type {boolean}
    */
   get weightPending() {
     return this._promises.weight && this._promises.weight.pending;
@@ -82,14 +91,15 @@ class AbstractState {
 
   /**
    * Gets the internal weight.
+   *
+   * @readonly
+   * @type {number}
    */
   get internalWeight() {
     return this._internalWeight;
   }
 
   /**
-   * @private
-   *
    * Multiplies the user weight by a factor to determine the internal weight.
    *
    * @param {number} factor - 0-1 multiplier to apply to the user weight.
@@ -99,8 +109,6 @@ class AbstractState {
   }
 
   /**
-   * @private
-   *
    * Update any values that need to be evaluated every frame.
    *
    * @param {number} deltaTime - Time in milliseconds since the last update.

@@ -5,13 +5,23 @@ import CoreAnimationFeature, {
 } from 'core/animpack/AnimationFeature';
 import SingleState from './state/SingleState';
 
+/**
+ * Threejs AnimationMixer object
+ * @external "THREE.AnimationMixer"
+ * @see https://threejs.org/docs/#api/en/animation/AnimationMixer
+ */
+
 export {AnimationTypes};
 
-export default class AnimationFeature extends CoreAnimationFeature {
+/**
+ * @extends core/AnimationFeature
+ * @alias three.js/AnimationFeature
+ */
+class AnimationFeature extends CoreAnimationFeature {
   /**
-   * @private
+   * @constructor
    *
-   * @param {HostObject} host - Host object that owns the feature.
+   * @param {three.js/HostObject} host - Host object that owns the feature.
    */
   constructor(host) {
     super(host);
@@ -31,7 +41,10 @@ export default class AnimationFeature extends CoreAnimationFeature {
   }
 
   /**
-   * Gets the THREE.AnimationMixer for the host
+   * Gets the THREE.AnimationMixer for the host.
+   *
+   * @readonly
+   * @type {external:"THREE.AnimationMixer"}
    */
   get mixer() {
     return this._mixer;
@@ -52,3 +65,5 @@ export default class AnimationFeature extends CoreAnimationFeature {
     super.discard();
   }
 }
+
+export default AnimationFeature;

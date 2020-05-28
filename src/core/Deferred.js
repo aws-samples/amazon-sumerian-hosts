@@ -1,16 +1,25 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: MIT-0
+
+/**
+ * The built-in class for asynchronous Promises.
+ * @external Promise
+ * @see https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise
+ */
+
 /**
  * A Promise object that can be resolved, rejected or canceled at any time by the
  * user.
+ *
+ * @extends external:Promise
  */
-export default class Deferred extends Promise {
+class Deferred extends Promise {
   /**
-   * @private
+   * @constructor
    *
-   * @param {Function=} executable - The function to be executed by the constructor,
-   * during the process of constructing the promise. The signature of this is expected
-   * to be: executable(  resolutionFunc, rejectionFunc ).
+   * @param {Function} [executable=() => {}] - The function to be executed by the
+   * constructor, during the process of constructing the promise. The signature
+   * of this is expected to be: executable(  resolutionFunc, rejectionFunc ).
    * @param {Function=} onResolve - Optional function to execute once the promise
    * is resolved.
    * @param {Function=} onReject - Optional function to execute once the promise
@@ -109,6 +118,8 @@ export default class Deferred extends Promise {
 
   /**
    * Gets the resolved state of the promise.
+   *
+   * @readonly
    */
   get resolved() {
     return this._status.resolved;
@@ -116,6 +127,8 @@ export default class Deferred extends Promise {
 
   /**
    * Gets the rejected state of the promise.
+   *
+   * @readonly
    */
   get rejected() {
     return this._status.rejected;
@@ -123,6 +136,8 @@ export default class Deferred extends Promise {
 
   /**
    * Gets the canceled state of the promise.
+   *
+   * @readonly
    */
   get canceled() {
     return this._status.canceled;
@@ -130,6 +145,8 @@ export default class Deferred extends Promise {
 
   /**
    * Gets the pending state of the promise.
+   *
+   * @readonly
    */
   get pending() {
     return this._status.pending;
@@ -139,6 +156,8 @@ export default class Deferred extends Promise {
    * Force the promise to resolve.
    *
    * @param {any=} value - Value to pass to the resolver.
+   *
+   * @returns {any} - The return value of the resolver function.
    */
   resolve(value) {
     return this._resolve(value);
@@ -148,6 +167,8 @@ export default class Deferred extends Promise {
    * Force the promise to reject.
    *
    * @param {any=} value - Value to pass to the rejecter.
+   *
+   * @returns {any} - The return value of the rejecter function.
    */
   reject(value) {
     return this._reject(value);
@@ -156,7 +177,9 @@ export default class Deferred extends Promise {
   /**
    * Force the promise to resolve and set the canceled state to true.
    *
-   * @param {any=} value - Value to pass to the resolver.
+   * @param {any=} value - Value to pass to the canceller.
+   *
+   * @returns {any} - The return value of the canceller function.
    */
   cancel(value) {
     return this._cancel(value);
@@ -194,7 +217,7 @@ export default class Deferred extends Promise {
    * the array that are Deferred promises will be manually resolved, rejected or
    * canceled when calling resolve, reject or cancel on the return promise.
    *
-   * @param {Array.<(Deferred|Promise)>} promiseArray - Array of promise objects
+   * @param {Array.<(Deferred|external:Promise)>} promiseArray - Array of promise objects
    * to keep track of for resolution.
    * @param {Function=} onResolve - Optional function to execute once the promise
    * is resolved.
@@ -258,3 +281,5 @@ export default class Deferred extends Promise {
     );
   }
 }
+
+export default Deferred;

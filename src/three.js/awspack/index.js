@@ -3,4 +3,17 @@
 import TextToSpeechFeature from './TextToSpeechFeature';
 import Speech from './Speech';
 
-export {TextToSpeechFeature, Speech};
+/**
+ * @module three/awspack
+ */
+
+export default {
+  /**
+   * @see three.js/TextToSpeechFeature
+   */
+  TextToSpeechFeature,
+  /**
+   * @see three.js/Speech
+   */
+  Speech,
+};

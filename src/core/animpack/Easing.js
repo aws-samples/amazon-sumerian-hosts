@@ -2,9 +2,9 @@
 // SPDX-License-Identifier: MIT-0
 /**
  * @typedef {Object} EasingObject Object containing easing functions
- * @property {function(k:number):number} In Easing 'In' function
- * @property {function(k:number):number} Out Easing 'Out' function
- * @property {function(k:number):number} InOut Easing 'InOut' function
+ * @property {Function} In - Easing 'In' function. Should use the signature (k:number):number.
+ * @property {Function} Out - Easing 'Out' function. Should use the signature (k:number):number.
+ * @property {Function} InOut - Easing 'InOut' function. Should use the signature (k:number):number.
  */
 
 /**

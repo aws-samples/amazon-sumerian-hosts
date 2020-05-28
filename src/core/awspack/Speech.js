@@ -2,17 +2,27 @@
 // SPDX-License-Identifier: MIT-0
 import AbstractSpeech from './AbstractSpeech';
 
-export default class Speech extends AbstractSpeech {
+/**
+ * The built-in class for asynchronous Promises.
+ * @external Audio
+ * @see https://developer.mozilla.org/en-US/docs/Web/API/HTMLAudioElement/Audio
+ */
+
+/**
+ * @extends AbstractSpeech
+ * @alias core/Speech
+ */
+class Speech extends AbstractSpeech {
   /**
-   * @private
+   * @constructor
    *
    * @param {TextToSpeech} speaker - The owner of the Speech that will emit speechmark
    * messages.
    * @param {string} text - The text of the speech.
-   * @param {Array.<Object>} speechmarks - An array of speechmark objects representing
+   * @param {Array.<Object>} [speechmarks=[]] - An array of speechmark objects representing
    * the text and timing of the speech.
    * @param {Object} audioConfig - Object containing audio and url.
-   * @param {Audio} audioConfig.audio - Playable audio object.
+   * @param {external:Audio} audioConfig.audio - Playable audio object.
    */
   constructor(speaker, text, speechmarks = [], audioConfig) {
     super(speaker, text, speechmarks);
@@ -31,6 +41,9 @@ export default class Speech extends AbstractSpeech {
 
   /**
    * Gets the playable audio for the speech.
+   *
+   * @readonly
+   * @type {external:Audio}
    */
   get audio() {
     return this._audio;
@@ -38,6 +51,8 @@ export default class Speech extends AbstractSpeech {
 
   /**
    * Gets the audio volume for the speech.
+   *
+   * @type {number}
    */
   get volume() {
     return this._audio.volume;
@@ -50,8 +65,10 @@ export default class Speech extends AbstractSpeech {
     this._audio.volume = volume;
   }
 
-  /*
+  /**
    * Set the audio's current local time and play it.
+   *
+   * @private
    */
   _playAudio() {
     if (this._speechmarkOffset < 0) {
@@ -100,3 +117,5 @@ export default class Speech extends AbstractSpeech {
     super.stop();
   }
 }
+
+export default Speech;

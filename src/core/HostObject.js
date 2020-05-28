@@ -6,40 +6,59 @@ import AbstractHostFeature from './AbstractHostFeature';
 /**
  * Object that manages access to all Host features. Contains a reference to
  * engine-specific visuals if applicable.
+ *
+ * @extends core/Messenger
+ * @alias core/HostObject
+ *
+ * @property {Object} EVENTS - Built-in messages that the Messenger emits.
+ * @property {string} [EVENTS.update='onUpdate'] - Message that is emitted after
+ * each call to [update]{@link core/HostObject#update}.
+ * @property {string} [EVENTS.addFeature='onAddFeature'] - Message that is emitted
+ * after each call to [addFeature]{@link core/HostObject#addFeature}.
+ * @property {string} [EVENTS.removeFeature='onRemoveFeature'] - Message that is emitted
+ * after each call to [removeFeature]{@link core/HostObject#removeFeature}.
  */
-export default class HostObject extends Messenger {
+class HostObject extends Messenger {
   /**
-   * @private
+   * @constructor
    *
    * @param {Object=} options - Options for the host.
    * @param {Object=} options.owner - Optional engine-specific owner of the host.
    */
-  constructor(options = {}) {
+  constructor({owner = {}} = {}) {
     // If an owner is specified, use its id for messaging
-    const id = options.owner ? options.owner.id : undefined;
-    super(id);
+    super(owner.id);
 
-    this._owner = options.owner;
+    this._owner = owner;
     this._features = {};
     this._lastUpdate = this.now;
   }
 
   /**
    * Gets the engine owner object of the host.
+   *
+   * @readonly
+   * @type {Object}
    */
   get owner() {
     return this._owner;
   }
 
   /**
-   * Gets the current time
+   * Gets the current time in milliseconds.
+   *
+   * @readonly
+   * @type {number}
    */
   get now() {
     return Date.now();
   }
 
   /**
-   * Gets the amount of time since update was last called;
+   * Gets the amount of time in milliseconds since update was last called.
+   *
+   * @readonly
+   * @type {number}
    */
   get deltaTime() {
     return this.now - this._lastUpdate;
@@ -67,14 +86,14 @@ export default class HostObject extends Messenger {
    * Instantiate a new Host feature and store it. Features must inherit from
    * AbstractHostFeature.
    *
-   * @param {Function<AbstractHostFeature>} FeatureClass - Class that will
-   * instantiate the feature. Must inherit from AbstractHostFeature.
+   * @param {Class} FeatureClass - Class that will instantiate the feature. Must
+   * extend {@link AbstractHostFeature}.
    * @param {boolean} [force=false] - Whether or not to overwrite an existing
    * feature if one of this type already exists on the object.
    * @param  {...any} args - Additional arguments to pass to the FeatureClass
    * constructor. The HostObject will always be passed as the first argument.
    *
-   * @returns {boolean}
+   * @returns {boolean} - Whether or not a feature was successfully added.
    */
   addFeature(FeatureClass, force = false, ...args) {
     const inputType = typeof FeatureClass;
@@ -120,7 +139,7 @@ export default class HostObject extends Messenger {
    *
    * @param {string} typeName - Name of the type of feature to remove.
    *
-   * @returns {boolean}
+   * @returns {boolean} - Whether or not a feature was successfully removed.
    */
   removeFeature(typeName) {
     if (this._features[typeName] === undefined) {
@@ -168,3 +187,5 @@ Object.defineProperty(HostObject, 'EVENTS', {
   },
   writable: false,
 });
+
+export default HostObject;

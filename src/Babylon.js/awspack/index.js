@@ -3,4 +3,17 @@
 import TextToSpeechFeature from './TextToSpeechFeature';
 import Speech from './Speech';
 
-export {TextToSpeechFeature, Speech};
+/**
+ * @module babylon/awspack
+ */
+
+export default {
+  /**
+   * @see Babylon.js/TextToSpeechFeature
+   */
+  TextToSpeechFeature,
+  /**
+   * @see Babylon.js/Speech
+   */
+  Speech,
+};

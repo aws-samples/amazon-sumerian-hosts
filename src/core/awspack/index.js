@@ -3,4 +3,17 @@
 import TextToSpeechFeature from './TextToSpeechFeature';
 import Speech from './Speech';
 
-export {TextToSpeechFeature, Speech};
+/**
+ * @module core/awspack
+ */
+
+export default {
+  /**
+   * @see core/TextToSpeechFeature
+   */
+  TextToSpeechFeature,
+  /**
+   * @see core/Speech
+   */
+  Speech,
+};

@@ -2,19 +2,35 @@
 // SPDX-License-Identifier: MIT-0
 import CoreSpeech from 'core/awspack/Speech';
 
-export default class Speech extends CoreSpeech {
+/**
+ * Threejs Audio object
+ * @external "THREE.Audio"
+ * @see https://threejs.org/docs/#api/en/audio/Audio
+ */
+
+/**
+ * Threejs PositionalAudio object
+ * @external "THREE.PositionalAudio"
+ * @see https://threejs.org/docs/#api/en/audio/PositionalAudio
+ */
+
+/**
+ * @extends core/Speech
+ * @alias three.js/Speech
+ */
+class Speech extends CoreSpeech {
   /**
-   * @private
+   * @constructor
    *
-   * @param {TextToSpeech} speaker - The owner of the Speech that will emit speechmark
-   * messages.
+   * @param {three.js/TextToSpeechFeature} speaker - The owner of the Speech that
+   * will emit speechmark messages.
    * @param {string} text - The text of the speech.
    * @param {Array.<Object>} speechmarks - An array of speechmark objects representing
    * the text and timing of the speech.
    * @param {Object} audioConfig - Object containing audio and url.
-   * @param {Audio} audioConfig.audio - Playable audio object.
-   * @param {(THREE.Audio|THREE.PositionalAudio)} audioConfig.threeAudio - THREE
-   * audio object.
+   * @param {external:Audio} audioConfig.audio - Playable audio object.
+   * @param {(external:"THREE.Audio"|external:"THREE.PositionalAudio")} audioConfig.threeAudio -
+   * Three.js audio object.
    */
   constructor(textToSpeech, text, speechmarks = [], audioConfig) {
     super(textToSpeech, text, speechmarks, audioConfig);
@@ -23,6 +39,9 @@ export default class Speech extends CoreSpeech {
 
   /**
    * Gets the Three.js audio object for the speech.
+   *
+   * @readonly
+   * @type {(external:"THREE.Audio"|external:"THREE.PositionalAudio")}
    */
   get audio() {
     return this._threeAudio;
@@ -36,3 +55,5 @@ export default class Speech extends CoreSpeech {
     return super.play(currentTime, onFinish, onError, onInterrupt);
   }
 }
+
+export default Speech;

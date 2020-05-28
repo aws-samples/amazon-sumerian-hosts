@@ -5,6 +5,8 @@ import AbstractState from './AbstractState';
 
 /**
  * Class for smooth transitioning between states on an animation layer.
+ *
+ * @extends AbstractState
  */
 class TransitionState extends AbstractState {
   constructor(options = {}) {
@@ -48,7 +50,7 @@ class TransitionState extends AbstractState {
    * an animation layer gets updated to a new value and a transition time greater
    * that zero is specified.
    *
-   * @param {Array.<AbstractState>=} currentStates - States whose weight values
+   * @param {Array.<AbstractState>} [currentStates=[]] - States whose weight values
    * will be animated to 0.
    * @param {AbstractState=} targetState - State whose weight will be animated
    * to 1.
