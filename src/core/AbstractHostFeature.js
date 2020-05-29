@@ -1,0 +1,160 @@
+// Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+// SPDX-License-Identifier: MIT-0
+import Messenger from 'app/Messenger';
+
+/**
+ * Base class for all host features. Keeps a reference to the host object managing
+ * the feature.
+ */
+export default class AbstractHostFeature {
+  /**
+   * @private
+   *
+   * @param {HostObject} host - Host object managing the feature.
+   */
+  constructor(host) {
+    this._host = host;
+  }
+
+  /**
+   * Add a namespace to the host to contain anything from the feature that users
+   * of the host need access to.
+   */
+  installApi() {
+    const events = {};
+    const api = {EVENTS: events};
+
+    // Add the class name to event names
+    Object.entries(this.constructor.EVENTS).forEach(([name, value]) => {
+      events[name] = `${this.constructor.name}.${value}`;
+    });
+
+    this._host[this.constructor.name] = api;
+
+    return api;
+  }
+
+  /**
+   * Gets the host that manages the feature.
+   */
+  get host() {
+    return this._host;
+  }
+
+  /**
+   * Gets the engine owner object of the host.
+   */
+  get owner() {
+    return this._host.owner;
+  }
+
+  /**
+   * Listen to a feature message from the host object.
+   *
+   * @param {string} message - Message to listen for.
+   * @param {Function} callback - The callback to execute when the message is received.
+   */
+  listenTo(message, callback) {
+    this._host.listenTo(message, callback);
+  }
+
+  /**
+   * Stop listening to a message from the host object.
+   *
+   * @param {string} message - Message to stop listening for.
+   * @param {Function=} callback - Optional callback to remove. If none is defined,
+   * remove all callbacks for the message.
+   */
+  stopListening(message, callback) {
+    this._host.stopListening(message, callback);
+  }
+
+  /**
+   * Stop listening to all messages.
+   */
+  stopListeningToAll() {
+    this._host.stopListeningToAll();
+  }
+
+  /**
+   * Emit feature messages from the host. Feature messages will be prefixed with
+   * the class name of the feature.
+   *
+   * @param {string} message - The message to emit.
+   * @param {any=} value - Optional parameter to pass to listener callbacks.
+   */
+  emit(message, value) {
+    message = `${this.constructor.name}.${message}`;
+    this._host.emit(message, value);
+  }
+
+  /**
+   * Emit feature messages from the global messenger. Feature messages will be prefixed
+   * with the class name of the feature.
+   *
+   * @param {string} message - The message to emit.
+   * @param {any=} value - Optional parameter to pass to listener callbacks.
+   */
+  static emit(message, value) {
+    message = `${this.name}.${message}`;
+    Messenger.emit(message, value);
+  }
+
+  /**
+   * Executes each time the host is updated.
+   *
+   * @param {number} deltaTime - Amount of time since the last host update was
+   * called.
+   */
+  update(deltaTime) {
+    this.emit(this.constructor.EVENTS.update, deltaTime);
+  }
+
+  /**
+   * Clean up once the feature is no longer in use
+   */
+  discard() {
+    Object.keys(this._host[this.constructor.name]).forEach(name => {
+      delete this._host[this.constructor.name][name];
+    });
+
+    delete this._host[this.constructor.name];
+    delete this._host;
+  }
+
+  /**
+   * Applies a sequence of mixin class factory functions to this class and
+   * returns the result. Each function is expected to return a class that
+   * extends the class it was given. The functions are applied in the order
+   * that parameters are given, meaning that the first factory will
+   * extend this base class.
+   *
+   * @param {...Function} mixinClassFactories Class factory functions that will
+   * be applied.
+   *
+   * @return {typeof AbstractHostFeature} A class that is the result of applying the
+   * factory functions.
+   */
+  static mix(...mixinClassFactories) {
+    let ResultClass = this;
+
+    mixinClassFactories.forEach(mixinClassFactory => {
+      ResultClass = mixinClassFactory(ResultClass);
+    });
+
+    return ResultClass;
+  }
+}
+
+Object.defineProperties(AbstractHostFeature, {
+  EVENTS: {
+    value: {
+      update: 'onUpdate',
+    },
+    writable: false,
+  },
+  SERVICES: {
+    value: {},
+    writable: false,
+  },
+});

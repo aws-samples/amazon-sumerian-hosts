@@ -1,0 +1,415 @@
+<!-- 
+  Copyright 2019 Amazon.com, Inc. or its affiliates. All Rights Reserved.
+  SPDX-License-Identifier: MIT-0 
+-->
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Three.js Host Test</title>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0"
+    />
+    <style>
+      a {
+        color: blue;
+      }
+
+      .ac {
+        /* prevent dat-gui from being selected */
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
+      }
+
+      .control-inactive {
+        color: #888;
+      }
+    </style>
+  </head>
+
+  <body>
+    <div id="container"></div>
+    <script src="../scriptDependencies/three.min.js"></script>
+    <script src="../scriptDependencies/three.GLTFLoader.js"></script>
+    <script src="../scriptDependencies/three.OrbitControls.js"></script>
+    <script src="../scriptDependencies/dat.gui.min.js"></script>
+    <script src="../scriptDependencies/three.stats.min.js"></script>
+    <script type="text/javascript" src="../../../dist/host.three.js"></script>
+    <script>
+      async function main() {
+        const renderFn = [];
+        const loader = new THREE.GLTFLoader();
+
+        const {scene, clock} = createScene();
+        const {character, clips} = await loadCharacter('../../assets/Xbot.glb');
+        const host = createHost();
+        createPanel();
+
+        function createScene() {
+          // Scene
+          const container = document.getElementById('container');
+          const clock = new THREE.Clock();
+
+          const scene = new THREE.Scene();
+          scene.background = new THREE.Color(0xa0a0a0);
+          scene.fog = new THREE.Fog(0xa0a0a0, 10, 50);
+
+          // Lights
+          const hemiLight = new THREE.HemisphereLight(0xffffff, 0x444444);
+          hemiLight.position.set(0, 20, 0);
+          scene.add(hemiLight);
+
+          const dirLight = new THREE.DirectionalLight(0xffffff);
+          dirLight.position.set(-3, 10, -10);
+          dirLight.castShadow = true;
+          dirLight.shadow.camera.top = 2;
+          dirLight.shadow.camera.bottom = -2;
+          dirLight.shadow.camera.left = -2;
+          dirLight.shadow.camera.right = 2;
+          dirLight.shadow.camera.near = 0.1;
+          dirLight.shadow.camera.far = 40;
+          scene.add(dirLight);
+
+          // Ground
+          const mesh = new THREE.Mesh(
+            new THREE.PlaneBufferGeometry(100, 100),
+            new THREE.MeshPhongMaterial({color: 0x999999, depthWrite: false})
+          );
+          mesh.rotation.x = -Math.PI / 2;
+          mesh.receiveShadow = true;
+          scene.add(mesh);
+
+          // Renderer
+          renderer = new THREE.WebGLRenderer({antialias: true});
+          renderer.setPixelRatio(window.devicePixelRatio);
+          renderer.setSize(window.innerWidth, window.innerHeight);
+          renderer.outputEncoding = THREE.sRGBEncoding;
+          renderer.shadowMap.enabled = true;
+          container.appendChild(renderer.domElement);
+
+          // Camera
+          camera = new THREE.PerspectiveCamera(
+            45,
+            window.innerWidth / window.innerHeight,
+            1,
+            1000
+          );
+          var controls = new THREE.OrbitControls(camera, renderer.domElement);
+          camera.position.set(-1, 2, 3);
+          camera.lookAt(0, 1, 0);
+          controls.target = new THREE.Vector3(0, 1, 0);
+          controls.update();
+
+          // Fps stats
+          stats = new Stats();
+          container.appendChild(stats.dom);
+
+          // Handle resize
+          function onWindowResize() {
+            camera.aspect = window.innerWidth / window.innerHeight;
+            camera.updateProjectionMatrix();
+
+            renderer.setSize(window.innerWidth, window.innerHeight);
+          }
+
+          window.addEventListener('resize', onWindowResize, false);
+
+          // Start rendering
+          function render() {
+            const deltaTime = clock.getDelta() * 1000;
+
+            renderFn.forEach(fn => {
+              fn(deltaTime);
+            });
+
+            stats.update();
+            renderer.render(scene, camera);
+
+            // Continue the loop
+            requestAnimationFrame(render);
+          }
+
+          render();
+
+          return {scene, clock};
+        }
+
+        function loadCharacter(filePath) {
+          return new Promise(resolve => {
+            loader.load(filePath, function(gltf) {
+              const character = gltf.scene;
+              scene.add(character);
+
+              // Cast shadows
+              character.traverse(function(object) {
+                if (object.isMesh) object.castShadow = true;
+              });
+
+              resolve({character, clips: gltf.animations});
+            });
+          });
+        }
+
+        function createHost() {
+          // Create a host with an animation feature
+          const host = new HOST.HostObject({owner: character, clock});
+          host.addFeature(HOST.anim.AnimationFeature);
+          renderFn.push(() => {
+            host.update();
+          });
+
+          // Create 3 layers: Override, Additive, Override
+          host.AnimationFeature.addLayer('BaseLayer');
+          host.AnimationFeature.addLayer('AdditiveLayer', {
+            blendMode: HOST.anim.LayerBlendModes.Additive,
+          });
+          host.AnimationFeature.addLayer('OverrideLayer');
+          host.AnimationFeature.addLayer('FreeBlendLayer');
+
+          // Set up base layer animations
+          const idleClip = clips.find(a => a.name === 'idle');
+          host.AnimationFeature.addAnimation(
+            'BaseLayer',
+            idleClip.name,
+            HOST.anim.AnimationTypes.single,
+            {clip: idleClip}
+          );
+          host.AnimationFeature.playAnimation('BaseLayer', 'idle');
+
+          // Set up additive layer animations
+          let sneakClip = clips.find(a => a.name === 'sneak_pose');
+          THREE.AnimationUtils.makeClipAdditive(sneakClip);
+          sneakClip = THREE.AnimationUtils.subclip(
+            sneakClip,
+            sneakClip.name,
+            2,
+            3,
+            30
+          );
+          host.AnimationFeature.addAnimation(
+            'AdditiveLayer',
+            sneakClip.name,
+            HOST.anim.AnimationTypes.single,
+            {clip: sneakClip}
+          );
+          host.AnimationFeature.playAnimation('AdditiveLayer', 'sneak_pose');
+
+          // Set up override layer animations
+          const runClip = clips.find(a => a.name === 'run');
+          host.AnimationFeature.addAnimation(
+            'OverrideLayer',
+            runClip.name,
+            HOST.anim.AnimationTypes.single,
+            {clip: runClip}
+          );
+
+          host.AnimationFeature.playAnimation(
+            'OverrideLayer',
+            'run',
+            0.5,
+            HOST.anim.Easing.Quadratic.InOut
+          );
+
+          // Set up free-blend layer animations
+          let sadClip = clips.find(a => a.name === 'sad_pose');
+          sadClip = THREE.AnimationUtils.subclip(
+            sadClip,
+            sadClip.name,
+            2,
+            3,
+            30
+          );
+          const agreeClip = clips.find(a => a.name === 'agree');
+          const headShakeClip = clips.find(a => a.name === 'headShake');
+          const walkClip = clips.find(a => a.name === 'walk');
+          host.AnimationFeature.addAnimation(
+            'FreeBlendLayer',
+            'freeBlend',
+            HOST.anim.AnimationTypes.freeBlend,
+            {
+              blendStateOptions: [
+                {
+                  name: 'blend1',
+                  clip: sadClip,
+                  weight: 1,
+                },
+                {name: 'blend2', clip: agreeClip, weight: 1},
+                {name: 'blend3', clip: headShakeClip, weight: 1},
+                {name: 'blend4', clip: walkClip, weight: 1},
+              ],
+            }
+          );
+
+          host.AnimationFeature.playAnimation('FreeBlendLayer', 'freeBlend');
+
+          return host;
+        }
+
+        function createPanel() {
+          const panel = new dat.GUI({width: 310});
+          const panelSettings = {
+            Pause: () => {
+              host.AnimationFeature.pause();
+            },
+            Resume: () => {
+              host.AnimationFeature.resume();
+            },
+          };
+
+          // Create a folder for each layer
+          const folders = host.AnimationFeature.layers.map(name => {
+            const folder = panel.addFolder(name);
+            const folderSettings = {
+              Weight: 1,
+              BlendWeight1: 1,
+              BlendWeight2: 1,
+              BlendWeight3: 1,
+              BlendWeight4: 1,
+              Pause: () => {
+                host.AnimationFeature.pauseLayer(name);
+              },
+              Resume: () => {
+                host.AnimationFeature.resumeLayer(name);
+              },
+            };
+
+            // Create a weight slider
+            folder
+              .add(folderSettings, 'Weight', 0.0, 1.0, 0.01)
+              .listen()
+              .onChange(weight => {
+                host.AnimationFeature.setLayerWeight(name, weight);
+                const currentState =
+                  host._features.AnimationFeature._layerMap[name]._currentState;
+              });
+
+            if (name === 'FreeBlendLayer') {
+              // Create sliders for each blend weight
+              folder
+                .add(folderSettings, 'BlendWeight1', 0.0, 1.0, 0.01)
+                .listen()
+                .onChange(weight => {
+                  host.AnimationFeature.setAnimationBlendWeight(
+                    name,
+                    'freeBlend',
+                    'blend1',
+                    weight
+                  );
+                });
+              folder
+                .add(folderSettings, 'BlendWeight2', 0.0, 1.0, 0.01)
+                .listen()
+                .onChange(weight => {
+                  host.AnimationFeature.setAnimationBlendWeight(
+                    name,
+                    'freeBlend',
+                    'blend2',
+                    weight
+                  );
+                });
+              folder
+                .add(folderSettings, 'BlendWeight3', 0.0, 1.0, 0.01)
+                .listen()
+                .onChange(weight => {
+                  host.AnimationFeature.setAnimationBlendWeight(
+                    name,
+                    'freeBlend',
+                    'blend3',
+                    weight
+                  );
+                });
+              folder
+                .add(folderSettings, 'BlendWeight4', 0.0, 1.0, 0.01)
+                .listen()
+                .onChange(weight => {
+                  host.AnimationFeature.setAnimationBlendWeight(
+                    name,
+                    'freeBlend',
+                    'blend4',
+                    weight
+                  );
+                });
+            }
+
+            // Create an animation selector
+            const animations = [
+              null,
+              ...host.AnimationFeature.getAnimations(name),
+            ];
+            const currentAnimation = host.AnimationFeature.getCurrentAnimation(
+              name
+            );
+            const switcherSettings = {['Current Animation']: currentAnimation};
+
+            const animSwitcher = folder
+              .add(switcherSettings, 'Current Animation')
+              .options(animations)
+              .listen();
+            animSwitcher.onChange(() => {
+              const anim =
+                switcherSettings['Current Animation'] === 'null'
+                  ? null
+                  : switcherSettings['Current Animation'];
+              host.AnimationFeature.playAnimation(
+                name,
+                anim,
+                0.5,
+                HOST.anim.Easing.Quadratic.InOut
+              );
+            });
+
+            // Add resume button
+            folder.add(folderSettings, 'Pause');
+
+            // Add pause button
+            folder.add(folderSettings, 'Resume');
+
+            // Create an animations folder
+            const animFolder = folder.addFolder('Animations');
+            animations.slice(1).forEach(animation => {
+              animationFolder = animFolder.addFolder(animation);
+              const animationSettings = {
+                Play: () => {
+                  switcherSettings['Current Animation'] = animation;
+                  host.AnimationFeature.playAnimation(name, animation);
+                },
+                Pause: () => {
+                  host.AnimationFeature.pauseAnimation(name);
+                },
+                Resume: () => {
+                  switcherSettings['Current Animation'] = animation;
+                  host.AnimationFeature.resumeAnimation(name, animation);
+                },
+                Stop: () => {
+                  host.AnimationFeature.stopAnimation(name, animation);
+                },
+              };
+
+              // Add playback buttons
+              animationFolder.add(animationSettings, 'Play');
+              animationFolder.add(animationSettings, 'Pause');
+              animationFolder.add(animationSettings, 'Resume');
+              animationFolder.add(animationSettings, 'Stop');
+            });
+
+            folder.open();
+
+            return folder;
+          });
+
+          // Create feature level play and pause buttons
+          // Add resume button
+          panel.add(panelSettings, 'Pause');
+
+          // Add pause button
+          panel.add(panelSettings, 'Resume');
+        }
+      }
+
+      main();
+    </script>
+  </body>
+</html>
