@@ -4,8 +4,8 @@
 /* eslint-disable jasmine/no-spec-dupes */
 /* eslint-disable jasmine/prefer-toHaveBeenCalledWith */
 /* eslint-disable no-underscore-dangle */
-import {AnimationFeature} from 'app/animpack';
 import {LayerBlendModes} from 'core/animpack/AnimationLayer';
+import AnimationFeature from 'app/animpack/AnimationFeature';
 import Deferred from 'core/Deferred';
 import describeEnvironment from '../EnvironmentHarness';
 

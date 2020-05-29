@@ -177,14 +177,15 @@ class TextToSpeechFeature extends AbstractTextToSpeechFeature {
   installApi() {
     const api = super.installApi();
 
-    /**
-     * @name enabled
-     * @memberof TextToSpeechFeature
-     * @instance
-     * @see core/TextToSpeechFeature#enabled
-     */
-    Object.defineProperties(api, 'enabled', {
-      get: () => this._enabled,
+    Object.defineProperties(api, {
+      /**
+       * @memberof TextToSpeechFeature
+       * @instance
+       * @see core/TextToSpeechFeature#enabled
+       */
+      enabled: {
+        get: () => this._enabled,
+      },
     });
 
     return api;
