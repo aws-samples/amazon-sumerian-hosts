@@ -207,15 +207,15 @@ describeEnvironment('AbstractTextToSpeechFeature', () => {
       expect(expected).toEqual(actual);
     });
 
-    it('should set polly.config.customUserAgent if not already set by the user', async () => {
+    it('should set the Polly service customUserAgent to the sumerian designated value if the user has not set it', async () => {
       mockPolly.config = {
         customUserAgent: null
       };
-      const sumerianUserAgent = 'SumerianHosts';
+      const sumerianUserAgent = 'request-source/SumerianHosts';
 
       expect(mockPolly.config.customUserAgent).not.toEqual(sumerianUserAgent);
 
-      await await AbstractTextToSpeechFeature.initializeService(
+      await AbstractTextToSpeechFeature.initializeService(
         mockPolly,
         mockPresigner,
         mockNeuralVersion
@@ -224,32 +224,59 @@ describeEnvironment('AbstractTextToSpeechFeature', () => {
       expect(mockPolly.config.customUserAgent).toEqual(sumerianUserAgent);
     });
 
-    it('should not set polly.config.customUserAgent if already set by the user', async () => {
+    it('should append to the Polly service customUserAgent the sumerian designated value if the user has set it', async () => {
+      const customerUserAgent = "CustomerUserAgent";
       mockPolly.config = {
-        customUserAgent: null
+        customUserAgent: customerUserAgent
       };
-      const customerUserAgent = 'CustomerUserAgent';
-      mockPolly.config.customUserAgent = customerUserAgent;
+      const sumerianUserAgent = 'request-source/SumerianHosts';
 
-      await await AbstractTextToSpeechFeature.initializeService(
+      expect(mockPolly.config.customUserAgent).toEqual(customerUserAgent);
+
+      await AbstractTextToSpeechFeature.initializeService(
         mockPolly,
         mockPresigner,
         mockNeuralVersion
       );
 
-      expect(mockPolly.config.customUserAgent).toEqual(customerUserAgent);
+      expect(mockPolly.config.customUserAgent).toEqual(customerUserAgent.concat(' ', sumerianUserAgent));
     });
 
-    it('should set polly.presigner.service.config.customUserAgent if not already set by the user', async () => {
+    it('should not append to the Polly service customeUserAgent the sumeriand designated value more than once', async () => {
+      mockPolly.config = {
+        customUserAgent: null
+      };
+      const sumerianUserAgent = 'request-source/SumerianHosts';
+
+      expect(mockPolly.config.customUserAgent).not.toEqual(sumerianUserAgent);
+
+      await AbstractTextToSpeechFeature.initializeService(
+        mockPolly,
+        mockPresigner,
+        mockNeuralVersion
+      );
+
+      expect(mockPolly.config.customUserAgent).toEqual(sumerianUserAgent);
+
+      await AbstractTextToSpeechFeature.initializeService(
+        mockPolly,
+        mockPresigner,
+        mockNeuralVersion
+      );
+
+      expect(mockPolly.config.customUserAgent).toEqual(sumerianUserAgent);
+    });
+
+    it('should set the Polly Presigner service customUserAgent to the sumerian designated value if the user has not set it', async () => {
       mockPresigner.service = {};
       mockPresigner.service.config = {
         customUserAgent: null
       };
-      const sumerianUserAgent = 'SumerianHosts';
+      const sumerianUserAgent = 'request-source/SumerianHosts';
 
       expect(mockPresigner.service.config.customUserAgent).not.toEqual(sumerianUserAgent);
 
-      await await AbstractTextToSpeechFeature.initializeService(
+      await AbstractTextToSpeechFeature.initializeService(
         mockPolly,
         mockPresigner,
         mockNeuralVersion
@@ -258,21 +285,49 @@ describeEnvironment('AbstractTextToSpeechFeature', () => {
       expect(mockPresigner.service.config.customUserAgent).toEqual(sumerianUserAgent);
     });
 
-    it('should not set polly.presigner.service.config.customUserAgent if already set by the user', async () => {
+    it('should append to the Polly Presigner service customUserAgent the sumerian designated value if the user has set it', async () => {
+      const customerUserAgent = "CustomerUserAgent";
       mockPresigner.service = {};
       mockPresigner.service.config = {
-        customUserAgent: null
+        customUserAgent: customerUserAgent
       };
-      const customerUserAgent = 'CustomerUserAgent';
-      mockPresigner.service.config.customUserAgent = customerUserAgent;
+      const sumerianUserAgent = 'request-source/SumerianHosts';
 
-      await await AbstractTextToSpeechFeature.initializeService(
+      expect(mockPresigner.service.config.customUserAgent).toEqual(customerUserAgent);
+
+      await AbstractTextToSpeechFeature.initializeService(
         mockPolly,
         mockPresigner,
         mockNeuralVersion
       );
 
-      expect(mockPresigner.service.config.customUserAgent).toEqual(customerUserAgent);
+      expect(mockPresigner.service.config.customUserAgent).toEqual(customerUserAgent.concat(' ', sumerianUserAgent));
+    });
+
+    it('should not append to the Polly Presigner service customeUserAgent the sumeriand designated value more than once', async () => {
+      mockPresigner.service = {};
+      mockPresigner.service.config = {
+        customUserAgent: null
+      };
+      const sumerianUserAgent = 'request-source/SumerianHosts';
+
+      expect(mockPresigner.service.config.customUserAgent).not.toEqual(sumerianUserAgent);
+
+      await AbstractTextToSpeechFeature.initializeService(
+        mockPolly,
+        mockPresigner,
+        mockNeuralVersion
+      );
+
+      expect(mockPresigner.service.config.customUserAgent).toEqual(sumerianUserAgent);
+
+      await AbstractTextToSpeechFeature.initializeService(
+        mockPolly,
+        mockPresigner,
+        mockNeuralVersion
+      );
+
+      expect(mockPresigner.service.config.customUserAgent).toEqual(sumerianUserAgent);
     });
   });
 

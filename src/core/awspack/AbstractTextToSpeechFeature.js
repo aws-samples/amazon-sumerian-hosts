@@ -215,20 +215,21 @@ class AbstractTextToSpeechFeature extends AbstractHostFeature {
       );
     }
 
-    // Set user-agent headers
-    const sumerianUserAgent = 'SumerianHosts';
+    // Add sumerian hosts user-agent
     if (
       polly.config
-      && polly.config.customUserAgent == null
     ) {
-      Object.assign(polly.config, { customUserAgent: sumerianUserAgent });
+      polly.config.customUserAgent = AbstractTextToSpeechFeature._withCustomUserAgent(
+        polly.config.customUserAgent
+      );
     }
     if (
       presigner.service
       && presigner.service.config
-      && presigner.service.config.customUserAgent == null
     ) {
-      Object.assign(presigner.service.config, { customUserAgent: sumerianUserAgent });
+      presigner.service.config.customUserAgent = AbstractTextToSpeechFeature._withCustomUserAgent(
+        presigner.service.config.customUserAgent
+      );
     }
 
     this._isReady = false;
@@ -340,6 +341,30 @@ class AbstractTextToSpeechFeature extends AbstractHostFeature {
 
   set minEndMarkDuration(duration) {
     this._minEndMarkDuration = duration * 1000;
+  }
+
+  /**
+   * Appends the Sumerian Hosts custom user-agent to a string if it is not
+   * already present.
+   *
+   * @private
+   *
+   * @param {string} currentUserAgent - String to append to if needed.
+   *
+   * @returns {string}
+   */
+  static _withCustomUserAgent(currentUserAgent) {
+    const sumerianHostsUserAgent = 'request-source/SumerianHosts';
+
+    if(currentUserAgent == null) {
+      return sumerianHostsUserAgent;
+    }
+
+    if(currentUserAgent.indexOf(sumerianHostsUserAgent) !== -1) {
+      return currentUserAgent;
+    }
+
+    return currentUserAgent.concat(' ', sumerianHostsUserAgent);
   }
 
   /**
