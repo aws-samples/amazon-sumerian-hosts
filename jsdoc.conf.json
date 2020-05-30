@@ -1,0 +1,38 @@
+{
+  "tags": {
+    "allowUnknownTags": true
+  },
+  "plugins": ["plugins/markdown"],
+  "templates": {
+    "default": {
+      "logoFile": "",
+      "cleverLinks": false,
+      "monospaceLinks": false,
+      "dateFormat": "ddd MMM Do YYYY",
+      "outputSourceFiles": false,
+      "outputSourcePath": true,
+      "systemName": "Amazon Sumerian Hosts",
+      "footer": "",
+      "copyright": "© 2020 Amazon Web Services, Inc or its affiliates. All rights reserved.",
+      "navType": "horizontal",
+      "linenums": true,
+      "collapseSymbols": false,
+      "inverseNav": true,
+      "protocol": "html://",
+      "methodHeadingReturns": false
+    }
+  },
+  "markdown": {
+    "parser": "gfm",
+    "hardwrap": true
+  },
+  "opts": {
+    "template": "docs_template",
+    "destination": "docs/",
+    "recurse": true,
+    "readme": "./docs/readme.md"
+  },
+  "source": {
+    "include": ["./src/core/", "./src/three.js", "./src/Babylon.js"]
+  }
+}

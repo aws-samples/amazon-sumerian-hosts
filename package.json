@@ -8,7 +8,8 @@
     "build-test": "npm run build; npm run test",
     "start": "webpack-dev-server --open --config webpack.dev.js",
     "build-start": "npm run build; npm run start",
-    "prepublishOnly": "npm run build"
+    "prepublishOnly": "npm run build",
+    "docs": "jsdoc -c jsdoc.conf.json"
   },
   "keywords": [],
   "author": "",
@@ -44,6 +45,7 @@
     "jasmine": "^3.5.0",
     "jasmine-core": "^3.5.0",
     "jasmine-es6": "^0.4.3",
+    "jsdoc": "^3.6.4",
     "karma": "^4.4.1",
     "karma-babel-preprocessor": "^8.0.1",
     "karma-chrome-launcher": "^3.1.0",
