@@ -4,7 +4,7 @@ Amazon Sumerian Hosts is an experimental open source project that aims to make i
 
 You can clone the repository to obtain glTF character animation assets tailored to work well with the Host API. You can use them as-is, modify them in DCC software such as [Blender](https://www.blender.org/) or use them as a guide to develop your own 3D assets.
 
-The easiest way to start using the API is to include the build file that corresponds with the rendering engine you are using. See the [Getting Started](#Getting-Started) guide for a walkthrough using this method and the [API Documentation](docs/index.html) for more detailed information on the classes and methods available. Amazon Sumerian Hosts is a published [npm](https://www.npmjs.com/) package, so alternatively you can install in an existing Node.js project by running `npm install --save-dev SumerianHosts`. If you'd like to pull the gitub repository and create your own build, see [Building the Package](#Building-the-Package) for prerequisites and instructions on how to do that.
+The easiest way to start using the API is to include the build file that corresponds with the rendering engine you are using. See the [Getting Started](#Getting-Started) guide for a walkthrough using this method and the [API Documentation](https://aws-samples.github.io/amazon-sumerian-hosts/) for more detailed information on the classes and methods available. Amazon Sumerian Hosts is a published [npm](https://www.npmjs.com/) package, so alternatively you can install in an existing Node.js project by running `npm install --save-dev SumerianHosts`. If you'd like to pull the gitub repository and create your own build, see [Building the Package](#Building-the-Package) for prerequisites and instructions on how to do that.
 
 ## License
 
@@ -78,6 +78,18 @@ Our example is going to load several glTF assets so there will be a short time w
 
 - ```css
   #loadScreen {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+    background-image: url('assets/images/load_screen.png');
+    background-color: gray;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-position: center;
+    background-size: contain;
+    z-index: 9999;
   }
   ```
 
@@ -85,19 +97,31 @@ Our example is going to load several glTF assets so there will be a short time w
 
 - ```css
   #loader {
+    border: 16px solid #3498db38;
+    border-radius: 50%;
+    border-top: 16px solid #3498db;
+    width: 120px;
+    height: 120px;
+    -webkit-animation: spin 2s linear infinite;
+    animation: spin 2s linear infinite;
+    position: fixed;
   }
 
   @-webkit-keyframes spin {
-     {
+    0% {
+      -webkit-transform: rotate(0deg);
     }
-     {
+    100% {
+      -webkit-transform: rotate(360deg);
     }
   }
 
   @keyframes spin {
-     {
+    0% {
+      transform: rotate(0deg);
     }
-     {
+    100% {
+      transform: rotate(360deg);
     }
   }
   ```
@@ -132,7 +156,7 @@ Now we will move onto the contents of the example [script](https://developer.moz
 
 ### Step 4. Configuring the AWS SDK
 
-Our host will be using the [TextToSpeechFeature](docs/three.js_TextToSpeechFeature.html), so before we can make the host speak we need to configure the AWS SDK with our region and credentials.
+Our host will be using the [TextToSpeechFeature](https://aws-samples.github.io/amazon-sumerian-hosts/three.js_TextToSpeechFeature.html), so before we can make the host speak we need to configure the AWS SDK with our region and credentials.
 
 ```javascript
 // Initialize AWS and create Polly service objects
@@ -146,7 +170,7 @@ Replace `'<Enter Cognito Identity Pool ID here>'` with the id you created in the
 
 ### Step 5. Initializing the Host TextToSpeechFeature
 
-The [TextToSpeechFeature](docs/three.js_TextToSpeechFeature.html) is the host feature that communicates with Amazon Polly to generate speech audio and speechmarks and plays them back at runtime. Before this feature can be used, it must be initialized with Polly and PollyPresigner instances, as well as the version of the AWS SDK being used.
+The [TextToSpeechFeature](https://aws-samples.github.io/amazon-sumerian-hosts/three.js_TextToSpeechFeature.html) is the host feature that communicates with Amazon Polly to generate speech audio and speechmarks and plays them back at runtime. Before this feature can be used, it must be initialized with Polly and PollyPresigner instances, as well as the version of the AWS SDK being used.
 
 ```javascript
 const polly = new AWS.Polly();
@@ -158,7 +182,7 @@ const speechInit = HOST.aws.TextToSpeechFeature.initializeService(
 );
 ```
 
-[`HOST.aws.TextToSpeechFeature.initializeService`](docs/AbstractTextToSpeechFeature.html#.initializeService) returns a promise that will resolve once the feature has successfully connected to polly and populated its lists of available voices and languages. We'll store this as a variable so we can make sure it has resolved before allowing the user to send text to Polly.
+[`HOST.aws.TextToSpeechFeature.initializeService`](https://aws-samples.github.io/amazon-sumerian-hosts/AbstractTextToSpeechFeature.html#.initializeService) returns a promise that will resolve once the feature has successfully connected to polly and populated its lists of available voices and languages. We'll store this as a variable so we can make sure it has resolved before allowing the user to send text to Polly.
 
 Now we'll start setting up the visuals.
 
@@ -248,7 +272,7 @@ const host = createHost(
 );
 ```
 
-Here we pass all of our assets and variables to the `createHost` function. This function is where we'll create the [HostObject](docs/three.js_HostObject.html) and add features to it. Next we'll inspect what makes up the `createHost` function.
+Here we pass all of our assets and variables to the `createHost` function. This function is where we'll create the [HostObject](https://aws-samples.github.io/amazon-sumerian-hosts/three.js_HostObject.html) and add features to it. Next we'll inspect what makes up the `createHost` function.
 
 - ```javascript
   // Add the host to the render loop
@@ -273,14 +297,14 @@ Here we pass all of our assets and variables to the `createHost` function. This 
   });
   ```
 
-  Here is where we add the [TextToSpeechFeature](docs/TextToSpeechFeature.html) to allow the host to convert text to audio and play it back. The TextToSpeechFeature will emit messages during playback events like play/pause/resume/stop as well as when speechmarks are encountered during the audio. three.js Hosts use the three.js audio system, so we need to pass it and [AudioListener](https://threejs.org/docs/#api/en/audio/AudioListener). We also search the character asset's child hierarchy for the audioAttach variable we defined in Step 6 to find the three.js node that matches that name. The host will use three.js [PositionalAudio](https://threejs.org/docs/#api/en/audio/PositionalAudio) attached to this node when it synthesizes speech audio.
+  Here is where we add the [TextToSpeechFeature](https://aws-samples.github.io/amazon-sumerian-hosts/TextToSpeechFeature.html) to allow the host to convert text to audio and play it back. The TextToSpeechFeature will emit messages during playback events like play/pause/resume/stop as well as when speechmarks are encountered during the audio. three.js Hosts use the three.js audio system, so we need to pass it and [AudioListener](https://threejs.org/docs/#api/en/audio/AudioListener). We also search the character asset's child hierarchy for the audioAttach variable we defined in Step 6 to find the three.js node that matches that name. The host will use three.js [PositionalAudio](https://threejs.org/docs/#api/en/audio/PositionalAudio) attached to this node when it synthesizes speech audio.
 
 - ```javascript
   // Set up animation
   host.addFeature(HOST.anim.AnimationFeature);
   ```
 
-  Next we add the [AnimationFeature](docs/AnimationFeature.html). This is what allows you to manage and play animations on the host character asset. The AnimationFeature is a layered animation system, below we'll take a look at each animation layer and animation we'll add to make the host appear to speak when speech audio is playing.
+  Next we add the [AnimationFeature](https://aws-samples.github.io/amazon-sumerian-hosts/AnimationFeature.html). This is what allows you to manage and play animations on the host character asset. The AnimationFeature is a layered animation system, below we'll take a look at each animation layer and animation we'll add to make the host appear to speak when speech audio is playing.
 
   - ```javascript
     // Base idle
@@ -294,7 +318,7 @@ Here we pass all of our assets and variables to the `createHost` function. This 
 	host.AnimationFeature.playAnimation('Base', idleClip.name);
     ```
    
-    Here we have added a single [AnimationLayer](docs/AnimationLayer.html) to the host. Animation layers are containers that manage a subset of animations. Each AnimationLayer can only play a single animation at any given time, but a host animation can also be a container for multiple animation assets. Here we are creating an animation of type `HOST.anim.AnimationTypes.single`, which means that the animation can only contain one three.js [AnimationClip](https://threejs.org/docs/#api/en/animation/AnimationClip). The clip we've chosen is the `stand_idle` animation, which contains looping ambient motion in a standing position. This is the animation you'll see by default when the host isn't speaking. `host.AnimationFeature.playAnimation` is telling the host to start playing the idle animation on the `Base` layer we just created.
+    Here we have added a single [AnimationLayer](https://aws-samples.github.io/amazon-sumerian-hosts/AnimationLayer.html) to the host. Animation layers are containers that manage a subset of animations. Each AnimationLayer can only play a single animation at any given time, but a host animation can also be a container for multiple animation assets. Here we are creating an animation of type `HOST.anim.AnimationTypes.single`, which means that the animation can only contain one three.js [AnimationClip](https://threejs.org/docs/#api/en/animation/AnimationClip). The clip we've chosen is the `stand_idle` animation, which contains looping ambient motion in a standing position. This is the animation you'll see by default when the host isn't speaking. `host.AnimationFeature.playAnimation` is telling the host to start playing the idle animation on the `Base` layer we just created.
 
   - ```javascript
     // Talking idle
@@ -314,7 +338,7 @@ Here we pass all of our assets and variables to the `createHost` function. This 
 	host.AnimationFeature.playAnimation('Talk', talkClip.name);
     ```
    
-    The next animation layer we'll add will contain another looping idle that contains a looping full body motion in the standing position to simulate to type of ambient body gestures people make when they talk. You'll notice that we've included some options this time when executing [`AnimationFeature.addLayer`](docs/AnimationFeature.html#addLayer). The `transitionTime` variable defines the default amount of time it takes to blend to a new animation on the layer. `blendMode` defines the type of blending that will be used when playing animations on this layer in combination with the other layers on the host. The default is `Override`, which means that animation on the layer would cancel out animations on layers underneath, but here we have defined the layer as `Additive`. This means that the animations on this layer will add on top of the animations on the layer named `Base`. [AnimationFeature.setLayerWeight]((docs/AnimationFeature.html#setLayerWeight)) tells the host that we don't want animations on this layer to have any influence by default. Layers can have weight values ranging from 0-1.
+    The next animation layer we'll add will contain another looping idle that contains a looping full body motion in the standing position to simulate to type of ambient body gestures people make when they talk. You'll notice that we've included some options this time when executing [`AnimationFeature.addLayer`](https://aws-samples.github.io/amazon-sumerian-hosts/AnimationFeature.html#addLayer). The `transitionTime` variable defines the default amount of time it takes to blend to a new animation on the layer. `blendMode` defines the type of blending that will be used when playing animations on this layer in combination with the other layers on the host. The default is `Override`, which means that animation on the layer would cancel out animations on layers underneath, but here we have defined the layer as `Additive`. This means that the animations on this layer will add on top of the animations on the layer named `Base`. [AnimationFeature.setLayerWeight](https://aws-samples.github.io/amazon-sumerian-hosts/AnimationFeature.html#setLayerWeight) tells the host that we don't want animations on this layer to have any influence by default. Layers can have weight values ranging from 0-1.
 
   - ```javascript
     // Viseme poses
@@ -341,7 +365,7 @@ Here we pass all of our assets and variables to the `createHost` function. This 
 
 	Next we create an animation that will control the lipsync animation for the host. Lipsync is achieved by blending a series of poses that correspond to viseme speechmarks that the TextToSpeechFeature emits. See the [Polly documentation](https://docs.aws.amazon.com/polly/latest/dg/viseme.html) to find out more about the visemes that Polly generates.  
 
-	You'll notice a difference on this layer when we add the animation to the layer. Here we're using a different animation type called [`freeBlend`](docs/FreeBlendState.html). This type of animation allows you to control N-number of three.js [AnimationClips](https://threejs.org/docs/#api/en/animation/AnimationClip) at the same time. Each clip gets its own weight, the if the cumulative weight of all of the clips in the animation container exceed 1 then they are normalized. As the host performs lipsync animation, it will manipulate these blend weights behind the scenes as viseme speechmarks are encountered to shape the host's mouth to match the sounds it is making.
+	You'll notice a difference on this layer when we add the animation to the layer. Here we're using a different animation type called [`freeBlend`](https://aws-samples.github.io/amazon-sumerian-hosts/FreeBlendState.html). This type of animation allows you to control N-number of three.js [AnimationClips](https://threejs.org/docs/#api/en/animation/AnimationClip) at the same time. Each clip gets its own weight, the if the cumulative weight of all of the clips in the animation container exceed 1 then they are normalized. As the host performs lipsync animation, it will manipulate these blend weights behind the scenes as viseme speechmarks are encountered to shape the host's mouth to match the sounds it is making.
 
 - ```javascript
   // Set up Lipsync
@@ -358,9 +382,9 @@ Here we pass all of our assets and variables to the `createHost` function. This 
 	talkingOptions
   );
   ```
-  Next we add the [LipsyncFeature](docs/LipsyncFeature.html). This is the feature that listens to the TextToSpeechFeature and manipulates animations in the AnimationFeature as speechmark messages are caught from the TextToSpeechFeature. This feature will have no effect until both of the prerequisite features have been added to the host.  
+  Next we add the [LipsyncFeature](https://aws-samples.github.io/amazon-sumerian-hosts/LipsyncFeature.html). This is the feature that listens to the TextToSpeechFeature and manipulates animations in the AnimationFeature as speechmark messages are caught from the TextToSpeechFeature. This feature will have no effect until both of the prerequisite features have been added to the host.  
 
-  The `visemeOptions` object tells the LipsyncFeature that we have one layer on the AnimationFeature that contains viseme-related animations, its name is `Viseme` and the freeBlend animation that contains the viseme poses is called `viseme`. The LipsyncFeature requires that the animation defined for `visemeOptions` is of type `freeBlend`, if it is not then lipsync animation will have no effect. Each layer defined in `visemeOptions` can optionally define a `visemeMap` object that maps the names of Polly visemes to options such as the name of the corresponding animation blend weight. In the provided host objects we have named all of the viseme animations to match the Polly visemes so we don't need to provide this object. See [DefaultVisemeMap](docs/global.html#DefaultVisemeMap) to see the required format if you define your own `visemeMap`. As the LipsyncFeature catches viseme events from the TextToSpeechFeature, it will look for the animation blend weight name defined in the `visemeMap` that corresponds with the name of the viseme speechmark. If it finds one it will blend its weight toward 1 and then back to zero over the duration of the viseme speechmark to simulate speech.
+  The `visemeOptions` object tells the LipsyncFeature that we have one layer on the AnimationFeature that contains viseme-related animations, its name is `Viseme` and the freeBlend animation that contains the viseme poses is called `viseme`. The LipsyncFeature requires that the animation defined for `visemeOptions` is of type `freeBlend`, if it is not then lipsync animation will have no effect. Each layer defined in `visemeOptions` can optionally define a `visemeMap` object that maps the names of Polly visemes to options such as the name of the corresponding animation blend weight. In the provided host objects we have named all of the viseme animations to match the Polly visemes so we don't need to provide this object. See [DefaultVisemeMap](https://aws-samples.github.io/amazon-sumerian-hosts/global.html#DefaultVisemeMap) to see the required format if you define your own `visemeMap`. As the LipsyncFeature catches viseme events from the TextToSpeechFeature, it will look for the animation blend weight name defined in the `visemeMap` that corresponds with the name of the viseme speechmark. If it finds one it will blend its weight toward 1 and then back to zero over the duration of the viseme speechmark to simulate speech.
 
   The `talkingOptions` object tells the LipsyncFeature that we have one layer on the AnimationFeature that contains ambient talking motion, its name is `Talk` and the animation we want to play on that layer while speech audio is playing is called `stand_talk`. 
   
@@ -457,6 +481,18 @@ Our example is going to load several glTF assets so there will be a short time w
 
 - ```css
   #loadScreen {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+    background-image: url('assets/images/load_screen.png');
+    background-color: gray;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-position: center;
+    background-size: contain;
+    z-index: 9999;
   }
   ```
 
@@ -464,19 +500,31 @@ Our example is going to load several glTF assets so there will be a short time w
 
 - ```css
   #loader {
+    border: 16px solid #3498db38;
+    border-radius: 50%;
+    border-top: 16px solid #3498db;
+    width: 120px;
+    height: 120px;
+    -webkit-animation: spin 2s linear infinite;
+    animation: spin 2s linear infinite;
+    position: fixed;
   }
 
   @-webkit-keyframes spin {
-     {
+    0% {
+      -webkit-transform: rotate(0deg);
     }
-     {
+    100% {
+      -webkit-transform: rotate(360deg);
     }
   }
 
   @keyframes spin {
-     {
+    0% {
+      transform: rotate(0deg);
     }
-     {
+    100% {
+      transform: rotate(360deg);
     }
   }
   ```
@@ -511,7 +559,7 @@ Now we will move onto the contents of the example [script](https://developer.moz
 
 ### Step 4. Configuring the AWS SDK
 
-Our host will be using the [TextToSpeechFeature](docs/Babylon.js_TextToSpeechFeature.html), so before we can make the host speak we need to configure the AWS SDK with our region and credentials.
+Our host will be using the [TextToSpeechFeature](https://aws-samples.github.io/amazon-sumerian-hosts/Babylon.js_TextToSpeechFeature.html), so before we can make the host speak we need to configure the AWS SDK with our region and credentials.
 
 ```javascript
 // Initialize AWS and create Polly service objects
@@ -525,7 +573,7 @@ Replace `'<Enter Cognito Identity Pool ID here>'` with the id you created in the
 
 ### Step 5. Initializing the Host TextToSpeechFeature
 
-The [TextToSpeechFeature](docs/Babylon.js_TextToSpeechFeature.html) is the host feature that communicates with Amazon Polly to generate speech audio and speechmarks and plays them back at runtime. Before this feature can be used, it must be initialized with Polly and PollyPresigner instances, as well as the version of the AWS SDK being used.
+The [TextToSpeechFeature](https://aws-samples.github.io/amazon-sumerian-hosts/Babylon.js_TextToSpeechFeature.html) is the host feature that communicates with Amazon Polly to generate speech audio and speechmarks and plays them back at runtime. Before this feature can be used, it must be initialized with Polly and PollyPresigner instances, as well as the version of the AWS SDK being used.
 
 ```javascript
 const polly = new AWS.Polly();
@@ -537,7 +585,7 @@ const speechInit = HOST.aws.TextToSpeechFeature.initializeService(
 );
 ```
 
-[`HOST.aws.TextToSpeechFeature.initializeService`](docs/AbstractTextToSpeechFeature.html#.initializeService) returns a promise that will resolve once the feature has successfully connected to polly and populated its lists of available voices and languages. We'll store this as a variable so we can make sure it has resolved before allowing the user to send text to Polly.
+[`HOST.aws.TextToSpeechFeature.initializeService`](https://aws-samples.github.io/amazon-sumerian-hosts/AbstractTextToSpeechFeature.html#.initializeService) returns a promise that will resolve once the feature has successfully connected to polly and populated its lists of available voices and languages. We'll store this as a variable so we can make sure it has resolved before allowing the user to send text to Polly.
 
 Now we'll start setting up the visuals.
 
@@ -601,7 +649,7 @@ const host = createHost(
 );
 ```
 
-Here we pass all of our assets and variables to the `createHost` function. This function is where we'll create the [HostObject](docs/Babylon.js_HostObject.html) and add features to it. Next we'll inspect what makes up the `createHost` function.
+Here we pass all of our assets and variables to the `createHost` function. This function is where we'll create the [HostObject](https://aws-samples.github.io/amazon-sumerian-hosts/Babylon.js_HostObject.html) and add features to it. Next we'll inspect what makes up the `createHost` function.
 
 - ```javascript
   // Add the host to the render loop
@@ -627,14 +675,14 @@ Here we pass all of our assets and variables to the `createHost` function. This 
   });
   ```
 
-  Here is where we add the [TextToSpeechFeature](docs/TextToSpeechFeature.html) to allow the host to convert text to audio and play it back. The TextToSpeechFeature will emit messages during playback events like play/pause/resume/stop as well as when speechmarks are encountered during the audio. We search the character asset's child hierarchy for the audioAttach variable we defined in Step 6 to find the Babylon.js node that matches that name. The host will use Babylon.js [Sound.attachToMesh](https://doc.babylonjs.com/api/classes/babylon.sound#attachtomesh) to attach sound to this node when it synthesizes speech audio.
+  Here is where we add the [TextToSpeechFeature](https://aws-samples.github.io/amazon-sumerian-hosts/TextToSpeechFeature.html) to allow the host to convert text to audio and play it back. The TextToSpeechFeature will emit messages during playback events like play/pause/resume/stop as well as when speechmarks are encountered during the audio. We search the character asset's child hierarchy for the audioAttach variable we defined in Step 6 to find the Babylon.js node that matches that name. The host will use Babylon.js [Sound.attachToMesh](https://doc.babylonjs.com/api/classes/babylon.sound#attachtomesh) to attach sound to this node when it synthesizes speech audio.
 
 - ```javascript
   // Set up animation
   host.addFeature(HOST.anim.AnimationFeature);
   ```
 
-  Next we add the [AnimationFeature](docs/AnimationFeature.html). This is what allows you to manage and play animations on the host character asset. The AnimationFeature is a layered animation system, below we'll take a look at each animation layer and animation we'll add to make the host appear to speak when speech audio is playing.
+  Next we add the [AnimationFeature](https://aws-samples.github.io/amazon-sumerian-hosts/AnimationFeature.html). This is what allows you to manage and play animations on the host character asset. The AnimationFeature is a layered animation system, below we'll take a look at each animation layer and animation we'll add to make the host appear to speak when speech audio is playing.
 
   - ```javascript
     // Base idle
@@ -648,7 +696,7 @@ Here we pass all of our assets and variables to the `createHost` function. This 
 	host.AnimationFeature.playAnimation('Base', idleClip.name);
     ```
    
-    Here we have added a single [AnimationLayer](docs/AnimationLayer.html) to the host. Animation layers are containers that manage a subset of animations. Each AnimationLayer can only play a single animation at any given time, but a host animation can also be a container for multiple animation assets. Here we are creating an animation of type `HOST.anim.AnimationTypes.single`, which means that the animation can only contain one Babylon.js [AnimationGroup](https://doc.babylonjs.com/api/classes/babylon.animationgroup). The clip we've chosen is the `stand_idle` animation, which contains looping ambient motion in a standing position. This is the animation you'll see by default when the host isn't speaking. `host.AnimationFeature.playAnimation` is telling the host to start playing the idle animation on the `Base` layer we just created.
+    Here we have added a single [AnimationLayer](https://aws-samples.github.io/amazon-sumerian-hosts/AnimationLayer.html) to the host. Animation layers are containers that manage a subset of animations. Each AnimationLayer can only play a single animation at any given time, but a host animation can also be a container for multiple animation assets. Here we are creating an animation of type `HOST.anim.AnimationTypes.single`, which means that the animation can only contain one Babylon.js [AnimationGroup](https://doc.babylonjs.com/api/classes/babylon.animationgroup). The clip we've chosen is the `stand_idle` animation, which contains looping ambient motion in a standing position. This is the animation you'll see by default when the host isn't speaking. `host.AnimationFeature.playAnimation` is telling the host to start playing the idle animation on the `Base` layer we just created.
 
   - ```javascript
     // Talking idle
@@ -668,7 +716,7 @@ Here we pass all of our assets and variables to the `createHost` function. This 
 	host.AnimationFeature.playAnimation('Talk', talkClip.name);
     ```
    
-    The next animation layer we'll add will contain another looping idle that contains a looping full body motion in the standing position to simulate to type of ambient body gestures people make when they talk. You'll notice that we've included some options this time when executing [`AnimationFeature.addLayer`](docs/AnimationFeature.html#addLayer). The `transitionTime` variable defines the default amount of time it takes to blend to a new animation on the layer. `blendMode` defines the type of blending that will be used when playing animations on this layer in combination with the other layers on the host. The default is `Override`, which means that animation on the layer would cancel out animations on layers underneath, but here we have defined the layer as `Additive`. This means that the animations on this layer will add on top of the animations on the layer named `Base`. [AnimationFeature.setLayerWeight]((docs/AnimationFeature.html#setLayerWeight)) tells the host that we don't want animations on this layer to have any influence by default. Layers can have weight values ranging from 0-1.
+    The next animation layer we'll add will contain another looping idle that contains a looping full body motion in the standing position to simulate to type of ambient body gestures people make when they talk. You'll notice that we've included some options this time when executing [`AnimationFeature.addLayer`](https://aws-samples.github.io/amazon-sumerian-hosts/AnimationFeature.html#addLayer). The `transitionTime` variable defines the default amount of time it takes to blend to a new animation on the layer. `blendMode` defines the type of blending that will be used when playing animations on this layer in combination with the other layers on the host. The default is `Override`, which means that animation on the layer would cancel out animations on layers underneath, but here we have defined the layer as `Additive`. This means that the animations on this layer will add on top of the animations on the layer named `Base`. [AnimationFeature.setLayerWeight](https://aws-samples.github.io/amazon-sumerian-hosts/AnimationFeature.html#setLayerWeight) tells the host that we don't want animations on this layer to have any influence by default. Layers can have weight values ranging from 0-1.
 
   - ```javascript
     // Viseme poses
@@ -697,7 +745,7 @@ Here we pass all of our assets and variables to the `createHost` function. This 
 
 	Next we create an animation that will control the lipsync animation for the host. Lipsync is achieved by blending a series of poses that correspond to viseme speechmarks that the TextToSpeechFeature emits. See the [Polly documentation](https://docs.aws.amazon.com/polly/latest/dg/viseme.html) to find out more about the visemes that Polly generates.  
 
-	You'll notice a difference on this layer when we add the animation to the layer. Here we're using a different animation type called [`freeBlend`](docs/FreeBlendState.html). This type of animation allows you to control N-number of Babylon.js [AnimationGroups](https://doc.babylonjs.com/api/classes/babylon.animationgroup) at the same time. Each clip gets its own weight, the if the cumulative weight of all of the clips in the animation container exceed 1 then they are normalized. As the host performs lipsync animation, it will manipulate these blend weights behind the scenes as viseme speechmarks are encountered to shape the host's mouth to match the sounds it is making.  
+	You'll notice a difference on this layer when we add the animation to the layer. Here we're using a different animation type called [`freeBlend`](https://aws-samples.github.io/amazon-sumerian-hosts/FreeBlendState.html). This type of animation allows you to control N-number of Babylon.js [AnimationGroups](https://doc.babylonjs.com/api/classes/babylon.animationgroup) at the same time. Each clip gets its own weight, the if the cumulative weight of all of the clips in the animation container exceed 1 then they are normalized. As the host performs lipsync animation, it will manipulate these blend weights behind the scenes as viseme speechmarks are encountered to shape the host's mouth to match the sounds it is making.  
 
 	Each blendStateOptions object also contains a `from` and `to` property. The first frame of each viseme pose is the reference pose for additive animation and we don't want that frame to be played back after it has been subtracted from the rest of the keyframes to convert it to additive, so these properties tell the AnimationFeature to only play back keyframes within this range.
 
@@ -716,9 +764,9 @@ Here we pass all of our assets and variables to the `createHost` function. This 
 	talkingOptions
   );
   ```
-  Next we add the [LipsyncFeature](docs/LipsyncFeature.html). This is the feature that listens to the TextToSpeechFeature and manipulates animations in the AnimationFeature as speechmark messages are caught from the TextToSpeechFeature. This feature will have no effect until both of the prerequisite features have been added to the host.  
+  Next we add the [LipsyncFeature](https://aws-samples.github.io/amazon-sumerian-hosts/LipsyncFeature.html). This is the feature that listens to the TextToSpeechFeature and manipulates animations in the AnimationFeature as speechmark messages are caught from the TextToSpeechFeature. This feature will have no effect until both of the prerequisite features have been added to the host.  
 
-  The `visemeOptions` object tells the LipsyncFeature that we have one layer on the AnimationFeature that contains viseme-related animations, its name is `Viseme` and the freeBlend animation that contains the viseme poses is called `viseme`. The LipsyncFeature requires that the animation defined for `visemeOptions` is of type `freeBlend`, if it is not then lipsync animation will have no effect. Each layer defined in `visemeOptions` can optionally define a `visemeMap` object that maps the names of Polly visemes to options such as the name of the corresponding animation blend weight. In the provided host objects we have named all of the viseme animations to match the Polly visemes so we don't need to provide this object. See [DefaultVisemeMap](docs/global.html#DefaultVisemeMap) to see the required format if you define your own `visemeMap`. As the LipsyncFeature catches viseme events from the TextToSpeechFeature, it will look for the animation blend weight name defined in the `visemeMap` that corresponds with the name of the viseme speechmark. If it finds one it will blend its weight toward 1 and then back to zero over the duration of the viseme speechmark to simulate speech.
+  The `visemeOptions` object tells the LipsyncFeature that we have one layer on the AnimationFeature that contains viseme-related animations, its name is `Viseme` and the freeBlend animation that contains the viseme poses is called `viseme`. The LipsyncFeature requires that the animation defined for `visemeOptions` is of type `freeBlend`, if it is not then lipsync animation will have no effect. Each layer defined in `visemeOptions` can optionally define a `visemeMap` object that maps the names of Polly visemes to options such as the name of the corresponding animation blend weight. In the provided host objects we have named all of the viseme animations to match the Polly visemes so we don't need to provide this object. See [DefaultVisemeMap](https://aws-samples.github.io/amazon-sumerian-hosts/global.html#DefaultVisemeMap) to see the required format if you define your own `visemeMap`. As the LipsyncFeature catches viseme events from the TextToSpeechFeature, it will look for the animation blend weight name defined in the `visemeMap` that corresponds with the name of the viseme speechmark. If it finds one it will blend its weight toward 1 and then back to zero over the duration of the viseme speechmark to simulate speech.
 
   The `talkingOptions` object tells the LipsyncFeature that we have one layer on the AnimationFeature that contains ambient talking motion, its name is `Talk` and the animation we want to play on that layer while speech audio is playing is called `stand_talk`. 
   
