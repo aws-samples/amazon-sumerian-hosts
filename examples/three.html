@@ -1,0 +1,494 @@
+<!-- 
+  Copyright 2019 Amazon.com, Inc. or its affiliates. All Rights Reserved.
+  SPDX-License-Identifier: MIT-0 
+-->
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Three.js Host Test</title>
+    <style>
+      html,
+      body {
+        overflow: hidden;
+        width: 100%;
+        height: 100%;
+        margin: 0;
+        padding: 0;
+      }
+
+      #renderCanvas {
+        width: 100%;
+        height: 100%;
+        touch-action: none;
+      }
+
+      #textToSpeech {
+        position: fixed;
+        top: 0;
+        left: 0;
+        z-index: 2;
+        display: none;
+      }
+
+      #textEntry {
+        min-width: 305px;
+        min-height: 200px;
+      }
+
+      .button {
+        width: 75px;
+      }
+
+      #loadScreen {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 100%;
+        height: 100%;
+        background-image: url('assets/images/load_screen.png');
+        background-color: gray;
+        background-repeat: no-repeat;
+        background-attachment: fixed;
+        background-position: center;
+        background-size: contain;
+        z-index: 9999;
+      }
+
+      #loader {
+        border: 16px solid #3498db38;
+        border-radius: 50%;
+        border-top: 16px solid #3498db;
+        width: 120px;
+        height: 120px;
+        -webkit-animation: spin 2s linear infinite;
+        animation: spin 2s linear infinite;
+        position: fixed;
+      }
+
+      @-webkit-keyframes spin {
+        0% {
+          -webkit-transform: rotate(0deg);
+        }
+        100% {
+          -webkit-transform: rotate(360deg);
+        }
+      }
+
+      @keyframes spin {
+        0% {
+          transform: rotate(0deg);
+        }
+        100% {
+          transform: rotate(360deg);
+        }
+      }
+
+      @keyframes fadeOutAnimation {
+        0% {
+          opacity: 1;
+        }
+        100% {
+          opacity: 0;
+        }
+      }
+
+      @-webkit-keyframes fadeOutAnimation {
+        0% {
+          opacity: 1;
+        }
+        100% {
+          opacity: 0;
+        }
+      }
+    </style>
+
+    <!--Enable drag and drop text files on text to speech input area-->
+    <script src="./scriptDependencies/dragDropTextArea.js"></script>
+    <!--Text to speech dependency-->
+    <script
+      type="text/javascript"
+      src="https://sdk.amazonaws.com/js/aws-sdk-2.645.0.min.js"
+    ></script>
+    <!--Three.js dependencies-->
+    <script src="./scriptDependencies/three.min.js"></script>
+    <script src="./scriptDependencies/three.GLTFLoader.js"></script>
+    <script src="./scriptDependencies/three.OrbitControls.js"></script>
+    <!--Host build file-->
+    <script type="text/javascript" src="../dist/host.three.js"></script>
+  </head>
+
+  <body>
+    <!--Loading screen-->
+    <div id="loadScreen">
+      <div id="loader"></div>
+    </div>
+
+    <!--Text to speech controls-->
+    <div id="textToSpeech">
+      <div>
+        <textarea autofocus size="23" type="text" id="textEntry">
+<speak>
+  <amazon:domain name="conversational">Hello, my name is Wes. I used 
+    to only be a host inside Amazon Sumerian, but now you can use me in other 
+    Javascript runtime environments like three<sub alias="">.</sub>js and 
+    Babylon<sub alias="">.</sub>js. Right now I&apos;m  in three<sub alias="">.</sub>js.
+  </amazon:domain>
+</speak>
+        </textarea>
+      </div>
+      <button id="play" class="button">Play</button>
+      <button id="pause" class="button">Pause</button>
+      <button id="resume" class="button">Resume</button>
+      <button id="stop" class="button">Stop</button>
+    </div>
+
+    <!--Create the Three.js scene-->
+    <script>
+      async function main() {
+        // Initialize AWS and create Polly service objects
+        window.AWS.config.region = 'us-west-2';
+        window.AWS.config.credentials = new AWS.CognitoIdentityCredentials({
+          IdentityPoolId: '<Enter Cognito Identity Pool ID here>',
+        });
+        const polly = new AWS.Polly();
+        const presigner = new AWS.Polly.Presigner();
+        const speechInit = HOST.aws.TextToSpeechFeature.initializeService(
+          polly,
+          presigner,
+          window.AWS.VERSION
+        );
+
+        // Define the glTF assets that will represent the host
+        const renderFn = [];
+        const characterFile =
+          './assets/glTF/characters/adult_male/wes/wes.gltf';
+        const animationPath = './assets/glTF/animations/adult_male';
+        const animationFiles = ['stand_idle.glb', 'lipsync.glb'];
+        const audioAttachJoint = 'chardef_c_neckB'; // Name of the joint to attach audio to
+        const voice = 'Matthew'; // Polly voice. Full list of available voices at: https://docs.aws.amazon.com/polly/latest/dg/voicelist.html
+        const voiceEngine = 'neural'; // Neural engine is not available for all voices in all regions: https://docs.aws.amazon.com/polly/latest/dg/NTTS-main.html
+
+        // Set up the scene and host
+        const {scene, camera, clock} = createScene();
+        const {character, clips} = await loadCharacter(
+          scene,
+          characterFile,
+          animationPath,
+          animationFiles
+        );
+        const [idleClips, lipsyncClips] = clips;
+        const host = createHost(
+          character,
+          audioAttachJoint,
+          voice,
+          voiceEngine,
+          idleClips[0],
+          lipsyncClips,
+          camera,
+          clock
+        );
+
+        // Hide the load screen and how the text input
+        document.getElementById('textToSpeech').style.display = 'inline-block';
+        document.getElementById('loadScreen').style.display = 'none';
+
+        await speechInit;
+
+        // Enable drag/drop text files on the speech text area
+        enableDragDrop('textEntry');
+
+        // Play, pause, resume and stop the contents of the text input as speech
+        // when buttons are clicked
+        const speechInput = document.getElementById('textEntry');
+        ['play', 'pause', 'resume', 'stop'].forEach(id => {
+          const button = document.getElementById(id);
+          button.onclick = () => {
+            host.TextToSpeechFeature[id](speechInput.value);
+          };
+        });
+
+        // Set up base scene
+        function createScene() {
+          // Base scene
+          const scene = new THREE.Scene();
+          const clock = new THREE.Clock();
+          scene.background = new THREE.Color(0x33334d);
+          scene.fog = new THREE.Fog(0x33334d, 0, 10);
+
+          // Renderer
+          renderer = new THREE.WebGLRenderer({antialias: true});
+          renderer.setPixelRatio(window.devicePixelRatio);
+          renderer.setSize(window.innerWidth, window.innerHeight);
+          renderer.outputEncoding = THREE.sRGBEncoding;
+          renderer.shadowMap.enabled = true;
+          renderer.setClearColor(0x33334d);
+          renderer.domElement.id = 'renderCanvas';
+          document.body.appendChild(renderer.domElement);
+
+          // Env map
+          new THREE.TextureLoader()
+            .setPath('assets/')
+            .load('images/machine_shop.jpg', hdrEquirect => {
+              const hdrCubeRenderTarget = pmremGenerator.fromEquirectangular(
+                hdrEquirect
+              );
+              hdrEquirect.dispose();
+              pmremGenerator.dispose();
+
+              scene.environment = hdrCubeRenderTarget.texture;
+            });
+
+          const pmremGenerator = new THREE.PMREMGenerator(renderer);
+          pmremGenerator.compileEquirectangularShader();
+
+          // Camera
+          const camera = new THREE.PerspectiveCamera(
+            THREE.MathUtils.radToDeg(0.8),
+            window.innerWidth / window.innerHeight,
+            0.1,
+            1000
+          );
+          const controls = new THREE.OrbitControls(camera, renderer.domElement);
+          camera.position.set(0, 1.6, 2.6);
+          controls.target = new THREE.Vector3(0, 1, 0);
+          controls.screenSpacePanning = true;
+          controls.update();
+
+          // Handle window resize
+          function onWindowResize() {
+            camera.aspect = window.innerWidth / window.innerHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(window.innerWidth, window.innerHeight);
+          }
+          window.addEventListener('resize', onWindowResize, false);
+
+          // Render loop
+          function render() {
+            requestAnimationFrame(render);
+            controls.update();
+
+            renderFn.forEach(fn => {
+              fn();
+            });
+
+            renderer.render(scene, camera);
+          }
+
+          render();
+
+          // Lights
+          const hemiLight = new THREE.HemisphereLight(0xffffff, 0x000000, 0.6);
+          hemiLight.position.set(0, 1, 0);
+          hemiLight.intensity = 0.6;
+          scene.add(hemiLight);
+
+          const dirLight = new THREE.DirectionalLight(0xffffff);
+          dirLight.position.set(0, 5, 5);
+
+          dirLight.castShadow = true;
+          dirLight.shadow.mapSize.width = 1024;
+          dirLight.shadow.mapSize.height = 1024;
+          dirLight.shadow.camera.top = 2.5;
+          dirLight.shadow.camera.bottom = -2.5;
+          dirLight.shadow.camera.left = -2.5;
+          dirLight.shadow.camera.right = 2.5;
+          dirLight.shadow.camera.near = 0.1;
+          dirLight.shadow.camera.far = 40;
+          scene.add(dirLight);
+
+          const dirLightTarget = new THREE.Object3D();
+          dirLight.add(dirLightTarget);
+          dirLightTarget.position.set(0, -0.5, -1.0);
+          dirLight.target = dirLightTarget;
+
+          // Environment
+          const groundMat = new THREE.MeshStandardMaterial({
+            color: 0x808080,
+            depthWrite: false,
+          });
+          groundMat.metalness = 0;
+          groundMat.refractionRatio = 0;
+          const ground = new THREE.Mesh(
+            new THREE.PlaneBufferGeometry(100, 100),
+            groundMat
+          );
+          ground.rotation.x = -Math.PI / 2;
+          ground.receiveShadow = true;
+          scene.add(ground);
+
+          return {scene, camera, clock};
+        }
+
+        // Load character model and animations
+        async function loadCharacter(
+          scene,
+          characterFile,
+          animationPath,
+          animationFiles
+        ) {
+          // Asset loader
+          const fileLoader = new THREE.FileLoader();
+          const gltfLoader = new THREE.GLTFLoader();
+
+          function loadAsset(loader, assetPath, onLoad) {
+            return new Promise(resolve => {
+              loader.load(assetPath, async asset => {
+                if (onLoad[Symbol.toStringTag] === 'AsyncFunction') {
+                  const result = await onLoad(asset);
+                  resolve(result);
+                } else {
+                  resolve(onLoad(asset));
+                }
+              });
+            });
+          }
+
+          // Load character model
+          const character = await loadAsset(gltfLoader, characterFile, gltf => {
+            // Transform the character
+            const character = gltf.scene;
+            scene.add(character);
+
+            // Cast shadows
+            character.traverse(object => {
+              if (object.isMesh) {
+                object.castShadow = true;
+              }
+            });
+
+            return character;
+          });
+
+          // Load animations
+          const clips = await Promise.all(
+            animationFiles.map((filename, index) => {
+              const filePath = `${animationPath}/${filename}`;
+
+              return loadAsset(gltfLoader, filePath, async gltf => {
+                return gltf.animations.map((clip, i) => {
+                  // Make the lipsync animation additive
+                  if (index) {
+                    THREE.AnimationUtils.makeClipAdditive(clip);
+                  }
+
+                  // Slice off the reference frame for viseme poses
+                  if (!clip.name.startsWith('stand_')) {
+                    clip = THREE.AnimationUtils.subclip(
+                      clip,
+                      clip.name,
+                      1,
+                      2,
+                      30
+                    );
+                  }
+
+                  return clip;
+                });
+              });
+            })
+          );
+
+          return {character, clips};
+        }
+
+        // Initialize the host
+        function createHost(
+          character,
+          audioAttachJoint,
+          voice,
+          engine,
+          idleClip,
+          lipsyncClips,
+          camera,
+          clock
+        ) {
+          // Add the host to the render loop
+          const host = new HOST.HostObject({owner: character, clock});
+          renderFn.push(() => {
+            host.update();
+          });
+
+          // Set up text to speech
+          const audioListener = new THREE.AudioListener();
+          camera.add(audioListener);
+          const audioAttach = character.getObjectByName(audioAttachJoint);
+          host.addFeature(HOST.aws.TextToSpeechFeature, false, {
+            listener: audioListener,
+            attachTo: audioAttach,
+            voice,
+            engine,
+          });
+
+          // Set up animation
+          host.addFeature(HOST.anim.AnimationFeature);
+
+          // Base idle
+          host.AnimationFeature.addLayer('Base');
+          host.AnimationFeature.addAnimation(
+            'Base',
+            idleClip.name,
+            HOST.anim.AnimationTypes.single,
+            {clip: idleClip}
+          );
+          host.AnimationFeature.playAnimation('Base', idleClip.name);
+
+          // Talking idle
+          host.AnimationFeature.addLayer('Talk', {
+            transitionTime: 0.75,
+            blendMode: HOST.anim.LayerBlendModes.Additive,
+          });
+          host.AnimationFeature.setLayerWeight('Talk', 0);
+          const talkClip = lipsyncClips.find(c => c.name === 'stand_talk');
+          lipsyncClips.splice(lipsyncClips.indexOf(talkClip), 1);
+          host.AnimationFeature.addAnimation(
+            'Talk',
+            talkClip.name,
+            HOST.anim.AnimationTypes.single,
+            {clip: talkClip}
+          );
+          host.AnimationFeature.playAnimation('Talk', talkClip.name);
+
+          // Viseme poses
+          host.AnimationFeature.addLayer('Viseme', {
+            transitionTime: 0.12,
+            blendMode: HOST.anim.LayerBlendModes.Additive,
+          });
+          host.AnimationFeature.setLayerWeight('Viseme', 0);
+          const blendStateOptions = lipsyncClips.map(clip => {
+            return {
+              name: clip.name,
+              clip,
+              weight: 0,
+            };
+          });
+          host.AnimationFeature.addAnimation(
+            'Viseme',
+            'visemes',
+            HOST.anim.AnimationTypes.freeBlend,
+            {blendStateOptions}
+          );
+          host.AnimationFeature.playAnimation('Viseme', 'visemes');
+
+          // Set up Lipsync
+          const visemeOptions = {
+            layers: [{name: 'Viseme', animation: 'visemes'}],
+          };
+          const talkingOptions = {
+            layers: [{name: 'Talk', animation: 'stand_talk'}],
+          };
+          host.addFeature(
+            HOST.LipsyncFeature,
+            false,
+            visemeOptions,
+            talkingOptions
+          );
+
+          return host;
+        }
+      }
+
+      main();
+    </script>
+  </body>
+</html>

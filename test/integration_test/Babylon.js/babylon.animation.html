@@ -1,0 +1,387 @@
+<!-- 
+  Copyright 2019 Amazon.com, Inc. or its affiliates. All Rights Reserved.
+  SPDX-License-Identifier: MIT-0 
+-->
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Babylon.js Host Test</title>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0"
+    />
+    <style>
+      a {
+        color: blue;
+      }
+
+      .ac {
+        /* prevent dat-gui from being selected */
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
+      }
+
+      .control-inactive {
+        color: #888;
+      }
+    </style>
+  </head>
+
+  <body>
+    <script src="../scriptDependencies/babylon.js"></script>
+    <script src="../scriptDependencies/babylonjs.loaders.min.js"></script>
+    <script src="../scriptDependencies/dat.gui.min.js"></script>
+    <script type="text/javascript" src="../../../dist/host.babylon.js"></script>
+    <script>
+      async function main() {
+        const {scene, shadowGenerator} = createScene();
+        const {character, clips} = await loadCharacter('../../assets/Xbot.glb');
+        const host = createHost();
+        createPanel();
+
+        function createScene() {
+          // Canvas
+          const canvas = document.createElement('canvas');
+          document.body.appendChild(canvas);
+          canvas.id = 'renderCanvas';
+          canvas.style.width = '100%';
+          canvas.style.height = '100%';
+          canvas.style['touch-action'] = 'none';
+
+          // Scene
+          const engine = new BABYLON.Engine(canvas, true);
+          const scene = new BABYLON.Scene(engine);
+          scene.useRightHandedSystem = true;
+          scene.fogColor.set(0.63, 0.63, 0.63);
+          scene.fogStart = 10;
+          scene.fogEnd = 50;
+          const assetManager = new BABYLON.AssetsManager(scene);
+          engine.runRenderLoop(scene.render.bind(scene));
+
+          // Camera
+          const camera = new BABYLON.ArcRotateCamera(
+            'Camera',
+            Math.PI / 2,
+            Math.PI / 2,
+            1.6,
+            new BABYLON.Vector3(0, 1.6, 0),
+            scene
+          );
+          camera.minZ = 0.1;
+          camera.maxZ = 1000;
+          camera.setPosition(new BABYLON.Vector3(0, 1.6, 2.6));
+          camera.setTarget(new BABYLON.Vector3(0, 1, 0));
+          camera.wheelDeltaPercentage = 0.01;
+          camera.attachControl(canvas, true);
+
+          // Lights
+          const hemiLight = new BABYLON.HemisphericLight(
+            'light1',
+            new BABYLON.Vector3(0, -20, 0),
+            scene
+          );
+          hemiLight.intensity = 2;
+          hemiLight.groundColor = BABYLON.Color3.FromHexString('0x444444');
+          hemiLight.specular = BABYLON.Color3.Black();
+
+          const dirLight = new BABYLON.DirectionalLight(
+            'dir01',
+            new BABYLON.Vector3(0, -0.5, -1.0),
+            scene
+          );
+          dirLight.position = new BABYLON.Vector3(0, 20, 0);
+          dirLight.specular = BABYLON.Color3.FromHexString('0x444444');
+
+          // Shadows
+          const shadowGenerator = new BABYLON.ShadowGenerator(1024, dirLight);
+          shadowGenerator.useBlurExponentialShadowMap = true;
+          shadowGenerator.blurKernel = 32;
+
+          // Environment
+          const helper = scene.createDefaultEnvironment({
+            enableGroundShadow: true,
+          });
+          helper.setMainColor(new BABYLON.Color3(1, 1, 1));
+          helper.ground.receiveShadows = true;
+
+          return {scene, shadowGenerator};
+        }
+
+        function loadCharacter(filePath) {
+          const currentAnimations = [...scene.animationGroups];
+
+          return new Promise(resolve => {
+            BABYLON.SceneLoader.ImportMesh(
+              '',
+              filePath,
+              undefined,
+              scene,
+              newMeshes => {
+                const [character] = newMeshes;
+                const newAnimations = scene.animationGroups.filter(
+                  a => !currentAnimations.includes(a)
+                );
+
+                // Cast shadows
+                shadowGenerator.addShadowCaster(character, true);
+                for (var index = 0; index < newMeshes.length; index++) {
+                  newMeshes[index].receiveShadows = false;
+                }
+
+                resolve({character, clips: newAnimations});
+              }
+            );
+          });
+        }
+
+        function createHost() {
+          // Create a host with an animation feature
+          const host = new HOST.HostObject({owner: character});
+          host.addFeature(HOST.anim.AnimationFeature);
+          scene.onBeforeRenderObservable.add(() => {
+            host.update();
+          });
+
+          // Create 3 layers: Base, Additive, Override
+          host.AnimationFeature.addLayer('BaseLayer');
+          host.AnimationFeature.addLayer('AdditiveLayer', {
+            blendMode: HOST.anim.LayerBlendModes.Additive,
+          });
+          host.AnimationFeature.addLayer('OverrideLayer');
+          host.AnimationFeature.addLayer('FreeBlendLayer');
+
+          // Set up base layer animations
+          const idleClip = clips.find(a => a.name === 'idle');
+          host.AnimationFeature.addAnimation(
+            'BaseLayer',
+            idleClip.name,
+            HOST.anim.AnimationTypes.single,
+            {clip: idleClip}
+          );
+          host.AnimationFeature.playAnimation('BaseLayer', 'idle');
+
+          // Set up additive layer animations
+          let sneakClip = clips.find(a => a.name === 'sneak_pose');
+          BABYLON.AnimationGroup.MakeAnimationAdditive(sneakClip);
+          host.AnimationFeature.addAnimation(
+            'AdditiveLayer',
+            sneakClip.name,
+            HOST.anim.AnimationTypes.single,
+            {clip: sneakClip, from: 2 / 30, to: 3 / 30}
+          );
+          host.AnimationFeature.playAnimation('AdditiveLayer', 'sneak_pose');
+
+          // Set up override layer animations
+          const runClip = clips.find(a => a.name === 'run');
+          host.AnimationFeature.addAnimation(
+            'OverrideLayer',
+            runClip.name,
+            HOST.anim.AnimationTypes.single,
+            {clip: runClip}
+          );
+
+          host.AnimationFeature.playAnimation(
+            'OverrideLayer',
+            'run',
+            0.5,
+            HOST.anim.Easing.Quadratic.InOut
+          );
+
+          // Set up free-blend layer animations
+          const sadClip = clips.find(a => a.name === 'sad_pose');
+          const agreeClip = clips.find(a => a.name === 'agree');
+          const headShakeClip = clips.find(a => a.name === 'headShake');
+          const walkClip = clips.find(a => a.name === 'walk');
+          host.AnimationFeature.addAnimation(
+            'FreeBlendLayer',
+            'freeBlend',
+            HOST.anim.AnimationTypes.freeBlend,
+            {
+              blendStateOptions: [
+                {
+                  name: 'blend1',
+                  clip: sadClip,
+                  from: 2 / 30,
+                  to: 3 / 30,
+                  weight: 1,
+                },
+                {name: 'blend2', clip: agreeClip, weight: 1},
+                {name: 'blend3', clip: headShakeClip, weight: 1},
+                {name: 'blend4', clip: walkClip, weight: 1},
+              ],
+            }
+          );
+
+          host.AnimationFeature.playAnimation('FreeBlendLayer', 'freeBlend');
+
+          return host;
+        }
+
+        function createPanel() {
+          const panel = new dat.GUI({width: 310});
+          const panelSettings = {
+            Pause: () => {
+              host.AnimationFeature.pause();
+            },
+            Resume: () => {
+              host.AnimationFeature.resume();
+            },
+          };
+
+          // Create a folder for each layer
+          const folders = host.AnimationFeature.layers.map(name => {
+            const folder = panel.addFolder(name);
+            const folderSettings = {
+              Weight: 1,
+              BlendWeight1: 1,
+              BlendWeight2: 1,
+              BlendWeight3: 1,
+              BlendWeight4: 1,
+              Pause: () => {
+                host.AnimationFeature.pauseLayer(name);
+              },
+              Resume: () => {
+                host.AnimationFeature.resumeLayer(name);
+              },
+            };
+
+            // Create a weight slider
+            folder
+              .add(folderSettings, 'Weight', 0.0, 1.0, 0.01)
+              .listen()
+              .onChange(weight => {
+                host.AnimationFeature.setLayerWeight(name, weight);
+                const currentState =
+                  host._features.AnimationFeature._layerMap[name]._currentState;
+              });
+
+            if (name === 'FreeBlendLayer') {
+              // Create sliders for each blend weight
+              folder
+                .add(folderSettings, 'BlendWeight1', 0.0, 1.0, 0.01)
+                .listen()
+                .onChange(weight => {
+                  host.AnimationFeature.setAnimationBlendWeight(
+                    name,
+                    'freeBlend',
+                    'blend1',
+                    weight
+                  );
+                });
+              folder
+                .add(folderSettings, 'BlendWeight2', 0.0, 1.0, 0.01)
+                .listen()
+                .onChange(weight => {
+                  host.AnimationFeature.setAnimationBlendWeight(
+                    name,
+                    'freeBlend',
+                    'blend2',
+                    weight
+                  );
+                });
+              folder
+                .add(folderSettings, 'BlendWeight3', 0.0, 1.0, 0.01)
+                .listen()
+                .onChange(weight => {
+                  host.AnimationFeature.setAnimationBlendWeight(
+                    name,
+                    'freeBlend',
+                    'blend3',
+                    weight
+                  );
+                });
+              folder
+                .add(folderSettings, 'BlendWeight4', 0.0, 1.0, 0.01)
+                .listen()
+                .onChange(weight => {
+                  host.AnimationFeature.setAnimationBlendWeight(
+                    name,
+                    'freeBlend',
+                    'blend4',
+                    weight
+                  );
+                });
+            }
+
+            // Create an animation selector
+            const animations = [
+              null,
+              ...host.AnimationFeature.getAnimations(name),
+            ];
+            const currentAnimation = host.AnimationFeature.getCurrentAnimation(
+              name
+            );
+            const switcherSettings = {['Current Animation']: currentAnimation};
+
+            const animSwitcher = folder
+              .add(switcherSettings, 'Current Animation')
+              .options(animations)
+              .listen();
+            animSwitcher.onChange(() => {
+              const anim =
+                switcherSettings['Current Animation'] === 'null'
+                  ? null
+                  : switcherSettings['Current Animation'];
+              host.AnimationFeature.playAnimation(
+                name,
+                anim,
+                0.5,
+                HOST.anim.Easing.Quadratic.InOut
+              );
+            });
+
+            // Add resume button
+            folder.add(folderSettings, 'Pause');
+
+            // Add pause button
+            folder.add(folderSettings, 'Resume');
+
+            // Create an animations folder
+            const animFolder = folder.addFolder('Animations');
+            animations.slice(1).forEach(animation => {
+              animationFolder = animFolder.addFolder(animation);
+              const animationSettings = {
+                Play: () => {
+                  switcherSettings['Current Animation'] = animation;
+                  host.AnimationFeature.playAnimation(name, animation);
+                },
+                Pause: () => {
+                  host.AnimationFeature.pauseAnimation(name);
+                },
+                Resume: () => {
+                  switcherSettings['Current Animation'] = animation;
+                  host.AnimationFeature.resumeAnimation(name, animation);
+                },
+                Stop: () => {
+                  host.AnimationFeature.stopAnimation(name, animation);
+                },
+              };
+
+              // Add playback buttons
+              animationFolder.add(animationSettings, 'Play');
+              animationFolder.add(animationSettings, 'Pause');
+              animationFolder.add(animationSettings, 'Resume');
+              animationFolder.add(animationSettings, 'Stop');
+            });
+
+            folder.open();
+
+            return folder;
+          });
+
+          // Create feature level play and pause buttons
+          // Add resume button
+          panel.add(panelSettings, 'Pause');
+
+          // Add pause button
+          panel.add(panelSettings, 'Resume');
+        }
+      }
+
+      main();
+    </script>
+  </body>
+</html>
