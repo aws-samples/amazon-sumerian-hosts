@@ -4,11 +4,11 @@ Amazon Sumerian Hosts is an experimental open source project that aims to make i
 
 You can clone the repository to obtain glTF character animation assets tailored to work well with the Host API. You can use them as-is, modify them in DCC software such as [Blender](https://www.blender.org/) or use them as a guide to develop your own 3D assets.
 
-The easiest way to start using the API is to include the build file that corresponds with the rendering engine you are using. See the [Getting Started](#Getting-Started) guide for a walkthrough using this method and the [API Documentation](https://aws-samples.github.io/amazon-sumerian-hosts/) for more detailed information on the classes and methods available. Amazon Sumerian Hosts is a published [npm](https://www.npmjs.com/) package, so alternatively you can install in an existing Node.js project by running `npm install --save-dev SumerianHosts`. If you'd like to pull the gitub repository and create your own build, see [Building the Package](#Building-the-Package) for prerequisites and instructions on how to do that.
+The easiest way to start using the API is to include the build file that corresponds with the rendering engine you are using. See the [Getting Started](#Getting-Started) guide for a walkthrough using this method and the [API Documentation](https://aws-samples.github.io/amazon-sumerian-hosts/) for more detailed information on the classes and methods available. Amazon Sumerian Hosts is a published [npm](https://www.npmjs.com/) package, so alternatively you can install in an existing Node.js project by running `npm install --save-dev amazon-sumerian-hosts`. If you'd like to pull the gitub repository and create your own build, see [Building the Package](#Building-the-Package) for prerequisites and instructions on how to do that.
 
 ## License
 
-This library is licensed under the MIT-0 License. See the LICENSE file.  
+This library is licensed under the MIT-0 License. See the [LICENSE](LICENSE) file. The assets within examples are licensed under the CC-BY-4.0 License. See the [LICENSE](examples/assets/LICENSE) file.
 <br/><br/>
 
 # [Getting Started](#Getting-Started)
