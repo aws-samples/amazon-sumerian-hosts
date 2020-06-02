@@ -1,4 +1,6 @@
 karma.conf.js
 webpack*
 test
+docs*
+jsdoc*
 
