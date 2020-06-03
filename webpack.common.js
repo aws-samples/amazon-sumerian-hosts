@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: MIT-0
 const path = require('path');
 const webpack = require('webpack');
-const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
+const TerserPlugin = require('terser-webpack-plugin');
 
 const corePath = path.resolve(__dirname, './src/core/');
 const threePath = path.resolve(__dirname, 'src/three.js/');
@@ -23,7 +23,7 @@ const baseConfig = {
   optimization: {
     minimize: true,
     minimizer: [
-      new UglifyJsPlugin({
+      new TerserPlugin({
         sourceMap: true,
         parallel: true,
       }),
