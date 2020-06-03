@@ -8,3 +8,4 @@ npm-debug.log
 .jshintrc
 .vs/
 .gitconfig
+package-lock.json
