@@ -15,7 +15,10 @@ const baseConfig = {
     filename: '[name].js',
     path: path.resolve(__dirname, 'dist'),
     library: 'HOST',
+    libraryTarget: 'umd',
     libraryExport: 'default',
+    umdNamedDefine: true,
+    globalObject: '(typeof self !== "undefined" ? self : typeof global !== "undefined" ? global : this)'
   },
   optimization: {
     minimize: true,

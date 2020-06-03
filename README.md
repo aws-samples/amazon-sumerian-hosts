@@ -61,6 +61,11 @@ Here we will take a look at the scripts necessary for the example code to functi
   ```
   host.three.js is the build file of the Amazon Sumerian Hosts repository that is specific to the three.js rendering engine. It must be included after the three.min.js build file. This will make a module called `HOST` available to any scripts included after this.
 
+  ```javascript
+  import HOST from 'amazon-sumerian-hosts/dist/host.three.js'
+  ```
+  Alternatively, if you are working on a NodeJS project and install the package via `npm install --save-dev amazon-sumerian-hosts`, you can import the HOST library using the above syntax in any of your source files.
+
 Now we'll move on to the body of the html file.
 
 ### Step 2. Add a loading screen
@@ -463,6 +468,11 @@ Here we will take a look at the scripts necessary for the example code to functi
   <script type="text/javascript" src="../dist/host.babylon.js"></script>
   ```
   host.babylon.js is the build file of the Amazon Sumerian Hosts repository that is specific to the Babylon.js rendering engine. It must be included after the babylon.js build file. This will make a module called `HOST` available to any scripts included after this.
+
+  ```javascript
+  import HOST from 'amazon-sumerian-hosts/dist/host.babylon.js'
+  ```
+  Alternatively, if you are working on a NodeJS project and install the package via `npm install --save-dev amazon-sumerian-hosts`, you can import the HOST library using the above syntax in any of your source files.
 
 Now we'll move on to the body of the html file.
 
