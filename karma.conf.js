@@ -23,7 +23,6 @@ module.exports = function(config) {
     },
 
     plugins: [
-      'karma-babel-preprocessor',
       'karma-jasmine',
       'karma-webpack',
       'karma-firefox-launcher',
