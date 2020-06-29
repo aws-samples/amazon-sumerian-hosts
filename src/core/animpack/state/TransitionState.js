@@ -79,15 +79,29 @@ class TransitionState extends AbstractState {
 
     this._from = currentStates;
     this._to = targetState;
+    this.reset(transitionTime, easingFn, onComplete);
+  }
 
+  /**
+   * Start new weight animations state the transition controls. This should be called
+   * if an animation is played with a transition time greater than zero and a transtion
+   * to that animation was already in progress.
+   *
+   * @param {number} transitionTime - Amount of time it will in seconds take for
+   * weight animations to complete.
+   * @param {Function=} easingFn - Easing function to use for weight animations.
+   * Default is Easing.Linear.InOut.
+   * @param {Function=} onComplete - Function to execute once all weight animations
+   * complete.
+   */
+  reset(transitionTime, easingFn, onComplete) {
     // Stop any pending promises
     this._weightPromise.cancel();
-    const weightPromises = [];
 
     // Start tweening weight to 0 for the current states
-    this._from.forEach(state => {
-      weightPromises.push(state.setWeight(0, transitionTime, easingFn));
-    });
+    const weightPromises = this._from.map(state =>
+      state.setWeight(0, transitionTime, easingFn)
+    );
 
     // Start tweening weight to 1 for the target state
     if (this._to) {
@@ -97,31 +111,40 @@ class TransitionState extends AbstractState {
       this.name = null;
     }
 
-    this._weightPromise = Deferred.all(weightPromises).then(() => {
-      const canceled = weightPromises.some(p => p.canceled);
-
-      // Signal completion if animations complete without being canceled
-      if (!canceled && typeof onComplete === 'function') {
+    this._weightPromise = Deferred.all(weightPromises, () => {
+      this._from.forEach(state => {
+        state.cancel();
+      });
+      if (typeof onComplete === 'function') {
         onComplete();
       }
     });
   }
 
-  play() {
-    const playPromise = super.play();
-    let toPromise;
+  play(onFinish, onError, onCancel, onNext) {
+    this._paused = false;
+    this._playCallbacks.onFinish = onFinish;
+    this._playCallbacks.onError = onError;
+    this._playCallbacks.onCancel = onCancel;
+
+    const promises = [this._weightPromise];
 
     this._from.forEach(state => {
       state.resume();
     });
 
     if (this._to) {
-      toPromise = this._to.play();
+      this._promises.play = this._to.play(
+        undefined,
+        undefined,
+        undefined,
+        onNext
+      );
+      promises.push(this._promises.play);
     }
 
-    return this._weightPromise.then(() => {
-      return toPromise || playPromise;
-    });
+    this._promises.finish = Deferred.all(promises, onFinish, onError, onCancel);
+    return this._promises.finish;
   }
 
   pause() {
@@ -136,21 +159,38 @@ class TransitionState extends AbstractState {
     return super.pause();
   }
 
-  resume() {
-    const playPromise = super.resume();
-    let toPromise;
+  resume(onFinish, onError, onCancel, onNext) {
+    this._paused = false;
+
+    if (!this._promises.play.pending) {
+      this._playCallbacks.onFinish = onFinish || this._playCallbacks.onFinish;
+      this._playCallbacks.onError = onError || this._playCallbacks.onError;
+      this._playCallbacks.onCancel = onCancel || this._playCallbacks.onCancel;
+    }
+
+    const promises = [this._weightPromise];
 
     this._from.forEach(state => {
       state.resume();
     });
 
     if (this._to) {
-      toPromise = this._to.resume();
+      this._promises.play = this._to.resume(
+        undefined,
+        undefined,
+        undefined,
+        onNext
+      );
+      promises.push(this._promises.play);
     }
 
-    return this._weightPromise.then(() => {
-      return toPromise || playPromise;
-    });
+    this._promises.finish = Deferred.all(
+      promises,
+      this._playCallbacks.onFinish,
+      this._playCallbacks.onError,
+      this._playCallbacks.onCancel
+    );
+    return this._promises.finish;
   }
 
   cancel() {

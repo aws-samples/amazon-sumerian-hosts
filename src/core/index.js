@@ -11,6 +11,7 @@ import {env} from './HostEnvironment';
 import Messenger from './Messenger';
 import HostObject from './HostObject';
 import LipsyncFeature, {DefaultVisemeMap} from './LipsyncFeature';
+import GestureFeature, {DefaultGestureWords} from './GestureFeature';
 
 import aws from './awspack';
 import anim from './animpack';
@@ -41,9 +42,17 @@ export default {
    */
   LipsyncFeature,
   /**
+   * @see GestureFeature
+   */
+  GestureFeature,
+  /**
    * @see DefaultVisemeMap
    */
   DefaultVisemeMap,
+  /**
+   * @see DefaultGestureWords
+   */
+  DefaultGestureWords,
   /**
    * @see module:core/awspack
    */

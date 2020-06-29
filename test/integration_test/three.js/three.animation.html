@@ -46,6 +46,7 @@
         const {scene, clock} = createScene();
         const {character, clips} = await loadCharacter('../../assets/Xbot.glb');
         const host = createHost();
+        addListeners(host);
         createPanel();
 
         function createScene() {
@@ -166,8 +167,9 @@
           host.AnimationFeature.addLayer('AdditiveLayer', {
             blendMode: HOST.anim.LayerBlendModes.Additive,
           });
-          host.AnimationFeature.addLayer('OverrideLayer');
-          host.AnimationFeature.addLayer('FreeBlendLayer');
+          host.AnimationFeature.addLayer('OverrideLayer', {
+            transitionTime: 0.5,
+          });
 
           // Set up base layer animations
           const idleClip = clips.find(a => a.name === 'idle');
@@ -198,22 +200,6 @@
           host.AnimationFeature.playAnimation('AdditiveLayer', 'sneak_pose');
 
           // Set up override layer animations
-          const runClip = clips.find(a => a.name === 'run');
-          host.AnimationFeature.addAnimation(
-            'OverrideLayer',
-            runClip.name,
-            HOST.anim.AnimationTypes.single,
-            {clip: runClip}
-          );
-
-          host.AnimationFeature.playAnimation(
-            'OverrideLayer',
-            'run',
-            0.5,
-            HOST.anim.Easing.Quadratic.InOut
-          );
-
-          // Set up free-blend layer animations
           let sadClip = clips.find(a => a.name === 'sad_pose');
           sadClip = THREE.AnimationUtils.subclip(
             sadClip,
@@ -225,25 +211,71 @@
           const agreeClip = clips.find(a => a.name === 'agree');
           const headShakeClip = clips.find(a => a.name === 'headShake');
           const walkClip = clips.find(a => a.name === 'walk');
+          const runClip = clips.find(a => a.name === 'run');
+
+          // Set up freeBlend animation
           host.AnimationFeature.addAnimation(
-            'FreeBlendLayer',
+            'OverrideLayer',
             'freeBlend',
             HOST.anim.AnimationTypes.freeBlend,
             {
               blendStateOptions: [
                 {
-                  name: 'blend1',
+                  name: 'sad',
                   clip: sadClip,
                   weight: 1,
                 },
-                {name: 'blend2', clip: agreeClip, weight: 1},
-                {name: 'blend3', clip: headShakeClip, weight: 1},
-                {name: 'blend4', clip: walkClip, weight: 1},
+                {name: 'agree', clip: agreeClip, weight: 1},
+                {name: 'headShake', clip: headShakeClip, weight: 1},
+                {name: 'walk', clip: walkClip, weight: 1},
               ],
             }
           );
 
-          host.AnimationFeature.playAnimation('FreeBlendLayer', 'freeBlend');
+          // Set up queue animations
+          host.AnimationFeature.addAnimation(
+            'OverrideLayer',
+            'movementQueue',
+            HOST.anim.AnimationTypes.queue,
+            {
+              queueOptions: [
+                {
+                  name: 'walk',
+                  clip: walkClip,
+                  loopCount: 2,
+                },
+                {
+                  name: 'run',
+                  clip: runClip,
+                  loopCount: 3,
+                },
+              ],
+            }
+          );
+          host.AnimationFeature.addAnimation(
+            'OverrideLayer',
+            'idleQueue',
+            HOST.anim.AnimationTypes.queue,
+            {
+              queueOptions: [
+                {
+                  name: 'headShake',
+                  clip: headShakeClip,
+                },
+                {
+                  name: 'agree',
+                  clip: agreeClip,
+                  loopCount: 1,
+                },
+              ],
+            }
+          );
+
+          host.AnimationFeature.playAnimation(
+            'OverrideLayer',
+            'movementQueue',
+            0
+          );
 
           return host;
         }
@@ -264,10 +296,6 @@
             const folder = panel.addFolder(name);
             const folderSettings = {
               Weight: 1,
-              BlendWeight1: 1,
-              BlendWeight2: 1,
-              BlendWeight3: 1,
-              BlendWeight4: 1,
               Pause: () => {
                 host.AnimationFeature.pauseLayer(name);
               },
@@ -285,54 +313,6 @@
                 const currentState =
                   host._features.AnimationFeature._layerMap[name]._currentState;
               });
-
-            if (name === 'FreeBlendLayer') {
-              // Create sliders for each blend weight
-              folder
-                .add(folderSettings, 'BlendWeight1', 0.0, 1.0, 0.01)
-                .listen()
-                .onChange(weight => {
-                  host.AnimationFeature.setAnimationBlendWeight(
-                    name,
-                    'freeBlend',
-                    'blend1',
-                    weight
-                  );
-                });
-              folder
-                .add(folderSettings, 'BlendWeight2', 0.0, 1.0, 0.01)
-                .listen()
-                .onChange(weight => {
-                  host.AnimationFeature.setAnimationBlendWeight(
-                    name,
-                    'freeBlend',
-                    'blend2',
-                    weight
-                  );
-                });
-              folder
-                .add(folderSettings, 'BlendWeight3', 0.0, 1.0, 0.01)
-                .listen()
-                .onChange(weight => {
-                  host.AnimationFeature.setAnimationBlendWeight(
-                    name,
-                    'freeBlend',
-                    'blend3',
-                    weight
-                  );
-                });
-              folder
-                .add(folderSettings, 'BlendWeight4', 0.0, 1.0, 0.01)
-                .listen()
-                .onChange(weight => {
-                  host.AnimationFeature.setAnimationBlendWeight(
-                    name,
-                    'freeBlend',
-                    'blend4',
-                    weight
-                  );
-                });
-            }
 
             // Create an animation selector
             const animations = [
@@ -386,6 +366,13 @@
                 Stop: () => {
                   host.AnimationFeature.stopAnimation(name, animation);
                 },
+                Next: () => {
+                  if (switcherSettings['Current Animation'] !== animation) {
+                    switcherSettings['Current Animation'] = animation;
+                    host.AnimationFeature.resumeAnimation(name, animation);
+                  }
+                  host.AnimationFeature.playNextAnimation('OverrideLayer');
+                },
               };
 
               // Add playback buttons
@@ -393,6 +380,37 @@
               animationFolder.add(animationSettings, 'Pause');
               animationFolder.add(animationSettings, 'Resume');
               animationFolder.add(animationSettings, 'Stop');
+
+              const animType = host.AnimationFeature.getAnimationType(
+                name,
+                animation
+              );
+
+              // Add the next button for queue states
+              if (animType === 'queue') {
+                animationFolder.add(animationSettings, 'Next');
+              }
+
+              // Add weight sliders for freeBlend states
+              else if (animType === 'freeBlend') {
+                host.AnimationFeature.getAnimationBlendNames(
+                  name,
+                  animation
+                ).forEach(blendName => {
+                  animationSettings[blendName] = 1;
+                  animationFolder
+                    .add(animationSettings, blendName, 0.0, 1.0, 0.01)
+                    .listen()
+                    .onChange(weight => {
+                      host.AnimationFeature.setAnimationBlendWeight(
+                        name,
+                        animation,
+                        blendName,
+                        weight
+                      );
+                    });
+                });
+              }
             });
 
             folder.open();
@@ -406,6 +424,56 @@
 
           // Add pause button
           panel.add(panelSettings, 'Resume');
+        }
+
+        function addListeners(host) {
+          host.listenTo(
+            host.AnimationFeature.EVENTS.playAnimation,
+            e => {
+              console.log('Play animation', e);
+            },
+            host
+          );
+
+          host.listenTo(
+            host.AnimationFeature.EVENTS.playNextAnimation,
+            e => {
+              console.log('Next animation', e);
+            },
+            host
+          );
+
+          host.listenTo(
+            host.AnimationFeature.EVENTS.pauseAnimation,
+            e => {
+              console.log('Pause animation', e);
+            },
+            host
+          );
+
+          host.listenTo(
+            host.AnimationFeature.EVENTS.resumeAnimation,
+            e => {
+              console.log('Resume animation', e);
+            },
+            host
+          );
+
+          host.listenTo(
+            host.AnimationFeature.EVENTS.interruptAnimation,
+            e => {
+              console.log('Interrupt animation', e);
+            },
+            host
+          );
+
+          host.listenTo(
+            host.AnimationFeature.EVENTS.stopAnimation,
+            e => {
+              console.log('Stop animation', e);
+            },
+            host
+          );
         }
       }
 

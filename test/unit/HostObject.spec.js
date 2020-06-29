@@ -1,8 +1,10 @@
+/* eslint-disable no-underscore-dangle */
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: MIT-0
 /* eslint-disable no-undef */
 import HostObject from 'app/HostObject';
 import AbstractHostFeature from 'core/AbstractHostFeature';
+import Deferred from 'core/Deferred';
 import describeEnvironment from './EnvironmentHarness';
 
 describeEnvironment('HostObject', (options = {}) => {
@@ -39,6 +41,55 @@ describeEnvironment('HostObject', (options = {}) => {
         expect(host.deltaTime / 1000).toBeCloseTo(0.1, 0);
         done();
       }, 100);
+    });
+  });
+
+  describe('wait', () => {
+    it('should return a Deferred promise', () => {
+      expect(host.wait(3)).toBeInstanceOf(Deferred);
+    });
+
+    it('should log a warning if the seconds argument is not a number', () => {
+      const onWarn = spyOn(console, 'warn');
+      host.wait('notANumber');
+
+      expect(onWarn).toHaveBeenCalledTimes(1);
+    });
+
+    it('should add a new deferred to the _waits array', () => {
+      const currentWaits = host._waits.length;
+      host.wait(3);
+
+      expect(host._waits.length).toBeGreaterThan(currentWaits);
+    });
+
+    it('should resolve immediately if the seconds argument is less than or equal to zero', () => {
+      expectAsync(host.wait(0)).toBeResolved();
+
+      expectAsync(host.wait(-1)).toBeResolved();
+
+      expectAsync(host.wait(1)).not.toBeResolved();
+    });
+
+    it("should execute the deferred's execute method with delta time when update is executed", () => {
+      const wait = host.wait(3);
+      const onExecute = spyOn(wait, 'execute');
+      const {deltaTime} = host;
+
+      host.update();
+
+      expect(onExecute).toHaveBeenCalledWith(deltaTime);
+    });
+
+    it('should remove the deferred from the _waits array once the deferred is no longer pending', () => {
+      const wait = host.wait(0.001);
+
+      expect(host._waits.includes(wait)).toBeTrue();
+
+      wait.resolve();
+      wait.then(() => {
+        expect(host._waits.includes(wait)).toBeFalse();
+      });
     });
   });
 

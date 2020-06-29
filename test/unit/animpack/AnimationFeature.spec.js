@@ -36,9 +36,9 @@ describeEnvironment('AnimationFeature', (options = {}) => {
         'resume',
         'pauseWeight',
         'resumeWeight',
-        'addAnimation',
-        'removeAnimation',
-        'renameAnimation',
+        'addState',
+        'removeState',
+        'renameState',
         'playAnimation',
         'pauseAnimation',
         'resumeAnimation',
@@ -52,6 +52,9 @@ describeEnvironment('AnimationFeature', (options = {}) => {
         blendMode: LayerBlendModes.Override,
       }
     );
+    mockLayer1.getStateNames = jasmine.createSpy('getStateNames');
+    mockLayer1.pause.and.callFake(() => true);
+    mockLayer1.resume.and.callFake(() => true);
     mockLayer2 = jasmine.createSpyObj(
       'layer2',
       [
@@ -61,9 +64,10 @@ describeEnvironment('AnimationFeature', (options = {}) => {
         'resume',
         'pauseWeight',
         'resumeWeight',
-        'addAnimation',
-        'removeAnimation',
-        'renameAnimation',
+        'getStateNames',
+        'addState',
+        'removeState',
+        'renameState',
         'playAnimation',
         'pauseAnimation',
         'resumeAnimation',
@@ -77,6 +81,9 @@ describeEnvironment('AnimationFeature', (options = {}) => {
         blendMode: LayerBlendModes.Additive,
       }
     );
+    mockLayer2.getStateNames = jasmine.createSpy('getStateNames');
+    mockLayer2.pause.and.callFake(() => true);
+    mockLayer2.resume.and.callFake(() => true);
     mockLayer3 = jasmine.createSpyObj(
       'layer3',
       [
@@ -86,9 +93,10 @@ describeEnvironment('AnimationFeature', (options = {}) => {
         'resume',
         'pauseWeight',
         'resumeWeight',
-        'addAnimation',
-        'removeAnimation',
-        'renameAnimation',
+        'getStateNames',
+        'addState',
+        'removeState',
+        'renameState',
         'playAnimation',
         'pauseAnimation',
         'resumeAnimation',
@@ -102,6 +110,9 @@ describeEnvironment('AnimationFeature', (options = {}) => {
         blendMode: LayerBlendModes.Override,
       }
     );
+    mockLayer3.getStateNames = jasmine.createSpy('getStateNames');
+    mockLayer3.pause.and.callFake(() => true);
+    mockLayer3.resume.and.callFake(() => true);
 
     animationFeature = new AnimationFeature(mockHost);
     animationFeature._layers.push(mockLayer1);
@@ -219,9 +230,12 @@ describeEnvironment('AnimationFeature', (options = {}) => {
 
     it('should log a warning if animationName is not unique for the layer', () => {
       const onWarn = spyOn(console, 'warn');
-      mockLayer1.animations = ['newAnim'];
+      mockLayer1.getStateNames.and.callFake(() => {
+        return ['newAnim'];
+      });
       animationFeature._validateNewAnimation('layer1', 'newAnim');
 
+      expect(mockLayer1.getStateNames).toHaveBeenCalledTimes(1);
       expect(onWarn).toHaveBeenCalledTimes(1);
     });
   });
@@ -583,15 +597,16 @@ describeEnvironment('AnimationFeature', (options = {}) => {
       onCreateState.and.callFake(options => options);
       animationFeature.addAnimation('layer1', 'newAnim');
 
-      expect(mockLayer1.addAnimation).toHaveBeenCalledWith({
+      expect(mockLayer1.addState).toHaveBeenCalledWith({
         name: 'newAnim',
         blendMode: 'Override',
+        transitionTime: mockLayer1.transitionTime,
       });
     });
 
     it('should return a boolean', () => {
       spyOn(animationFeature, '_createSingleState');
-      mockLayer1.addAnimation.and.callFake(() => true);
+      mockLayer1.addState.and.callFake(() => true);
       const result = animationFeature.addAnimation('layer1', 'newAnim');
 
       expect(typeof result).toEqual('boolean');
@@ -612,11 +627,11 @@ describeEnvironment('AnimationFeature', (options = {}) => {
     it('should execute removeAnimation on the layer', () => {
       animationFeature.removeAnimation('layer1', 'newAnim');
 
-      expect(mockLayer1.removeAnimation).toHaveBeenCalledWith('newAnim');
+      expect(mockLayer1.removeState).toHaveBeenCalledWith('newAnim');
     });
 
     it('should return a boolean', () => {
-      mockLayer1.removeAnimation.and.callFake(() => true);
+      mockLayer1.removeState.and.callFake(() => true);
       const result = animationFeature.removeAnimation('layer1', 'newAnim');
 
       expect(typeof result).toEqual('boolean');
@@ -638,14 +653,11 @@ describeEnvironment('AnimationFeature', (options = {}) => {
     it('should execute renameAnimation on the layer', () => {
       animationFeature.renameAnimation('layer1', 'oldName', 'newName');
 
-      expect(mockLayer1.renameAnimation).toHaveBeenCalledWith(
-        'oldName',
-        'newName'
-      );
+      expect(mockLayer1.renameState).toHaveBeenCalledWith('oldName', 'newName');
     });
 
     it('should return a string', () => {
-      mockLayer1.renameAnimation.and.callFake((_oldName, newName) => newName);
+      mockLayer1.renameState.and.callFake((_oldName, newName) => newName);
       const result = animationFeature.renameAnimation(
         'layer1',
         'oldName',

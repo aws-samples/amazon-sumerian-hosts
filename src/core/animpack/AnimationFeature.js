@@ -2,6 +2,7 @@
 // SPDX-License-Identifier: MIT-0
 import AbstractHostFeature from 'core/AbstractHostFeature';
 import Utils from 'core/Utils';
+import QueueState from './state/QueueState';
 import FreeBlendState from './state/FreeBlendState';
 import SingleState from './state/SingleState';
 import AnimationLayer, {LayerBlendModes} from './AnimationLayer';
@@ -16,6 +17,7 @@ import Deferred from '../Deferred';
 export const AnimationTypes = {
   single: SingleState,
   freeBlend: FreeBlendState,
+  queue: QueueState,
 };
 
 /**
@@ -213,6 +215,38 @@ class AnimationFeature extends AbstractHostFeature {
   }
 
   /**
+   * Return a new instance of a QueueState.
+   *
+   * @private
+   *
+   * @param {Object} options - Options to pass to the QueueState constructor.
+   * @param {string=} options.name - Name for the animation state. Names must be
+   * unique for the layer the state is applied to.
+   * @param {number} [options.weight=0] - The 0-1 amount of influence the state will have.
+   * @param {number=} options.transitionTime - The amount of time it takes to transition
+   * between queued states.
+   * @param {string} [options.blendMode=LayerBlendModes[DefaultLayerBlendMode]] - Type of
+   * blending the animation should use.
+   * @param {Array.<Object>} [options.queueOptions] - Array of options used to create the
+   * queue states for this container.
+   *
+   * @returns {QueueState}
+   */
+  _createQueueState(options) {
+    const {queueOptions = []} = options;
+
+    const queueStates = queueOptions.map(queueOption =>
+      this._createSingleState({
+        transitionTime: options.transitionTime,
+        ...queueOption,
+        blendMode: options.blendMode,
+      })
+    );
+
+    return new QueueState(options, queueStates);
+  }
+
+  /**
    * Make sure the layer with the given name exists and return a unique version
    * of the animation name supplied for that layer.
    *
@@ -234,7 +268,7 @@ class AnimationFeature extends AbstractHostFeature {
     }
 
     // Make sure the animationName is unique
-    const name = Utils.getUniqueName(animationName, layer.animations);
+    const name = Utils.getUniqueName(animationName, layer.getStateNames());
 
     if (name !== animationName) {
       console.warn(
@@ -697,7 +731,7 @@ class AnimationFeature extends AbstractHostFeature {
       );
     }
 
-    return layer.animations;
+    return layer.getStateNames();
   }
 
   /**
@@ -719,6 +753,27 @@ class AnimationFeature extends AbstractHostFeature {
     }
 
     return layer.currentAnimation;
+  }
+
+  /**
+   * Return whether or not a layer with the given name is currently playing an
+   * animation and that animation is paused.
+   *
+   * @param {string} layerName - Name of the layer.
+   *
+   * @returns {boolean}
+   */
+  getPaused(layerName) {
+    // Make sure the layerName is valid
+    const layer = this._layerMap[layerName];
+
+    if (layer === undefined) {
+      throw new Error(
+        `Get paused on layer ${layerName} from host ${this._host.id}. No layer exists with this name.`
+      );
+    }
+
+    return layer.currentState && layer.currentState.paused;
   }
 
   /**
@@ -781,9 +836,10 @@ class AnimationFeature extends AbstractHostFeature {
 
     const layer = this._layerMap[layerName];
     options.blendMode = layer.blendMode;
+    options.transitionTime = layer.transitionTime;
     const state = this[`_create${animationType.name}`](options);
 
-    const name = layer.addAnimation(state);
+    const name = layer.addState(state);
 
     // Notify that an animation has been added to the feature
     this.emit(this.constructor.EVENTS.addAnimation, {
@@ -812,7 +868,7 @@ class AnimationFeature extends AbstractHostFeature {
       );
     }
 
-    const removed = layer.removeAnimation(animationName);
+    const removed = layer.removeState(animationName);
 
     // Notify that an animation has been removed from the feature
     if (removed === true) {
@@ -845,7 +901,7 @@ class AnimationFeature extends AbstractHostFeature {
       );
     }
 
-    const name = layer.renameAnimation(currentAnimationName, newAnimationName);
+    const name = layer.renameState(currentAnimationName, newAnimationName);
 
     // Notify that an animation has been renamed on the feature
     this.emit(this.constructor.EVENTS.renameAnimation, {
@@ -903,8 +959,86 @@ class AnimationFeature extends AbstractHostFeature {
           layerName,
           animationName,
         });
+      },
+      ({name, canAdvance, isQueueEnd}) => {
+        if (layer.currentAnimation === animationName) {
+          // Notify that a new animation has begun
+          this.emit(this.constructor.EVENTS.playNextAnimation, {
+            layerName,
+            animationName,
+            nextQueuedAnimation: name,
+            canAdvance,
+            isQueueEnd,
+          });
+        }
       }
     );
+  }
+
+  /**
+   * Play the next animation in the queue of a QueueState animation.
+   *
+   * @param {string} layerName - Name of the layer that contains the queue animation.
+   * @param {string=} animationName - Name of the animation queue animation. Defaults
+   * to the name of the current animation for the layer.
+   * @param {number=} seconds - The number of seconds it should take to transition
+   * to the queue animation if it's not already currently playing. Default is zero
+   * and will set immediately.
+   * @param {Function=} easingFn - The easing function to use while transitioning
+   * to the queue animation if it isn't already playing. Default is Easing.Linear.InOut.
+   *
+   * @returns {Deferred} - Resolves once the last animation in the queue finishes
+   * playing.
+   */
+  playNextAnimation(layerName, animationName, transitionTime, easingFn) {
+    const layer = this._layerMap[layerName];
+
+    if (layer === undefined) {
+      const e = `Cannot play next animation on layer ${layerName} for host ${this._host.id}. No layer exists with this name.`;
+      return Deferred.reject(e);
+    }
+
+    if (animationName === undefined) {
+      animationName = layer.currentAnimation;
+    }
+
+    const animation = layer.getState(layer.currentAnimation);
+
+    if (animation === null) {
+      const e = `Cannot play next animation on layer ${layerName} for host ${this._host.id}. No animation exists with name ${animationName}.`;
+      return Deferred.reject(e);
+    } else if (this.getAnimationType(layerName, animationName) !== 'queue') {
+      const e = `Cannot play next animation on layer ${layerName} for host ${this._host.id}. ${animationName} is not a queue state.`;
+      return Deferred.reject(e);
+    }
+
+    const onNext = ({name, canAdvance, isQueueEnd}) => {
+      if (layer.currentAnimation === animationName) {
+        // Notify that a new animation has begun
+        this.emit(this.constructor.EVENTS.playNextAnimation, {
+          layerName,
+          animationName,
+          nextQueuedAnimation: name,
+          canAdvance,
+          isQueueEnd,
+        });
+      }
+    };
+
+    // Make the queue animation current if it wasn't already
+    if (layer.currentAnimation === null) {
+      layer.resumeAnimation(
+        animation.name,
+        transitionTime,
+        easingFn,
+        undefined,
+        undefined,
+        undefined,
+        onNext
+      );
+    }
+
+    return animation.next(onNext, true);
   }
 
   /**
@@ -986,6 +1120,18 @@ class AnimationFeature extends AbstractHostFeature {
           layerName,
           animationName,
         });
+      },
+      ({name, canAdvance, isQueueEnd}) => {
+        if (layer.currentAnimation === animationName) {
+          // Notify that a new animation has begun
+          this.emit(this.constructor.EVENTS.playNextAnimation, {
+            layerName,
+            animationName,
+            nextQueuedAnimation: name,
+            canAdvance,
+            isQueueEnd,
+          });
+        }
       }
     );
   }
@@ -1020,7 +1166,14 @@ class AnimationFeature extends AbstractHostFeature {
   pause() {
     this._paused = true;
 
-    return this._layers.some(l => l.pause());
+    let paused = false;
+    this._layers.forEach(l => {
+      if (l.pause()) {
+        paused = true;
+      }
+    });
+
+    return paused;
   }
 
   /**
@@ -1032,7 +1185,14 @@ class AnimationFeature extends AbstractHostFeature {
   resume() {
     this._paused = false;
 
-    return this._layers.some(l => l.resume());
+    let resumed = false;
+    this._layers.forEach(l => {
+      if (l.resume()) {
+        resumed = true;
+      }
+    });
+
+    return resumed;
   }
 
   /**
@@ -1165,6 +1325,13 @@ class AnimationFeature extends AbstractHostFeature {
        * @memberof AnimationFeature
        * @instance
        * @method
+       * @see core/AnimationFeature#getPaused
+       */
+      getPaused: this.getPaused.bind(this),
+      /**
+       * @memberof AnimationFeature
+       * @instance
+       * @method
        * @see core/AnimationFeature#getAnimationType
        */
       getAnimationType: this.getAnimationType.bind(this),
@@ -1219,6 +1386,15 @@ class AnimationFeature extends AbstractHostFeature {
        * @see core/AnimationFeature#playAnimation
        */
       playAnimation: this.playAnimation.bind(this),
+
+      /**
+       * @memberof AnimationFeature
+       * @instance
+       * @method
+       * @see core/AnimationFeature#playNextAnimation
+       */
+      playNextAnimation: this.playNextAnimation.bind(this),
+
       /**
        * @memberof AnimationFeature
        * @instance
@@ -1305,6 +1481,7 @@ Object.defineProperty(AnimationFeature, 'EVENTS', {
     removeAnimation: 'onRemovedAnimationEvent',
     renameAnimation: 'onRenameAnimationEvent',
     playAnimation: 'onPlayEvent',
+    playNextAnimation: 'onNextEvent',
     pauseAnimation: 'onPauseEvent',
     resumeAnimation: 'onResumeEvent',
     interruptAnimation: 'onInterruptEvent',

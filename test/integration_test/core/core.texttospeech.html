@@ -1,6 +1,6 @@
-<!-- 
+<!--
   Copyright 2019 Amazon.com, Inc. or its affiliates. All Rights Reserved.
-  SPDX-License-Identifier: MIT-0 
+  SPDX-License-Identifier: MIT-0
 -->
 <!DOCTYPE html>
 <html>
@@ -101,6 +101,15 @@
 
         // Test speeches
         function testSpeech() {
+
+          const {TextToSpeechUtils} = HOST.aws;
+
+          const markMap = {
+            '{"feature":"GestureFeature", "method":"switchToGesture", "args":["headShake", 0.5]}' : ['no', 'nah', 'cancelling'],
+            '{"feature":"GestureFeature", "method":"switchToGesture", "args":["self", 0.5]}' : ['I', 'yea', 'now'],
+            '{"feature":"POIFeature", "method":"lookAtTarget", "args":["userA", 0.5]}' : ['you', 'now', 'testing']
+          };
+
           speaker.TextToSpeechFeature.play(
             'Testing, testing, 1, 2, 3. This is a test.'
           );
@@ -118,7 +127,10 @@
           setTimeout(() => {
             console.log('TEST INTERRUPT WITH SELF');
             speaker.TextToSpeechFeature.play(
-              'Testing, testing, 1, 2, 3. This is a test.'
+              TextToSpeechUtils.autoGenerateSSMLMarks(
+                'Testing, testing, 1, 2, 3. This is a test.',
+                markMap
+              )
             );
           }, 2500);
 
@@ -150,7 +162,10 @@
           setTimeout(() => {
             console.log('TEST RE-PLAY');
             speaker.TextToSpeechFeature.play(
-              'Now I will say something else, cancelling the last speech.'
+              TextToSpeechUtils.autoGenerateSSMLMarks(
+                'Now I will say something else, cancelling the last speech.',
+                markMap
+              )
             ).then(() => {
               console.log('IM DONE!');
             });

@@ -1,5 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: MIT-0
+import Deferred from 'core/Deferred';
+
 /**
  * A collection of useful generic functions.
  *
@@ -65,6 +67,81 @@ class Utils {
 
     // Increment the highest trailing number and append to the name
     return `${baseName}${increment + 1}`;
+  }
+
+  /**
+   * Return a deferred promise that will wait a given number of seconds before
+   * resolving. Pass delta time in milliseconds to the deferred promise's execute
+   * method in an update loop to progress time.
+   *
+   * @param {number} [seconds=0] - Number of seconds to wait before resolving.
+   * @param {Object=} options - Optional options object
+   * @param {Function} [options.onFinish] - Callback to execute once the wait time
+   * is met.
+   * @param {Function=} options.onProgress - Callback to execute each time the wait
+   * time progresses towards the target number of seconds. The amount of progress
+   * as a 0-1 percentage is passed as an argument.
+   * @param {Function=} options.onCancel - Callback to execute if the user cancels
+   * the wait before completion.
+   * @param {Function=} options.onError - Callback to execute if the wait stops
+   * because an error is encountered. The error message is passed as a parameter.
+   *
+   * @returns {Deferred}
+   */
+  static wait(seconds = 0, {onFinish, onProgress, onCancel, onError} = {}) {
+    // Make sure seconds is numeric
+    if (typeof seconds !== 'number') {
+      console.warn(
+        `Invalid seconds value ${seconds} for wait. Defaulting to 0.`
+      );
+
+      seconds = 0;
+    }
+
+    // Resolve immediately if the wait time is not greater than 0
+    if (seconds <= 0) {
+      if (typeof onFinish === 'function') {
+        onFinish();
+      }
+
+      return Deferred.resolve();
+    }
+
+    let currentTime = 0;
+    const totalTime = seconds * 1000; // convert to milliseconds
+
+    // Executable to pass to Deferred, meant to be run in an update loop
+    const onUpdate = (resolve, reject, _cancel, deltaTime = 0) => {
+      if (typeof deltaTime !== 'number') {
+        const e = new Error(
+          `Invalid property wait deltaTime. DeltaTime must be a number.`
+        );
+        reject(e);
+        return;
+      }
+
+      // Make sure time has passed
+      if (deltaTime === 0) {
+        return;
+      }
+
+      // Signal progress
+      currentTime += deltaTime;
+      if (currentTime < 0) {
+        currentTime = 0;
+      }
+
+      if (typeof onProgress === 'function') {
+        onProgress(Math.min(currentTime / totalTime, 1));
+      }
+
+      // Signal completion once time is up
+      if (currentTime >= totalTime) {
+        resolve();
+      }
+    };
+
+    return new Deferred(onUpdate, onFinish, onError, onCancel);
   }
 }
 
