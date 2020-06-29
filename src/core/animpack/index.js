@@ -26,6 +26,7 @@ import AnimationLayer, {
 import SingleState from './state/SingleState';
 import TransitionState from './state/TransitionState';
 import FreeBlendState from './state/FreeBlendState';
+import QueueState from './state/QueueState';
 import AnimationUtils from './AnimationUtils';
 
 /**
@@ -98,6 +99,10 @@ export default {
    * @see FreeBlendState
    */
   FreeBlendState,
+  /**
+   * @see QueueState
+   */
+  QueueState,
   /**
    * @see AnimationUtils
    */

@@ -25,6 +25,7 @@ import AnimationLayer, {
   DefaultLayerBlendMode,
 } from 'core/animpack/AnimationLayer';
 import FreeBlendState from 'core/animpack/state/FreeBlendState';
+import QueueState from 'core/animpack/state/QueueState';
 import AnimationFeature, {AnimationTypes} from './AnimationFeature';
 import SingleState from './state/SingleState';
 
@@ -98,6 +99,10 @@ export default {
    * @see FreeBlendState
    */
   FreeBlendState,
+  /**
+   * @see QueueState
+   */
+  QueueState,
   /**
    * @see AnimationUtils
    */

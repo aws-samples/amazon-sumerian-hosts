@@ -1,6 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: MIT-0
 import Deferred from 'core/Deferred';
+import Utils from 'core/Utils';
 import {Linear} from './Easing';
 
 /**
@@ -66,11 +67,8 @@ class AnimationUtils {
     propertyOwner,
     propertyName,
     targetValue,
-    options = {}
+    {seconds = 0, easingFn, onFinish, onProgress, onCancel, onError} = {}
   ) {
-    let {seconds, easingFn} = options;
-    const {onFinish, onProgress, onCancel, onError} = options;
-
     // Make sure property is an object
     if (!(propertyOwner instanceof Object)) {
       const e = new Error(
@@ -121,31 +119,6 @@ class AnimationUtils {
       return Deferred.resolve(targetValue);
     }
 
-    // Make sure seconds is numeric
-    if (typeof seconds !== 'number') {
-      if (seconds !== undefined) {
-        console.warn(
-          `Invalid seconds value ${seconds} for property interpolation. Defaulting to 0.`
-        );
-      }
-
-      seconds = 0;
-    }
-
-    // Resolve immediately if the interpolation time is not greater than 0
-    if (seconds <= 0) {
-      propertyOwner[propertyName] = targetValue;
-
-      if (typeof onFinish === 'function') {
-        onFinish(targetValue);
-      }
-
-      return Deferred.resolve();
-    }
-
-    let currentTime = 0;
-    const totalTime = seconds * 1000; // convert to milliseconds
-
     // Default to linear interpolation
     if (typeof easingFn !== 'function') {
       if (easingFn !== undefined) {
@@ -157,63 +130,55 @@ class AnimationUtils {
       easingFn = Linear.InOut;
     }
 
-    // Executable to pass to Deferred, meant to be run in an update loop
-    const onUpdate = (resolve, reject, deltaTime = 0) => {
-      if (typeof deltaTime !== 'number') {
-        const e = new Error(
-          `Invalid property interpolation deltaTime. DeltaTime must be a number.`
-        );
-        reject(e);
-        return;
-      }
+    const interpolator = Utils.wait(seconds, {
+      onFinish: () => {
+        propertyOwner[propertyName] = targetValue;
 
-      // Make sure time has passed
-      if (deltaTime === 0) {
-        return;
-      }
+        if (typeof onFinish === 'function') {
+          onFinish(targetValue);
+        }
+      },
+      onCancel: () => {
+        if (typeof onCancel === 'function') {
+          onCancel(propertyOwner[propertyName]);
+        }
+      },
+      onProgress: progress => {
+        if (propertyOwner[propertyName] !== targetValue) {
+          // Calculate the lerp factor
+          const easeFactor = easingFn(progress);
 
-      // Stop updating current time if rewinding past the beginning
-      currentTime += deltaTime;
-      if (currentTime < 0) {
-        currentTime = 0;
-        return;
-      }
+          if (typeof easeFactor !== 'number') {
+            const e = new Error(
+              `Invalid property interpolation easingFn. EasingFn must return a number.`
+            );
+            interpolator.reject(e);
+            return;
+          }
 
-      const linearFactor = this.clamp(currentTime / totalTime, 0, 1);
-
-      if (propertyOwner[propertyName] !== targetValue) {
-        // Calculate the lerp factor
-        const easeFactor = easingFn(linearFactor);
-
-        if (typeof easeFactor !== 'number') {
-          const e = new Error(
-            `Invalid property interpolation easingFn. EasingFn must return a number.`
+          // Update the value
+          propertyOwner[propertyName] = AnimationUtils.lerp(
+            startValue,
+            targetValue,
+            easeFactor
           );
-          reject(e);
-          return;
         }
 
-        // Update the value
-        propertyOwner[propertyName] = AnimationUtils.lerp(
-          startValue,
-          targetValue,
-          easeFactor
-        );
-      }
+        // Signal progress
+        if (typeof onProgress === 'function') {
+          onProgress(propertyOwner[propertyName]);
+        }
 
-      // Signal progress
-      if (typeof onProgress === 'function') {
-        onProgress(propertyOwner[propertyName]);
-      }
+        // Signal completion once time is up
+        if (progress === 1) {
+          propertyOwner[propertyName] = targetValue;
+          interpolator.resolve(targetValue);
+        }
+      },
+      onError,
+    });
 
-      // Signal completion once time is up
-      if (linearFactor === 1) {
-        propertyOwner[propertyName] = targetValue;
-        resolve();
-      }
-    };
-
-    return new Deferred(onUpdate, onFinish, onError, onCancel);
+    return interpolator;
   }
 }
 

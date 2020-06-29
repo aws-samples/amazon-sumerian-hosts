@@ -4,9 +4,9 @@
 /* eslint-disable no-undef */
 /* eslint-disable no-underscore-dangle */
 
+import Deferred from 'core/Deferred';
 import describeHostEnvironment from "../../EnvironmentHarness";
 import FreeBlendState from "../../../../src/core/animpack/state/FreeBlendState";
-import Deferred from 'core/Deferred';
 
 describeHostEnvironment('FreeBlendState', (options = {}, env) => {
   let freeBlend;
@@ -80,121 +80,6 @@ describeHostEnvironment('FreeBlendState', (options = {}, env) => {
     freeBlend = new FreeBlendState();
     freeBlend.addState(state1);
     freeBlend.addState(state2);
-  });
-
-  describe('animations', () => {
-    it('should return an array of state names that the FreeBlendState controls', () => {
-      let anims = freeBlend.animations;
-      expect(anims.length).toEqual(2);
-      expect(anims.includes('state1')).toBeTrue();
-      expect(anims.includes('state2')).toBeTrue();
-    });
-  });
-
-  describe('addState', () => {
-    it('should execute a console warning if the state is already in the FreeBlendState', () => {
-      const onWarn = spyOn(console, 'warn');
-      freeBlend.addState(state1);
-
-      expect(onWarn).toHaveBeenCalledTimes(1);
-    });
-
-    it('should not add a new state if the state is already in the FreeBlendState', () => {
-      const numStates = freeBlend._states.size;
-      freeBlend.addState(state1);
-
-      expect(freeBlend._states.size).toEqual(numStates);
-    });
-
-    it('should execute a console warning if a state with the same name exits in the FreeBlendState', () => {
-      const onWarn = spyOn(console, 'warn');
-      freeBlend.addState(state3);
-
-      expect(onWarn).toHaveBeenCalledTimes(1);
-    });
-
-    it('should increment a new state\'s name if a state with the same name exists in the FreeBlendState', () => {
-      const currentName = state3.name;
-      freeBlend.addState(state3);
-
-      expect(state3.name).toBeGreaterThan(currentName);
-    });
-
-    it('should store a new key in the _states map', () => {
-      const numStates = freeBlend._states.size;
-      freeBlend.addState(state3);
-
-      expect(freeBlend._states.size).toBeGreaterThan(numStates);
-    });
-
-    it('should return the name of the state', () => {
-      const result = freeBlend.addState(state3);
-
-      expect(state3.name).toEqual(result);
-    });
-  });
-
-  describe('removeState', () => {
-    it('should execute a console warning if the state is not in the container', () => {
-      const onWarn = spyOn(console, 'warn');
-      freeBlend.removeState('NonState');
-
-      expect(onWarn).toHaveBeenCalledTimes(1);
-    });
-
-    it('should remove the state from the _states map', () => {
-      freeBlend.removeState('state1');
-
-      expect(freeBlend._states.has('state1')).toBeFalse();
-    });
-  });
-
-  describe('renameState', () => {
-    it('should throw an error if the state is not in the container', () => {
-      expect(() => {
-        freeBlend.renameState('NotState', 'NewStateName')
-      }).toThrowError();
-    });
-
-    it('should not change the name if newName is currentName', () => {
-      const currentName = state1.name;
-      expect(freeBlend.renameState(state1.name, state1.name)).toEqual(currentName);
-    });
-
-    it('should execute a console warning if a state with the same newName exits in the FreeBlendState', () => {
-      const onWarn = spyOn(console, 'warn');
-      freeBlend.renameState('state1', 'state2');
-
-      expect(onWarn).toHaveBeenCalledTimes(1);
-    });
-
-    it('should increment a new state\'s name if a state with the same name exists in the FreeBlendState', () => {
-      freeBlend.renameState(state1.name, state2.name);
-
-      expect(state1.name).toBeGreaterThan(state2.name);
-    });
-
-    it('should store the new state key and remove the old key', () => {
-      const oldName = state1.name;
-      const newName = 'newStateName';
-      freeBlend.renameState(oldName, newName);
-
-      expect(freeBlend._states.has(newName)).toBeTrue();
-      expect(freeBlend._states.has(oldName)).toBeFalse();
-    });
-
-    it('should not change the number of states in the container', () => {
-      const numStates = freeBlend._states.size;
-      freeBlend.renameState(state1.name, state2.name);
-
-      expect(freeBlend._states.size).toEqual(numStates);
-    });
-
-    it('should return the new name of the state', () => {
-      const result = freeBlend.renameState(state1.name, 'newStateName');
-
-      expect(state1.name).toEqual(result);
-    });
   });
 
   describe('getBlendWeight', () => {
@@ -344,25 +229,6 @@ describeHostEnvironment('FreeBlendState', (options = {}, env) => {
       freeBlend._states.forEach(state => {
         expect(state.cancel).toHaveBeenCalledTimes(1);
       });
-    });
-  });
-
-  describe('discard', () => {
-    it('should execute discard on all stored states', () => {
-      const states = [...freeBlend._states.values()];
-      freeBlend.discard();
-
-      states.forEach(state => {
-        expect(state.discard).toHaveBeenCalledTimes(1);
-      });
-    });
-
-    it('should remove all references to states', () => {
-      expect(freeBlend._states).toBeDefined();
-
-      freeBlend.discard();
-
-      expect(freeBlend._states).not.toBeDefined();
     });
   });
 });

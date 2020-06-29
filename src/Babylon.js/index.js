@@ -8,6 +8,7 @@
 import Utils from 'core/Utils';
 import Deferred from 'core/Deferred';
 import LipsyncFeature, {DefaultVisemeMap} from 'core/LipsyncFeature';
+import GestureFeature, {DefaultGestureWords} from 'core/GestureFeature';
 import {env} from './HostEnvironment';
 import Messenger from './Messenger';
 import HostObject from './HostObject';
@@ -41,9 +42,17 @@ export default {
    */
   LipsyncFeature,
   /**
+   * @see GestureFeature
+   */
+  GestureFeature,
+  /**
    * @see DefaultVisemeMap
    */
   DefaultVisemeMap,
+  /**
+   * @see DefaultGestureWords
+   */
+  DefaultGestureWords,
   /**
    * @see module:babylon/awspack
    */

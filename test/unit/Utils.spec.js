@@ -1,6 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: MIT-0
 import Utils from 'core/Utils';
+import Deferred from 'core/Deferred';
 
 describe('Utils', () => {
   describe('createId', () => {
@@ -36,6 +37,59 @@ describe('Utils', () => {
       expect(Utils.getUniqueName('name-5', nameArray)).toEqual('name-6');
 
       expect(Utils.getUniqueName('nameOther', nameArray)).toEqual('nameOther1');
+    });
+  });
+
+  describe('wait', () => {
+    it('should return a Deferred promise', () => {
+      expect(Utils.wait(3)).toBeInstanceOf(Deferred);
+    });
+
+    it('should log a warning if the seconds argument is not a number', () => {
+      const onWarn = spyOn(console, 'warn');
+      Utils.wait('notANumber');
+
+      expect(onWarn).toHaveBeenCalledTimes(1);
+    });
+
+    it('should resolve immediately if the seconds argument is less than or equal to zero', () => {
+      expectAsync(Utils.wait(0)).toBeResolved();
+
+      expectAsync(Utils.wait(-1)).toBeResolved();
+
+      expectAsync(Utils.wait(1)).not.toBeResolved();
+    });
+
+    describe('execute', () => {
+      it('should reject the promise if a non-numeric deltaTime argument is passed', () => {
+        const wait = Utils.wait(1);
+        wait.execute('notANumber');
+
+        expectAsync(wait).toBeRejected();
+      });
+
+      it('should execute the onProgress function argument each time the deferred is executed with a non-zero delta time', () => {
+        const onProgress = jasmine.createSpy('onProgress');
+        const wait = Utils.wait(1, {onProgress});
+
+        wait.execute(0);
+
+        expect(onProgress).not.toHaveBeenCalled();
+
+        wait.execute(100);
+
+        expect(onProgress).toHaveBeenCalledTimes(1);
+      });
+
+      it('should resolve the promise once the required number of seconds has elapsed', () => {
+        const wait = Utils.wait(1);
+
+        expectAsync(wait).not.toBeResolved();
+
+        wait.execute(1000);
+
+        expectAsync(wait).toBeResolved();
+      });
     });
   });
 });

@@ -129,10 +129,10 @@
       <div>
         <textarea autofocus size="23" type="text" id="textEntry">
 <speak>
-  <amazon:domain name="conversational">Hello, my name is Wes. I used 
-    to only be a host inside Amazon Sumerian, but now you can use me in other 
-    Javascript runtime environments like three<sub alias="">.</sub>js and 
-    Babylon<sub alias="">.</sub>js. Right now I&apos;m  in three<sub alias="">.</sub>js.
+  <amazon:domain name="conversational">Hello, my name is Jay. I used
+    to only be a host inside Amazon Sumerian, but now you can use me in other
+    Javascript runtime environments like three<sub alias="">.</sub>js and
+    Babylon<sub alias="">.</sub>js. Right now I&apos;m in three<sub alias="">.</sub>js.
   </amazon:domain>
 </speak>
         </textarea>
@@ -141,6 +141,9 @@
       <button id="pause" class="button">Pause</button>
       <button id="resume" class="button">Resume</button>
       <button id="stop" class="button">Stop</button>
+      <div>
+        <button id="gestures" class="button">Generate Gestures</button>
+      </div>
     </div>
 
     <!--Create the Three.js scene-->
@@ -162,22 +165,31 @@
         // Define the glTF assets that will represent the host
         const renderFn = [];
         const characterFile =
-          './assets/glTF/characters/adult_male/wes/wes.gltf';
+          './assets/glTF/characters/adult_male/jay/jay.gltf';
         const animationPath = './assets/glTF/animations/adult_male';
-        const animationFiles = ['stand_idle.glb', 'lipsync.glb'];
+        const animationFiles = ['stand_idle.glb', 'lipsync.glb', 'gesture.glb'];
+        const gestureConfigFile = 'gesture.json';
         const audioAttachJoint = 'chardef_c_neckB'; // Name of the joint to attach audio to
         const voice = 'Matthew'; // Polly voice. Full list of available voices at: https://docs.aws.amazon.com/polly/latest/dg/voicelist.html
         const voiceEngine = 'neural'; // Neural engine is not available for all voices in all regions: https://docs.aws.amazon.com/polly/latest/dg/NTTS-main.html
 
         // Set up the scene and host
         const {scene, camera, clock} = createScene();
-        const {character, clips} = await loadCharacter(
+        const {character, clips, bindPoseOffset} = await loadCharacter(
           scene,
           characterFile,
           animationPath,
           animationFiles
         );
-        const [idleClips, lipsyncClips] = clips;
+
+        // Read the gesture config file. This file contains options for splitting up
+        // each animation in gestures.glb into 3 sub-animations and initializing them
+        // as a QueueState animation.
+        const gestureConfig = await fetch(
+          `${animationPath}/${gestureConfigFile}`
+        ).then(response => response.json());
+
+        const [idleClips, lipsyncClips, gestureClips] = clips;
         const host = createHost(
           character,
           audioAttachJoint,
@@ -185,6 +197,9 @@
           voiceEngine,
           idleClips[0],
           lipsyncClips,
+          gestureClips,
+          gestureConfig,
+          bindPoseOffset,
           camera,
           clock
         );
@@ -207,6 +222,16 @@
             host.TextToSpeechFeature[id](speechInput.value);
           };
         });
+
+        // Update the text area text with gesture SSML markup when clicked
+        const gestureButton = document.getElementById('gestures');
+        const gestureMap = host.GestureFeature.createGestureMap();
+        gestureButton.onclick = () => {
+          speechInput.value = HOST.aws.TextToSpeechUtils.autoGenerateSSMLMarks(
+            speechInput.value,
+            gestureMap
+          );
+        };
 
         // Set up base scene
         function createScene() {
@@ -345,20 +370,30 @@
           }
 
           // Load character model
-          const character = await loadAsset(gltfLoader, characterFile, gltf => {
-            // Transform the character
-            const character = gltf.scene;
-            scene.add(character);
+          const {character, bindPoseOffset} = await loadAsset(
+            gltfLoader,
+            characterFile,
+            gltf => {
+              // Transform the character
+              const character = gltf.scene;
+              scene.add(character);
 
-            // Cast shadows
-            character.traverse(object => {
-              if (object.isMesh) {
-                object.castShadow = true;
+              // Make the offset pose additive
+              const [bindPoseOffset] = gltf.animations;
+              if (bindPoseOffset) {
+                THREE.AnimationUtils.makeClipAdditive(bindPoseOffset);
               }
-            });
 
-            return character;
-          });
+              // Cast shadows
+              character.traverse(object => {
+                if (object.isMesh) {
+                  object.castShadow = true;
+                }
+              });
+
+              return {character, bindPoseOffset};
+            }
+          );
 
           // Load animations
           const clips = await Promise.all(
@@ -372,24 +407,13 @@
                     THREE.AnimationUtils.makeClipAdditive(clip);
                   }
 
-                  // Slice off the reference frame for viseme poses
-                  if (!clip.name.startsWith('stand_')) {
-                    clip = THREE.AnimationUtils.subclip(
-                      clip,
-                      clip.name,
-                      1,
-                      2,
-                      30
-                    );
-                  }
-
                   return clip;
                 });
               });
             })
           );
 
-          return {character, clips};
+          return {character, clips, bindPoseOffset};
         }
 
         // Initialize the host
@@ -400,6 +424,9 @@
           engine,
           idleClip,
           lipsyncClips,
+          gestureClips,
+          gestureConfig,
+          bindPoseOffset,
           camera,
           clock
         ) {
@@ -455,10 +482,12 @@
             blendMode: HOST.anim.LayerBlendModes.Additive,
           });
           host.AnimationFeature.setLayerWeight('Viseme', 0);
+
+          // Slice off the reference frame
           const blendStateOptions = lipsyncClips.map(clip => {
             return {
               name: clip.name,
-              clip,
+              clip: THREE.AnimationUtils.subclip(clip, clip.name, 1, 2, 30),
               weight: 0,
             };
           });
@@ -469,6 +498,67 @@
             {blendStateOptions}
           );
           host.AnimationFeature.playAnimation('Viseme', 'visemes');
+
+          // Gesture animations
+          host.AnimationFeature.addLayer('Gesture', {
+            transitionTime: 0.5,
+            blendMode: HOST.anim.LayerBlendModes.Additive,
+          });
+          gestureClips.forEach(clip => {
+            const {name} = clip;
+            const config = gestureConfig[name];
+
+            if (config !== undefined) {
+              config.queueOptions.forEach((option, index) => {
+                // Create a subclip for each range in queueOptions
+                option.clip = THREE.AnimationUtils.subclip(
+                  clip,
+                  `${name}_${option.name}`,
+                  option.from,
+                  option.to,
+                  30
+                );
+              });
+              host.AnimationFeature.addAnimation(
+                'Gesture',
+                name,
+                HOST.anim.AnimationTypes.queue,
+                config
+              );
+            } else {
+              host.AnimationFeature.addAnimation(
+                'Gesture',
+                name,
+                HOST.anim.AnimationTypes.single,
+                {clip}
+              );
+            }
+          });
+
+          // Apply bindPoseOffset clip if it exists
+          if (bindPoseOffset !== undefined) {
+            host.AnimationFeature.addLayer('BindPoseOffset', {
+              blendMode: HOST.anim.LayerBlendModes.Additive,
+            });
+            host.AnimationFeature.addAnimation(
+              'BindPoseOffset',
+              bindPoseOffset.name,
+              HOST.anim.AnimationTypes.single,
+              {
+                clip: THREE.AnimationUtils.subclip(
+                  bindPoseOffset,
+                  bindPoseOffset.name,
+                  1,
+                  2,
+                  30
+                ),
+              }
+            );
+            host.AnimationFeature.playAnimation(
+              'BindPoseOffset',
+              bindPoseOffset.name
+            );
+          }
 
           // Set up Lipsync
           const visemeOptions = {
@@ -483,6 +573,11 @@
             visemeOptions,
             talkingOptions
           );
+
+          // Set up Gestures
+          host.addFeature(HOST.GestureFeature, false, {
+            layers: {Gesture: {minimumInterval: 3}},
+          });
 
           return host;
         }

@@ -19,7 +19,7 @@ class Deferred extends Promise {
    *
    * @param {Function} [executable=() => {}] - The function to be executed by the
    * constructor, during the process of constructing the promise. The signature
-   * of this is expected to be: executable(  resolutionFunc, rejectionFunc ).
+   * of this is expected to be: executable(  resolutionFunc, rejectionFunc, cancellationFunc ).
    * @param {Function=} onResolve - Optional function to execute once the promise
    * is resolved.
    * @param {Function=} onReject - Optional function to execute once the promise
@@ -70,7 +70,7 @@ class Deferred extends Promise {
           status.pending = false;
 
           if (typeof onResolve === 'function') {
-            onResolve(value);
+            value = onResolve(value);
           }
 
           return resolve(value);
@@ -84,7 +84,7 @@ class Deferred extends Promise {
           status.pending = false;
 
           if (typeof onReject === 'function') {
-            onReject(value);
+            value = onReject(value);
           }
 
           return reject(value);
@@ -98,7 +98,7 @@ class Deferred extends Promise {
           status.pending = false;
 
           if (typeof onCancel === 'function') {
-            onCancel(value);
+            value = onCancel(value);
           }
 
           return resolve(value);
@@ -106,7 +106,7 @@ class Deferred extends Promise {
       };
 
       // Run the executable with custom resolver and rejecter
-      executable(res, rej);
+      executable(res, rej, cancel);
     });
 
     this._status = status;
@@ -193,7 +193,7 @@ class Deferred extends Promise {
    */
   execute(...args) {
     if (this.pending) {
-      this._executable(this._resolve, this._reject, ...args);
+      this._executable(this._resolve, this._reject, this._cancel, ...args);
     }
   }
 
@@ -205,77 +205,120 @@ class Deferred extends Promise {
    * @returns {Deferred}
    */
   static cancel(value) {
-    const result = new Deferred();
-    result.cancel(value);
-
-    return result;
+    return new Deferred((_resolve, _reject, cancel) => {
+      cancel(value);
+    });
   }
 
   /**
    * Return a new Deferred promise that will resolve or reject once all promises
-   * in the input array have been resolved or one promise is rejected. Promises in
-   * the array that are Deferred promises will be manually resolved, rejected or
-   * canceled when calling resolve, reject or cancel on the return promise.
+   * in the input array have been resolved or one promise is canceled or rejected.
+   * Promises in the array that are Deferred promises will be manually resolved,
+   * rejected or canceled when calling resolve, reject or cancel on the return promise.
    *
-   * @param {Array.<(Deferred|external:Promise)>} promiseArray - Array of promise objects
-   * to keep track of for resolution.
+   * @param {Array.<any>} iterable - An iterable such as an array.
    * @param {Function=} onResolve - Optional function to execute once the promise
    * is resolved.
    * @param {Function=} onReject - Optional function to execute once the promise
    * is rejected.
    * @param {Function=} onCancel - Optional function to execute if the user cancels
-   * the promise. Canceling results in the promise having a status of 'resolved'.
+   * the promise. Canceling results in the promise having a status of 'canceled'.
    *
    * @returns Deferred
    */
-  static all(promiseArray, onResolve, onReject, onCancel) {
-    const promises = [...promiseArray];
-    const promiseCount = promises.length;
-    const deferred = promises.filter(p => p instanceof Deferred);
+  static all(iterable, onResolve, onReject, onCancel) {
+    if (iterable == null || typeof iterable[Symbol.iterator] !== 'function') {
+      let e = `Cannot execute Deferred.all. First argument must be iterable.`;
+
+      if (typeof onReject === 'function') {
+        e = onReject(e);
+      }
+
+      return Deferred.reject(e);
+    }
+
+    const array = [...iterable];
+    const numItems = array.length;
 
     return new Deferred(
-      (resolve, reject) => {
+      (resolve, reject, cancel) => {
         const resolutions = [];
+        let failed = false;
+        let numResolved = 0;
 
-        promises.forEach(promise => {
-          promise
-            .then(resolution => {
-              resolutions.push(resolution);
+        array.forEach((item, index) => {
+          if (failed) {
+            return;
+          } else if (!(item instanceof Promise)) {
+            resolutions[index] = item;
+            numResolved += 1;
 
-              if (resolutions.length === promiseCount) {
-                resolve(resolutions);
+            if (numResolved === numItems) {
+              resolve(resolutions);
+            }
+            return;
+          }
+
+          item.then(
+            value => {
+              if (!failed && !item.canceled) {
+                resolutions[index] = value;
+                numResolved += 1;
+
+                if (numResolved === numItems) {
+                  resolve(resolutions);
+                }
+              } else if (!failed) {
+                failed = true;
+                cancel(value);
               }
-            })
-            .catch(e => {
-              reject(e);
-            });
+            },
+            error => {
+              if (!failed) {
+                failed = true;
+                reject(error);
+              }
+            }
+          );
         });
       },
       resolveValue => {
-        deferred.forEach(d => {
-          d.resolve(resolveValue);
+        array.forEach(item => {
+          if (item instanceof Deferred) {
+            item.resolve(resolveValue);
+          }
         });
 
         if (typeof onResolve === 'function') {
-          onResolve(resolveValue);
+          return onResolve(resolveValue);
+        } else {
+          return resolveValue;
         }
       },
       error => {
-        deferred.forEach(d => {
-          d.reject(error);
+        array.forEach(item => {
+          if (item instanceof Deferred) {
+            item.reject(error);
+          }
         });
 
         if (typeof onReject === 'function') {
-          onReject(error);
+          return onReject(error);
+        } else {
+          return error;
         }
       },
       cancelValue => {
-        deferred.forEach(d => {
-          d.cancel(cancelValue);
+        array.forEach(item => {
+          if (item instanceof Deferred) {
+            item.cancel(cancelValue);
+          }
         });
 
         if (typeof onCancel === 'function') {
-          onCancel(cancelValue);
+          return onCancel(cancelValue);
+        } else {
+          return cancelValue;
         }
       }
     );
