@@ -1,0 +1,296 @@
+{
+  "aggressive": {
+    "queueOptions": [
+      {
+        "name": "in",
+        "from": 0,
+        "to": 62,
+        "loopCount": 1
+      },
+      {
+        "name": "hold",
+        "from": 62,
+        "to": 122
+      },
+      {
+        "name": "out",
+        "from": 122,
+        "to": 208,
+        "loopCount": 1
+      }
+    ]
+  },
+  "big": {
+    "queueOptions": [
+      {
+        "name": "in",
+        "from": 0,
+        "to": 70,
+        "loopCount": 1
+      },
+      {
+        "name": "hold",
+        "from": 70,
+        "to": 174
+      },
+      {
+        "name": "out",
+        "from": 174,
+        "to": 264,
+        "loopCount": 1
+      }
+    ]
+  },
+  "defense": {
+    "queueOptions": [
+      {
+        "name": "in",
+        "from": 0,
+        "to": 106,
+        "loopCount": 1
+      },
+      {
+        "name": "hold",
+        "from": 106,
+        "to": 217
+      },
+      {
+        "name": "out",
+        "from": 217,
+        "to": 291,
+        "loopCount": 1
+      }
+    ]
+  },
+  "generic_a": {
+    "queueOptions": [
+      {
+        "name": "in",
+        "from": 0,
+        "to": 40,
+        "loopCount": 1
+      },
+      {
+        "name": "hold",
+        "from": 40,
+        "to": 100
+      },
+      {
+        "name": "out",
+        "from": 100,
+        "to": 178,
+        "loopCount": 1
+      }
+    ]
+  },
+  "generic_b": {
+    "queueOptions": [
+      {
+        "name": "in",
+        "from": 0,
+        "to": 40,
+        "loopCount": 1
+      },
+      {
+        "name": "hold",
+        "from": 40,
+        "to": 100
+      },
+      {
+        "name": "out",
+        "from": 100,
+        "to": 178,
+        "loopCount": 1
+      }
+    ]
+  },
+  "generic_c": {
+    "queueOptions": [
+      {
+        "name": "in",
+        "from": 0,
+        "to": 40,
+        "loopCount": 1
+      },
+      {
+        "name": "hold",
+        "from": 40,
+        "to": 100
+      },
+      {
+        "name": "out",
+        "from": 100,
+        "to": 178,
+        "loopCount": 1
+      }
+    ]
+  },
+  "heart": {
+    "queueOptions": [
+      {
+        "name": "in",
+        "from": 0,
+        "to": 46,
+        "loopCount": 1
+      },
+      {
+        "name": "hold",
+        "from": 46,
+        "to": 106
+      },
+      {
+        "name": "out",
+        "from": 106,
+        "to": 179,
+        "loopCount": 1
+      }
+    ]
+  },
+  "in": {
+    "queueOptions": [
+      {
+        "name": "in",
+        "from": 0,
+        "to": 31,
+        "loopCount": 1
+      },
+      {
+        "name": "hold",
+        "from": 31,
+        "to": 124
+      },
+      {
+        "name": "out",
+        "from": 124,
+        "to": 193,
+        "loopCount": 1
+      }
+    ]
+  },
+  "many": {
+    "queueOptions": [
+      {
+        "name": "in",
+        "from": 0,
+        "to": 69,
+        "loopCount": 1
+      },
+      {
+        "name": "hold",
+        "from": 69,
+        "to": 138
+      },
+      {
+        "name": "out",
+        "from": 138,
+        "to": 231,
+        "loopCount": 1
+      }
+    ]
+  },
+  "movement": {
+    "queueOptions": [
+      {
+        "name": "in",
+        "from": 0,
+        "to": 53,
+        "loopCount": 1
+      },
+      {
+        "name": "hold",
+        "from": 53,
+        "to": 177
+      },
+      {
+        "name": "out",
+        "from": 177,
+        "to": 252,
+        "loopCount": 1
+      }
+    ]
+  },
+  "one": {
+    "queueOptions": [
+      {
+        "name": "in",
+        "from": 0,
+        "to": 60,
+        "loopCount": 1
+      },
+      {
+        "name": "hold",
+        "from": 60,
+        "to": 120
+      },
+      {
+        "name": "out",
+        "from": 120,
+        "to": 210,
+        "loopCount": 1
+      }
+    ]
+  },
+  "self": {
+    "queueOptions": [
+      {
+        "name": "in",
+        "from": 0,
+        "to": 52,
+        "loopCount": 1
+      },
+      {
+        "name": "hold",
+        "from": 52,
+        "to": 112
+      },
+      {
+        "name": "out",
+        "from": 112,
+        "to": 187,
+        "loopCount": 1
+      }
+    ]
+  },
+  "wave": {
+    "queueOptions": [
+      {
+        "name": "in",
+        "from": 0,
+        "to": 38,
+        "loopCount": 1
+      },
+      {
+        "name": "hold",
+        "from": 38,
+        "to": 63
+      },
+      {
+        "name": "out",
+        "from": 63,
+        "to": 163,
+        "loopCount": 1
+      }
+    ]
+  },
+  "you": {
+    "queueOptions": [
+      {
+        "name": "in",
+        "from": 0,
+        "to": 73,
+        "loopCount": 1
+      },
+      {
+        "name": "hold",
+        "from": 73,
+        "to": 137
+      },
+      {
+        "name": "out",
+        "from": 137,
+        "to": 223,
+        "loopCount": 1
+      }
+    ]
+  }
+}

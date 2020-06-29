@@ -2,6 +2,7 @@
 // SPDX-License-Identifier: MIT-0
 import Messenger from 'app/Messenger';
 import AbstractHostFeature from './AbstractHostFeature';
+import Utils from './Utils';
 
 /**
  * Object that manages access to all Host features. Contains a reference to
@@ -31,6 +32,7 @@ class HostObject extends Messenger {
 
     this._owner = owner;
     this._features = {};
+    this._waits = [];
     this._lastUpdate = this.now;
   }
 
@@ -69,7 +71,13 @@ class HostObject extends Messenger {
    * loops for all features.
    */
   update() {
+    const currentTime = this.now;
     const dt = this.deltaTime;
+
+    // Progress stored waits
+    this._waits.forEach(wait => {
+      wait.execute(dt);
+    });
 
     // Update all features
     Object.values(this._features).forEach(feature => {
@@ -79,7 +87,39 @@ class HostObject extends Messenger {
     // Notify listeners an update occured
     this.emit(this.constructor.EVENTS.update, dt);
 
-    this._lastUpdate = this.now;
+    this._lastUpdate = currentTime;
+  }
+
+  /**
+   * Return a deferred promise that will wait a given number of seconds before
+   * resolving. The host will continuously update the wait promise during the
+   * update loop until it resolves.
+   *
+   * @param {number} [seconds=0] - Number of seconds to wait before resolving.
+   * @param {Object=} options - Optional options object
+   * @param {Function} [options.onFinish] - Callback to execute once the wait time
+   * is met.
+   * @param {Function=} options.onProgress - Callback to execute each time the wait
+   * time progresses towards the target number of seconds. The amount of progress
+   * as a 0-1 percentage is passed as an argument.
+   * @param {Function=} options.onCancel - Callback to execute if the user cancels
+   * the wait before completion.
+   * @param {Function=} options.onError - Callback to execute if the wait stops
+   * because an error is encountered. The error message is passed as a parameter.
+   *
+   * @returns {Deferred}
+   */
+  wait(seconds, {onFinish, onProgress, onCancel, onError} = {}) {
+    const wait = Utils.wait(seconds, {onFinish, onProgress, onCancel, onError});
+    this._waits.push(wait);
+
+    // Once the wait promise is no longer pending remove it from the waits array
+    const onComplete = () => {
+      this._waits.splice(this._waits.indexOf(wait), 1);
+    };
+    wait.then(onComplete, onComplete);
+
+    return wait;
   }
 
   /**

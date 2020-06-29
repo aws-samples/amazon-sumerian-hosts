@@ -4,6 +4,7 @@ import AbstractHostFeature from 'core/AbstractHostFeature';
 import AnimationUtils from 'core/animpack/AnimationUtils';
 import Deferred from 'core/Deferred';
 import Speech from './AbstractSpeech';
+import TextToSpeechUtils from './TextToSpeechUtils';
 
 /**
  * The Amazon Polly service object.
@@ -655,27 +656,6 @@ class AbstractTextToSpeechFeature extends AbstractHostFeature {
   }
 
   /**
-   * Generate a version of given text that is enclosed by Polly ssml speak tags.
-   *
-   * @private
-   *
-   * @param {string} text - The text to update.
-   *
-   * @returns {string}
-   */
-  _validateText(text) {
-    if (!text) {
-      text = '<speak></speak>';
-    } else {
-      text = text
-        .replace(/(^\s*<\s*speak\s*)>\s*|(^\s*)/, '<speak>')
-        .replace(/(\s*<\s*\/\s*speak\s*>\s*$|\s*$)/, '</speak>');
-    }
-
-    return text;
-  }
-
-  /**
    * Create presigned URL of speech audio for the given speech text.
    *
    * @private
@@ -819,7 +799,7 @@ class AbstractTextToSpeechFeature extends AbstractHostFeature {
     }
 
     // Update the speech with options
-    text = this._validateText(text);
+    text = TextToSpeechUtils.validateText(text);
     config = this._updateConfig(config, text);
 
     return this._updateSpeech(text, config).promise;

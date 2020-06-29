@@ -128,9 +128,9 @@
       <div>
         <textarea autofocus size="23" type="text" id="textEntry">
 <speak>
-  <amazon:domain name="conversational">Hi there, my name is Fiona. I used 
-    to only be a host inside Amazon Sumerian, but now you can use me in other 
-    Javascript runtime environments like three<sub alias="">.</sub>js and 
+  <amazon:domain name="conversational">Hi there, my name is Maya. I used
+    to only be a host inside Amazon Sumerian, but now you can use me in other
+    Javascript runtime environments like three<sub alias="">.</sub>js and
     Babylon<sub alias="">.</sub>js. Right now I&apos;m in Babylon<sub alias="">.</sub>js.
   </amazon:domain>
 </speak>
@@ -140,6 +140,9 @@
       <button id="pause" class="button">Pause</button>
       <button id="resume" class="button">Resume</button>
       <button id="stop" class="button">Stop</button>
+      <div>
+        <button id="gestures" class="button">Generate Gestures</button>
+      </div>
     </div>
 
     <!--Create the Babylon.js scene-->
@@ -160,22 +163,31 @@
 
         // Define the glTF assets that will represent the host
         const characterFile =
-          './assets/glTF/characters/adult_female/fiona/fiona.gltf';
+          './assets/glTF/characters/adult_female/maya/maya.gltf';
         const animationPath = './assets/glTF/animations/adult_female';
-        const animationFiles = ['stand_idle.glb', 'lipsync.glb'];
+        const animationFiles = ['stand_idle.glb', 'lipsync.glb', 'gesture.glb'];
+        const gestureConfigFile = 'gesture.json';
         const audioAttachJoint = 'char:def_c_neckB'; // Name of the joint to attach audio to
         const voice = 'Joanna'; // Polly voice. Full list of available voices at: https://docs.aws.amazon.com/polly/latest/dg/voicelist.html
         const voiceEngine = 'neural'; // Neural engine is not available for all voices in all regions: https://docs.aws.amazon.com/polly/latest/dg/NTTS-main.html
 
         // Set up the scene and host
         const scene = createScene();
-        const {character, clips} = await loadCharacter(
+        const {character, clips, bindPoseOffset} = await loadCharacter(
           scene,
           characterFile,
           animationPath,
           animationFiles
         );
-        const [idleClips, lipsyncClips] = clips;
+
+        // Read the gesture config file. This file contains options for splitting up
+        // each animation in gestures.glb into 3 sub-animations and initializing them
+        // as a QueueState animation.
+        const gestureConfig = await fetch(
+          `${animationPath}/${gestureConfigFile}`
+        ).then(response => response.json());
+
+        const [idleClips, lipsyncClips, gestureClips] = clips;
         const host = createHost(
           character,
           audioAttachJoint,
@@ -183,6 +195,9 @@
           voiceEngine,
           idleClips[0],
           lipsyncClips,
+          gestureClips,
+          gestureConfig,
+          bindPoseOffset,
           scene
         );
 
@@ -205,6 +220,16 @@
             host.TextToSpeechFeature[id](speechInput.value);
           };
         });
+
+        // Update the text area text with gesture SSML markup when clicked
+        const gestureButton = document.getElementById('gestures');
+        const gestureMap = host.GestureFeature.createGestureMap();
+        gestureButton.onclick = () => {
+          speechInput.value = HOST.aws.TextToSpeechUtils.autoGenerateSSMLMarks(
+            speechInput.value,
+            gestureMap
+          );
+        };
 
         // Set up base scene
         function createScene() {
@@ -288,10 +313,19 @@
           animationFiles
         ) {
           // Load character model
-          const character = await BABYLON.SceneLoader.LoadAssetContainerAsync(
+          const {
+            character,
+            bindPoseOffset,
+          } = await BABYLON.SceneLoader.LoadAssetContainerAsync(
             characterFile
           ).then(container => {
             const [character] = container.meshes;
+            const [bindPoseOffset] = container.animationGroups;
+
+            // Make the offset pose additive
+            if (bindPoseOffset) {
+              BABYLON.AnimationGroup.MakeAnimationAdditive(bindPoseOffset);
+            }
 
             // Add everything to the scene
             container.scene = scene;
@@ -303,7 +337,7 @@
               container.meshes[index].receiveShadows = false;
             }
 
-            return character;
+            return {character, bindPoseOffset};
           });
 
           // Load animations
@@ -343,7 +377,7 @@
             })
           );
 
-          return {character, clips};
+          return {character, clips, bindPoseOffset};
         }
 
         // Initialize the host
@@ -354,6 +388,9 @@
           engine,
           idleClip,
           lipsyncClips,
+          gestureClips,
+          gestureConfig,
+          bindPoseOffset,
           scene
         ) {
           // Add the host to the render loop
@@ -426,6 +463,56 @@
           );
           host.AnimationFeature.playAnimation('Viseme', 'visemes');
 
+          // Gesture animations
+          host.AnimationFeature.addLayer('Gesture', {
+            transitionTime: 0.5,
+            blendMode: HOST.anim.LayerBlendModes.Additive,
+          });
+
+          gestureClips.forEach(clip => {
+            const {name} = clip;
+            const config = gestureConfig[name];
+
+            if (config !== undefined) {
+              // Add the clip to each queueOption so it can be split up
+              config.queueOptions.forEach((option, index) => {
+                option.clip = clip;
+                option.to /= 30.0;
+                option.from /= 30.0;
+              });
+              host.AnimationFeature.addAnimation(
+                'Gesture',
+                name,
+                HOST.anim.AnimationTypes.queue,
+                config
+              );
+            } else {
+              host.AnimationFeature.addAnimation(
+                'Gesture',
+                name,
+                HOST.anim.AnimationTypes.single,
+                {clip}
+              );
+            }
+          });
+
+          // Apply bindPoseOffset clip if it exists
+          if (bindPoseOffset !== undefined) {
+            host.AnimationFeature.addLayer('BindPoseOffset', {
+              blendMode: HOST.anim.LayerBlendModes.Additive,
+            });
+            host.AnimationFeature.addAnimation(
+              'BindPoseOffset',
+              bindPoseOffset.name,
+              HOST.anim.AnimationTypes.single,
+              {clip: bindPoseOffset, from: 1 / 30, to: 2 / 30}
+            );
+            host.AnimationFeature.playAnimation(
+              'BindPoseOffset',
+              bindPoseOffset.name
+            );
+          }
+
           // Set up Lipsync
           const visemeOptions = {
             layers: [
@@ -444,6 +531,11 @@
             visemeOptions,
             talkingOptions
           );
+
+          // Set up Gestures
+          host.addFeature(HOST.GestureFeature, false, {
+            layers: {Gesture: {minimumInterval: 3}},
+          });
 
           return host;
         }

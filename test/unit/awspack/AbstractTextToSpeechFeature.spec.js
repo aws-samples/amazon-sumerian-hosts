@@ -581,28 +581,6 @@ describeEnvironment('AbstractTextToSpeechFeature', () => {
     });
   });
 
-  describe('_validateText', () => {
-    it("should enclose the input string in <speak></speak> tags if it isn't already", () => {
-      const tts = new AbstractTextToSpeechFeature(mockHost);
-
-      expect('<speak>some text</speak>').toEqual(
-        tts._validateText('some text')
-      );
-
-      expect('<speak></speak>').toEqual(tts._validateText(''));
-    });
-
-    it('should remove extra spaces between speak tags and the enclosed text', () => {
-      const tts = new AbstractTextToSpeechFeature(mockHost);
-      const expected = '<speak>some text with weird spacing</speak>';
-      const actual = tts._validateText(
-        '<speak>  some text with weird spacing   \n  </speak>'
-      );
-
-      expect(expected).toEqual(actual);
-    });
-  });
-
   describe('_getConfig', () => {
     it("should execute _validate if the service is initialized and the instance hasn't been validated yet", async () => {
       await AbstractTextToSpeechFeature.initializeService(

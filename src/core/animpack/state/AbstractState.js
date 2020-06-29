@@ -43,6 +43,15 @@ class AbstractState {
   }
 
   /**
+   * Gets whether or not the state is currently paused.
+   *
+   * @type {number}
+   */
+  get paused() {
+    return this._paused;
+  }
+
+  /**
    * Gets and sets the user defined weight.
    *
    * @type {number}
