@@ -181,8 +181,7 @@ class AbstractTextToSpeechFeature extends AbstractHostFeature {
 
     // Set default options for each speech
     this._voice = options.voice || this.constructor.POLLY_DEFAULTS.VoiceId;
-    this._language =
-      options.language || this.constructor.POLLY_DEFAULTS.LanguageName;
+    this._language = options.language || this.constructor.POLLY_DEFAULTS.LanguageName;
     this._engine = engines.includes(options.engine)
       ? options.engine
       : this.constructor.POLLY_DEFAULTS.Engine;
@@ -217,17 +216,12 @@ class AbstractTextToSpeechFeature extends AbstractHostFeature {
     }
 
     // Add sumerian hosts user-agent
-    if (
-      polly.config
-    ) {
+    if (polly.config) {
       polly.config.customUserAgent = AbstractTextToSpeechFeature._withCustomUserAgent(
         polly.config.customUserAgent
       );
     }
-    if (
-      presigner.service
-      && presigner.service.config
-    ) {
+    if (presigner.service && presigner.service.config) {
       presigner.service.config.customUserAgent = AbstractTextToSpeechFeature._withCustomUserAgent(
         presigner.service.config.customUserAgent
       );
@@ -265,8 +259,8 @@ class AbstractTextToSpeechFeature extends AbstractHostFeature {
 
         response.Voices.forEach(voice => {
           if (
-            voice.SupportedEngines.includes('standard') ||
-            version >= minNeuralSdk
+            voice.SupportedEngines.includes('standard')
+            || version >= minNeuralSdk
           ) {
             availableVoices.push(voice);
           }
@@ -357,11 +351,11 @@ class AbstractTextToSpeechFeature extends AbstractHostFeature {
   static _withCustomUserAgent(currentUserAgent) {
     const sumerianHostsUserAgent = 'request-source/SumerianHosts';
 
-    if(currentUserAgent == null) {
+    if (currentUserAgent == null) {
       return sumerianHostsUserAgent;
     }
 
-    if(currentUserAgent.indexOf(sumerianHostsUserAgent) !== -1) {
+    if (currentUserAgent.indexOf(sumerianHostsUserAgent) !== -1) {
       return currentUserAgent;
     }
 
@@ -381,8 +375,8 @@ class AbstractTextToSpeechFeature extends AbstractHostFeature {
   _validateEngine(engine) {
     // Default to the standard engine if neural is not available for this version
     if (
-      engine === undefined ||
-      this.constructor.AWS_VERSION < this.constructor.POLLY_MIN_NEURAL_VERSION
+      engine === undefined
+      || this.constructor.AWS_VERSION < this.constructor.POLLY_MIN_NEURAL_VERSION
     ) {
       engine = this.constructor.POLLY_DEFAULTS.Engine;
     }
@@ -421,8 +415,8 @@ class AbstractTextToSpeechFeature extends AbstractHostFeature {
   _validateRate(rate) {
     // Use default if specified sample rate is not valid for the audio format
     if (
-      rate === undefined ||
-      !sampleRates[this._audioFormat].rates.includes(rate)
+      rate === undefined
+      || !sampleRates[this._audioFormat].rates.includes(rate)
     ) {
       rate = sampleRates[this._audioFormat].defaults[this._engine];
     }
@@ -582,7 +576,7 @@ class AbstractTextToSpeechFeature extends AbstractHostFeature {
 
       // Update the speech with new parameters
       if (speechConfigStr !== configStr) {
-        this._updateSpeech(text, config);
+        this._updateSpeech(text, validConfig);
       }
     });
 
@@ -606,10 +600,10 @@ class AbstractTextToSpeechFeature extends AbstractHostFeature {
     const speech = this._speechCache[text] || {};
     // Exit if nothing has changed and force is false
     if (
-      !force &&
-      config !== undefined &&
-      speech.config &&
-      JSON.stringify(config) === JSON.stringify(speech.config)
+      !force
+      && config !== undefined
+      && speech.config
+      && JSON.stringify(config) === JSON.stringify(speech.config)
     ) {
       return speech;
     }
@@ -1068,9 +1062,9 @@ class AbstractTextToSpeechFeature extends AbstractHostFeature {
       .then(speech => {
         // Cancel the currently playing speech
         if (
-          this._currentSpeech &&
-          this._currentSpeech.playing &&
-          this._currentSpeech.audio !== speech.audio
+          this._currentSpeech
+          && this._currentSpeech.playing
+          && this._currentSpeech.audio !== speech.audio
         ) {
           this._currentSpeech.cancel();
         }

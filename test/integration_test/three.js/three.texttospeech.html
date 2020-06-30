@@ -192,7 +192,12 @@
           setTimeout(() => {
             console.log('TEST INTERRUPT WITH OTHER');
             speaker.TextToSpeechFeature.play(
-              'Now I will say something else, cancelling the last speech.'
+              'Now I will say something else, cancelling the last speech.',
+              {
+                Engine: 'standard',
+                Language: 'English, British',
+                VoiceId: 'Russell',
+              }
             );
           }, 4000);
 
