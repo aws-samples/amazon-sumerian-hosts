@@ -8,7 +8,7 @@
     "build-test": "npm run build; npm run test",
     "start": "webpack-dev-server --open --config webpack.dev.js",
     "build-start": "npm run build; npm run start",
-    "prepublishOnly": "npm run build",
+    "release": "npm run build",
     "docs": "jsdoc -c jsdoc.conf.json"
   },
   "keywords": [],
