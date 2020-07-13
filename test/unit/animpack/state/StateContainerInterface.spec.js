@@ -8,7 +8,7 @@
 import describeHostEnvironment from '../../EnvironmentHarness';
 import StateContainerInterface from '../../../../src/core/animpack/state/StateContainerInterface';
 
-describeHostEnvironment('StateContainerMixin', (options = {}, env) => {
+describeHostEnvironment('StateContainerMixin', () => {
   let state1;
   let state2;
   let state3;
@@ -112,6 +112,7 @@ describeHostEnvironment('StateContainerMixin', (options = {}, env) => {
 
     it('should not change the name if newName is currentName', () => {
       const currentName = state1.name;
+
       expect(testContainer.renameState(state1.name, state1.name)).toEqual(
         currentName
       );

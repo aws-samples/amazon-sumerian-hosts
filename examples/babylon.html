@@ -17,6 +17,10 @@
         padding: 0;
       }
 
+      div {
+        padding: 2.5px;
+      }
+
       #renderCanvas {
         width: 100%;
         height: 100%;
@@ -36,8 +40,12 @@
         min-height: 200px;
       }
 
-      .button {
+      .speechButton {
         width: 75px;
+      }
+
+      .gestureButton {
+        width: 312px;
       }
 
       #loadScreen {
@@ -128,7 +136,7 @@
       <div>
         <textarea autofocus size="23" type="text" id="textEntry">
 <speak>
-  <amazon:domain name="conversational">Hi there, my name is Maya. I used
+  <amazon:domain name="conversational">Hi there, my name is Cristine. I used
     to only be a host inside Amazon Sumerian, but now you can use me in other
     Javascript runtime environments like three<sub alias="">.</sub>js and
     Babylon<sub alias="">.</sub>js. Right now I&apos;m in Babylon<sub alias="">.</sub>js.
@@ -136,12 +144,20 @@
 </speak>
         </textarea>
       </div>
-      <button id="play" class="button">Play</button>
-      <button id="pause" class="button">Pause</button>
-      <button id="resume" class="button">Resume</button>
-      <button id="stop" class="button">Stop</button>
       <div>
-        <button id="gestures" class="button">Generate Gestures</button>
+        <button id="play" class="speechButton">Play</button>
+        <button id="pause" class="speechButton">Pause</button>
+        <button id="resume" class="speechButton">Resume</button>
+        <button id="stop" class="speechButton">Stop</button>
+      </div>
+      <div>
+        <button id="gestures" class="gestureButton">Generate Gestures</button>
+      </div>
+      <div>
+        <select id="emotes" class="gestureButton"></select>
+      </div>
+      <div>
+        <button id="playEmote" class="gestureButton">Play Emote</button>
       </div>
     </div>
 
@@ -163,9 +179,15 @@
 
         // Define the glTF assets that will represent the host
         const characterFile =
-          './assets/glTF/characters/adult_female/maya/maya.gltf';
+          './assets/glTF/characters/adult_female/cristine/cristine.gltf';
         const animationPath = './assets/glTF/animations/adult_female';
-        const animationFiles = ['stand_idle.glb', 'lipsync.glb', 'gesture.glb'];
+        const animationFiles = [
+          'stand_idle.glb',
+          'lipsync.glb',
+          'gesture.glb',
+          'emote.glb',
+          'face_idle.glb',
+        ];
         const gestureConfigFile = 'gesture.json';
         const audioAttachJoint = 'char:def_c_neckB'; // Name of the joint to attach audio to
         const voice = 'Joanna'; // Polly voice. Full list of available voices at: https://docs.aws.amazon.com/polly/latest/dg/voicelist.html
@@ -187,16 +209,24 @@
           `${animationPath}/${gestureConfigFile}`
         ).then(response => response.json());
 
-        const [idleClips, lipsyncClips, gestureClips] = clips;
+        const [
+          idleClips,
+          lipsyncClips,
+          gestureClips,
+          emoteClips,
+          faceClips,
+        ] = clips;
         const host = createHost(
           character,
           audioAttachJoint,
           voice,
           voiceEngine,
           idleClips[0],
+          faceClips[0],
           lipsyncClips,
           gestureClips,
           gestureConfig,
+          emoteClips,
           bindPoseOffset,
           scene
         );
@@ -229,6 +259,27 @@
             speechInput.value,
             gestureMap
           );
+        };
+
+        // Populate the emote selector
+        const emotes = host.AnimationFeature.getAnimations('Emote');
+        const emoteSelect = document.getElementById('emotes');
+        emotes.forEach((emote, i) => {
+          const emoteOption = document.createElement('option');
+          emoteOption.text = emote;
+          emoteOption.value = emote;
+          emoteSelect.add(emoteOption, 0);
+
+          // Set the current item to the first emote
+          if (!i) {
+            emoteSelect.value = emote;
+          }
+        });
+
+        // Play emote on demand with emote button
+        const emoteButton = document.getElementById('playEmote');
+        emoteButton.onclick = () => {
+          host.GestureFeature.playGesture('Emote', emoteSelect.value);
         };
 
         // Set up base scene
@@ -364,14 +415,7 @@
                     scene
                   );
 
-                  return animations.map((group, i) => {
-                    // Make the lipsync animation additive
-                    if (index) {
-                      BABYLON.AnimationGroup.MakeAnimationAdditive(group);
-                    }
-
-                    return group;
-                  });
+                  return animations;
                 }
               );
             })
@@ -387,9 +431,11 @@
           voice,
           engine,
           idleClip,
+          faceIdleClip,
           lipsyncClips,
           gestureClips,
           gestureConfig,
+          emoteClips,
           bindPoseOffset,
           scene
         ) {
@@ -424,6 +470,19 @@
           );
           host.AnimationFeature.playAnimation('Base', idleClip.name);
 
+          // Face idle
+          host.AnimationFeature.addLayer('Face', {
+            blendMode: HOST.anim.LayerBlendModes.Additive,
+          });
+          BABYLON.AnimationGroup.MakeAnimationAdditive(faceIdleClip);
+          host.AnimationFeature.addAnimation(
+            'Face',
+            faceIdleClip.name,
+            HOST.anim.AnimationTypes.single,
+            {clip: faceIdleClip, from: 1 / 30, to: faceIdleClip.to}
+          );
+          host.AnimationFeature.playAnimation('Face', faceIdleClip.name);
+
           // Talking idle
           host.AnimationFeature.addLayer('Talk', {
             transitionTime: 0.75,
@@ -431,6 +490,7 @@
           });
           host.AnimationFeature.setLayerWeight('Talk', 0);
           const talkClip = lipsyncClips.find(c => c.name === 'stand_talk');
+          BABYLON.AnimationGroup.MakeAnimationAdditive(talkClip);
           lipsyncClips.splice(lipsyncClips.indexOf(talkClip), 1);
           host.AnimationFeature.addAnimation(
             'Talk',
@@ -439,29 +499,6 @@
             {clip: talkClip}
           );
           host.AnimationFeature.playAnimation('Talk', talkClip.name);
-
-          // Viseme poses
-          host.AnimationFeature.addLayer('Viseme', {
-            transitionTime: 0.12,
-            blendMode: HOST.anim.LayerBlendModes.Additive,
-          });
-          host.AnimationFeature.setLayerWeight('Viseme', 0);
-          const blendStateOptions = lipsyncClips.map(clip => {
-            return {
-              name: clip.name,
-              clip,
-              weight: 0,
-              from: 1 / 30,
-              to: 2 / 30,
-            };
-          });
-          host.AnimationFeature.addAnimation(
-            'Viseme',
-            'visemes',
-            HOST.anim.AnimationTypes.freeBlend,
-            {blendStateOptions}
-          );
-          host.AnimationFeature.playAnimation('Viseme', 'visemes');
 
           // Gesture animations
           host.AnimationFeature.addLayer('Gesture', {
@@ -472,6 +509,7 @@
           gestureClips.forEach(clip => {
             const {name} = clip;
             const config = gestureConfig[name];
+            BABYLON.AnimationGroup.MakeAnimationAdditive(clip);
 
             if (config !== undefined) {
               // Add the clip to each queueOption so it can be split up
@@ -495,6 +533,45 @@
               );
             }
           });
+
+          // Emote animations
+          host.AnimationFeature.addLayer('Emote', {
+            transitionTime: 0.5,
+          });
+
+          emoteClips.forEach(clip => {
+            const {name} = clip;
+            host.AnimationFeature.addAnimation(
+              'Emote',
+              name,
+              HOST.anim.AnimationTypes.single,
+              {clip, loopCount: 1}
+            );
+          });
+
+          // Viseme poses
+          host.AnimationFeature.addLayer('Viseme', {
+            transitionTime: 0.12,
+            blendMode: HOST.anim.LayerBlendModes.Additive,
+          });
+          host.AnimationFeature.setLayerWeight('Viseme', 0);
+          const blendStateOptions = lipsyncClips.map(clip => {
+            BABYLON.AnimationGroup.MakeAnimationAdditive(clip);
+            return {
+              name: clip.name,
+              clip,
+              weight: 0,
+              from: 1 / 30,
+              to: 2 / 30,
+            };
+          });
+          host.AnimationFeature.addAnimation(
+            'Viseme',
+            'visemes',
+            HOST.anim.AnimationTypes.freeBlend,
+            {blendStateOptions}
+          );
+          host.AnimationFeature.playAnimation('Viseme', 'visemes');
 
           // Apply bindPoseOffset clip if it exists
           if (bindPoseOffset !== undefined) {
@@ -523,7 +600,14 @@
             ],
           };
           const talkingOptions = {
-            layers: [{name: 'Talk', animation: 'stand_talk'}],
+            layers: [
+              {
+                name: 'Talk',
+                animation: 'stand_talk',
+                blendTime: 0.75,
+                easingFn: HOST.anim.Easing.Quadratic.InOut,
+              },
+            ],
           };
           host.addFeature(
             HOST.LipsyncFeature,
@@ -534,7 +618,13 @@
 
           // Set up Gestures
           host.addFeature(HOST.GestureFeature, false, {
-            layers: {Gesture: {minimumInterval: 3}},
+            layers: {
+              Gesture: {minimumInterval: 3},
+              Emote: {
+                blendTime: 0.5,
+                easingFn: HOST.anim.Easing.Quadratic.InOut,
+              },
+            },
           });
 
           return host;

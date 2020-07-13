@@ -8,7 +8,7 @@ import Deferred from 'core/Deferred';
 import describeHostEnvironment from "../../EnvironmentHarness";
 import FreeBlendState from "../../../../src/core/animpack/state/FreeBlendState";
 
-describeHostEnvironment('FreeBlendState', (options = {}, env) => {
+describeHostEnvironment('FreeBlendState', () => {
   let freeBlend;
   let state1;
   let state2;
@@ -92,6 +92,7 @@ describeHostEnvironment('FreeBlendState', (options = {}, env) => {
     it('should get the weight for the state', () => {
       const weight = 0.52
       state1.weight = weight;
+
       expect(freeBlend.getBlendWeight('state1')).toEqual(weight);
     });
   });
@@ -105,6 +106,7 @@ describeHostEnvironment('FreeBlendState', (options = {}, env) => {
 
     it('should set the state weight to the target weight', async () =>  {
       const weight = 0.52;
+
       expect(state1.weight).not.toEqual(weight);
 
       await freeBlend.setBlendWeight(state1.name, weight);
@@ -114,15 +116,17 @@ describeHostEnvironment('FreeBlendState', (options = {}, env) => {
 
     it('should clamp state weights between 0 and 1', async () => {
       await freeBlend.setBlendWeight('state1', -10);
+
       expect(freeBlend.getBlendWeight('state1')).toEqual(0);
       await freeBlend.setBlendWeight('state1', 10);
+
       expect(freeBlend.getBlendWeight('state1')).toEqual(1);
     });
   });
 
   describe('updateInternalWeight', () => {
     it('should normalize blend state internal weights when the sum of blend state weights is greater than one', () => {
-      let freeBlend = new FreeBlendState({weight: 1});
+      const freeBlend = new FreeBlendState({weight: 1});
       freeBlend.addState(state1);
       freeBlend.addState(state2);
       freeBlend.addState(state3);
@@ -146,7 +150,7 @@ describeHostEnvironment('FreeBlendState', (options = {}, env) => {
     });
 
     it('should not normalize blend state internal weights when the sum of blend state weights is not greater than one', () => {
-      let freeBlend = new FreeBlendState({weight: 1});
+      const freeBlend = new FreeBlendState({weight: 1});
       freeBlend.addState(state1);
       freeBlend.addState(state2);
       freeBlend.addState(state3);
@@ -162,7 +166,7 @@ describeHostEnvironment('FreeBlendState', (options = {}, env) => {
     });
 
     it('should update blend state internal weights based on container weight', () => {
-      let freeBlend = new FreeBlendState({weight: 1});
+      const freeBlend = new FreeBlendState({weight: 1});
       freeBlend.addState(state1);
       freeBlend.addState(state2);
       state1.weight = 1.0;

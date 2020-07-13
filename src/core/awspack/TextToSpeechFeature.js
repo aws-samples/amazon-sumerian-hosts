@@ -122,56 +122,63 @@ class TextToSpeechFeature extends AbstractTextToSpeechFeature {
         .resume()
         .then(() => {
           this._enabled = true;
-          resolve(promise.canceled);
+          resolve();
         })
         .catch(e => {
+          this._enabled = false;
           reject(e);
         });
     });
     return promise;
   }
 
-  play(...args) {
+  _startSpeech(text, config, playMethod = 'play') {
+    const currentPromise = {
+      play: new Deferred(
+        undefined,
+        () => { currentPromise.speech.cancel(); },
+        () => { currentPromise.speech.cancel(); },
+        () => { currentPromise.speech.cancel(); }
+      ),
+      speech: new Deferred(),
+    };
+    this._currentPromise = currentPromise;
+
     // Try to start the audio context
-    const promise = this.resumeAudio();
+    this.resumeAudio().then(() => {
+      // Exit if the promise is no longer pending because of user interaction
+      if (!currentPromise.play.pending) {
+        return;
+      }
+      // Cancel if another call to play has already been made
+      else if (this._currentPromise !== currentPromise) {
+        currentPromise.play.cancel();
+        return;
+      }
 
-    return promise.then(() => {
-      if (!promise.canceled && this._enabled) {
-        // Cancel the currently playing speech
-        if (this._currentSpeech && this._currentSpeech.playing) {
-          this._currentSpeech.cancel();
-        }
-
-        return super.play(...args);
-      } else {
-        return Promise.reject(
+      // The audio context is running so the speech can be played
+      if (this._enabled) {
+        super._startSpeech(text, config, playMethod);
+      }
+      // Reject if the audio context is not running
+      else {
+        currentPromise.reject(
           new Error(
-            `Cannot play speech on host ${this._host.id}. The audio context is not running. Use the "TextToSpeechFeature.resumeAudio" method to try to resume it after a user gesture.`
+            `Cannot ${playMethod} speech on host ${this._host.id}. The audio context is not running. Use the "TextToSpeechFeature.resumeAudio" method to try to resume it after a user gesture.`
           )
         );
       }
     });
+
+    return currentPromise.play;
   }
 
-  resume(...args) {
-    // Try to start the audio context
-    const promise = this.resumeAudio();
+  play(text, config) {
+    return this._startSpeech(text, config, 'play');
+  }
 
-    return promise.then(() => {
-      if (!promise.canceled && this._enabled) {
-        // Cancel the currently playing speech
-        if (this._currentSpeech && this._currentSpeech.playing) {
-          this._currentSpeech.cancel();
-        }
-        return super.resume(...args);
-      } else {
-        return Promise.reject(
-          new Error(
-            `Cannot resume speech on host ${this._host.id}. The audio context is not running. Use the "TextToSpeechFeature.resumeAudio" method to try to resume it after a user gesture.`
-          )
-        );
-      }
-    });
+  resume(text, config) {
+    return this._startSpeech(text, config, 'resume');
   }
 
   installApi() {

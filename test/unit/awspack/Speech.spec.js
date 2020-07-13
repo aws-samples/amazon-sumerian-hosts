@@ -35,6 +35,7 @@ describeEnvironment('Speech', (_options, env) => {
     };
     mockAudio.play.and.callFake(() => {
       mockAudio.paused = false;
+      return Promise.resolve();
     });
     mockAudio.pause.and.callFake(() => {
       mockAudio.paused = true;
@@ -52,8 +53,9 @@ describeEnvironment('Speech', (_options, env) => {
 
   function describeCommonSpeech() {
     describe('pause', () => {
-      it('should execute pause on _audio', () => {
+      it('should execute pause on _audio', async () => {
         speech.pause();
+        await Promise.resolve();
 
         expect(speech._audio.pause).toHaveBeenCalled();
       });
@@ -74,8 +76,9 @@ describeEnvironment('Speech', (_options, env) => {
       });
     });
     describe('cancel', () => {
-      it('should execute pause on _audio', () => {
+      it('should execute pause on _audio', async () => {
         speech.cancel();
+        await Promise.resolve();
 
         expect(speech._audio.pause).toHaveBeenCalled();
       });
@@ -111,8 +114,9 @@ describeEnvironment('Speech', (_options, env) => {
     });
 
     describe('stop', () => {
-      it('should execute pause on _audio', () => {
+      it('should execute pause on _audio', async () => {
         speech.stop();
+        await Promise.resolve();
 
         expect(speech._audio.pause).toHaveBeenCalled();
       });

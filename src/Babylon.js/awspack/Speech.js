@@ -34,6 +34,10 @@ class Speech extends CoreSpeech {
     }
   }
 
+  _pauseAudio() {
+    this._audio.pause();
+  }
+
   get volume() {
     return this._audio.getVolume();
   }

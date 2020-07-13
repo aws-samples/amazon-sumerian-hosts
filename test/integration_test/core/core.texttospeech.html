@@ -101,13 +101,24 @@
 
         // Test speeches
         function testSpeech() {
-
           const {TextToSpeechUtils} = HOST.aws;
 
           const markMap = {
-            '{"feature":"GestureFeature", "method":"switchToGesture", "args":["headShake", 0.5]}' : ['no', 'nah', 'cancelling'],
-            '{"feature":"GestureFeature", "method":"switchToGesture", "args":["self", 0.5]}' : ['I', 'yea', 'now'],
-            '{"feature":"POIFeature", "method":"lookAtTarget", "args":["userA", 0.5]}' : ['you', 'now', 'testing']
+            '{"feature":"GestureFeature", "method":"switchToGesture", "args":["headShake", 0.5]}': [
+              'no',
+              'nah',
+              'cancelling',
+            ],
+            '{"feature":"GestureFeature", "method":"switchToGesture", "args":["self", 0.5]}': [
+              'I',
+              'yea',
+              'now',
+            ],
+            '{"feature":"POIFeature", "method":"lookAtTarget", "args":["userA", 0.5]}': [
+              'you',
+              'now',
+              'testing',
+            ],
           };
 
           speaker.TextToSpeechFeature.play(
@@ -171,10 +182,75 @@
                 'Now I will say something else, cancelling the last speech.',
                 markMap
               )
-            ).then(() => {
-              console.log('IM DONE!');
+            ).then(async () => {
+              console.log('IM DONE! STARTING QUEUE TEST');
+              speaker.stopListeningToAll();
+
+              console.log('TEST QUEUE AT INTERVAL 0ms');
+              await testQueue(0);
+
+              console.log('TEST QUEUE AT INTERVAL 50ms');
+              await testQueue(50);
+
+              console.log('TEST QUEUE AT INTERVAL 500ms');
+              await testQueue(500);
             });
           }, 8500);
+        }
+
+        function testQueue(interval) {
+          return new Promise(resolve => {
+            const speechQueue = [
+              'One. This is the first test.',
+              'Two. This is the second test. It is a speech that is generic and has some length.',
+              'Three. This is the third test. It is a speech that is generic and has some length. This one is the longest speech.',
+              'Four.',
+              'Five. This is the fifth test. It is a speech that is generic and has some length.',
+            ];
+            let isPlaying = false;
+
+            function playSpeech(index) {
+              // Suppress current speech resolution
+              if (isPlaying) {
+                speaker.TextToSpeechFeature.pause();
+              }
+
+              // Start playing the speech text at the given index
+              isPlaying = true;
+              const text = speechQueue[index];
+              const promise = speaker.TextToSpeechFeature.play(text);
+
+              promise.then(() => {
+                // Don't continue to the next speech if the last one was canceled
+                if (promise.canceled) {
+                  console.log('CANCELED QUEUED SPEECH', text);
+                  return;
+                }
+
+                isPlaying = false;
+                index += 1;
+
+                // Play the next speech in the queue
+                if (index < speechQueue.length) {
+                  console.log('ADVANCING QUEUE');
+                  playSpeech(index);
+                }
+
+                // Signal completion if there are no more speeches
+                else {
+                  console.log('QUEUE COMPLETE');
+                  resolve();
+                }
+              });
+            }
+
+            for (let i = 0, l = speechQueue.length; i < l; i += 1) {
+              setTimeout(() => {
+                console.log('PLAY QUEUE FROM INDEX', i);
+                playSpeech(i);
+              }, interval * i);
+            }
+          });
         }
 
         testSpeech();

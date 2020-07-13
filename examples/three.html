@@ -17,6 +17,10 @@
         padding: 0;
       }
 
+      div {
+        padding: 2.5px;
+      }
+
       #renderCanvas {
         width: 100%;
         height: 100%;
@@ -36,8 +40,12 @@
         min-height: 200px;
       }
 
-      .button {
+      .speechButton {
         width: 75px;
+      }
+
+      .gestureButton {
+        width: 312px;
       }
 
       #loadScreen {
@@ -129,7 +137,7 @@
       <div>
         <textarea autofocus size="23" type="text" id="textEntry">
 <speak>
-  <amazon:domain name="conversational">Hello, my name is Jay. I used
+  <amazon:domain name="conversational">Hello, my name is Preston. I used
     to only be a host inside Amazon Sumerian, but now you can use me in other
     Javascript runtime environments like three<sub alias="">.</sub>js and
     Babylon<sub alias="">.</sub>js. Right now I&apos;m in three<sub alias="">.</sub>js.
@@ -137,12 +145,20 @@
 </speak>
         </textarea>
       </div>
-      <button id="play" class="button">Play</button>
-      <button id="pause" class="button">Pause</button>
-      <button id="resume" class="button">Resume</button>
-      <button id="stop" class="button">Stop</button>
       <div>
-        <button id="gestures" class="button">Generate Gestures</button>
+        <button id="play" class="speechButton">Play</button>
+        <button id="pause" class="speechButton">Pause</button>
+        <button id="resume" class="speechButton">Resume</button>
+        <button id="stop" class="speechButton">Stop</button>
+      </div>
+      <div>
+        <button id="gestures" class="gestureButton">Generate Gestures</button>
+      </div>
+      <div>
+        <select id="emotes" class="gestureButton"></select>
+      </div>
+      <div>
+        <button id="playEmote" class="gestureButton">Play Emote</button>
       </div>
     </div>
 
@@ -165,9 +181,15 @@
         // Define the glTF assets that will represent the host
         const renderFn = [];
         const characterFile =
-          './assets/glTF/characters/adult_male/jay/jay.gltf';
+          './assets/glTF/characters/adult_male/preston/preston.gltf';
         const animationPath = './assets/glTF/animations/adult_male';
-        const animationFiles = ['stand_idle.glb', 'lipsync.glb', 'gesture.glb'];
+        const animationFiles = [
+          'stand_idle.glb',
+          'lipsync.glb',
+          'gesture.glb',
+          'emote.glb',
+          'face_idle.glb',
+        ];
         const gestureConfigFile = 'gesture.json';
         const audioAttachJoint = 'chardef_c_neckB'; // Name of the joint to attach audio to
         const voice = 'Matthew'; // Polly voice. Full list of available voices at: https://docs.aws.amazon.com/polly/latest/dg/voicelist.html
@@ -189,16 +211,24 @@
           `${animationPath}/${gestureConfigFile}`
         ).then(response => response.json());
 
-        const [idleClips, lipsyncClips, gestureClips] = clips;
+        const [
+          idleClips,
+          lipsyncClips,
+          gestureClips,
+          emoteClips,
+          faceClips,
+        ] = clips;
         const host = createHost(
           character,
           audioAttachJoint,
           voice,
           voiceEngine,
           idleClips[0],
+          faceClips[0],
           lipsyncClips,
           gestureClips,
           gestureConfig,
+          emoteClips,
           bindPoseOffset,
           camera,
           clock
@@ -222,6 +252,27 @@
             host.TextToSpeechFeature[id](speechInput.value);
           };
         });
+
+        // Populate the emote selector
+        const emotes = host.AnimationFeature.getAnimations('Emote');
+        const emoteSelect = document.getElementById('emotes');
+        emotes.forEach((emote, i) => {
+          const emoteOption = document.createElement('option');
+          emoteOption.text = emote;
+          emoteOption.value = emote;
+          emoteSelect.add(emoteOption, 0);
+
+          // Set the current item to the first emote
+          if (!i) {
+            emoteSelect.value = emote;
+          }
+        });
+
+        // Play emote on demand with emote button
+        const emoteButton = document.getElementById('playEmote');
+        emoteButton.onclick = () => {
+          host.GestureFeature.playGesture('Emote', emoteSelect.value);
+        };
 
         // Update the text area text with gesture SSML markup when clicked
         const gestureButton = document.getElementById('gestures');
@@ -401,14 +452,7 @@
               const filePath = `${animationPath}/${filename}`;
 
               return loadAsset(gltfLoader, filePath, async gltf => {
-                return gltf.animations.map((clip, i) => {
-                  // Make the lipsync animation additive
-                  if (index) {
-                    THREE.AnimationUtils.makeClipAdditive(clip);
-                  }
-
-                  return clip;
-                });
+                return gltf.animations;
               });
             })
           );
@@ -423,9 +467,11 @@
           voice,
           engine,
           idleClip,
+          faceIdleClip,
           lipsyncClips,
           gestureClips,
           gestureConfig,
+          emoteClips,
           bindPoseOffset,
           camera,
           clock
@@ -460,6 +506,27 @@
           );
           host.AnimationFeature.playAnimation('Base', idleClip.name);
 
+          // Face idle
+          host.AnimationFeature.addLayer('Face', {
+            blendMode: HOST.anim.LayerBlendModes.Additive,
+          });
+          THREE.AnimationUtils.makeClipAdditive(faceIdleClip);
+          host.AnimationFeature.addAnimation(
+            'Face',
+            faceIdleClip.name,
+            HOST.anim.AnimationTypes.single,
+            {
+              clip: THREE.AnimationUtils.subclip(
+                faceIdleClip,
+                faceIdleClip.name,
+                1,
+                faceIdleClip.duration * 30,
+                30
+              ),
+            }
+          );
+          host.AnimationFeature.playAnimation('Face', faceIdleClip.name);
+
           // Talking idle
           host.AnimationFeature.addLayer('Talk', {
             transitionTime: 0.75,
@@ -472,32 +539,9 @@
             'Talk',
             talkClip.name,
             HOST.anim.AnimationTypes.single,
-            {clip: talkClip}
+            {clip: THREE.AnimationUtils.makeClipAdditive(talkClip)}
           );
           host.AnimationFeature.playAnimation('Talk', talkClip.name);
-
-          // Viseme poses
-          host.AnimationFeature.addLayer('Viseme', {
-            transitionTime: 0.12,
-            blendMode: HOST.anim.LayerBlendModes.Additive,
-          });
-          host.AnimationFeature.setLayerWeight('Viseme', 0);
-
-          // Slice off the reference frame
-          const blendStateOptions = lipsyncClips.map(clip => {
-            return {
-              name: clip.name,
-              clip: THREE.AnimationUtils.subclip(clip, clip.name, 1, 2, 30),
-              weight: 0,
-            };
-          });
-          host.AnimationFeature.addAnimation(
-            'Viseme',
-            'visemes',
-            HOST.anim.AnimationTypes.freeBlend,
-            {blendStateOptions}
-          );
-          host.AnimationFeature.playAnimation('Viseme', 'visemes');
 
           // Gesture animations
           host.AnimationFeature.addLayer('Gesture', {
@@ -507,6 +551,7 @@
           gestureClips.forEach(clip => {
             const {name} = clip;
             const config = gestureConfig[name];
+            THREE.AnimationUtils.makeClipAdditive(clip);
 
             if (config !== undefined) {
               config.queueOptions.forEach((option, index) => {
@@ -534,6 +579,45 @@
               );
             }
           });
+
+          // Emote animations
+          host.AnimationFeature.addLayer('Emote', {
+            transitionTime: 0.5,
+          });
+
+          emoteClips.forEach(clip => {
+            const {name} = clip;
+            host.AnimationFeature.addAnimation(
+              'Emote',
+              name,
+              HOST.anim.AnimationTypes.single,
+              {clip, loopCount: 1}
+            );
+          });
+
+          // Viseme poses
+          host.AnimationFeature.addLayer('Viseme', {
+            transitionTime: 0.12,
+            blendMode: HOST.anim.LayerBlendModes.Additive,
+          });
+          host.AnimationFeature.setLayerWeight('Viseme', 0);
+
+          // Slice off the reference frame
+          const blendStateOptions = lipsyncClips.map(clip => {
+            THREE.AnimationUtils.makeClipAdditive(clip);
+            return {
+              name: clip.name,
+              clip: THREE.AnimationUtils.subclip(clip, clip.name, 1, 2, 30),
+              weight: 0,
+            };
+          });
+          host.AnimationFeature.addAnimation(
+            'Viseme',
+            'visemes',
+            HOST.anim.AnimationTypes.freeBlend,
+            {blendStateOptions}
+          );
+          host.AnimationFeature.playAnimation('Viseme', 'visemes');
 
           // Apply bindPoseOffset clip if it exists
           if (bindPoseOffset !== undefined) {
@@ -565,7 +649,14 @@
             layers: [{name: 'Viseme', animation: 'visemes'}],
           };
           const talkingOptions = {
-            layers: [{name: 'Talk', animation: 'stand_talk'}],
+            layers: [
+              {
+                name: 'Talk',
+                animation: 'stand_talk',
+                blendTime: 0.75,
+                easingFn: HOST.anim.Easing.Quadratic.InOut,
+              },
+            ],
           };
           host.addFeature(
             HOST.LipsyncFeature,
@@ -576,7 +667,13 @@
 
           // Set up Gestures
           host.addFeature(HOST.GestureFeature, false, {
-            layers: {Gesture: {minimumInterval: 3}},
+            layers: {
+              Gesture: {minimumInterval: 3},
+              Emote: {
+                blendTime: 0.5,
+                easingFn: HOST.anim.Easing.Quadratic.InOut,
+              },
+            },
           });
 
           return host;
