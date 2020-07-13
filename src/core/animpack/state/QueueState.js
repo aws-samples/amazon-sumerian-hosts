@@ -1,6 +1,5 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: MIT-0
-import Utils from 'core/Utils';
 import AbstractState from './AbstractState';
 import AnimationPlayerInterface from '../AnimationPlayerInterface';
 import StateContainerInterface from './StateContainerInterface';

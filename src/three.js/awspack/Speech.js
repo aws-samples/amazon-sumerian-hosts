@@ -47,6 +47,10 @@ class Speech extends CoreSpeech {
     return this._threeAudio;
   }
 
+  _pauseAudio() {
+    this._audio.pause();
+  }
+
   play(currentTime, onFinish, onError, onInterrupt) {
     // Re-connect the Audio element to stop playback
     this._threeAudio.disconnect();

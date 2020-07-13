@@ -34,7 +34,7 @@ class TextToSpeechUtils {
     }
 
     // process the input map into an internal format
-    const internalMap = TextToSpeechUtils._processInputMap(map);
+    const internalMap = this._processInputMap(map);
 
     const speakTags = ['<speak>', '</speak>'];
     const ssmlMarkRegex = /<mark name=(?:"|')(.*)(?:"|')\/>/
@@ -42,13 +42,16 @@ class TextToSpeechUtils {
 
     // Identify any existing SSML tags
     const existingTags = [];
-    let result;
-    while(result = ssmlTagRegex.exec(text)) {
+    let result = ssmlTagRegex.exec(text);
+
+    while(result !== null) {
       existingTags.push({
         start: result.index,
         end: result.index + result[0].length,
         text: result[0]
       });
+
+      result = ssmlTagRegex.exec(text);
     }
 
     const chunks = [];
@@ -60,7 +63,7 @@ class TextToSpeechUtils {
 
       if (substr !== '') {
         // auto-mark non-tag text
-        chunks.push(TextToSpeechUtils._insertMarks(
+        chunks.push(this._insertMarks(
           substr,
           internalMap,
           duplicateMarkToCheck
@@ -69,7 +72,9 @@ class TextToSpeechUtils {
         duplicateMarkToCheck = [];
       }
 
-      if (ssmlMarkResult = ssmlMarkRegex.exec(existingTag.text)) {
+      ssmlMarkResult = ssmlMarkRegex.exec(existingTag.text)
+
+      if (ssmlMarkResult !== null) {
         const markText = ssmlMarkResult[1];
         duplicateMarkToCheck.push(markText);
       } else if (!speakTags.includes(existingTag.text)) {
@@ -80,7 +85,7 @@ class TextToSpeechUtils {
       index = existingTag.end;
     });
 
-    chunks.push(TextToSpeechUtils._insertMarks(
+    chunks.push(this._insertMarks(
       text.slice(index),
       internalMap,
       duplicateMarkToCheck

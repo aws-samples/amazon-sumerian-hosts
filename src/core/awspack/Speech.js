@@ -82,9 +82,21 @@ class Speech extends AbstractSpeech {
       }, -this._speechmarkOffset);
     } else {
       this._audio.currentTime = 0;
+      this._audio.play();
     }
+  }
 
-    this._audio.play();
+  /**
+   * Pause the audio once it is playable.
+   *
+   * @private
+   */
+  _pauseAudio() {
+    this._audio.play().then(() => {
+      if (!this._playing) {
+        this._audio.pause();
+      }
+    });
   }
 
   play(currentTime, onFinish, onError, onInterrupt) {
@@ -95,7 +107,7 @@ class Speech extends AbstractSpeech {
   }
 
   pause(currentTime) {
-    this._audio.pause();
+    this._pauseAudio();
     super.pause(currentTime);
   }
 
@@ -107,12 +119,12 @@ class Speech extends AbstractSpeech {
   }
 
   cancel() {
-    this._audio.pause();
+    this._pauseAudio();
     super.cancel();
   }
 
   stop() {
-    this._audio.pause();
+    this._pauseAudio();
     this._audio.currentTime = 0;
     super.stop();
   }

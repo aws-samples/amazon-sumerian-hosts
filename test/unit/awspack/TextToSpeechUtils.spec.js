@@ -18,12 +18,15 @@ describeEnvironment('TextToSpeechUtils', () => {
       expect(() => {
         TextToSpeechUtils.autoGenerateSSMLMarks('No one reads the sample text.', null);
       }).toThrowError();
+
       expect(() => {
         TextToSpeechUtils.autoGenerateSSMLMarks('No one reads the sample text.', undefined);
       }).toThrowError();
+
       expect(() => {
         TextToSpeechUtils.autoGenerateSSMLMarks('No one reads the sample text.', 52);
       }).toThrowError();
+
       expect(() => {
         TextToSpeechUtils.autoGenerateSSMLMarks('No one reads the sample text.', 'not an object');
       }).toThrowError();

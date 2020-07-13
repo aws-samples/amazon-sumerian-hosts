@@ -114,6 +114,7 @@ class TransitionState extends AbstractState {
     this._weightPromise = Deferred.all(weightPromises, () => {
       this._from.forEach(state => {
         state.cancel();
+        state.deactivate();
       });
       if (typeof onComplete === 'function') {
         onComplete();

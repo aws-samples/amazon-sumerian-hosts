@@ -518,8 +518,6 @@ class GestureFeature extends AbstractHostFeature.mix(
     // Update animation options
     if (holdTime !== undefined) {
       animation.holdTime = holdTime;
-    } else {
-      holdTime = this._getHoldTime(layer, animation);
     }
 
     if (minimumInterval !== undefined) {

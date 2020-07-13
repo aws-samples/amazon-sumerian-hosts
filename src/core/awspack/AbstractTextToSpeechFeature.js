@@ -164,6 +164,7 @@ class AbstractTextToSpeechFeature extends AbstractHostFeature {
 
     this._speechCache = {};
     this._currentSpeech = null;
+    this._currentPromise = null;
     this._isValidated = false;
     this.speechmarkOffset = Number.isNaN(Number(options.speechmarkOffset))
       ? 0
@@ -217,12 +218,12 @@ class AbstractTextToSpeechFeature extends AbstractHostFeature {
 
     // Add sumerian hosts user-agent
     if (polly.config) {
-      polly.config.customUserAgent = AbstractTextToSpeechFeature._withCustomUserAgent(
+      polly.config.customUserAgent = this._withCustomUserAgent(
         polly.config.customUserAgent
       );
     }
     if (presigner.service && presigner.service.config) {
-      presigner.service.config.customUserAgent = AbstractTextToSpeechFeature._withCustomUserAgent(
+      presigner.service.config.customUserAgent = this._withCustomUserAgent(
         presigner.service.config.customUserAgent
       );
     }
@@ -662,9 +663,9 @@ class AbstractTextToSpeechFeature extends AbstractHostFeature {
     return new Deferred((resolve, reject) => {
       this.constructor.SERVICES.presigner.getSynthesizeSpeechUrl(
         params,
-        function(error, url) {
+        function (error, url) {
           if (!error) {
-            resolve({url});
+            resolve({ url });
           } else {
             reject(error);
           }
@@ -940,7 +941,7 @@ class AbstractTextToSpeechFeature extends AbstractHostFeature {
       this,
       'volume',
       volume,
-      {seconds, easingFn}
+      { seconds, easingFn }
     );
 
     return this._promises.volume;
@@ -999,6 +1000,83 @@ class AbstractTextToSpeechFeature extends AbstractHostFeature {
   }
 
   /**
+   * Create a promise that will play/resume a speech with the given text after
+   * the audio context attempts to resume and speech audio is retrieved from Polly.
+   *
+   * @private
+   *
+   * @param {string} text - The text of the new speech to play.
+   * @param {Object=} config - Optional parameters for the speech.
+   * @param {string} [playMethod = 'play'] - Method to execute on the resulting
+   * Speech object. Valid options are 'play' and 'resume'.
+   */
+  _startSpeech(text, config, playMethod = 'play') {
+    // If no text is provided, try to use the current speech
+    if (text === undefined && playMethod === 'resume' && this._currentSpeech) {
+      text = this._currentSpeech.text;
+    }
+
+    const currentPromise = this._currentPromise || {
+      play: new Deferred(
+        undefined,
+        () => { currentPromise.speech.cancel(); },
+        () => { currentPromise.speech.cancel(); },
+        () => { currentPromise.speech.cancel(); }
+      ),
+      speech: new Deferred(),
+    };
+    this._currentPromise = currentPromise;
+
+    this._getSpeech(text, config)
+      .then(speech => {
+        // Exit if the promise is no longer pending because of user interaction
+        if (!currentPromise.play.pending) {
+          return;
+        } else if (this._currentPromise !== currentPromise) {
+          // Cancel if another call to play has already been made
+          currentPromise.play.cancel();
+          return;
+        }
+
+        // Reset current speech when the speech ends
+        const onFinish = () => {
+          this._currentSpeech = null;
+          this._currentPromise = null;
+        };
+
+        // Cancel the currently playing speech
+        if (this._currentSpeech && this._currentSpeech.playing) {
+          if (playMethod === 'play') {
+            this._currentSpeech.cancel();
+          } else if (playMethod === 'resume'
+            && this._currentSpeech.audio !== speech.audio) {
+            this._currentSpeech.cancel();
+          }
+        }
+
+        this._setCurrentSpeech(speech);
+
+        // Play the speech
+        currentPromise.speech = speech[playMethod](this._host.now, onFinish, onFinish, onFinish);
+        currentPromise.speech.then(() => {
+          if (currentPromise.speech.resolved) {
+            currentPromise.play.resolve();
+          } else {
+            currentPromise.play.cancel();
+          }
+        }).catch(error => {
+          currentPromise.play.reject(error);
+        });
+      })
+      .catch(e => {
+        e = `Cannot ${playMethod} speech ${text} on host ${this.host.id}. ${e}`;
+        currentPromise.play.reject(e);
+      });
+
+    return currentPromise.play;
+  }
+
+  /**
    * Stop any speeches currently playing and play a new speech from the beginning.
    *
    * @param {string} text - The text of the new speech to play.
@@ -1007,26 +1085,7 @@ class AbstractTextToSpeechFeature extends AbstractHostFeature {
    * @returns {Deferred}
    */
   play(text, config) {
-    return this._getSpeech(text, config)
-      .then(speech => {
-        // Cancel the currently playing speech
-        if (this._currentSpeech && this._currentSpeech.playing) {
-          this._currentSpeech.cancel();
-        }
-
-        this._setCurrentSpeech(speech);
-
-        // Reset current speech when the speech ends
-        const onFinish = () => {
-          this._currentSpeech = null;
-        };
-
-        return speech.play(this._host.now, onFinish, onFinish, onFinish);
-      })
-      .catch(e => {
-        e = `Cannot play speech ${text} on host ${this.host.id}. ${e}`;
-        return Deferred.reject(e);
-      });
+    return this._startSpeech(text, config, 'play');
   }
 
   /**
@@ -1053,35 +1112,7 @@ class AbstractTextToSpeechFeature extends AbstractHostFeature {
    * @returns {Deferred}
    */
   resume(text, config) {
-    // If no text is provided, try to use the current speech
-    if (text === undefined && this._currentSpeech) {
-      text = this._currentSpeech.text;
-    }
-
-    return this._getSpeech(text, config)
-      .then(speech => {
-        // Cancel the currently playing speech
-        if (
-          this._currentSpeech
-          && this._currentSpeech.playing
-          && this._currentSpeech.audio !== speech.audio
-        ) {
-          this._currentSpeech.cancel();
-        }
-
-        this._setCurrentSpeech(speech);
-
-        // Reset current speech when the speech ends
-        const onFinish = () => {
-          this._currentSpeech = null;
-        };
-
-        return speech.resume(this._host.now, onFinish, onFinish, onFinish);
-      })
-      .catch(e => {
-        e = `Cannot resume speech ${text} on host ${this.host.id}. ${e}`;
-        return Deferred.reject(e);
-      });
+    return this._startSpeech(text, config, 'resume');
   }
 
   /**
