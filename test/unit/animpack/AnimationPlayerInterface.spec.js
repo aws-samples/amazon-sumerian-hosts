@@ -158,6 +158,26 @@ describe('AnimationPlayerInterface', () => {
     });
   });
 
+  describe('cancelAnimation', () => {
+    it('should execute cancel on the current state', () => {
+      player.cancelAnimation();
+
+      expect(state1.cancel).toHaveBeenCalledTimes(1);
+    });
+
+    it('should return true if the current state was not null', () => {
+      state1.cancel.and.callFake(() => true);
+
+      expect(player.cancelAnimation()).toBeTrue();
+    });
+
+    it('should return false if the current state was null', () => {
+      player._currentState = null;
+
+      expect(player.cancelAnimation()).toBeFalse();
+    });
+  });
+
   describe('pauseAnimation', () => {
     it('should execute pause on the current state', () => {
       player.pauseAnimation();

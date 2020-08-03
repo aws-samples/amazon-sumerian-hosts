@@ -1,5 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: MIT-0
+/* eslint-disable no-underscore-dangle */
 import Utils from './Utils';
 
 /**
@@ -180,6 +181,22 @@ class Messenger {
   }
 
   /**
+   * De-register callback(s) from being executed when messages matching the given
+   * regular expression are received.
+   *
+   * @param {Regexp} regexp - regexp - The regular expression to filter messages with.
+   * @param {Function=} callback - Optional callback to remove. If none is defined,
+   * remove all callbacks for messages matching the regular expression.
+   */
+  stopListeningByRegexp(regexp, callback) {
+    const messages = Object.keys(this._callbacks).filter(message => regexp.test(message));
+
+    messages.forEach(message => {
+      this.stopListening(message, callback);
+    });
+  }
+
+  /**
    * Prevent any functions from being executed when any message is received for
    * this object.
    */
@@ -232,6 +249,24 @@ class Messenger {
    */
   static stopListening(message, callback) {
     this.GlobalMessenger.stopListening(message, callback);
+  }
+
+  /**
+   * De-register callback(s) from being executed on the global messengerr instance
+   * when messages matching the given regular expression are received.
+   *
+   * @param {Regexp} regexp - regexp - The regular expression to filter messages with.
+   * @param {Function=} callback - Optional callback to remove. If none is defined,
+   * remove all callbacks for messages matching the regular expression.
+   */
+  static stopListeningByRegexp(regexp, callback) {
+    const messages = Object.keys(this.GlobalMessenger._callbacks).filter(
+      message => regexp.test(message)
+    );
+
+    messages.forEach(message => {
+      this.stopListening(message, callback);
+    });
   }
 
   /**

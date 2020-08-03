@@ -1,6 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: MIT-0
 import CoreSingleState from 'core/animpack/state/SingleState';
+import MathUtils from 'core/MathUtils';
 
 /**
  * Babylonjs AnimationGroup object
@@ -31,6 +32,13 @@ class SingleState extends CoreSingleState {
     this._onFinishedEvent = this._onFinishedEvent.bind(this);
     this._onLoopEvent = this._onLoopEvent.bind(this);
 
+    this._from = Number.isNaN(Number(options.from))
+      ? babylonGroup.from
+      : Number(options.from);
+    this._to = Number.isNaN(Number(options.to))
+      ? babylonGroup.to
+      : Number(options.to);
+    babylonGroup.normalize(this._from, this._to);
     this._babylonScene = babylonScene;
     this._babylonAnimations = [...babylonGroup.targetedAnimations];
     this._babylonAnimatables = [];
@@ -38,13 +46,23 @@ class SingleState extends CoreSingleState {
     this._babylonLoopCount = this._loopCount * this._babylonNumAnimations;
     this._looped = 0;
     this._finished = 0;
-    this._from = Number.isNaN(Number(options.from))
-      ? babylonGroup.from
-      : Number(options.from);
-    this._to = Number.isNaN(Number(options.to))
-      ? babylonGroup.to
-      : Number(options.to);
     this._started = false;
+  }
+
+  get normalizedTime() {
+    const animatable = this._babylonAnimatables[0];
+    if (animatable && animatable.masterFrame) {
+      return (animatable.masterFrame - this._from)/(this._to - this._from);
+    }
+    return 0;
+  }
+
+  set normalizedTime(time) {
+    time = MathUtils.clamp(time);
+    this._babylonAnimatables.forEach((animatable) => {
+      const targetFrame = (this._to - this._from) * time + this._from;
+      animatable.goToFrame(targetFrame)
+    });
   }
 
   get timeScale() {

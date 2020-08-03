@@ -422,6 +422,24 @@ describeEnvironment('GestureFeature', () => {
     });
   });
 
+  describe('createGenericGestureArray', () => {
+    it('should return an array of stringified objects containing feature, method and args properties for each registered gesture with an empty words array', () => {
+      expect(gestureFeature.createGenericGestureArray()).toEqual([]);
+
+      gestureFeature._managedLayers = {
+        Gesture: { animations: { big: { words: DefaultGestureWords.big } } },
+      };
+
+      expect(gestureFeature.createGenericGestureArray()).toEqual([]);
+
+      gestureFeature._managedLayers.Gesture.animations.small = {words: []};
+
+      const key = `{"feature":"GestureFeature","method":"playGesture","args":["Gesture","small",{}]}`;
+
+      expect(gestureFeature.createGenericGestureArray()).toEqual([key]);
+    });
+  })
+
   describe('playGesture', () => {
     let onWarn;
 

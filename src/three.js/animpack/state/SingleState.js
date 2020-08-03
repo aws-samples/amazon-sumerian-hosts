@@ -1,6 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: MIT-0
 import CoreSingleState from 'core/animpack/state/SingleState';
+import MathUtils from 'core/MathUtils';
 
 /**
  * Threejs AnimationAction object
@@ -68,6 +69,18 @@ class SingleState extends CoreSingleState {
    */
   get threeAction() {
     return this._threeAction;
+  }
+
+  get normalizedTime() {
+    if (this._threeAction.time && this._threeAction.getClip() && this._threeAction.getClip().duration) {
+      return this._threeAction.time/this._threeAction.getClip().duration;
+    }
+    return 0;
+  }
+
+  set normalizedTime(time) {
+    time = MathUtils.clamp(time);
+    this._threeAction.time = this._threeAction.getClip().duration * time;
   }
 
   get weight() {

@@ -373,7 +373,6 @@ describeEnvironment('LipsyncFeature', () => {
         visemeMap,
       } = lipsyncFeature._managedLayers.Lipsync.animations.visemes;
       visemeMap.sil.blendTime = 0;
-      console.log('TEST HELD');
       lipsyncFeature._onViseme({mark: {value: 'sil', duration: 500}});
 
       expect(onAnimateHeldViseme).toHaveBeenCalledTimes(1);

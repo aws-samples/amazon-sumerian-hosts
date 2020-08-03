@@ -1,6 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: MIT-0
 import Deferred from 'core/Deferred';
+import MathUtils from 'core/MathUtils';
 import AnimationUtils from '../AnimationUtils';
 
 /**
@@ -24,7 +25,7 @@ class AbstractState {
       options.name !== undefined ? options.name : this.constructor.name;
     this._weight =
       options.weight !== undefined
-        ? AnimationUtils.clamp(options.weight, 0, 1)
+        ? MathUtils.clamp(options.weight, 0, 1)
         : 0;
     this._internalWeight = this._weight;
     this._paused = false;
@@ -61,7 +62,7 @@ class AbstractState {
   }
 
   set weight(weight) {
-    this._weight = AnimationUtils.clamp(weight, 0, 1);
+    this._weight = MathUtils.clamp(weight, 0, 1);
   }
 
   /**
@@ -86,7 +87,7 @@ class AbstractState {
    */
   setWeight(weight, seconds = 0, easingFn) {
     this._promises.weight.cancel();
-    weight = AnimationUtils.clamp(weight);
+    weight = MathUtils.clamp(weight);
 
     this._promises.weight = AnimationUtils.interpolateProperty(
       this,

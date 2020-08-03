@@ -73,6 +73,18 @@ class AbstractHostFeature {
   }
 
   /**
+   * Listen to a feature message from the global messenger. Feature messages will
+   * be prefixed with the class name of the feature.
+   *
+   * @param {string} message - Message to listen for.
+   * @param {Function} callback - The callback to execute when the message is received.
+   */
+  static listenTo(message, callback) {
+    message = `${this.name}.${message}`;
+    Messenger.listenTo(message, callback);
+  }
+
+  /**
    * Stop listening to a message from the host object.
    *
    * @param {string} message - Message to stop listening for.
@@ -84,10 +96,54 @@ class AbstractHostFeature {
   }
 
   /**
+   * Stop listening to a message from the global messenger.
+   *
+   * @param {string} message - Message to stop listening for.
+   * @param {Function=} callback - Optional callback to remove. If none is defined,
+   * remove all callbacks for the message.
+   */
+  static stopListening(message, callback) {
+    message = `${this.name}.${message}`;
+    Messenger.stopListening(message, callback);
+  }
+
+  /**
+   * Stop listening to a message matching the given regular expression from the
+   * host object.
+   *
+   * @param {Regexp} regexp - The regular expression to stop listening for.
+   * @param {Function=} callback - Optional callback to remove. If none is defined,
+   * remove all callbacks for the message.
+   */
+  stopListeningByRegexp(regexp, callback) {
+    this._host.stopListeningByRegexp(regexp, callback);
+  }
+
+  /**
+   * Stop listening to a message matching the given regular expression from the
+   * global messenger.
+   *
+   * @param {Regexp} regexp - The regular expression to stop listening for.
+   * @param {Function=} callback - Optional callback to remove. If none is defined,
+   * remove all callbacks for the message.
+   */
+  static stopListeningByRegexp(regexp, callback) {
+    regexp = new RegExp(`^${this.name}.${regexp.source.replace(/\^/, '')}`);
+    Messenger.stopListeningByRegexp(regexp, callback);
+  }
+
+  /**
    * Stop listening to all messages.
    */
   stopListeningToAll() {
     this._host.stopListeningToAll();
+  }
+
+  /**
+   * Stop listening to all feature messages.
+   */
+  static stopListeningToAll() {
+    Messenger.stopListeningByRegexp(new RegExp(`^${this.name}.`));
   }
 
   /**

@@ -1,6 +1,6 @@
-<!-- 
+<!--
   Copyright 2019 Amazon.com, Inc. or its affiliates. All Rights Reserved.
-  SPDX-License-Identifier: MIT-0 
+  SPDX-License-Identifier: MIT-0
 -->
 <!DOCTYPE html>
 <html lang="en">
@@ -45,6 +45,7 @@
 
         const {scene, clock} = createScene();
         const {character, clips} = await loadCharacter('../../assets/Xbot.glb');
+
         const host = createHost();
         addListeners(host);
         createPanel();
@@ -117,6 +118,9 @@
           }
 
           window.addEventListener('resize', onWindowResize, false);
+
+          const geometry = new THREE.SphereBufferGeometry();
+          const material = new THREE.MeshBasicMaterial({color: 'red'});
 
           // Start rendering
           function render() {
@@ -271,6 +275,121 @@
             }
           );
 
+          // Set up random animations
+          host.AnimationFeature.addAnimation(
+            'OverrideLayer',
+            'randomAnimation',
+            HOST.anim.AnimationTypes.randomAnimation,
+            {
+              subStateOptions: [
+                {name: 'sub1', clip: idleClip},
+                {name: 'sub2', clip: runClip},
+                {name: 'sub3', clip: walkClip},
+              ],
+            }
+          );
+
+          // Set up SingleState animation
+          host.AnimationFeature.addAnimation(
+            'OverrideLayer',
+            'singleState',
+            HOST.anim.AnimationTypes.single,
+            {clip: runClip}
+          );
+
+          // Set up 1D-blend animations
+          host.AnimationFeature.addAnimation(
+            'OverrideLayer',
+            'blend1D',
+            HOST.anim.AnimationTypes.blend1d,
+            {
+              blendStateOptions: [
+                {
+                  name: 'sad',
+                  clip: sadClip,
+                },
+                {
+                  name: 'walk',
+                  clip: walkClip,
+                },
+                {
+                  name: 'run',
+                  clip: runClip,
+                },
+              ],
+              blendThresholds: [-4, -2, 2],
+              blendMatchPhases: [false, true, true],
+            }
+          );
+
+          // Set up 2D-blend animations
+          const look_ul = clips.find(a => a.name === 'look_UL');
+          const look_ur = clips.find(a => a.name === 'look_UR');
+          const look_uc = clips.find(a => a.name === 'look_UC');
+          const look_cl = clips.find(a => a.name === 'look_CL');
+          const look_cr = clips.find(a => a.name === 'look_CR');
+          const look_cc = clips.find(a => a.name === 'look_CC');
+          const look_dl = clips.find(a => a.name === 'look_DL');
+          const look_dr = clips.find(a => a.name === 'look_DR');
+          const look_dc = clips.find(a => a.name === 'look_DC');
+
+          host.AnimationFeature.addAnimation(
+            'OverrideLayer',
+            'blend2D',
+            HOST.anim.AnimationTypes.blend2d,
+            {
+              blendStateOptions: [
+                {
+                  name: 'look_ul',
+                  clip: look_ul,
+                },
+                {
+                  name: 'look_uc',
+                  clip: look_uc,
+                },
+                {
+                  name: 'look_ur',
+                  clip: look_ur,
+                },
+                {
+                  name: 'look_cl',
+                  clip: look_cl,
+                },
+                {
+                  name: 'look_cc',
+                  clip: look_cc,
+                },
+                {
+                  name: 'look_cr',
+                  clip: look_cr,
+                },
+                {
+                  name: 'look_dl',
+                  clip: look_dl,
+                },
+                {
+                  name: 'look_dc',
+                  clip: look_dc,
+                },
+                {
+                  name: 'look_dr',
+                  clip: look_dr,
+                },
+              ],
+              blendThresholds: [
+                [-0.707, 0.707],
+                [0, 1],
+                [0.707, 0.707],
+                [-1, 0],
+                [0, 0],
+                [1, 0],
+                [-0.707, -0.707],
+                [0, -1],
+                [0.707, -0.707],
+              ],
+            }
+          );
+
           host.AnimationFeature.playAnimation(
             'OverrideLayer',
             'movementQueue',
@@ -391,6 +510,74 @@
                 animationFolder.add(animationSettings, 'Next');
               }
 
+              // Add a single value slider for blend1d states
+              else if (animType === 'blend1d') {
+                animationSettings['blendWeight'] = 0;
+                animationFolder
+                  .add(animationSettings, 'blendWeight', -5, 5, 0.1)
+                  .listen()
+                  .onChange(weight => {
+                    host.AnimationFeature.setAnimationBlendWeight(
+                      name,
+                      animation,
+                      null,
+                      weight
+                    );
+                  });
+              }
+
+              // Add two value sliders for blend2d states
+              else if (animType === 'blend2d') {
+                animationSettings['blendWeightX'] = 0;
+                animationFolder
+                  .add(animationSettings, 'blendWeightX', -1, 1, 0.01)
+                  .listen()
+                  .onChange(weight => {
+                    host.AnimationFeature.setAnimationBlendWeight(
+                      name,
+                      animation,
+                      'X',
+                      weight
+                    );
+                  });
+
+                animationSettings['blendWeightY'] = 0;
+                animationFolder
+                  .add(animationSettings, 'blendWeightY', -1, 1, 0.01)
+                  .listen()
+                  .onChange(weight => {
+                    host.AnimationFeature.setAnimationBlendWeight(
+                      name,
+                      animation,
+                      'Y',
+                      weight
+                    );
+                  });
+
+                function onMouseMove(event) {
+                  const x = (event.clientX / window.innerWidth) * 2 - 1;
+                  const y = -(event.clientY / window.innerHeight) * 2 + 1;
+
+                  animationSettings['blendWeightX'] = -x;
+                  animationSettings['blendWeightY'] = y;
+
+                  host.AnimationFeature.setAnimationBlendWeight(
+                    name,
+                    animation,
+                    'X',
+                    -x
+                  );
+
+                  host.AnimationFeature.setAnimationBlendWeight(
+                    name,
+                    animation,
+                    'Y',
+                    y
+                  );
+                }
+                window.addEventListener('mousemove', onMouseMove, false);
+              }
+
               // Add weight sliders for freeBlend states
               else if (animType === 'freeBlend') {
                 host.AnimationFeature.getAnimationBlendNames(
@@ -410,6 +597,24 @@
                       );
                     });
                 });
+              }
+
+              // Add normalizedTime sliders for single states
+              else if (animType === 'single') {
+                const currentState = host._features.AnimationFeature._layerMap[
+                  name
+                ].getState(animation);
+                animationSettings.NormalizedTime = currentState.normalizedTime;
+                renderFn.push(() => {
+                  animationSettings.NormalizedTime =
+                    currentState.normalizedTime;
+                });
+                animationFolder
+                  .add(animationSettings, 'NormalizedTime', 0.0, 1.0, 0.01)
+                  .listen()
+                  .onChange(time => {
+                    currentState.normalizedTime = time;
+                  });
               }
             });
 
