@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8" />
-    <title>JSDoc: Class: TextToSpeechFeature</title>
+    <title>JSDoc: Class: PointOfInterestFeature</title>
 
     <script src="scripts/prettify/prettify.js"></script>
     <script src="scripts/prettify/lang-css.js"></script>
@@ -78,7 +78,7 @@
     </nav>
 
     <div id="main">
-      <h1 class="page-title">Class: TextToSpeechFeature</h1>
+      <h1 class="page-title">Class: PointOfInterestFeature</h1>
 
       
 
@@ -89,7 +89,16 @@
 
 <header>
     
-        <h2><span class="attribs"><span class="type-signature"></span></span>TextToSpeechFeature<span class="signature">(host, options<span class="signature-attributes">opt</span>)</span><span class="type-signature"></span></h2>
+        <h2><span class="attribs"><span class="type-signature"></span></span>PointOfInterestFeature<span class="signature">(host, options<span class="signature-attributes">opt</span>, target<span class="signature-attributes">opt</span>, lookOptions<span class="signature-attributes">opt</span>, blinkOptions<span class="signature-attributes">opt</span>)</span><span class="type-signature"></span></h2>
+        
+            <div class="class-description"><p>PointOfInterest controls the gaze direction of the host. Given one or more<br>
+animations of type Blend2dState, it calculates the angles between the lookTracker<br>
+object (generally a joint in the host's skeleton) and the lookTarget (the object<br>
+the host should look at) and drives the managed Blend2dStates' X and Y blend<br>
+values using the result. You can optionally add saccadic movement to any managed<br>
+animation to help make the host's eyes appear alive when focused on the same<br>
+point for exteded periods of time. If blink animations are specified, a blink<br>
+will be played during large changes in gaze direction.</p></div>
         
     
 </header>
@@ -100,9 +109,11 @@
         
 
     
+    <h2>Constructor</h2>
+    
 
     
-    <h4 class="name" id="TextToSpeechFeature"><span class="type-signature"></span>new TextToSpeechFeature<span class="signature">(host, options<span class="signature-attributes">opt</span>)</span><span class="type-signature"></span></h4>
+    <h4 class="name" id="PointOfInterestFeature"><span class="type-signature"></span>new PointOfInterestFeature<span class="signature">(host, options<span class="signature-attributes">opt</span>, target<span class="signature-attributes">opt</span>, lookOptions<span class="signature-attributes">opt</span>, blinkOptions<span class="signature-attributes">opt</span>)</span><span class="type-signature"></span></h4>
     
 
     
@@ -150,7 +161,7 @@
             <td class="type">
             
                 
-<span class="param-type"><a href="Babylon.js_HostObject.html">Babylon.js/HostObject</a></span>
+<span class="param-type"><a href="core_HostObject.html">core/HostObject</a></span>
 
 
             
@@ -168,7 +179,7 @@
 
             
 
-            <td class="description last"><p>Host object managing the feature.</p></td>
+            <td class="description last"><p>Host that owns the feature.</p></td>
         </tr>
 
     
@@ -201,72 +212,20 @@
 
             
 
-            <td class="description last"><p>Options that will be sent to Polly for each speech.</p>
-                <h6>Properties</h6>
-                
-
-<table class="params">
-    <thead>
-    <tr>
-        
-        <th>Name</th>
-        
-
-        <th>Type</th>
-
-        
-        <th>Attributes</th>
-        
-
-        
-
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-
-    <tbody>
-    
-
-        <tr>
-            
-                <td class="name"><code>scene</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type"><a href="external-_BABYLON.Scene_.html">external:"BABYLON.Scene"</a></span>
-
-
-            
-            </td>
-
-            
-                <td class="attributes">
-                
-
-                
-
-                
-                </td>
-            
-
-            
-
-            <td class="description last"><p>Babylon scene containing the host owner.</p></td>
+            <td class="description last"><p>Options for the feature.</p></td>
         </tr>
 
     
 
         <tr>
             
-                <td class="name"><code>attachTo</code></td>
+                <td class="name"><code>target</code></td>
             
 
             <td class="type">
             
                 
-<span class="param-type"><a href="external-_BABYLON.Mesh_.html">external:"BABYLON.Mesh"</a></span>
+<span class="param-type">Object</span>
 
 
             
@@ -286,8 +245,434 @@
 
             
 
-            <td class="description last"><p>Optional mesh to attach the speech<br>
-audio to.</p></td>
+            <td class="description last"><p>3D transformation node that the host should try to<br>
+look at.</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>options.lookTracker</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Object</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>3D transformation node that represents<br>
+the direction the host is currently looking during animation.</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>options.scene</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Object</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>Engine-specific scene object that contains<br>
+the host. This object must be defined if using 'setTargetByName' or 'SetTargetById'<br>
+methods.</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>lookOptions</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Object</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>Options for the look animation layers.</p>
+                <h6>Properties</h6>
+                
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+        <th>Attributes</th>
+        
+
+        
+        <th>Default</th>
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>blendTime</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+                <td class="default">
+                
+                    0.1
+                
+                </td>
+            
+
+            <td class="description last"><p>Default amount of time it will<br>
+take to manipulate the weights of the look layers.</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>easingFn</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+                <td class="default">
+                
+                    Quadratic.InOut
+                
+                </td>
+            
+
+            <td class="description last"><p>Default easing function<br>
+to use when manipulating look layer weights.</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>layers</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Array.&lt;Object></span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+                <td class="default">
+                
+                    []
+                
+                </td>
+            
+
+            <td class="description last"><p>An array of layer options<br>
+objects to register as look layers.</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+            </td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>blinkOptions</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Object</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>Options for the blink animation layers.</p>
+                <h6>Properties</h6>
+                
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+        <th>Attributes</th>
+        
+
+        
+        <th>Default</th>
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>blendTime</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+                <td class="default">
+                
+                    0.075
+                
+                </td>
+            
+
+            <td class="description last"><p>Default amount of time it<br>
+will take to manipulate the weights of the blink layers.</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>easingFn</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+                <td class="default">
+                
+                    Quadratic.InOut
+                
+                </td>
+            
+
+            <td class="description last"><p>Default easing function<br>
+to use when manipulating blink layer weights.</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>layers</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Array.&lt;Object></span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+                <td class="default">
+                
+                    []
+                
+                </td>
+            
+
+            <td class="description last"><p>An array of layer options<br>
+objects to register as blink layers.</p></td>
         </tr>
 
     
@@ -318,6 +703,15 @@ audio to.</p></td>
 
     
 
+    
+    <dt class="implements">Implements:</dt>
+    <dd class="implements"><ul>
+        
+            <li><a href="SSMLSpeechmarkInterface.html">SSMLSpeechmarkInterface</a></li>
+        
+            <li><a href="ManagedAnimationLayerInterface.html">ManagedAnimationLayerInterface</a></li>
+        
+    </ul></dd>
     
 
     
@@ -370,7 +764,7 @@ audio to.</p></td>
 
 
     <ul>
-        <li><a href="core_TextToSpeechFeature.html">core/TextToSpeechFeature</a></li>
+        <li><a href="AbstractHostFeature.html">AbstractHostFeature</a></li>
     </ul>
 
 
@@ -388,150 +782,6 @@ audio to.</p></td>
 
     
         <h3 class="subsection-title">Members</h3>
-
-        
-            
-<h4 class="name" id="currentSpeech"><span class="type-signature">(readonly) </span>currentSpeech<span class="type-signature"> :string</span></h4>
-
-
-
-
-<div class="description">
-    <p>Gets the text of the currently playing speech.</p>
-</div>
-
-
-
-    <h5>Type:</h5>
-    <ul>
-        <li>
-            
-<span class="param-type">string</span>
-
-
-        </li>
-    </ul>
-
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-overrides">Overrides:</dt>
-    <dd class="tag-overrides"><ul class="dummy"><li>
-        <a href="core_TextToSpeechFeature.html#currentSpeech">core/TextToSpeechFeature#currentSpeech</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
-
-        
-            
-<h4 class="name" id="enabled"><span class="type-signature">(readonly) </span>enabled<span class="type-signature"> :boolean</span></h4>
-
-
-
-
-<div class="description">
-    <p>Gets whether or not the audio context is running and speech can be played.</p>
-</div>
-
-
-
-    <h5>Type:</h5>
-    <ul>
-        <li>
-            
-<span class="param-type">boolean</span>
-
-
-        </li>
-    </ul>
-
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-overrides">Overrides:</dt>
-    <dd class="tag-overrides"><ul class="dummy"><li>
-        <a href="core_TextToSpeechFeature.html#enabled">core/TextToSpeechFeature#enabled</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
 
         
             
@@ -561,80 +811,7 @@ audio to.</p></td>
     
     <dt class="tag-overrides">Overrides:</dt>
     <dd class="tag-overrides"><ul class="dummy"><li>
-        <a href="core_TextToSpeechFeature.html#host">core/TextToSpeechFeature#host</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
-
-        
-            
-<h4 class="name" id="minEndMarkDuration"><span class="type-signature"></span>minEndMarkDuration<span class="type-signature"> :number</span></h4>
-
-
-
-
-<div class="description">
-    <p>Gets and sets the The minimum amount of time in seconds that the last<br>
-speechmark of each type in a speech can have its duration property set to.</p>
-</div>
-
-
-
-    <h5>Type:</h5>
-    <ul>
-        <li>
-            
-<span class="param-type">number</span>
-
-
-        </li>
-    </ul>
-
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-overrides">Overrides:</dt>
-    <dd class="tag-overrides"><ul class="dummy"><li>
-        <a href="core_TextToSpeechFeature.html#minEndMarkDuration">core/TextToSpeechFeature#minEndMarkDuration</a>
+        <a href="AbstractHostFeature.html#host">AbstractHostFeature#host</a>
     </li></ul></dd>
     
 
@@ -696,7 +873,7 @@ speechmark of each type in a speech can have its duration property set to.</p>
     
     <dt class="tag-overrides">Overrides:</dt>
     <dd class="tag-overrides"><ul class="dummy"><li>
-        <a href="core_TextToSpeechFeature.html#owner">core/TextToSpeechFeature#owner</a>
+        <a href="AbstractHostFeature.html#owner">AbstractHostFeature#owner</a>
     </li></ul></dd>
     
 
@@ -732,13 +909,13 @@ speechmark of each type in a speech can have its duration property set to.</p>
 
         
             
-<h4 class="name" id="speechmarkOffset"><span class="type-signature"></span>speechmarkOffset<span class="type-signature"> :number</span></h4>
+<h4 class="name" id="target"><span class="type-signature"></span>target<span class="type-signature"> :Object|null</span></h4>
 
 
 
 
 <div class="description">
-    <p>Gets and sets the number of seconds to offset speechmark emission.</p>
+    <p>Gets and sets the target object the host should look at.</p>
 </div>
 
 
@@ -747,7 +924,10 @@ speechmark of each type in a speech can have its duration property set to.</p>
     <ul>
         <li>
             
-<span class="param-type">number</span>
+<span class="param-type">Object</span>
+|
+
+<span class="param-type">null</span>
 
 
         </li>
@@ -765,155 +945,6 @@ speechmark of each type in a speech can have its duration property set to.</p>
 
     
 
-    
-    <dt class="tag-overrides">Overrides:</dt>
-    <dd class="tag-overrides"><ul class="dummy"><li>
-        <a href="core_TextToSpeechFeature.html#speechmarkOffset">core/TextToSpeechFeature#speechmarkOffset</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
-
-        
-            
-<h4 class="name" id="volume"><span class="type-signature"></span>volume<span class="type-signature"> :number</span></h4>
-
-
-
-
-<div class="description">
-    <p>Gets and sets the volume used for all audio clips played by the speaker.</p>
-</div>
-
-
-
-    <h5>Type:</h5>
-    <ul>
-        <li>
-            
-<span class="param-type">number</span>
-
-
-        </li>
-    </ul>
-
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-overrides">Overrides:</dt>
-    <dd class="tag-overrides"><ul class="dummy"><li>
-        <a href="core_TextToSpeechFeature.html#volume">core/TextToSpeechFeature#volume</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
-
-        
-            
-<h4 class="name" id="volumePending"><span class="type-signature">(readonly) </span>volumePending<span class="type-signature"> :boolean</span></h4>
-
-
-
-
-<div class="description">
-    <p>Gets whether or not the speaker's volume value is currently being tweened.</p>
-</div>
-
-
-
-    <h5>Type:</h5>
-    <ul>
-        <li>
-            
-<span class="param-type">boolean</span>
-
-
-        </li>
-    </ul>
-
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-overrides">Overrides:</dt>
-    <dd class="tag-overrides"><ul class="dummy"><li>
-        <a href="core_TextToSpeechFeature.html#volumePending">core/TextToSpeechFeature#volumePending</a>
-    </li></ul></dd>
     
 
     
@@ -958,6 +989,189 @@ speechmark of each type in a speech can have its duration property set to.</p>
     
 
     
+    <h4 class="name" id="._sphericalToBlendValue"><span class="type-signature">(static) </span>_sphericalToBlendValue<span class="signature">(theta, phi)</span><span class="type-signature"> &rarr; {Object}</span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    <p>Calculate horizontal and vertical look angles in degrees given spherical theta<br>
+and phi angles in radians.</p>
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>theta</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>Vertical/polar angle in radians where 0 points directly<br>
+along positive Y axis.</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>phi</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>Horizontal/azimuthal angle in radians.</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    <ul>
+<li>An object with the signature {h: number, v: number} where<br>
+h represents horizontal rotation in degrees and v represents vertical rotation<br>
+in degrees.</li>
+</ul>
+</div>
+
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">Object</span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+
+
+        
+            
+
+    
+
+    
     <h4 class="name" id="discard"><span class="type-signature"></span>discard<span class="signature">()</span><span class="type-signature"></span></h4>
     
 
@@ -993,12 +1207,21 @@ from the host and remove reference to the host.</p>
     
     <dt class="tag-overrides">Overrides:</dt>
     <dd class="tag-overrides"><ul class="dummy"><li>
-        <a href="core_TextToSpeechFeature.html#discard">core/TextToSpeechFeature#discard</a>
+        <a href="AbstractHostFeature.html#discard">AbstractHostFeature#discard</a>
     </li></ul></dd>
     
 
     
 
+    
+    <dt class="implements">Implements:</dt>
+    <dd class="implements"><ul>
+        
+            <li><a href="SSMLSpeechmarkInterface.html#discard">SSMLSpeechmarkInterface#discard</a></li>
+        
+            <li><a href="ManagedAnimationLayerInterface.html#discard">ManagedAnimationLayerInterface#discard</a></li>
+        
+    </ul></dd>
     
 
     
@@ -1174,7 +1397,7 @@ the class name of the feature.</p>
     
     <dt class="tag-overrides">Overrides:</dt>
     <dd class="tag-overrides"><ul class="dummy"><li>
-        <a href="core_TextToSpeechFeature.html#emit">core/TextToSpeechFeature#emit</a>
+        <a href="AbstractHostFeature.html#emit">AbstractHostFeature#emit</a>
     </li></ul></dd>
     
 
@@ -1217,112 +1440,6 @@ the class name of the feature.</p>
 
 
 
-
-
-
-
-
-        
-            
-
-    
-
-    
-    <h4 class="name" id="getVolume"><span class="type-signature"></span>getVolume<span class="signature">()</span><span class="type-signature"> &rarr; {number}</span></h4>
-    
-
-    
-
-
-
-<div class="description">
-    <p>Gets the volume used for all audio clips played by the speaker.</p>
-</div>
-
-
-
-
-
-
-
-
-
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-overrides">Overrides:</dt>
-    <dd class="tag-overrides"><ul class="dummy"><li>
-        <a href="core_TextToSpeechFeature.html#getVolume">core/TextToSpeechFeature#getVolume</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<h5>Returns:</h5>
-
-        
-
-
-<dl>
-    <dt>
-        Type
-    </dt>
-    <dd>
-        
-<span class="param-type">number</span>
-
-
-    </dd>
-</dl>
-
-    
 
 
 
@@ -1369,7 +1486,7 @@ and methods from the feature that users of the host need access to.</p>
     
     <dt class="tag-overrides">Overrides:</dt>
     <dd class="tag-overrides"><ul class="dummy"><li>
-        <a href="core_TextToSpeechFeature.html#installApi">core/TextToSpeechFeature#installApi</a>
+        <a href="AbstractHostFeature.html#installApi">AbstractHostFeature#installApi</a>
     </li></ul></dd>
     
 
@@ -1393,13 +1510,6 @@ and methods from the feature that users of the host need access to.</p>
 
     
 
-    
-    <dt class="tag-see">See:</dt>
-    <dd class="tag-see">
-        <ul>
-            <li><a href="TextToSpeechFeature.html">TextToSpeechFeature</a></li>
-        </ul>
-    </dd>
     
 
     
@@ -1536,7 +1646,7 @@ and methods from the feature that users of the host need access to.</p>
     
     <dt class="tag-overrides">Overrides:</dt>
     <dd class="tag-overrides"><ul class="dummy"><li>
-        <a href="core_TextToSpeechFeature.html#listenTo">core/TextToSpeechFeature#listenTo</a>
+        <a href="AbstractHostFeature.html#listenTo">AbstractHostFeature#listenTo</a>
     </li></ul></dd>
     
 
@@ -1590,7 +1700,7 @@ and methods from the feature that users of the host need access to.</p>
     
 
     
-    <h4 class="name" id="pause"><span class="type-signature"></span>pause<span class="signature">()</span><span class="type-signature"></span></h4>
+    <h4 class="name" id="registerBlinkLayer"><span class="type-signature"></span>registerBlinkLayer<span class="signature">(layerName, options<span class="signature-attributes">opt</span>)</span><span class="type-signature"></span></h4>
     
 
     
@@ -1598,201 +1708,9 @@ and methods from the feature that users of the host need access to.</p>
 
 
 <div class="description">
-    <p>If a speech is currently playing, pause it at the current time.</p>
-</div>
-
-
-
-
-
-
-
-
-
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-overrides">Overrides:</dt>
-    <dd class="tag-overrides"><ul class="dummy"><li>
-        <a href="core_TextToSpeechFeature.html#pause">core/TextToSpeechFeature#pause</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-        
-            
-
-    
-
-    
-    <h4 class="name" id="pauseVolume"><span class="type-signature"></span>pauseVolume<span class="signature">()</span><span class="type-signature"> &rarr; {boolean}</span></h4>
-    
-
-    
-
-
-
-<div class="description">
-    <p>Pause interpolation happening on the speaker's volume property.</p>
-</div>
-
-
-
-
-
-
-
-
-
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-overrides">Overrides:</dt>
-    <dd class="tag-overrides"><ul class="dummy"><li>
-        <a href="core_TextToSpeechFeature.html#pauseVolume">core/TextToSpeechFeature#pauseVolume</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<h5>Returns:</h5>
-
-        
-
-
-<dl>
-    <dt>
-        Type
-    </dt>
-    <dd>
-        
-<span class="param-type">boolean</span>
-
-
-    </dd>
-</dl>
-
-    
-
-
-
-
-
-        
-            
-
-    
-
-    
-    <h4 class="name" id="play"><span class="type-signature"></span>play<span class="signature">(text, config<span class="signature-attributes">opt</span>)</span><span class="type-signature"> &rarr; {<a href="Deferred.html">Deferred</a>}</span></h4>
-    
-
-    
-
-
-
-<div class="description">
-    <p>Stop any speeches currently playing and play a new speech from the beginning.</p>
+    <p>Start keeping track of an animation layer that owns a blink animation. Blink<br>
+animations can be of any type, but if it is of type randomAnimation then a<br>
+it will be randomized each time a blink is called.</p>
 </div>
 
 
@@ -1830,7 +1748,7 @@ and methods from the feature that users of the host need access to.</p>
 
         <tr>
             
-                <td class="name"><code>text</code></td>
+                <td class="name"><code>layerName</code></td>
             
 
             <td class="type">
@@ -1854,14 +1772,14 @@ and methods from the feature that users of the host need access to.</p>
 
             
 
-            <td class="description last"><p>The text of the new speech to play.</p></td>
+            <td class="description last"><p>Name of the layer to keep track of.</p></td>
         </tr>
 
     
 
         <tr>
             
-                <td class="name"><code>config</code></td>
+                <td class="name"><code>options</code></td>
             
 
             <td class="type">
@@ -1887,544 +1805,9 @@ and methods from the feature that users of the host need access to.</p>
 
             
 
-            <td class="description last"><p>Optional parameters for the speech.</p></td>
-        </tr>
-
-    
-    </tbody>
-</table>
-
-
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-overrides">Overrides:</dt>
-    <dd class="tag-overrides"><ul class="dummy"><li>
-        <a href="core_TextToSpeechFeature.html#play">core/TextToSpeechFeature#play</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<h5>Returns:</h5>
-
-        
-
-
-<dl>
-    <dt>
-        Type
-    </dt>
-    <dd>
-        
-<span class="param-type"><a href="Deferred.html">Deferred</a></span>
-
-
-    </dd>
-</dl>
-
-    
-
-
-
-
-
-        
-            
-
-    
-
-    
-    <h4 class="name" id="resume"><span class="type-signature"></span>resume<span class="signature">(text<span class="signature-attributes">opt</span>, config<span class="signature-attributes">opt</span>)</span><span class="type-signature"> &rarr; {<a href="Deferred.html">Deferred</a>}</span></h4>
-    
-
-    
-
-
-
-<div class="description">
-    <p>Stop any speeches currently playing and resume a new speech from the current<br>
-time.</p>
-</div>
-
-
-
-
-
-
-
-
-
-    <h5>Parameters:</h5>
-    
-
-<table class="params">
-    <thead>
-    <tr>
-        
-        <th>Name</th>
-        
-
-        <th>Type</th>
-
-        
-        <th>Attributes</th>
-        
-
-        
-
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-
-    <tbody>
-    
-
-        <tr>
-            
-                <td class="name"><code>text</code></td>
-            
-
-            <td class="type">
-            
+            <td class="description last"><p>Options for the layer.</p>
+                <h6>Properties</h6>
                 
-<span class="param-type">string</span>
-
-
-            
-            </td>
-
-            
-                <td class="attributes">
-                
-                    &lt;optional><br>
-                
-
-                
-
-                
-                </td>
-            
-
-            
-
-            <td class="description last"><p>The text of the new speech to play. If undefined and<br>
-there is a current speech that is paused, the current speech will be resumed.</p></td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>config</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">Object</span>
-
-
-            
-            </td>
-
-            
-                <td class="attributes">
-                
-                    &lt;optional><br>
-                
-
-                
-
-                
-                </td>
-            
-
-            
-
-            <td class="description last"><p>Optional parameters for the speech.</p></td>
-        </tr>
-
-    
-    </tbody>
-</table>
-
-
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-overrides">Overrides:</dt>
-    <dd class="tag-overrides"><ul class="dummy"><li>
-        <a href="core_TextToSpeechFeature.html#resume">core/TextToSpeechFeature#resume</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<h5>Returns:</h5>
-
-        
-
-
-<dl>
-    <dt>
-        Type
-    </dt>
-    <dd>
-        
-<span class="param-type"><a href="Deferred.html">Deferred</a></span>
-
-
-    </dd>
-</dl>
-
-    
-
-
-
-
-
-        
-            
-
-    
-
-    
-    <h4 class="name" id="resumeAudio"><span class="type-signature"></span>resumeAudio<span class="signature">()</span><span class="type-signature"> &rarr; {<a href="Deferred.html">Deferred</a>}</span></h4>
-    
-
-    
-
-
-
-<div class="description">
-    <p>Try to resume the audio context. This will be automatically executed each time<br>
-speech is played or resumed. If using manually, it should be called after a<br>
-user interaction occurs.</p>
-</div>
-
-
-
-
-
-
-
-
-
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-overrides">Overrides:</dt>
-    <dd class="tag-overrides"><ul class="dummy"><li>
-        <a href="core_TextToSpeechFeature.html#resumeAudio">core/TextToSpeechFeature#resumeAudio</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<h5>Returns:</h5>
-
-        
-<div class="param-desc">
-    <ul>
-<li>Resolves once the audio context has resumed.</li>
-</ul>
-</div>
-
-
-
-<dl>
-    <dt>
-        Type
-    </dt>
-    <dd>
-        
-<span class="param-type"><a href="Deferred.html">Deferred</a></span>
-
-
-    </dd>
-</dl>
-
-    
-
-
-
-
-
-        
-            
-
-    
-
-    
-    <h4 class="name" id="resumeVolume"><span class="type-signature"></span>resumeVolume<span class="signature">()</span><span class="type-signature"> &rarr; {boolean}</span></h4>
-    
-
-    
-
-
-
-<div class="description">
-    <p>Resume any interpolation happening on the speaker's volume property.</p>
-</div>
-
-
-
-
-
-
-
-
-
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-overrides">Overrides:</dt>
-    <dd class="tag-overrides"><ul class="dummy"><li>
-        <a href="core_TextToSpeechFeature.html#resumeVolume">core/TextToSpeechFeature#resumeVolume</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<h5>Returns:</h5>
-
-        
-
-
-<dl>
-    <dt>
-        Type
-    </dt>
-    <dd>
-        
-<span class="param-type">boolean</span>
-
-
-    </dd>
-</dl>
-
-    
-
-
-
-
-
-        
-            
-
-    
-
-    
-    <h4 class="name" id="setVolume"><span class="type-signature"></span>setVolume<span class="signature">(volume, seconds<span class="signature-attributes">opt</span>, easingFn<span class="signature-attributes">opt</span>)</span><span class="type-signature"> &rarr; {<a href="Deferred.html">Deferred</a>}</span></h4>
-    
-
-    
-
-
-
-<div class="description">
-    <p>Updates the volume used for all audio clips played by the speaker over time.</p>
-</div>
-
-
-
-
-
-
-
-
-
-    <h5>Parameters:</h5>
-    
 
 <table class="params">
     <thead>
@@ -2452,13 +1835,13 @@ user interaction occurs.</p>
 
         <tr>
             
-                <td class="name"><code>volume</code></td>
+                <td class="name"><code>animation</code></td>
             
 
             <td class="type">
             
                 
-<span class="param-type">number</span>
+<span class="param-type">string</span>
 
 
             
@@ -2466,6 +1849,8 @@ user interaction occurs.</p>
 
             
                 <td class="attributes">
+                
+                    &lt;optional><br>
                 
 
                 
@@ -2477,17 +1862,20 @@ user interaction occurs.</p>
             
                 <td class="default">
                 
+                    'blink'
+                
                 </td>
             
 
-            <td class="description last"><p>Target volume value.</p></td>
+            <td class="description last"><p>Name of the blink animation<br>
+on the layer.</p></td>
         </tr>
 
     
 
         <tr>
             
-                <td class="name"><code>seconds</code></td>
+                <td class="name"><code>blendTime</code></td>
             
 
             <td class="type">
@@ -2514,13 +1902,12 @@ user interaction occurs.</p>
             
                 <td class="default">
                 
-                    0
+                    PointOfInterestFeature.DEFAULT_LAYER_OPTIONS.blendTime
                 
                 </td>
             
 
-            <td class="description last"><p>Amount of time it will take to reach the target<br>
-volume.</p></td>
+            <td class="description last"><p>Default amount of time to use when manipulating the layer's weight.</p></td>
         </tr>
 
     
@@ -2557,7 +1944,15 @@ volume.</p></td>
                 </td>
             
 
-            <td class="description last"><p>Easing function used for interpolation.</p></td>
+            <td class="description last"><p>Default easing function to use when<br>
+manipulating the layer's weight.</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+            </td>
         </tr>
 
     
@@ -2578,11 +1973,6 @@ volume.</p></td>
     
 
     
-    <dt class="tag-overrides">Overrides:</dt>
-    <dd class="tag-overrides"><ul class="dummy"><li>
-        <a href="core_TextToSpeechFeature.html#setVolume">core/TextToSpeechFeature#setVolume</a>
-    </li></ul></dd>
-    
 
     
 
@@ -2623,24 +2013,6 @@ volume.</p></td>
 
 
 
-<h5>Returns:</h5>
-
-        
-
-
-<dl>
-    <dt>
-        Type
-    </dt>
-    <dd>
-        
-<span class="param-type"><a href="Deferred.html">Deferred</a></span>
-
-
-    </dd>
-</dl>
-
-    
 
 
 
@@ -2652,7 +2024,7 @@ volume.</p></td>
     
 
     
-    <h4 class="name" id="stop"><span class="type-signature"></span>stop<span class="signature">()</span><span class="type-signature"></span></h4>
+    <h4 class="name" id="registerLookLayer"><span class="type-signature"></span>registerLookLayer<span class="signature">(layerName, options<span class="signature-attributes">opt</span>)</span><span class="type-signature"></span></h4>
     
 
     
@@ -2660,7 +2032,8 @@ volume.</p></td>
 
 
 <div class="description">
-    <p>If a speech is currently playing, stop playback and reset time.</p>
+    <p>Start keeping track of an animation layer that owns a blend2d animation with<br>
+blendWeights corresponding to horizontal and vertical look angles.</p>
 </div>
 
 
@@ -2669,6 +2042,406 @@ volume.</p></td>
 
 
 
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+        <th>Attributes</th>
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>layerName</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>Name of the layer to keep track of.</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>options</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Object</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>Options for the layer.</p>
+                <h6>Properties</h6>
+                
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+        <th>Attributes</th>
+        
+
+        
+        <th>Default</th>
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>animation</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+                <td class="default">
+                
+                    'look'
+                
+                </td>
+            
+
+            <td class="description last"><p>Name of the animation on the<br>
+layer whose blendWeights will be driven based on the angle between the lookTracker<br>
+and the lookTarget. This animation must be of type blend2d.</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>maxSpeed</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+                <td class="default">
+                
+                    25
+                
+                </td>
+            
+
+            <td class="description last"><p>The maximum speed at which the blend2d<br>
+blendWeights can be manipulated.</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>forwardAxis</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+                <td class="default">
+                
+                    'PositiveZ'
+                
+                </td>
+            
+
+            <td class="description last"><p>Axis pointing from the<br>
+front of the lookReference object. Valid options are 'PositiveX', 'NegativeX',<br>
+'PositiveY', 'NegativeY', 'PositiveZ', 'NegativeZ'.</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>lookReference</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Object</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+                <td class="default">
+                
+                </td>
+            
+
+            <td class="description last"><p>3D transformation node that the lookTracker<br>
+rotation limits should be calculated relative to. Defaults to the host owner.</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>hasSaccade</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+                <td class="default">
+                
+                    false
+                
+                </td>
+            
+
+            <td class="description last"><p>Whether or not to include<br>
+saccadic motion onto the blendWeight animation. This should only be set to<br>
+true for blend2d animations representing eye animation.</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>blendTime</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+                <td class="default">
+                
+                    PointOfInterestFeature.DEFAULT_LAYER_OPTIONS.blendTime
+                
+                </td>
+            
+
+            <td class="description last"><p>Default amount of time to use when manipulating layer weight.</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>easingFn</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">function</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+                <td class="default">
+                
+                </td>
+            
+
+            <td class="description last"><p>Default easing function to use when<br>
+manipulating layer weight.</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+            </td>
+        </tr>
+
+    
+    </tbody>
+</table>
 
 
 
@@ -2684,10 +2457,409 @@ volume.</p></td>
     
 
     
-    <dt class="tag-overrides">Overrides:</dt>
-    <dd class="tag-overrides"><ul class="dummy"><li>
-        <a href="core_TextToSpeechFeature.html#stop">core/TextToSpeechFeature#stop</a>
-    </li></ul></dd>
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id="setTarget"><span class="type-signature"></span>setTarget<span class="signature">(target)</span><span class="type-signature"></span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    <p>Sets a new target to look at.</p>
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>target</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Object</span>
+|
+
+<span class="param-type">null</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>The new target to look at.</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id="setTargetById"><span class="type-signature"></span>setTargetById<span class="signature">(target)</span><span class="type-signature"></span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    <p>Finds an object given its id and sets it as the new target to look at.<br>
+Should be overloaded for each rendering engine implementation.</p>
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>target</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+|
+
+<span class="param-type">number</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>Id to search for.</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id="setTargetByName"><span class="type-signature"></span>setTargetByName<span class="signature">(target)</span><span class="type-signature"></span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    <p>Finds an object given its name and sets it as the new target to look at.<br>
+Should be overloaded for each rendering engine implementation.</p>
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>target</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>Name to search for.</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
     
 
     
@@ -2867,7 +3039,7 @@ remove all callbacks for the message.</p></td>
     
     <dt class="tag-overrides">Overrides:</dt>
     <dd class="tag-overrides"><ul class="dummy"><li>
-        <a href="core_TextToSpeechFeature.html#stopListening">core/TextToSpeechFeature#stopListening</a>
+        <a href="AbstractHostFeature.html#stopListening">AbstractHostFeature#stopListening</a>
     </li></ul></dd>
     
 
@@ -3049,7 +3221,7 @@ remove all callbacks for the message.</p></td>
     
     <dt class="tag-overrides">Overrides:</dt>
     <dd class="tag-overrides"><ul class="dummy"><li>
-        <a href="core_TextToSpeechFeature.html#stopListeningByRegexp">core/TextToSpeechFeature#stopListeningByRegexp</a>
+        <a href="AbstractHostFeature.html#stopListeningByRegexp">AbstractHostFeature#stopListeningByRegexp</a>
     </li></ul></dd>
     
 
@@ -3137,7 +3309,7 @@ remove all callbacks for the message.</p></td>
     
     <dt class="tag-overrides">Overrides:</dt>
     <dd class="tag-overrides"><ul class="dummy"><li>
-        <a href="core_TextToSpeechFeature.html#stopListeningToAll">core/TextToSpeechFeature#stopListeningToAll</a>
+        <a href="AbstractHostFeature.html#stopListeningToAll">AbstractHostFeature#stopListeningToAll</a>
     </li></ul></dd>
     
 
@@ -3199,7 +3371,7 @@ remove all callbacks for the message.</p></td>
 
 
 <div class="description">
-    <p>Update the currently playing speech.</p>
+    <p>Executes each time the host is updated.</p>
 </div>
 
 
@@ -3251,7 +3423,8 @@ remove all callbacks for the message.</p></td>
 
             
 
-            <td class="description last"><p>Time since the last update.</p></td>
+            <td class="description last"><p>Amount of time since the last host update was<br>
+called.</p></td>
         </tr>
 
     
@@ -3274,7 +3447,7 @@ remove all callbacks for the message.</p></td>
     
     <dt class="tag-overrides">Overrides:</dt>
     <dd class="tag-overrides"><ul class="dummy"><li>
-        <a href="core_TextToSpeechFeature.html#update">core/TextToSpeechFeature#update</a>
+        <a href="AbstractHostFeature.html#update">AbstractHostFeature#update</a>
     </li></ul></dd>
     
 
