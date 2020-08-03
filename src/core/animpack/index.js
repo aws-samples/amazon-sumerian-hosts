@@ -27,6 +27,9 @@ import SingleState from './state/SingleState';
 import TransitionState from './state/TransitionState';
 import FreeBlendState from './state/FreeBlendState';
 import QueueState from './state/QueueState';
+import RandomAnimationState from './state/RandomAnimationState';
+import Blend1dState from './state/Blend1dState';
+import Blend2dState from './state/Blend2dState';
 import AnimationUtils from './AnimationUtils';
 
 /**
@@ -103,6 +106,18 @@ export default {
    * @see QueueState
    */
   QueueState,
+  /**
+   * @see RandomAnimationState
+   */
+  RandomAnimationState,
+  /**
+   * @see Blend1dState
+   */
+  Blend1dState,
+  /**
+   * @see Blend2dState
+   */
+  Blend2dState,
   /**
    * @see AnimationUtils
    */

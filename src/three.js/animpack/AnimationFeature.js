@@ -10,7 +10,7 @@ import SingleState from './state/SingleState';
  * @external "THREE.AnimationMixer"
  * @see https://threejs.org/docs/#api/en/animation/AnimationMixer
  */
-
+AnimationTypes.single = SingleState;
 export {AnimationTypes};
 
 /**

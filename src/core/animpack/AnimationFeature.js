@@ -4,7 +4,10 @@ import AbstractHostFeature from 'core/AbstractHostFeature';
 import Utils from 'core/Utils';
 import QueueState from './state/QueueState';
 import FreeBlendState from './state/FreeBlendState';
+import Blend1dState from './state/Blend1dState';
+import Blend2dState from './state/Blend2dState';
 import SingleState from './state/SingleState';
+import RandomAnimationState from './state/RandomAnimationState';
 import AnimationLayer, {LayerBlendModes} from './AnimationLayer';
 import Deferred from '../Deferred';
 
@@ -18,6 +21,9 @@ export const AnimationTypes = {
   single: SingleState,
   freeBlend: FreeBlendState,
   queue: QueueState,
+  randomAnimation: RandomAnimationState,
+  blend1d: Blend1dState,
+  blend2d: Blend2dState,
 };
 
 /**
@@ -244,6 +250,124 @@ class AnimationFeature extends AbstractHostFeature {
     );
 
     return new QueueState(options, queueStates);
+  }
+
+  /**
+   * Return a new instance of a Blend1dState.
+   *
+   * @private
+   *
+   * @param {Object} options - Options to pass to the Blend1dState constructor.
+   * @param {string=} options.name - Name for the animation state. Names must be
+   * unique for the layer the state is applied to.
+   * @param {weight} [options.weight=0] - The 0-1 amount of influence the state will have.
+   * @param {timeScale} [options.timeScale=1] - Factor to scale the playback speed of the
+   * animation.
+   * @param {number} [options.loopCount=Infinity] - Number of times the animation should
+   * repeat before finishing.
+   * @param {string} [options.blendMode=LayerBlendModes[DefaultLayerBlendMode]] - Type of
+   * blending the animation should use.
+   * @param {Array.<Object>} [options.blendStateOptions] - Array of options used to create the
+   * blend states for this container.
+   * @param {Array.<number>} [options.blendThresholds] - Array of numbers used to set the
+   * thresholds for each blend state in this container.
+   * @param {Array.<boolean>} [options.blendMatchPhases=[]] - Optional array of booleans used to
+   * set whether or not each blend state in this container will match phases.
+   *
+   * @returns {Blend1dState}
+   */
+  _createBlend1dState(options) {
+    const {blendStateOptions = []} = options;
+    const {blendThresholds = []} = options;
+    const {blendMatchPhases = []} = options;
+
+    const blendStates = [];
+    blendStateOptions.forEach(blendOptions => {
+      blendStates.push(
+        this._createSingleState({...blendOptions, blendMode: options.blendMode})
+      );
+    });
+
+    return new Blend1dState(
+      options,
+      blendStates,
+      blendThresholds,
+      blendMatchPhases
+    );
+  }
+
+  /**
+   * Return a new instance of a Blend2dState.
+   *
+   * @private
+   *
+   * @param {Object} options - Options to pass to the Blend1dState constructor.
+   * @param {string=} options.name - Name for the animation state. Names must be
+   * unique for the layer the state is applied to.
+   * @param {weight} [options.weight=0] - The 0-1 amount of influence the state will have.
+   * @param {timeScale} [options.timeScale=1] - Factor to scale the playback speed of the
+   * animation.
+   * @param {number} [options.loopCount=Infinity] - Number of times the animation should
+   * repeat before finishing.
+   * @param {string} [options.blendMode=LayerBlendModes[DefaultLayerBlendMode]] - Type of
+   * blending the animation should use.
+   * @param {Array.<Object>} [options.blendStateOptions] - Array of options used to create the
+   * blend states for this container.
+   * @param {Array.<Array.<number>>} [options.blendThresholds] - Array of Array of numbers used to set the
+   * thresholds for each blend state in this container.
+   * @param {Array.<boolean>} [options.blendMatchPhases=[]] - Optional array of booleans used to
+   * set whether or not each blend state in this container will match phases.
+   *
+   * @returns {Blend1dState}
+   */
+  _createBlend2dState(options) {
+    const {blendStateOptions = []} = options;
+    const {blendThresholds = []} = options;
+    const {blendMatchPhases = []} = options;
+
+    const blendStates = [];
+    blendStateOptions.forEach(blendOptions => {
+      blendStates.push(
+        this._createSingleState({...blendOptions, blendMode: options.blendMode})
+      );
+    });
+
+    return new Blend2dState(
+      options,
+      blendStates,
+      blendThresholds,
+      blendMatchPhases
+    );
+  }
+
+  /**
+   * Return a new instance of a RandomAnimationState.
+   *
+   * @private
+   *
+   * @param {Object} options - Options to pass to the RandomAnimationState constructor.
+   * @param {string=} options.name - Name for the animation state. Names must be
+   * unique for the layer the state is applied to.
+   * @param {number} [options.playInterval=3] - The base animation playback interval.
+   * @param {Array.<Object>} [options.subStateOptions] - Array of options used to create the
+   * sub states for this container.
+   *
+   * @returns {RandomAnimationState}
+   */
+  _createRandomAnimationState(options) {
+    const {subStateOptions = []} = options;
+
+    const subStates = [];
+    subStateOptions.forEach(subStateOptions => {
+      subStates.push(
+        this._createSingleState({
+          ...subStateOptions,
+          blendMode: options.blendMode,
+        })
+      );
+    });
+
+    return new RandomAnimationState(options, subStates);
   }
 
   /**
@@ -822,7 +946,7 @@ class AnimationFeature extends AbstractHostFeature {
   addAnimation(
     layerName,
     animationName,
-    animationType = SingleState,
+    animationType = AnimationTypes.single,
     options = {}
   ) {
     options.name = this._validateNewAnimation(layerName, animationName);

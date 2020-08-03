@@ -4,7 +4,6 @@
 /* eslint-disable no-undef */
 /* eslint-disable no-underscore-dangle */
 
-import Deferred from 'core/Deferred';
 import describeHostEnvironment from "../../EnvironmentHarness";
 import FreeBlendState from "../../../../src/core/animpack/state/FreeBlendState";
 
@@ -18,110 +17,31 @@ describeHostEnvironment('FreeBlendState', () => {
     state1 = {
       name: 'state1',
       weight: 1,
-      setWeight: jasmine.createSpy('setWeight', () => new Deferred()),
       updateInternalWeight: jasmine.createSpy('updateInternalWeight'),
-      internalWeight: jasmine.createSpy('internalWeight'),
-      play: jasmine.createSpy('play'),
-      pause: jasmine.createSpy('pause'),
-      resume: jasmine.createSpy('resume'),
-      cancel: jasmine.createSpy('cancel'),
-      stop: jasmine.createSpy('stop'),
-      update: jasmine.createSpy('update'),
-      discard: jasmine.createSpy('discard'),
-      _promises: {weight: new Deferred(), play: new Deferred()},
     };
     state1.updateInternalWeight.and.callFake(factor => {
       state1._internalWeight = state1.weight * factor;
     });
-    state1.setWeight.and.callFake(weight => {
-      state1.weight = weight;
-    });
     state2 = {
       name: 'state2',
       weight: 0,
-      setWeight: jasmine.createSpy('setWeight', () => new Deferred()),
       updateInternalWeight: jasmine.createSpy('updateInternalWeight'),
-      play: jasmine.createSpy('play'),
-      pause: jasmine.createSpy('pause'),
-      resume: jasmine.createSpy('resume'),
-      cancel: jasmine.createSpy('cancel'),
-      stop: jasmine.createSpy('stop'),
-      update: jasmine.createSpy('update'),
-      discard: jasmine.createSpy('discard'),
-      _promises: {weight: new Deferred(), play: new Deferred()},
     };
     state2.updateInternalWeight.and.callFake(factor => {
       state2._internalWeight = state1.weight * factor;
     });
-    state2.setWeight.and.callFake(weight => {
-      state2.weight = weight;
-    });
     state3 = {
       name: 'state2',
       weight: 0.5,
-      setWeight: jasmine.createSpy('setWeight', () => new Deferred()),
       updateInternalWeight: jasmine.createSpy('updateInternalWeight'),
-      play: jasmine.createSpy('play'),
-      pause: jasmine.createSpy('pause'),
-      resume: jasmine.createSpy('resume'),
-      cancel: jasmine.createSpy('cancel'),
-      stop: jasmine.createSpy('stop'),
-      update: jasmine.createSpy('update'),
-      discard: jasmine.createSpy('discard'),
-      _promises: {weight: new Deferred(), play: new Deferred()},
     };
     state3.updateInternalWeight.and.callFake(factor => {
       state3._internalWeight = state1.weight * factor;
-    });
-    state3.setWeight.and.callFake(weight => {
-      state3.weight = weight;
     });
 
     freeBlend = new FreeBlendState();
     freeBlend.addState(state1);
     freeBlend.addState(state2);
-  });
-
-  describe('getBlendWeight', () => {
-    it('should throw an error when the state is not in the container', () => {
-      expect(() => {
-        freeBlend.getBlendWeight('NotState');
-      }).toThrowError();
-    });
-
-    it('should get the weight for the state', () => {
-      const weight = 0.52
-      state1.weight = weight;
-
-      expect(freeBlend.getBlendWeight('state1')).toEqual(weight);
-    });
-  });
-
-  describe('setBlendWeight', () => {
-    it('should throw an error when the state is not in the container', () => {
-      expect(() => {
-        freeBlend.setBlendWeight('NotState');
-      }).toThrowError();
-    });
-
-    it('should set the state weight to the target weight', async () =>  {
-      const weight = 0.52;
-
-      expect(state1.weight).not.toEqual(weight);
-
-      await freeBlend.setBlendWeight(state1.name, weight);
-
-      expect(state1.weight).toEqual(weight);
-    });
-
-    it('should clamp state weights between 0 and 1', async () => {
-      await freeBlend.setBlendWeight('state1', -10);
-
-      expect(freeBlend.getBlendWeight('state1')).toEqual(0);
-      await freeBlend.setBlendWeight('state1', 10);
-
-      expect(freeBlend.getBlendWeight('state1')).toEqual(1);
-    });
   });
 
   describe('updateInternalWeight', () => {
@@ -182,56 +102,6 @@ describeHostEnvironment('FreeBlendState', () => {
       freeBlend.updateInternalWeight(1);
       freeBlend._states.forEach(state => {
         expect(state._internalWeight).toEqual(0.25);
-      });
-    });
-  });
-
-  describe('play', () => {
-    it('should play all blend states', () => {
-      freeBlend.play();
-
-      freeBlend._states.forEach(state => {
-        expect(state.play).toHaveBeenCalledTimes(1);
-      });
-    });
-  });
-
-  describe('pause', () => {
-    it('should pause all blend states', () => {
-      freeBlend.pause();
-
-      freeBlend._states.forEach(state => {
-        expect(state.pause).toHaveBeenCalledTimes(1);
-      });
-    });
-  });
-
-  describe('resume', () => {
-    it('should resume all blend states', () => {
-      freeBlend.resume();
-
-      freeBlend._states.forEach(state => {
-        expect(state.resume).toHaveBeenCalledTimes(1);
-      })
-    });
-  });
-
-  describe('stop', () => {
-    it('should stop all blend states', () => {
-      freeBlend.stop();
-
-      freeBlend._states.forEach(state => {
-        expect(state.stop).toHaveBeenCalledTimes(1);
-      });
-    });
-  });
-
-  describe('cancel', () => {
-    it('should cancel all blend states', () => {
-      freeBlend.cancel();
-
-      freeBlend._states.forEach(state => {
-        expect(state.cancel).toHaveBeenCalledTimes(1);
       });
     });
   });

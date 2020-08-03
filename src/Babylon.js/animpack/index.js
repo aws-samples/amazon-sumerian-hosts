@@ -22,6 +22,9 @@ import AnimationUtils from 'core/animpack/AnimationUtils';
 import TransitionState from 'core/animpack/state/TransitionState';
 import FreeBlendState from 'core/animpack/state/FreeBlendState';
 import QueueState from 'core/animpack/state/QueueState';
+import RandomAnimationState from 'core/animpack/state/RandomAnimationState';
+import Blend1dState from 'core/animpack/state/Blend1dState';
+import Blend2dState from 'core/animpack/state/Blend2dState';
 import AnimationLayer, {
   LayerBlendModes,
   DefaultLayerBlendMode,
@@ -103,6 +106,18 @@ export default {
    * @see QueueState
    */
   QueueState,
+  /**
+   * @see RandomAnimationState
+   */
+  RandomAnimationState,
+  /**
+   * @see Blend1dState
+   */
+  Blend1dState,
+  /**
+   * @see Blend2dState
+   */
+  Blend2dState,
   /**
    * @see AnimationUtils
    */

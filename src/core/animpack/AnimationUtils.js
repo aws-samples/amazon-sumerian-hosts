@@ -2,6 +2,7 @@
 // SPDX-License-Identifier: MIT-0
 import Deferred from 'core/Deferred';
 import Utils from 'core/Utils';
+import MathUtils from 'core/MathUtils';
 import {Linear} from './Easing';
 
 /**
@@ -10,17 +11,10 @@ import {Linear} from './Easing';
  * @hideconstructor
  */
 class AnimationUtils {
-  /**
-   * Linearly interpolate between two values.
-   *
-   * @param {number} from - Start value.
-   * @param {number} to - Target value.
-   * @param {number} factor - 0-1 amount to interpolate between from and to.
-   *
-   * @returns {number}
-   */
   static lerp(from, to, factor) {
-    return from + (to - from) * factor;
+    console.warn(`AnimationUtils.lerp is being deprecated. Use MathUtils.lerp instead.`);
+
+    return MathUtils.lerp(from, to, factor);
   }
 
   /**
@@ -33,7 +27,9 @@ class AnimationUtils {
    * @returns {number}
    */
   static clamp(value, min = 0, max = 1) {
-    return Math.max(min, Math.min(value, max));
+    console.warn(`AnimationUtils.clamp is being deprecated. Use MathUtils.clamp instead.`);
+
+    return MathUtils.clamp(value, min, max);
   }
 
   /**
@@ -157,7 +153,7 @@ class AnimationUtils {
           }
 
           // Update the value
-          propertyOwner[propertyName] = AnimationUtils.lerp(
+          propertyOwner[propertyName] = MathUtils.lerp(
             startValue,
             targetValue,
             easeFactor

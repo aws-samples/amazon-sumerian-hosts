@@ -1,7 +1,9 @@
-function enableDragDrop(id) {
-  const dropArea = document.getElementById(id);
+function enableDragDrop(className) {
+  const elements = document.getElementsByClassName(className);
 
-  if (dropArea) {
+  for (let i = 0, l = elements.length; i < l; i += 1) {
+    const dropArea = elements[i];
+
     // Copy contents of files into the text input once they are read
     const fileReader = new FileReader();
     fileReader.onload = evt => {
@@ -23,7 +25,5 @@ function enableDragDrop(id) {
       const [file] = evt.dataTransfer.files;
       fileReader.readAsText(file, 'UTF-8');
     });
-  } else {
-    console.warn(`Could not enable drag/drop. No element matches id ${id}`);
   }
 }

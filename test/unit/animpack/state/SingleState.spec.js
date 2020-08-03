@@ -28,6 +28,7 @@ describeEnvironment('SingleState', (options = {}, env) => {
               animation: {},
             },
           ],
+          normalize: jasmine.createSpy('normalize')
         };
         beginAnimationSpy = spyOn(options.scene, 'beginDirectAnimation');
         beginAnimationSpy.and.callFake(
@@ -81,6 +82,76 @@ describeEnvironment('SingleState', (options = {}, env) => {
       case 'core':
       default:
         state = new SingleState();
+    }
+  });
+
+  describe('normalizedTime', () => {
+    switch (env) {
+      case 'babylon':
+        describe('babylon get', () => {
+          it('should return 0 if masterFrame does not exist in animatable', () => {
+            expect(state.normalizedTime).toEqual(0);
+          });
+
+          it('should return percentage of master from between to and frame', () => {
+            state._babylonAnimatables = [{masterFrame: 1}];
+
+            expect(state.normalizedTime).toEqual(0.5);
+          });
+        })
+        describe('babylon set', () => {
+          beforeEach(() => {
+            state._babylonAnimatables = [{goToFrame: jasmine.createSpy()}];
+          });
+
+          it('should set the _threeAction time to the target time by multiplying clip duration', () => {
+            state.normalizedTime = 1;
+
+            expect(state._babylonAnimatables[0].goToFrame).toHaveBeenCalledWith(2);
+          });
+
+          it('should clamp the time into 0 and 1', () => {
+            state.normalizedTime = 10;
+
+            expect(state._babylonAnimatables[0].goToFrame).toHaveBeenCalledWith(2);
+          });
+        })
+        break;
+      case 'three':
+        describe('three get', () => {
+          it('should return 0 if time does not exist in threeAction', () => {
+            expect(state.normalizedTime).toEqual(0);
+          });
+
+          it('should return time divided by clip duration', () => {
+            state._threeAction.time = 0.5;
+            state._threeAction.getClip = jasmine.createSpy().and.callFake(function() { return {duration: 1} });
+
+            expect(state.normalizedTime).toEqual(0.5);
+          });
+        })
+        describe('three set', () => {
+          beforeEach(() => {
+            state._threeAction.time = 0.5;
+            state._threeAction.getClip = jasmine.createSpy().and.callFake(function() { return {duration: 1} });
+          });
+
+          it('should set the _threeAction time to the target time by multiplying clip duration', () => {
+            state.normalizedTime = 1;
+
+            expect(state._threeAction.time).toEqual(1);
+          });
+
+          it('should clamp the time into 0 and 1', () => {
+            state.normalizedTime = 10;
+
+            expect(state._threeAction.time).toEqual(1);
+          });
+        })
+        break;
+      case 'core':
+      default:
+        break;
     }
   });
 

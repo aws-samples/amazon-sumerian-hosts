@@ -140,7 +140,8 @@
             speaker.TextToSpeechFeature.play(
               TextToSpeechUtils.autoGenerateSSMLMarks(
                 'Testing, testing, 1, 2, 3. This is a test.',
-                markMap
+                markMap,
+                ['mark:random1', 'mark:random2', 'mark:random3']
               )
             );
           }, 2500);

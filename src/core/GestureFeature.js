@@ -423,10 +423,10 @@ class GestureFeature extends AbstractHostFeature.mix(
   /**
    * Create an object that maps ssml mark syntax required to play each gesture to
    * the words array associated with each gesture. Words arrays are defined at when
-   * the gesture animation is registered. The resulting object can be used as an
-   * input for {@link TextToSpeechUtils.autoGenerateSSMLMarks} to update a speech
-   * string with the markup required to play gestures timed with their associated
-   * words.
+   * the gesture animation is registered. Gestures without associated words will
+   * be excluded from the result. The resulting object can be used as an input
+   * for {@link TextToSpeechUtils.autoGenerateSSMLMarks} to update a speech string
+   * with the markup required to play gestures timed with their associated words.
    *
    * @returns {Object}
    */
@@ -439,25 +439,80 @@ class GestureFeature extends AbstractHostFeature.mix(
           animationName,
           {holdTime, minimumInterval, words, transitionTime},
         ]) => {
-          const options = {
-            ...(holdTime && {holdTime}),
-            ...(minimumInterval && {minimumInterval}),
-            ...(transitionTime && {transitionTime}),
-          };
-          const key = {
-            feature: this.constructor.name,
-            method: 'playGesture',
-            args: [layerName, animationName, options],
-          };
+          // Only store gestures that have any associated words
+          if (words.length) {
+            const options = {
+              ...(holdTime && { holdTime }),
+              ...(minimumInterval && { minimumInterval }),
+              ...(transitionTime && { transitionTime }),
+            };
+            const key = {
+              feature: this.constructor.name,
+              method: 'playGesture',
+              args: [layerName, animationName, options],
+            };
 
-          gestureMap[JSON.stringify(key)] = words;
-
-          return gestureMap;
+            gestureMap[JSON.stringify(key)] = words;
+          }
         }
       );
     });
 
     return gestureMap;
+  }
+
+  /**
+   * Create an array that contains ssml mark syntax required to play each gesture
+   * that does not have any associated words. The resulting array can be used as
+   * an input for {@link TextToSpeechUtils.autoGenerateSSMLMarks} or
+   * {@link TextToSpeechUtils.addMarksToUnmarkedSentences} to update a speech
+   * string with the markup required to play random gestures at each unmarked
+   * sentence in the string.
+   *
+   * @param {Array.<string>=} layers - An array of names of managed layers to generate
+   * marks for. If undefined, use all managed layers.
+   *
+   * @returns {Array.<string>}
+   */
+  createGenericGestureArray(layers) {
+    const genericGestures = [];
+    layers = layers || Object.keys(this._managedLayers);
+
+    layers.forEach(layerName => {
+      const layer = this._managedLayers[layerName];
+
+      // Make sure the layer is managed
+      if (!layer) {
+        return;
+      }
+
+      Object.entries(layer.animations).forEach(
+        ([
+          animationName,
+          { holdTime, minimumInterval, words, transitionTime },
+        ]) => {
+          // Only store gestures that don't have any associated words
+          if (!words.length) {
+            const options = {
+              ...(holdTime && { holdTime }),
+              ...(minimumInterval && { minimumInterval }),
+              ...(transitionTime && { transitionTime }),
+            };
+            const key = JSON.stringify({
+              feature: this.constructor.name,
+              method: 'playGesture',
+              args: [layerName, animationName, options],
+            });
+
+            if (!genericGestures.includes(key)) {
+              genericGestures.push(key);
+            }
+          }
+        }
+      );
+    });
+
+    return genericGestures;
   }
 
   /**
@@ -582,6 +637,13 @@ class GestureFeature extends AbstractHostFeature.mix(
        * @see GestureFeature#createGestureMap
        */
       createGestureMap: this.createGestureMap.bind(this),
+      /**
+       * @memberof GestureFeature
+       * @instance
+       * @method
+       * @see GestureFeature#createGenericGestureArray
+       */
+      createGenericGestureArray: this.createGenericGestureArray.bind(this),
       /**
        * @memberof GestureFeature
        * @instance

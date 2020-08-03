@@ -2,6 +2,7 @@
 // SPDX-License-Identifier: MIT-0
 import AbstractHostFeature from 'core/AbstractHostFeature';
 import AnimationUtils from 'core/animpack/AnimationUtils';
+import MathUtils from 'core/MathUtils';
 import Deferred from 'core/Deferred';
 import Speech from './AbstractSpeech';
 import TextToSpeechUtils from './TextToSpeechUtils';
@@ -895,7 +896,7 @@ class AbstractTextToSpeechFeature extends AbstractHostFeature {
    * @type {number}
    */
   set volume(volume) {
-    this._volume = AnimationUtils.clamp(volume);
+    this._volume = MathUtils.clamp(volume);
   }
 
   get volume() {
@@ -936,7 +937,7 @@ class AbstractTextToSpeechFeature extends AbstractHostFeature {
       this._promises.volume.cancel();
     }
 
-    volume = AnimationUtils.clamp(volume);
+    volume = MathUtils.clamp(volume);
     this._promises.volume = AnimationUtils.interpolateProperty(
       this,
       'volume',

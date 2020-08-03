@@ -1,9 +1,10 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: MIT-0
+import AbstractBlendState from './state/AbstractBlendState';
 import AnimationPlayerInterface from './AnimationPlayerInterface';
 import AnimationUtils from './AnimationUtils';
+import MathUtils from '../MathUtils';
 import Deferred from '../Deferred';
-import FreeBlendState from './state/FreeBlendState';
 import StateContainerInterface from './state/StateContainerInterface';
 
 /**
@@ -98,7 +99,7 @@ class AnimationLayer extends AnimationPlayerInterface.Mixin(
    * @type {number}
    */
   set weight(weight) {
-    this._weight = AnimationUtils.clamp(weight, 0, 1);
+    this._weight = MathUtils.clamp(weight, 0, 1);
   }
 
   get weight() {
@@ -162,7 +163,7 @@ class AnimationLayer extends AnimationPlayerInterface.Mixin(
       this._promises.weight.cancel();
     }
 
-    weight = AnimationUtils.clamp(weight);
+    weight = MathUtils.clamp(weight);
     this._promises.weight = AnimationUtils.interpolateProperty(
       this,
       'weight',
@@ -227,12 +228,12 @@ class AnimationLayer extends AnimationPlayerInterface.Mixin(
       );
     }
 
-    if (state instanceof FreeBlendState) {
+    if (state instanceof AbstractBlendState) {
       return state.getStateNames();
     }
 
     throw new Error(
-      `Cannot get blend names of animation ${animationName} on layer ${this.name}. Animation is not an instance of FreeBlendState.`
+      `Cannot get blend names of animation ${animationName} on layer ${this.name}. Animation is not an instance of AbstractBlendState.`
     );
   }
 
@@ -267,12 +268,12 @@ class AnimationLayer extends AnimationPlayerInterface.Mixin(
       );
     }
 
-    if (state instanceof FreeBlendState) {
+    if (state instanceof AbstractBlendState) {
       return state.setBlendWeight(blendName, weight, seconds, easingFn);
     }
 
     throw new Error(
-      `Cannot set blend weight of animation ${animationName} on layer ${this.name}. Animation is not an instance of FreeBlendState.`
+      `Cannot set blend weight of animation ${animationName} on layer ${this.name}. Animation is not an instance of AbstractBlendState.`
     );
   }
 
@@ -290,16 +291,16 @@ class AnimationLayer extends AnimationPlayerInterface.Mixin(
 
     if (state === undefined) {
       throw new Error(
-        `Cannot set blend weight of animation ${animationName} on layer ${this.name}. No animation exists with this name.`
+        `Cannot get blend weight of animation ${animationName} on layer ${this.name}. No animation exists with this name.`
       );
     }
 
-    if (state instanceof FreeBlendState) {
+    if (state instanceof AbstractBlendState) {
       return state.getBlendWeight(blendName);
     }
 
     throw new Error(
-      `Cannot get blend weight of animation ${animationName} on layer ${this.name}. Animation is not an instance of FreeBlendState.`
+      `Cannot get blend weight of animation ${animationName} on layer ${this.name}. Animation is not an instance of AbstractBlendState.`
     );
   }
 

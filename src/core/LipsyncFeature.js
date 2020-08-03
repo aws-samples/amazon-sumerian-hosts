@@ -1,6 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: MIT-0
-import AnimationUtils from './animpack/AnimationUtils';
+import MathUtils from './MathUtils';
 import {Quadratic} from './animpack/Easing';
 import ManagedAnimationLayerInterface from './animpack/ManagedAnimationLayerInterface';
 import TextToSpeechFeatureDependentInterface from './awspack/TextToSpeechFeatureDependentInterface';
@@ -296,7 +296,7 @@ class LipsyncFeature extends AbstractHostFeature.mix(
         weight =
           overrideWeight !== undefined
             ? overrideWeight
-            : AnimationUtils.lerp(0, 1, lerpFactor);
+            : MathUtils.lerp(0, 1, lerpFactor);
       }
       const blendInTime = Math.min(duration, blendTime);
 
@@ -318,7 +318,7 @@ class LipsyncFeature extends AbstractHostFeature.mix(
         const lerpFactor =
           decayRate.seconds > 0 ? holdTime / decayRate.seconds : 1;
         // Perform in -> hold -> out animation
-        const decayWeight = AnimationUtils.lerp(
+        const decayWeight = MathUtils.lerp(
           weight,
           weight * decayRate.amount,
           Math.min(1, lerpFactor)

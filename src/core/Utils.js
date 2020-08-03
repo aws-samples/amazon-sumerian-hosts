@@ -143,6 +143,28 @@ class Utils {
 
     return new Deferred(onUpdate, onFinish, onError, onCancel);
   }
+
+  /**
+    * Get a random float number between a min (inclusive) and max (exclusive) value
+    * @param {number} min minimum value
+    * @param {number} max maximum value
+    * @returns {float}
+    */
+  static getRandomFloat(min, max) {
+    return Math.random() * (max - min) + min;
+  }
+
+  /**
+    * Get a random integer number between a min (inclusive) and max (exclusive) value
+    * @param {number} min minimum value
+    * @param {number} max maximum value
+    * @returns {integer}
+    */
+  static getRandomInt(min, max) {
+    min = Math.ceil(min);
+    max = Math.floor(max);
+    return Math.floor(Math.random() * (max - min)) + min;
+  }
 }
 
 export default Utils;

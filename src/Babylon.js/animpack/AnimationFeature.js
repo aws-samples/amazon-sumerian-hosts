@@ -5,6 +5,7 @@ import CoreAnimationFeature, {
 } from 'core/animpack/AnimationFeature';
 import SingleState from './state/SingleState';
 
+AnimationTypes.single = SingleState;
 export {AnimationTypes};
 
 /**

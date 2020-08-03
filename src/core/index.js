@@ -6,12 +6,14 @@
  */
 
 import Utils from './Utils';
+import MathUtils from './MathUtils';
 import Deferred from './Deferred';
 import {env} from './HostEnvironment';
 import Messenger from './Messenger';
 import HostObject from './HostObject';
 import LipsyncFeature, {DefaultVisemeMap} from './LipsyncFeature';
-import GestureFeature, {DefaultGestureWords} from './GestureFeature';
+import GestureFeature, { DefaultGestureWords } from './GestureFeature';
+import PointOfInterestFeature, { AxisMap } from './PointOfInterestFeature';
 
 import aws from './awspack';
 import anim from './animpack';
@@ -25,6 +27,10 @@ export default {
    * @see Utils
    */
   Utils,
+  /**
+   * @see MathUtils
+   */
+  MathUtils,
   /**
    * @see Deferred
    */
@@ -46,6 +52,10 @@ export default {
    */
   GestureFeature,
   /**
+   * @see core/PointOfInterestFeature
+   */
+  PointOfInterestFeature,
+  /**
    * @see DefaultVisemeMap
    */
   DefaultVisemeMap,
@@ -53,6 +63,10 @@ export default {
    * @see DefaultGestureWords
    */
   DefaultGestureWords,
+  /**
+   * @see AxisMap
+   */
+  AxisMap,
   /**
    * @see module:core/awspack
    */

@@ -116,6 +116,13 @@ class AnimationPlayerInterface {
   ) {}
 
   /**
+   * Cancel playback of the current animation.
+   *
+   * @returns {boolean}
+   */
+  cancelAnimation() {}
+
+  /**
    * Pause playback of the current animation.
    *
    * @returns {boolean}
@@ -385,6 +392,14 @@ class AnimationPlayerInterface {
         }
 
         return this._currentState.resume(onFinish, onError, onCancel, onNext);
+      }
+
+      cancelAnimation() {
+        if (this._currentState) {
+          return this._currentState.cancel();
+        } else {
+          return false;
+        }
       }
 
       stopAnimation() {
