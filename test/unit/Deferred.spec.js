@@ -401,7 +401,7 @@ describe('Deferred', () => {
       expectAsync(Deferred.all(new Set())).not.toBeRejected();
     });
 
-    it('should resolve with an array matching the contents of the original iterable if non of the items in the iterable are non-promises', async () => {
+    it('should resolve with an array matching the contents of the original iterable if none of the items in the iterable are non-promises', async () => {
       const allStr = Deferred.all('12345');
       expectAsync(allStr).toBeResolvedTo(['1', '2', '3', '4', '5']);
 

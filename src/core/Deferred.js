@@ -238,56 +238,15 @@ class Deferred extends Promise {
     }
 
     const array = [...iterable];
-    const numItems = array.length;
+    const deferred = array.filter(item => item instanceof Deferred);
 
-    return new Deferred(
-      (resolve, reject, cancel) => {
-        const resolutions = [];
-        let failed = false;
-        let numResolved = 0;
-
-        array.forEach((item, index) => {
-          if (failed) {
-            return;
-          } else if (!(item instanceof Promise)) {
-            resolutions[index] = item;
-            numResolved += 1;
-
-            if (numResolved === numItems) {
-              resolve(resolutions);
-            }
-            return;
-          }
-
-          item.then(
-            value => {
-              if (!failed && !item.canceled) {
-                resolutions[index] = value;
-                numResolved += 1;
-
-                if (numResolved === numItems) {
-                  resolve(resolutions);
-                }
-              } else if (!failed) {
-                failed = true;
-                cancel(value);
-              }
-            },
-            error => {
-              if (!failed) {
-                failed = true;
-                reject(error);
-              }
-            }
-          );
-        });
-      },
+    const result = new Deferred(
+      undefined,
       resolveValue => {
-        array.forEach(item => {
-          if (item instanceof Deferred) {
-            item.resolve(resolveValue);
-          }
+        deferred.forEach(item => {
+          item.resolve(resolveValue);
         });
+        deferred.length = 0;
 
         if (typeof onResolve === 'function') {
           return onResolve(resolveValue);
@@ -296,11 +255,10 @@ class Deferred extends Promise {
         }
       },
       error => {
-        array.forEach(item => {
-          if (item instanceof Deferred) {
-            item.reject(error);
-          }
+        deferred.forEach(item => {
+          item.reject(error);
         });
+        deferred.length = 0;
 
         if (typeof onReject === 'function') {
           return onReject(error);
@@ -309,11 +267,10 @@ class Deferred extends Promise {
         }
       },
       cancelValue => {
-        array.forEach(item => {
-          if (item instanceof Deferred) {
-            item.cancel(cancelValue);
-          }
+        deferred.forEach(item => {
+          item.cancel(cancelValue);
         });
+        deferred.length = 0;
 
         if (typeof onCancel === 'function') {
           return onCancel(cancelValue);
@@ -322,6 +279,51 @@ class Deferred extends Promise {
         }
       }
     );
+
+    const numItems = array.length;
+    const itemTracker = {
+      failed: false,
+      numResolved: 0,
+      resolutions: []
+    }
+
+    array.forEach((item, index) => {
+      if (itemTracker.failed) {
+        return;
+      } else if (!(item instanceof Promise)) {
+        itemTracker.resolutions[index] = item;
+        itemTracker.numResolved += 1;
+
+        if (itemTracker.numResolved === numItems) {
+          result.resolve(itemTracker.resolutions);
+        }
+        return;
+      }
+
+      item.then(
+        value => {
+          if (!itemTracker.failed && !item.canceled) {
+            itemTracker.resolutions[index] = value;
+            itemTracker.numResolved += 1;
+
+            if (itemTracker.numResolved === numItems) {
+              result.resolve(itemTracker.resolutions);
+            }
+          } else if (!itemTracker.failed) {
+            itemTracker.failed = true;
+            result.cancel(value);
+          }
+        },
+        error => {
+          if (!itemTracker.failed) {
+            itemTracker.failed = true;
+            result.reject(error);
+          }
+        }
+      );
+    });
+
+    return result;
   }
 }
 
