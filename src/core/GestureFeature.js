@@ -582,7 +582,7 @@ class GestureFeature extends AbstractHostFeature.mix(
     }
 
     // Check the interval
-    if (layer.playTimer !== null && layer.playTimer < minimumInterval) {
+    if (!force && layer.playTimer !== null && layer.playTimer < minimumInterval) {
       console.warn(
         `Skipping gesture ${animationName} on layer ${layerName} for host ${this._host.id}. Minimum interval ${minimumInterval} has not been met.`
       );
@@ -670,6 +670,7 @@ Object.defineProperties(GestureFeature, {
         ...GestureFeature.EVENT_DEPENDENCIES.AnimationFeature,
         playNextAnimation: '_onNext',
         stopAnimation: '_onStop',
+        interruptAnimation: '_onStop'
       },
     },
   },
