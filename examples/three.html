@@ -134,8 +134,8 @@
 
     <!--Text to speech controls-->
     <div id="textToSpeech">
-      <button class="tab current" onclick="toggleHost(event)">Luke</button>
-      <button class="tab" onclick="toggleHost(event)">Alien</button>
+      <button class="tab current">Luke</button>
+      <button class="tab">Alien</button>
       <div>
         <textarea autofocus size="23" type="text" class="textEntry Luke">
 <speak>
@@ -921,6 +921,11 @@
       function initializeUX(speakers) {
         // Enable drag/drop text files on the speech text area
         enableDragDrop('textEntry');
+
+        // Connect tab buttons to hosts
+        Array.from(document.getElementsByClassName('tab')).forEach(tab => {
+          tab.onclick = evt => { toggleHost(evt); }
+        });
 
         // Play, pause, resume and stop the contents of the text input as speech
         // when buttons are clicked

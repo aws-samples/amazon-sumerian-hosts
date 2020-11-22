@@ -1,6 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: MIT-0
 import CoreSpeech from 'core/awspack/Speech';
+import AbstractSpeech from 'core/awspack/AbstractSpeech';
 
 /**
  * @extends core/Speech
@@ -55,7 +56,7 @@ class Speech extends CoreSpeech {
   stop() {
     this._audio.stop();
 
-    super.stop();
+    AbstractSpeech.prototype.stop.call(this);
   }
 }
 

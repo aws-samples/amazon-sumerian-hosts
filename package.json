@@ -1,6 +1,6 @@
 {
   "name": "amazon-sumerian-hosts",
-  "version": "1.3.2",
+  "version": "1.3.3",
   "description": "",
   "scripts": {
     "test": "OS_NAME=\"$(uname)\" node ./node_modules/karma/bin/karma start",
