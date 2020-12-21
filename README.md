@@ -459,14 +459,14 @@ Here we pass all of our assets and variables to the `createHost` function. This 
 
 - ```javascript
   // Base idle
-host.AnimationFeature.addLayer('Base');
-host.AnimationFeature.addAnimation(
-  'Base',
-  idleClip.name,
-  HOST.anim.AnimationTypes.single,
-  {clip: idleClip}
-);
-host.AnimationFeature.playAnimation('Base', idleClip.name);
+  host.AnimationFeature.addLayer('Base');
+  host.AnimationFeature.addAnimation(
+    'Base',
+    idleClip.name,
+    HOST.anim.AnimationTypes.single,
+    {clip: idleClip}
+  );
+  host.AnimationFeature.playAnimation('Base', idleClip.name);
   ```
   
   Here we have added a single [AnimationLayer](https://aws-samples.github.io/amazon-sumerian-hosts/AnimationLayer.html) to the host. Animation layers are containers that manage playback of a subset of animations. Each AnimationLayer can only play a single animation at any given time, but a host animation can also be a container for multiple animation assets. Here we are creating an animation of type `HOST.anim.AnimationTypes.single`, which means that the animation can only contain one three.js [AnimationClip](https://threejs.org/docs/#api/en/animation/AnimationClip). The clip we've chosen is the `stand_idle` animation, which contains looping ambient motion in a standing position. This is the animation you'll see by default when the host isn't speaking. `host.AnimationFeature.playAnimation` is telling the host to start playing the idle animation on the `Base` layer we just created.
@@ -1420,15 +1420,16 @@ Here we pass all of our assets and variables to the `createHost` function. This 
 
 - ```javascript
   // Base idle
-host.AnimationFeature.addLayer('Base');
-host.AnimationFeature.addAnimation(
-  'Base',
-  idleClip.name,
-  HOST.anim.AnimationTypes.single,
-  {clip: idleClip}
-);
-host.AnimationFeature.playAnimation('Base', idleClip.name);
+  host.AnimationFeature.addLayer('Base');
+  host.AnimationFeature.addAnimation(
+    'Base',
+    idleClip.name,
+    HOST.anim.AnimationTypes.single,
+    {clip: idleClip}
+  );
+  host.AnimationFeature.playAnimation('Base', idleClip.name);
   ```
+  
   
   Here we have added a single [AnimationLayer](https://aws-samples.github.io/amazon-sumerian-hosts/AnimationLayer.html) to the host. Animation layers are containers that manage playback of a subset of animations. Each AnimationLayer can only play a single animation at any given time, but a host animation can also be a container for multiple animation assets. Here we are creating an animation of type `HOST.anim.AnimationTypes.single`, which means that the animation can only contain one Babylon.js [AnimationGroup](https://doc.babylonjs.com/api/classes/babylon.animationgroup). The clip we've chosen is the `stand_idle` animation, which contains looping ambient motion in a standing position. This is the animation you'll see by default when the host isn't speaking. `host.AnimationFeature.playAnimation` is telling the host to start playing the idle animation on the `Base` layer we just created.
 
