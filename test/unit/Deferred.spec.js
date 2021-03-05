@@ -217,6 +217,8 @@ describe('Deferred', () => {
         reject();
       });
 
+      autoRejected.catch(e => {});
+
       expect(autoRejected.rejected).toBeTrue();
 
       const manualRejected = new Deferred();
@@ -224,6 +226,8 @@ describe('Deferred', () => {
       expect(manualRejected.rejected).toBeFalse();
 
       manualRejected.reject();
+
+      manualRejected.catch(e => {});
 
       expect(manualRejected.rejected).toBeTrue();
     });
@@ -263,13 +267,17 @@ describe('Deferred', () => {
         reject();
       });
 
+      autoRejected.catch(e => {});
+
       expect(autoRejected.pending).toBeFalse();
 
       const manualRejected = new Deferred();
 
       expect(manualRejected.pending).toBeTrue();
 
-      manualRejected.resolve();
+      manualRejected.reject();
+
+      manualRejected.catch(e => {});
 
       expect(manualRejected.pending).toBeFalse();
     });
@@ -313,6 +321,8 @@ describe('Deferred', () => {
       expect(deferred.pending).toBeTrue();
 
       deferred.reject('error');
+
+      deferred.catch(e => {});
 
       expect(onReject).toHaveBeenCalledWith('error');
       expect(deferred.pending).toBeFalse();
@@ -377,7 +387,7 @@ describe('Deferred', () => {
     it('should return a Deferred that resolves to the provieded value', () => {
       const result = Deferred.cancel(15);
 
-      expectAsync(result).toBeResolvedTo(15);
+      return expectAsync(result).toBeResolvedTo(15);
     });
   });
 
@@ -386,24 +396,19 @@ describe('Deferred', () => {
       expect(Deferred.all([])).toBeInstanceOf(Deferred);
     });
 
-    it('should return a rejected Deferred if a non-iterable is passed as the first argument', () => {
-      expectAsync(Deferred.all()).toBeRejected();
-      expectAsync(Deferred.all(undefined)).toBeRejected();
-      expectAsync(Deferred.all(null)).toBeRejected();
-      expectAsync(Deferred.all(true)).toBeRejected();
-      expectAsync(Deferred.all(1)).toBeRejected();
-      expectAsync(Deferred.all(NaN)).toBeRejected();
-      expectAsync(Deferred.all({value: 1})).toBeRejected();
-
-      expectAsync(Deferred.all('')).not.toBeRejected();
-      expectAsync(Deferred.all([])).not.toBeRejected();
-      expectAsync(Deferred.all(new Map())).not.toBeRejected();
-      expectAsync(Deferred.all(new Set())).not.toBeRejected();
+    it('should return a rejected Deferred if a non-iterable is passed as the first argument', async () => {
+      await expectAsync(Deferred.all()).toBeRejected();
+      await expectAsync(Deferred.all(undefined)).toBeRejected();
+      await expectAsync(Deferred.all(null)).toBeRejected();
+      await expectAsync(Deferred.all(true)).toBeRejected();
+      await expectAsync(Deferred.all(1)).toBeRejected();
+      await expectAsync(Deferred.all(NaN)).toBeRejected();
+      await expectAsync(Deferred.all({value: 1})).toBeRejected();
     });
 
     it('should resolve with an array matching the contents of the original iterable if none of the items in the iterable are non-promises', async () => {
       const allStr = Deferred.all('12345');
-      expectAsync(allStr).toBeResolvedTo(['1', '2', '3', '4', '5']);
+      await expectAsync(allStr).toBeResolvedTo(['1', '2', '3', '4', '5']);
 
       await allStr;
 
@@ -411,7 +416,7 @@ describe('Deferred', () => {
 
       const array = [1, 2, 3, 4, 5];
       const allArray = Deferred.all(array);
-      expectAsync(allArray).toBeResolvedTo(array);
+      await expectAsync(allArray).toBeResolvedTo(array);
 
       await allArray;
 
@@ -419,8 +424,8 @@ describe('Deferred', () => {
 
       const mixedArray = [1, 2, Promise.resolve(3), 4, 5];
       const allMixedArray = Deferred.all(mixedArray);
-      expectAsync(allMixedArray).toBeResolved();
-      expectAsync(allMixedArray).not.toBeResolvedTo(mixedArray);
+      await expectAsync(allMixedArray).toBeResolved();
+      await expectAsync(allMixedArray).not.toBeResolvedTo(mixedArray);
 
       await allMixedArray;
 
@@ -430,9 +435,9 @@ describe('Deferred', () => {
     it('should resolve with an array matching the values and resolved values of the original iterable if the iterable contains promises', async () => {
       const mixedArray = [1, 2, Promise.resolve(3), 4, 5];
       const allMixedArray = Deferred.all(mixedArray);
-      expectAsync(allMixedArray).toBeResolved();
-      expectAsync(allMixedArray).not.toBeResolvedTo(mixedArray);
-      expectAsync(allMixedArray).toBeResolvedTo([1, 2, 3, 4, 5]);
+      await expectAsync(allMixedArray).toBeResolved();
+      await expectAsync(allMixedArray).not.toBeResolvedTo(mixedArray);
+      await expectAsync(allMixedArray).toBeResolvedTo([1, 2, 3, 4, 5]);
 
       await allMixedArray;
 
@@ -448,9 +453,9 @@ describe('Deferred', () => {
         5,
       ];
       const allMixedArray = Deferred.all(mixedArray);
-      expectAsync(allMixedArray).toBeResolved();
-      expectAsync(allMixedArray).not.toBeResolvedTo(mixedArray);
-      expectAsync(allMixedArray).toBeResolvedTo(5);
+      await expectAsync(allMixedArray).toBeResolved();
+      await expectAsync(allMixedArray).not.toBeResolvedTo(mixedArray);
+      await expectAsync(allMixedArray).toBeResolvedTo(5);
 
       await allMixedArray;
 
@@ -467,7 +472,7 @@ describe('Deferred', () => {
       const p4 = new Deferred();
       const all = Deferred.all([p1, p2, p3, p4]);
 
-      expectAsync(p1).toBeResolvedTo(5);
+      await expectAsync(p1).toBeResolvedTo(5);
 
       await p1;
 
@@ -479,11 +484,11 @@ describe('Deferred', () => {
 
       p3.cancel('cancelValue');
 
-      expectAsync(all).toBeResolvedTo('cancelValue');
-      expectAsync(p1).toBeResolvedTo(5);
-      expectAsync(p2).toBeResolvedTo('cancelValue');
-      expectAsync(p3).toBeResolvedTo('cancelValue');
-      expectAsync(p4).toBeResolvedTo('cancelValue');
+      await expectAsync(all).toBeResolvedTo('cancelValue');
+      await expectAsync(p1).toBeResolvedTo(5);
+      await expectAsync(p2).toBeResolvedTo('cancelValue');
+      await expectAsync(p3).toBeResolvedTo('cancelValue');
+      await expectAsync(p4).toBeResolvedTo('cancelValue');
 
       await p2;
       await p3;
@@ -511,9 +516,9 @@ describe('Deferred', () => {
         5,
       ];
       const allMixedArray = Deferred.all(mixedArray);
-      expectAsync(allMixedArray).toBeRejected();
-      expectAsync(allMixedArray).not.toBeRejectedWith(mixedArray);
-      expectAsync(allMixedArray).toBeRejectedWith(new Error('error'));
+      await expectAsync(allMixedArray).toBeRejected();
+      await expectAsync(allMixedArray).not.toBeRejectedWith(mixedArray);
+      await expectAsync(allMixedArray).toBeRejectedWith(new Error('error'));
 
       try {
         await allMixedArray;
@@ -532,7 +537,7 @@ describe('Deferred', () => {
       const p4 = new Deferred();
       const all = Deferred.all([p1, p2, p3, p4]);
 
-      expectAsync(p1).toBeResolvedTo(5);
+      await expectAsync(p1).toBeResolvedTo(5);
 
       await p1;
 
@@ -544,11 +549,11 @@ describe('Deferred', () => {
 
       p3.reject('error');
 
-      expectAsync(all).toBeRejectedWith('error');
-      expectAsync(p1).toBeResolvedTo(5);
-      expectAsync(p2).toBeRejectedWith('error');
-      expectAsync(p3).toBeRejectedWith('error');
-      expectAsync(p4).toBeRejectedWith('error');
+      await expectAsync(all).toBeRejectedWith('error');
+      await expectAsync(p1).toBeResolvedTo(5);
+      await expectAsync(p2).toBeRejectedWith('error');
+      await expectAsync(p3).toBeRejectedWith('error');
+      await expectAsync(p4).toBeRejectedWith('error');
 
       try {
         await p2;
@@ -584,7 +589,7 @@ describe('Deferred', () => {
       const p4 = new Deferred();
       const all = Deferred.all([3, p1, p2, p3, p4]);
 
-      expectAsync(p1).toBeResolvedTo(5);
+      await expectAsync(p1).toBeResolvedTo(5);
 
       await p1;
 
@@ -596,8 +601,8 @@ describe('Deferred', () => {
 
       p3.resolve('five');
 
-      expectAsync(p1).toBeResolvedTo(5);
-      expectAsync(p3).toBeResolvedTo('five');
+      await expectAsync(p1).toBeResolvedTo(5);
+      await expectAsync(p3).toBeResolvedTo('five');
 
       await p3;
 
@@ -609,11 +614,11 @@ describe('Deferred', () => {
 
       all.resolve(10);
 
-      expectAsync(p1).toBeResolvedTo(5);
-      expectAsync(p2).toBeResolvedTo(10);
-      expectAsync(p3).toBeResolvedTo('five');
-      expectAsync(p4).toBeResolvedTo(10);
-      expectAsync(all).toBeResolvedTo(10);
+      await expectAsync(p1).toBeResolvedTo(5);
+      await expectAsync(p2).toBeResolvedTo(10);
+      await expectAsync(p3).toBeResolvedTo('five');
+      await expectAsync(p4).toBeResolvedTo(10);
+      await expectAsync(all).toBeResolvedTo(10);
 
       await p2;
       await p4;

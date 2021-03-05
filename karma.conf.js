@@ -27,6 +27,7 @@ module.exports = function(config) {
       'karma-webpack',
       'karma-firefox-launcher',
       'karma-chrome-launcher',
+      'karma-spec-reporter',
     ],
 
     // list of files / patterns to load in the browser
@@ -53,7 +54,15 @@ module.exports = function(config) {
     // test results reporter to use
     // possible values: 'dots', 'progress'
     // available reporters: https://npmjs.org/browse/keyword/karma-reporter
-    reporters: ['progress'],
+    reporters: ['spec'],
+
+    specReporter: {
+      suppressErrorSummary: false,  // print error summary
+      suppressFailed: false,        // print information about failed tests
+      suppressPassed: false,        // print information about passed tests
+      suppressSkipped: false,       // print information about skipped tests
+      showSpecTiming: true          // print the time elapsed for each spec
+    },
 
     // web server port
     port: 9876,

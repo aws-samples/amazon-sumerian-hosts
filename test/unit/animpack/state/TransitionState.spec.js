@@ -120,10 +120,10 @@ describe('TransitionState', () => {
       expect(fromStates[1].setWeight).toHaveBeenCalledWith(0, 1, undefined);
     });
 
-    it("should only resolve on its own the new weight promise once the target state's weight reaches 1 and the current state's weights reach 0", () => {
+    it("should only resolve on its own the new weight promise once the target state's weight reaches 1 and the current state's weights reach 0", async () => {
       state.configure(fromStates, toState, 1);
 
-      expectAsync(state._weightPromise).toBeResolved();
+      await expectAsync(state._weightPromise).toBeResolved();
 
       expect(toState.weight).toEqual(1);
 

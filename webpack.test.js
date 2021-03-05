@@ -21,6 +21,8 @@ const baseConfig = {
       },
     ],
   },
+  devtool: 'eval-source-map',
+
   resolve: {
     alias: {
       core: corePath,

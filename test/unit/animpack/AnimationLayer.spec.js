@@ -114,6 +114,8 @@ describe('AnimationLayer', () => {
 
       layer._promises.weight.reject();
 
+      layer._promises.weight.catch(e => {});
+
       expect(layer.weightPending).toBeFalse();
     });
 
@@ -207,14 +209,12 @@ describe('AnimationLayer', () => {
       expect(layer.weight).toEqual(0.25);
     });
 
-    it('should resolve once the weight reaches the target value', () => {
+    it('should resolve once the weight reaches the target value', async () => {
       const interpolator = layer.setWeight(1, 1);
-
-      expectAsync(interpolator).not.toBeResolved();
 
       interpolator.execute(1000);
 
-      expectAsync(interpolator).toBeResolved();
+      await expectAsync(interpolator).toBeResolved();
     });
   });
 
@@ -296,17 +296,16 @@ describe('AnimationLayer', () => {
   });
 
   describe('discard', () => {
-    it('should cancel the weight promise', () => {
+    it('should cancel the weight promise', async () => {
       const weightPromise = new Deferred();
       layer._promises.weight = weightPromise;
 
       expect(weightPromise.canceled).toBeFalse();
-      expectAsync(weightPromise).not.toBeResolved();
 
       layer.discard();
 
       expect(weightPromise.canceled).toBeTrue();
-      expectAsync(weightPromise).toBeResolved();
+      await expectAsync(weightPromise).toBeResolved();
     });
 
     it('should remove all references to promises', () => {

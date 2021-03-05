@@ -139,13 +139,22 @@ describe('AnimationPlayerInterface', () => {
   });
 
   describe('playAnimation', () => {
-    it('should return a rejected promise if _prepareCurrentState fails', () => {
-      expectAsync(player.playAnimation('state5')).toBeRejected();
+    it('should return a rejected promise if _prepareCurrentState fails', async () => {
+      const promise = player.playAnimation('state5');
+
+      try {
+        await promise;
+      } catch (e) {}
+
+      await expectAsync(promise).toBeRejected();
     });
 
-    it('should execute the onError function if _prepareCurrentState fails', () => {
+    it('should execute the onError function if _prepareCurrentState fails', async () => {
       const onError = jasmine.createSpy('onError');
-      player.playAnimation('state5', 0, undefined, undefined, onError);
+
+      try {
+        await player.playAnimation('state5', 0, undefined, undefined, onError);
+      } catch (e) {}
 
       expect(onError).toHaveBeenCalledTimes(1);
     });
@@ -200,12 +209,15 @@ describe('AnimationPlayerInterface', () => {
 
   describe('resumeAnimation', () => {
     it('should return a rejected promise if _prepareCurrentState fails', () => {
-      expectAsync(player.resumeAnimation('state5')).toBeRejected();
+      return expectAsync(player.resumeAnimation('state5')).toBeRejected();
     });
 
-    it('should execute the onError function if _prepareCurrentState fails', () => {
+    it('should execute the onError function if _prepareCurrentState fails', async () => {
       const onError = jasmine.createSpy('onError');
-      player.resumeAnimation('state5', 0, undefined, undefined, onError);
+
+      try {
+        await player.resumeAnimation('state5', 0, undefined, undefined, onError);
+      } catch (e) {}
 
       expect(onError).toHaveBeenCalledTimes(1);
     });

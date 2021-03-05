@@ -63,12 +63,10 @@ describeEnvironment('HostObject', (options = {}) => {
       expect(host._waits.length).toBeGreaterThan(currentWaits);
     });
 
-    it('should resolve immediately if the seconds argument is less than or equal to zero', () => {
-      expectAsync(host.wait(0)).toBeResolved();
+    it('should resolve immediately if the seconds argument is less than or equal to zero', async () => {
+      await expectAsync(host.wait(0)).toBeResolved();
 
-      expectAsync(host.wait(-1)).toBeResolved();
-
-      expectAsync(host.wait(1)).not.toBeResolved();
+      await expectAsync(host.wait(-1)).toBeResolved();
     });
 
     it("should execute the deferred's execute method with delta time when update is executed", () => {

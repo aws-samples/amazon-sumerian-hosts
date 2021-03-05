@@ -744,7 +744,7 @@ describeEnvironment('AbstractTextToSpeechFeature', () => {
       AbstractTextToSpeechFeature._isReady = false;
       const tts = new AbstractTextToSpeechFeature(mockHost);
 
-      expectAsync(tts._getSpeech('some text')).toBeRejected();
+      return expectAsync(tts._getSpeech('some text')).toBeRejected();
     });
 
     it('should be rejected if no text is defined', async () => {
@@ -755,7 +755,7 @@ describeEnvironment('AbstractTextToSpeechFeature', () => {
       );
       const tts = new AbstractTextToSpeechFeature(mockHost);
 
-      expectAsync(tts._getSpeech()).toBeRejected();
+      return expectAsync(tts._getSpeech()).toBeRejected();
     });
 
     it('should resolve to an instance of AbstractSpeech', async () => {
@@ -841,6 +841,8 @@ describeEnvironment('AbstractTextToSpeechFeature', () => {
 
       tts._promises.volume.reject();
 
+      tts._promises.volume.catch(e => {});
+
       expect(tts.volumePending).toBeFalse();
     });
 
@@ -877,14 +879,12 @@ describeEnvironment('AbstractTextToSpeechFeature', () => {
       expect(tts.volume).toEqual(0.25);
     });
 
-    it('should resolve once the volume reaches the target value', () => {
+    it('should resolve once the volume reaches the target value', async() => {
       const interpolator = tts.setVolume(1, 1);
-
-      expectAsync(interpolator).not.toBeResolved();
 
       interpolator.execute(1000);
 
-      expectAsync(interpolator).toBeResolved();
+      await expectAsync(interpolator).toBeResolved();
     });
   });
 
@@ -970,9 +970,10 @@ describeEnvironment('AbstractTextToSpeechFeature', () => {
     });
 
     it('should reject the returned promise if _getSpeech was rejected because polly service has not been initialized', () => {
+      AbstractTextToSpeechFeature._isReady = false;
       const tts = new AbstractTextToSpeechFeature(mockHost);
 
-      expectAsync(tts.play('test')).toBeRejected();
+      return expectAsync(tts.play('test')).toBeRejected();
     });
 
     it('should reject the returned promise if _getSpeech was rejected because of bad inputs', async () => {
@@ -983,7 +984,7 @@ describeEnvironment('AbstractTextToSpeechFeature', () => {
       );
       const tts = new AbstractTextToSpeechFeature(mockHost);
 
-      expectAsync(tts.play()).toBeRejected();
+      await expectAsync(tts.play()).toBeRejected();
     });
 
     it('should execute play once on the new current speech', async done => {
@@ -993,7 +994,7 @@ describeEnvironment('AbstractTextToSpeechFeature', () => {
         mockNeuralVersion
       );
       const tts = new AbstractTextToSpeechFeature(mockHost);
-      const mockSpeech = jasmine.createSpyObj('mockSpeech', ['play']);
+      const mockSpeech = jasmine.createSpyObj('mockSpeech', {'play': new Deferred(resolve => resolve())});
       tts._speechCache['<speak>test</speak>'] = {
         promise: Promise.resolve(mockSpeech),
         config: tts._getConfig(),
@@ -1012,14 +1013,13 @@ describeEnvironment('AbstractTextToSpeechFeature', () => {
         mockNeuralVersion
       );
       const tts = new AbstractTextToSpeechFeature(mockHost);
-      const mockSpeech = jasmine.createSpyObj('mockSpeech', ['play']);
-      mockSpeech.play.and.returnValue(Promise.resolve());
+      const mockSpeech = jasmine.createSpyObj('mockSpeech', {'play': new Deferred(resolve => resolve())});
       tts._speechCache['<speak>test</speak>'] = {
         promise: Promise.resolve(mockSpeech),
         config: tts._getConfig(),
       };
 
-      expectAsync(tts.play('test')).toBeResolved();
+      await expectAsync(tts.play('test')).toBeResolved();
     });
   });
 
@@ -1083,9 +1083,10 @@ describeEnvironment('AbstractTextToSpeechFeature', () => {
     });
 
     it('should reject the returned promise if _getSpeech was rejected because polly service has not been initialized', () => {
+      AbstractTextToSpeechFeature._isReady = false;
       const tts = new AbstractTextToSpeechFeature(mockHost);
 
-      expectAsync(tts.resume('test')).toBeRejected();
+      return expectAsync(tts.resume('test')).toBeRejected();
     });
 
     it('should reject the returned promise if _getSpeech was rejected because of bad inputs', async () => {
@@ -1096,7 +1097,7 @@ describeEnvironment('AbstractTextToSpeechFeature', () => {
       );
       const tts = new AbstractTextToSpeechFeature(mockHost);
 
-      expectAsync(tts.resume()).toBeRejected();
+      await expectAsync(tts.resume()).toBeRejected();
     });
 
     it('should execute cancel once on the current speech if a current speech is defined and playing', async done => {
@@ -1125,7 +1126,7 @@ describeEnvironment('AbstractTextToSpeechFeature', () => {
         mockNeuralVersion
       );
       const tts = new AbstractTextToSpeechFeature(mockHost);
-      const mockSpeech = jasmine.createSpyObj('mockSpeech', ['resume']);
+      const mockSpeech = jasmine.createSpyObj('mockSpeech', {'resume': new Deferred(resolve => resolve())});
       tts._speechCache['<speak>test</speak>'] = {
         promise: Promise.resolve(mockSpeech),
         config: tts._getConfig(),
@@ -1144,7 +1145,7 @@ describeEnvironment('AbstractTextToSpeechFeature', () => {
         mockNeuralVersion
       );
       const tts = new AbstractTextToSpeechFeature(mockHost);
-      const mockSpeech = jasmine.createSpyObj('mockSpeech', ['resume'], {
+      const mockSpeech = jasmine.createSpyObj('mockSpeech', {'resume': new Deferred(resolve => resolve())}, {
         text: '<speak>test</speak>',
       });
       tts._currentSpeech = mockSpeech;
@@ -1166,14 +1167,13 @@ describeEnvironment('AbstractTextToSpeechFeature', () => {
         mockNeuralVersion
       );
       const tts = new AbstractTextToSpeechFeature(mockHost);
-      const mockSpeech = jasmine.createSpyObj('mockSpeech', ['resume']);
-      mockSpeech.resume.and.returnValue(Promise.resolve());
+      const mockSpeech = jasmine.createSpyObj('mockSpeech', {'resume': new Deferred(resolve => resolve())});
       tts._speechCache['<speak>test</speak>'] = {
         promise: Promise.resolve(mockSpeech),
         config: tts._getConfig(),
       };
 
-      expectAsync(tts.resume('test')).toBeResolved();
+      await expectAsync(tts.resume('test')).toBeResolved();
     });
   });
 

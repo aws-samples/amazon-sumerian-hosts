@@ -52,12 +52,10 @@ describe('Utils', () => {
       expect(onWarn).toHaveBeenCalledTimes(1);
     });
 
-    it('should resolve immediately if the seconds argument is less than or equal to zero', () => {
-      expectAsync(Utils.wait(0)).toBeResolved();
+    it('should resolve immediately if the seconds argument is less than or equal to zero', async () => {
+      await expectAsync(Utils.wait(0)).toBeResolved();
 
-      expectAsync(Utils.wait(-1)).toBeResolved();
-
-      expectAsync(Utils.wait(1)).not.toBeResolved();
+      await expectAsync(Utils.wait(-1)).toBeResolved();
     });
 
     describe('execute', () => {
@@ -65,7 +63,7 @@ describe('Utils', () => {
         const wait = Utils.wait(1);
         wait.execute('notANumber');
 
-        expectAsync(wait).toBeRejected();
+        return expectAsync(wait).toBeRejected();
       });
 
       it('should execute the onProgress function argument each time the deferred is executed with a non-zero delta time', () => {
@@ -81,14 +79,12 @@ describe('Utils', () => {
         expect(onProgress).toHaveBeenCalledTimes(1);
       });
 
-      it('should resolve the promise once the required number of seconds has elapsed', () => {
+      it('should resolve the promise once the required number of seconds has elapsed', async () => {
         const wait = Utils.wait(1);
-
-        expectAsync(wait).not.toBeResolved();
 
         wait.execute(1000);
 
-        expectAsync(wait).toBeResolved();
+        await expectAsync(wait).toBeResolved();
       });
     });
   });

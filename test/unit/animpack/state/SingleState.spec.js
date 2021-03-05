@@ -215,6 +215,8 @@ describeEnvironment('SingleState', (options = {}, env) => {
 
       state._promises.timeScale.reject();
 
+      state._promises.timeScale.catch(e => {});
+
       expect(state.timeScalePending).toBeFalse();
     });
 
@@ -246,14 +248,12 @@ describeEnvironment('SingleState', (options = {}, env) => {
       expect(state.timeScale).toEqual(0.75);
     });
 
-    it('should resolve once the timeScale reaches the target value', () => {
+    it('should resolve once the timeScale reaches the target value', async () => {
       const interpolator = state.setTimeScale(0, 1);
-
-      expectAsync(interpolator).not.toBeResolved();
 
       interpolator.execute(1000);
 
-      expectAsync(interpolator).toBeResolved();
+      await expectAsync(interpolator).toBeResolved();
     });
   });
 
