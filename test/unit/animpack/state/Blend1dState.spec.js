@@ -120,14 +120,12 @@ describeHostEnviornment('Blend1dState', () => {
       expect(blend.blendValue).toEqual(0.25);
     });
 
-    it('should resolve once the blend value reaches the target value', () => {
+    it('should resolve once the blend value reaches the target value', async () => {
       const interpolator = blend.setBlendWeight(null, 1, 1);
-
-      expectAsync(interpolator).not.toBeResolved();
 
       interpolator.execute(1000);
 
-      expectAsync(interpolator).toBeResolved();
+      await expectAsync(interpolator).toBeResolved();
     });
   });
 

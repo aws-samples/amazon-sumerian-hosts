@@ -147,7 +147,7 @@ describe('QueueState', () => {
       const result = queueState.next(undefined, false);
 
       expect(result).toEqual(queueState._promises.finish);
-      expectAsync(result).toBeResolved();
+      return expectAsync(result).toBeResolved();
     });
 
     it('should execute play if _done gets updated to true and the wrap input parameter is true', () => {
@@ -213,15 +213,15 @@ describe('QueueState', () => {
     });
 
     it('should resolve and return the finish promise if _done gets updated to true', () => {
+      state1.play = jasmine.createSpy().and.callFake((onFinished) => { return onFinished(); });
       queueState._promises.finish = new Deferred();
-      const onNext = spyOn(queueState._queue, 'next');
-      onNext.and.callFake(() => {
+      spyOn(queueState._queue.__proto__, 'next').and.callFake(() => {
         return {value: undefined, done: true};
       });
       const result = queueState.play();
 
       expect(result).toEqual(queueState._promises.finish);
-      expectAsync(result).toBeResolved();
+      return expectAsync(result).toBeResolved();
     });
 
     it("should execute the onNext input function with {name: name of first state in the queue, canAdvance: true if first state's loopCount not Infinity and not the last state in the queue, isQueueEnd: true if it's the last state in the queue} if _done gets updated to false", () => {

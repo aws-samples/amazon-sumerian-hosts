@@ -464,7 +464,7 @@ describeEnvironment('GestureFeature', () => {
       expect(onWarn).toHaveBeenCalledTimes(1);
       expect(result).toBeInstanceOf(Deferred);
       expect(result.canceled).toBeTrue();
-      expectAsync(result).toBeResolved();
+      return expectAsync(result).toBeResolved();
     });
 
     it("should execute registerAnimation if the animation hasn't already been registered", () => {
@@ -473,16 +473,16 @@ describeEnvironment('GestureFeature', () => {
       expect(onWarn).toHaveBeenCalledTimes(1);
       expect(result).toBeInstanceOf(Deferred);
       expect(result.canceled).toBeTrue();
-      expectAsync(result).toBeResolved();
+      return expectAsync(result).toBeResolved();
     });
 
-    it('should log a warning and return a canceled Deferred promise if the animation is not active', () => {
+    it('should log a warning and return a canceled Deferred promise if the animation is not active', async () => {
       let result = gestureFeature.playGesture('Gesture', 'big');
 
       expect(onWarn).toHaveBeenCalledTimes(1);
       expect(result).toBeInstanceOf(Deferred);
       expect(result.canceled).toBeTrue();
-      expectAsync(result).toBeResolved();
+      await expectAsync(result).toBeResolved();
 
       gestureFeature._managedLayers.Gesture.animations.big.isActive = true;
       result = gestureFeature.playGesture('Gesture', 'big');
@@ -490,10 +490,9 @@ describeEnvironment('GestureFeature', () => {
       expect(onWarn).toHaveBeenCalledTimes(1);
       expect(result).toBeInstanceOf(Deferred);
       expect(result.pending).toBeTrue();
-      expectAsync(result).not.toBeResolved();
     });
 
-    it('should log a warning and return a canceled Deferred promise if the animation is the current gesture and the force parameter is false', () => {
+    it('should log a warning and return a canceled Deferred promise if the animation is the current gesture and the force parameter is false', async () => {
       gestureFeature._managedLayers.Gesture.currentGesture = 'big';
       gestureFeature._managedLayers.Gesture.animations.big.isActive = true;
       let result = gestureFeature.playGesture('Gesture', 'big', {force: true});
@@ -501,17 +500,16 @@ describeEnvironment('GestureFeature', () => {
       expect(onWarn).not.toHaveBeenCalled();
       expect(result).toBeInstanceOf(Deferred);
       expect(result.pending).toBeTrue();
-      expectAsync(result).not.toBeResolved();
 
       result = gestureFeature.playGesture('Gesture', 'big', {force: false});
 
       expect(onWarn).toHaveBeenCalledTimes(1);
       expect(result).toBeInstanceOf(Deferred);
       expect(result.canceled).toBeTrue();
-      expectAsync(result).toBeResolved();
+      await expectAsync(result).toBeResolved();
     });
 
-    it("should log a warning and return a canceled Deferred promise if the playTimer isn't null and is less than the minimum interval", () => {
+    it("should log a warning and return a canceled Deferred promise if the playTimer isn't null and is less than the minimum interval", async () => {
       gestureFeature._managedLayers.Gesture.animations.big.isActive = true;
       gestureFeature._managedLayers.Gesture.playTimer = 1;
       let result = gestureFeature.playGesture('Gesture', 'big', {
@@ -521,7 +519,6 @@ describeEnvironment('GestureFeature', () => {
       expect(onWarn).not.toHaveBeenCalled();
       expect(result).toBeInstanceOf(Deferred);
       expect(result.pending).toBeTrue();
-      expectAsync(result).not.toBeResolved();
 
       result = gestureFeature.playGesture('Gesture', 'big', {
         minimumInterval: 3,
@@ -530,7 +527,7 @@ describeEnvironment('GestureFeature', () => {
       expect(onWarn).toHaveBeenCalledTimes(1);
       expect(result).toBeInstanceOf(Deferred);
       expect(result.canceled).toBeTrue();
-      expectAsync(result).toBeResolved();
+      await expectAsync(result).toBeResolved();
     });
 
     it("should set the layer's currentGesture to the new animation, the playTimer to 0 if no warnings have been logged", () => {
@@ -582,7 +579,7 @@ describeEnvironment('GestureFeature', () => {
       expect(onSetLayerWeights).toHaveBeenCalledTimes(1);
     });
 
-    it('should execute AnimationFeature.playAnimation and return a pending promise if no warnings have been logged', () => {
+    it('should execute AnimationFeature.playAnimation and return a pending promise if no warnings have been logged', async () => {
       gestureFeature._managedLayers.Gesture.animations.big.isActive = true;
       gestureFeature._managedLayers.Gesture.currentGesture = null;
       let result = gestureFeature.playGesture('Gesture', 'big', {
@@ -593,7 +590,6 @@ describeEnvironment('GestureFeature', () => {
       expect(onWarn).not.toHaveBeenCalled();
       expect(result).toBeInstanceOf(Deferred);
       expect(result.pending).toBeTrue();
-      expectAsync(result).not.toBeResolved();
 
       gestureFeature._managedLayers.Gesture.animations.big.isActive = false;
       result = gestureFeature.playGesture('Gesture', 'big', {
@@ -604,7 +600,7 @@ describeEnvironment('GestureFeature', () => {
       expect(onWarn).toHaveBeenCalledTimes(1);
       expect(result).toBeInstanceOf(Deferred);
       expect(result.canceled).toBeTrue();
-      expectAsync(result).toBeResolved();
+      await expectAsync(result).toBeResolved();
     });
   });
 

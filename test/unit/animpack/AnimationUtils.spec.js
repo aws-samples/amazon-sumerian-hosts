@@ -15,13 +15,13 @@ describe('AnimationUtils', () => {
     });
 
     it('should return a rejected promise if the property owner is not an object', () => {
-      expectAsync(AnimationUtils.interpolateProperty()).toBeRejected();
+      return expectAsync(AnimationUtils.interpolateProperty()).toBeRejected();
     });
 
     it('should return a rejected promise if the property value is not numeric', () => {
-      const animated = {weight: '0'};
+      const animated = {weight: 'abc'};
 
-      expectAsync(
+      return expectAsync(
         AnimationUtils.interpolateProperty(animated, 'weight', 1)
       ).toBeRejected();
     });
@@ -29,21 +29,21 @@ describe('AnimationUtils', () => {
     it('should return a rejected promise if the target value is not numeric', () => {
       const animated = {weight: 0};
 
-      expectAsync(
-        AnimationUtils.interpolateProperty(animated, 'weight', '1')
+      return expectAsync(
+        AnimationUtils.interpolateProperty(animated, 'weight', 'abc')
       ).toBeRejected();
     });
 
-    it('should set the property to the target value and resolve on its own if the seconds option is 0 or undefined', () => {
+    it('should set the property to the target value and resolve on its own if the seconds option is 0 or undefined', async () => {
       const animated = {weight: 0};
 
-      expectAsync(
+      await expectAsync(
         AnimationUtils.interpolateProperty(animated, 'weight', 1)
       ).toBeResolved();
 
       expect(animated.weight).toEqual(1);
 
-      expectAsync(
+      await expectAsync(
         AnimationUtils.interpolateProperty(animated, 'weight', 2, {seconds: 0})
       ).toBeResolved();
 
@@ -83,7 +83,9 @@ describe('AnimationUtils', () => {
           }
         );
 
-        expectAsync(interpolator).toBeRejected();
+        interpolator.execute('abc');
+
+        return expectAsync(interpolator).toBeRejected();
       });
 
       it('should reject the promise if the easing function does not return a numeric value', () => {
@@ -98,7 +100,9 @@ describe('AnimationUtils', () => {
           }
         );
 
-        expectAsync(interpolator).toBeRejected();
+        interpolator.execute(1000);
+
+        return expectAsync(interpolator).toBeRejected();
       });
 
       it('should execute the onProgress functiuon argument', () => {
@@ -130,7 +134,7 @@ describe('AnimationUtils', () => {
         );
         interpolator.execute(1000);
 
-        expectAsync(interpolator).toBeResolved();
+        return expectAsync(interpolator).toBeResolved();
       });
     });
   });

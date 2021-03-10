@@ -85,17 +85,20 @@ describeEnvironment('AbstractSpeech', () => {
     it('should execute the onError function argument when the promise rejects', () => {
       const onError = jasmine.createSpy('onError');
       const promise = speech._createPromise(undefined, onError);
-      try {
-        promise.reject('error');
-      } catch (e) {}
+
+      promise.reject('error');
+      promise.catch(e => {});
 
       expect(onError).toHaveBeenCalledWith('error');
     });
 
     it('should not throw an error if the onError argument is not a function', () => {
       const promise = speech._createPromise();
+      const boundPromise = promise.reject.bind(promise, 'error');
+      boundPromise();
+      promise.catch(e => {});
 
-      expect(promise.reject.bind(promise, 'error')).not.toThrowError(TypeError);
+      expect(boundPromise).not.toThrowError(TypeError);
     });
 
     it("should emit the speaker's interrupt event when the promise resolves by being canceled", done => {
@@ -137,9 +140,8 @@ describeEnvironment('AbstractSpeech', () => {
       expect(speech._playing).toBeFalse();
 
       promise = speech._createPromise();
-      try {
-        promise.reject('error');
-      } catch (e) {}
+      promise.reject('error');
+      promise.catch(e => {});
 
       expect(speech._playing).toBeFalse();
     });
@@ -318,7 +320,7 @@ describeEnvironment('AbstractSpeech', () => {
       speech.play();
       speech.pause();
 
-      expectAsync(speech._promise).not.toBeResolved();
+      expect(speech._promise.resolved).toBeFalse();
     });
   });
 
@@ -375,7 +377,7 @@ describeEnvironment('AbstractSpeech', () => {
       const result = speech.resume();
 
       expect(result).toBeInstanceOf(Deferred);
-      expectAsync(result).not.toBeResolved();
+      expect(result.pending).toBeTrue();
     });
 
     it('should not execute _reset if the speech has been playing and paused', () => {
@@ -389,17 +391,15 @@ describeEnvironment('AbstractSpeech', () => {
   });
 
   describe('cancel', () => {
-    it('should cancel the pending play promise if the speech had been playing', () => {
+    it('should cancel the pending play promise if the speech had been playing', async () => {
       const onCancel = jasmine.createSpy('onCancel');
       speech._promise = new Deferred(undefined, undefined, undefined, onCancel);
       const promise = speech._promise;
 
-      expectAsync(promise).not.toBeResolved();
-
       speech.cancel();
 
       expect(onCancel).toHaveBeenCalledTimes(1);
-      expectAsync(promise).toBeResolved();
+      await expectAsync(promise).toBeResolved();
     });
 
     it('should cause playing to return false', () => {
@@ -414,15 +414,13 @@ describeEnvironment('AbstractSpeech', () => {
   });
 
   describe('stop', () => {
-    it('should resolve the pending play promise if the speech had been playing', () => {
+    it('should resolve the pending play promise if the speech had been playing', async () => {
       speech.play();
       const promise = speech._promise;
 
-      expectAsync(promise).not.toBeResolved();
-
       speech.stop();
 
-      expectAsync(promise).toBeResolved();
+      await expectAsync(promise).toBeResolved();
     });
 
     it('should cause playing to return false', () => {

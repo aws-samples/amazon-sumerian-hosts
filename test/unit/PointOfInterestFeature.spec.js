@@ -571,11 +571,11 @@ describeEnvironment('PointOfInterestFeature', ({owner}) => {
       );
     });
 
-    it('should cancel the current microSaccadeTimer for the layer if one already exists', () => {
+    it('should cancel the current microSaccadeTimer for the layer if one already exists', async () => {
       const timer = poiFeature._managedLayers.eyes.microSaccadeTimer;
       poiFeature._initializeMicroTimer('eyes');
 
-      expectAsync(timer).toBeResolved();
+      await expectAsync(timer).toBeResolved();
 
       expect(timer.canceled).toBeTrue();
     });
@@ -613,11 +613,11 @@ describeEnvironment('PointOfInterestFeature', ({owner}) => {
       );
     });
 
-    it('should cancel the current macroSaccadeTimer for the layer if one already exists', () => {
+    it('should cancel the current macroSaccadeTimer for the layer if one already exists', async () => {
       const timer = poiFeature._managedLayers.eyes.macroSaccadeTimer;
       poiFeature._initializeMacroTimer('eyes');
 
-      expectAsync(timer).toBeResolved();
+      await expectAsync(timer).toBeResolved();
 
       expect(timer.canceled).toBeTrue();
     });

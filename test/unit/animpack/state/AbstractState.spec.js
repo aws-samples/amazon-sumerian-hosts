@@ -55,6 +55,8 @@ describe('AbstractState', () => {
 
       state._promises.weight.reject();
 
+      state._promises.weight.catch(e => {});
+
       expect(state.weightPending).toBeFalse();
     });
 
@@ -86,14 +88,12 @@ describe('AbstractState', () => {
       expect(state.weight).toEqual(0.25);
     });
 
-    it('should resolve once the weight reaches the target value', () => {
+    it('should resolve once the weight reaches the target value', async () => {
       const interpolator = state.setWeight(1, 1);
-
-      expectAsync(interpolator).not.toBeResolved();
 
       interpolator.execute(1000);
 
-      expectAsync(interpolator).toBeResolved();
+      await expectAsync(interpolator).toBeResolved();
     });
   });
 
@@ -223,28 +223,24 @@ describe('AbstractState', () => {
       expect(state._paused).toBeTrue();
     });
 
-    it('should cancel all stored promises', () => {
+    it('should cancel all stored promises', async () => {
       state._promises = {
         weight: new Deferred(),
         play: new Deferred(),
         finish: new Deferred(),
       };
-      const onCancelWeight = spyOn(state._promises.weight, 'cancel');
-      const onCancelPlay = spyOn(state._promises.play, 'cancel');
-      const onCancelFinish = spyOn(state._promises.finish, 'cancel');
-
-      expectAsync(state._promises.weight).not.toBeResolved();
-      expectAsync(state._promises.play).not.toBeResolved();
-      expectAsync(state._promises.finish).not.toBeResolved();
+      const onCancelWeight = spyOn(state._promises.weight, 'cancel').and.callThrough();
+      const onCancelPlay = spyOn(state._promises.play, 'cancel').and.callThrough();
+      const onCancelFinish = spyOn(state._promises.finish, 'cancel').and.callThrough();
 
       state.cancel();
 
       expect(onCancelWeight).toHaveBeenCalledTimes(1);
       expect(onCancelPlay).toHaveBeenCalledTimes(1);
       expect(onCancelFinish).toHaveBeenCalledTimes(1);
-      expectAsync(state._promises.weight).toBeResolved();
-      expectAsync(state._promises.play).toBeResolved();
-      expectAsync(state._promises.finish).toBeResolved();
+      await expectAsync(state._promises.weight).toBeResolved();
+      await expectAsync(state._promises.play).toBeResolved();
+      await expectAsync(state._promises.finish).toBeResolved();
     });
 
     it('should return a boolean', () => {
@@ -260,28 +256,24 @@ describe('AbstractState', () => {
       expect(state._paused).toBeTrue();
     });
 
-    it('should resolve all stored promises', () => {
+    it('should resolve all stored promises', async () => {
       state._promises = {
         weight: new Deferred(),
         play: new Deferred(),
         finish: new Deferred(),
       };
-      const onResolveWeight = spyOn(state._promises.weight, 'resolve');
-      const onResolvePlay = spyOn(state._promises.play, 'resolve');
-      const onResolveFinish = spyOn(state._promises.finish, 'resolve');
-
-      expectAsync(state._promises.weight).not.toBeResolved();
-      expectAsync(state._promises.play).not.toBeResolved();
-      expectAsync(state._promises.finish).not.toBeResolved();
+      const onResolveWeight = spyOn(state._promises.weight, 'resolve').and.callThrough();
+      const onResolvePlay = spyOn(state._promises.play, 'resolve').and.callThrough();
+      const onResolveFinish = spyOn(state._promises.finish, 'resolve').and.callThrough();
 
       state.stop();
 
       expect(onResolveWeight).toHaveBeenCalledTimes(1);
       expect(onResolvePlay).toHaveBeenCalledTimes(1);
       expect(onResolveFinish).toHaveBeenCalledTimes(1);
-      expectAsync(state._promises.weight).toBeResolved();
-      expectAsync(state._promises.play).toBeResolved();
-      expectAsync(state._promises.finish).toBeResolved();
+      await expectAsync(state._promises.weight).toBeResolved();
+      await expectAsync(state._promises.play).toBeResolved();
+      await expectAsync(state._promises.finish).toBeResolved();
     });
 
     it('should return a boolean', () => {
