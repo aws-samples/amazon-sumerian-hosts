@@ -24,7 +24,11 @@ class Messenger extends CoreMessenger {
 }
 
 // Assign Three.js EventDispatcher functionality to the Messenger class
-Object.assign(Messenger.prototype, THREE.EventDispatcher.prototype);
+Object.getOwnPropertyNames(THREE.EventDispatcher.prototype)
+  .filter(prop => prop !== 'constructor')
+  .forEach(prop => {
+    Messenger.prototype[prop] = THREE.EventDispatcher.prototype[prop];
+  });
 
 Object.defineProperty(Messenger, 'GlobalMessenger', {
   value: new Messenger(),
