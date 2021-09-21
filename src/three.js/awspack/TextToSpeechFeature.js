@@ -67,7 +67,7 @@ class TextToSpeechFeature extends CoreTextToSpeechFeature {
    */
   _synthesizeAudio(params) {
     return super._synthesizeAudio(params).then(result => {
-      if (this._attachTo !== undefined) {
+      if (this._attachTo !== undefined && !this._isGlobal) {
         // Create positional audio if there's an attach point
         result.threeAudio = new THREE.PositionalAudio(this._listener);
         this._attachTo.add(result.threeAudio);
