@@ -48,8 +48,8 @@
     "regenerator-runtime": "^0.13.5",
     "three": "^0.125.0",
     "webpack": "^4.41.6",
-    "webpack-cli": "^3.3.11",
-    "webpack-dev-server": "^3.10.3",
+    "webpack-cli": "^4.7.0",
+    "webpack-dev-server": "^4.6.0",
     "webpack-merge": "^4.2.2"
   },
   "optionalDependencies": {},
