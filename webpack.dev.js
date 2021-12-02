@@ -10,8 +10,10 @@ module.exports = merge(common[0], {
   devServer: {
     open: 'Google Chrome',
     liveReload: true,
-    contentBase: [path.join(__dirname)],
-    watchContentBase: true,
     hot: false,
+    static: {
+      directory: path.join(__dirname),
+      watch: true,
+    }
   },
 });
