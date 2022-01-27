@@ -46,7 +46,7 @@
     "karma-webpack": "^4.0.2",
     "prettier": "^1.19.1",
     "regenerator-runtime": "^0.13.5",
-    "three": "^0.125.0",
+    "three": "^0.137.0",
     "webpack": "^4.41.6",
     "webpack-cli": "^4.7.0",
     "webpack-dev-server": "^4.6.0",
