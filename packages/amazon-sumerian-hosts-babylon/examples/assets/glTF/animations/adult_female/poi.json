@@ -1,0 +1,171 @@
+[
+  {
+    "name": "LookHead",
+    "maxSpeed": 3.5,
+    "reference": "char:def_c_spineD",
+    "forwardAxis": "PositiveZ",
+    "animation": "look",
+    "blendStateOptions": [
+      {
+        "clip": "head_neutral",
+        "name": "look_neutral"
+      },
+      {
+        "clip": "head_r",
+        "name": "look_r"
+      },
+      {
+        "clip": "head_ur",
+        "name": "look_ur"
+      },
+      {
+        "clip": "head_u",
+        "name": "look_u"
+      },
+      {
+        "clip": "head_ul",
+        "name": "look_ul"
+      },
+      {
+        "clip": "head_l",
+        "name": "look_l"
+      },
+      {
+        "clip": "head_dl",
+        "name": "look_dl"
+      },
+      {
+        "clip": "head_d",
+        "name": "look_d"
+      },
+      {
+        "clip": "head_dr",
+        "name": "look_dr"
+      }
+    ],
+    "blendThresholds": [
+      [0.0, 0.0],
+      [-75.0, 0.0],
+      [-61.653, -37.839],
+      [0, -59.853],
+      [61.653, -37.839],
+      [75.0, 0.0],
+      [55.75, 39.683],
+      [0.0, 58.887],
+      [-55.75, 39.683]
+    ]
+  },
+  {
+    "name": "LookEyes",
+    "maxSpeed": 25.0,
+    "reference": "char:def_c_neckB",
+    "forwardAxis": "PositiveZ",
+    "hasSaccade": true,
+    "animation": "look",
+    "blendStateOptions": [
+      {
+        "clip": "eyes_neutral",
+        "name": "look_neutral"
+      },
+      {
+        "clip": "eyes_r",
+        "name": "look_r"
+      },
+      {
+        "clip": "eyes_ur",
+        "name": "look_ur"
+      },
+      {
+        "clip": "eyes_u",
+        "name": "look_u"
+      },
+      {
+        "clip": "eyes_ul",
+        "name": "look_ul"
+      },
+      {
+        "clip": "eyes_l",
+        "name": "look_l"
+      },
+      {
+        "clip": "eyes_dl",
+        "name": "look_dl"
+      },
+      {
+        "clip": "eyes_d",
+        "name": "look_d"
+      },
+      {
+        "clip": "eyes_dr",
+        "name": "look_dr"
+      }
+    ],
+    "blendThresholds": [
+      [0.0, 0.0],
+      [-35.0, 0.0],
+      [-26.239, -20.049],
+      [0, -30.0],
+      [26.239, -20.049],
+      [35.0, 0.0],
+      [26.305, 16.412],
+      [0.0, 25.0],
+      [-26.305, 16.412]
+    ]
+  },
+  {
+    "name": "LookBrows",
+    "maxSpeed": 10.0,
+    "reference": "char:def_c_neckB",
+    "forwardAxis": "PositiveZ",
+    "animation": "look",
+    "blendStateOptions": [
+      {
+        "clip": "brows_neutral",
+        "name": "look_neutral"
+      },
+      {
+        "clip": "brows_r",
+        "name": "look_r"
+      },
+      {
+        "clip": "brows_ur",
+        "name": "look_ur"
+      },
+      {
+        "clip": "brows_u",
+        "name": "look_u"
+      },
+      {
+        "clip": "brows_ul",
+        "name": "look_ul"
+      },
+      {
+        "clip": "brows_l",
+        "name": "look_l"
+      },
+      {
+        "clip": "brows_dl",
+        "name": "look_dl"
+      },
+      {
+        "clip": "brows_d",
+        "name": "look_d"
+      },
+      {
+        "clip": "brows_dr",
+        "name": "look_dr"
+      }
+    ],
+    "blendThresholds": [
+      [0.0, 0.0],
+      [-35.0, 0.0],
+      [-26.239, -20.049],
+      [0, -30.0],
+      [26.239, -20.049],
+      [35.0, 0.0],
+      [26.305, 16.412],
+      [0.0, 25.0],
+      [-26.305, 16.412]
+    ]
+  }
+]
