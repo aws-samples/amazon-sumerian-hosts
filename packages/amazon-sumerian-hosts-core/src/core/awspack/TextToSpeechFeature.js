@@ -1,7 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: MIT-0
-import Speech from 'app/awspack/Speech';
-import Deferred from 'core/Deferred';
+import Speech from './Speech';
+import Deferred from '../Deferred';
 import AbstractTextToSpeechFeature from './AbstractTextToSpeechFeature';
 
 /**

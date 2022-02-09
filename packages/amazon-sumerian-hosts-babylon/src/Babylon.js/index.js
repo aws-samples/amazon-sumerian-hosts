@@ -5,25 +5,21 @@
  * @module babylon/HOST
  */
 
-import { Utils,
+import { 
+  Utils,
   MathUtils,
   Deferred,
   LipsyncFeature,
   DefaultVisemeMap,
   GestureFeature,
   DefaultGestureWords } from '@amazon-sumerian-hosts/core';
+
 import PointOfInterestFeature, {AxisMap} from './PointOfInterestFeature';
 import {env} from './HostEnvironment';
 import Messenger from './Messenger';
 import HostObject from './HostObject';
 
 import aws from './awspack';
-const {
-  TextToSpeechFeature,
-  TextToSpeechUtils,
-  Speech,
-} = aws;
-
 import anim from './animpack';
 
 export default {
@@ -78,9 +74,7 @@ export default {
   /**
    * @see module:babylon/awspack
    */
-  TextToSpeechFeature,
-  TextToSpeechUtils,
-  Speech,
+  aws,
   /**
    * @see module:babylon/animpack
    */

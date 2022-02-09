@@ -6,7 +6,7 @@ const {Speech: CoreSpeech, AbstractSpeech} = core
  * @extends core/Speech
  * @alias Babylon.js/Speech
  */
-class Speech extends core.Speech {
+class Speech extends CoreSpeech {
   /**
    * @constructor
    *
@@ -55,7 +55,7 @@ class Speech extends core.Speech {
   stop() {
     this._audio.stop();
 
-    core.AbstractSpeech.prototype.stop.call(this);
+    AbstractSpeech.prototype.stop.call(this);
   }
 }
 

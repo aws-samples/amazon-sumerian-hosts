@@ -1,8 +1,8 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: MIT-0
-import core from '@amazon-sumerian-hosts/core';
-const { AbstractTextToSpeechFeature,
-  TextToSpeechFeature: CoreTextToSpeechFeature } = core
+import { AbstractTextToSpeechFeature,
+  TextToSpeechFeature as CoreTextToSpeechFeature } from '@amazon-sumerian-hosts/core';
+
 /**
  * Babylonjs Scene object
  * @external "BABYLON.Scene"

@@ -21,7 +21,8 @@
   },
   "devDependencies": {
     "@amazon-sumerian-hosts/core": "^2.0.0",
-    "babylonjs": "^4.1.0"
+    "babylonjs": "^4.1.0",
+    "karma-sourcemap-loader": "~0.3"
   },
   "optionalDependencies": {},
   "dependencies": {}
