@@ -121,7 +121,7 @@
       src="https://sdk.amazonaws.com/js/aws-sdk-2.645.0.min.js"
     ></script>
     <!--Three.js dependencies-->
-    <script src="https://threejs.org/build/three.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.127.0/build/three.min.js"></script>
     <!--Host build file-->
     <script type="text/javascript" src="../dist/host.three.js"></script>
   </head>
@@ -177,8 +177,8 @@
 
     <!--Create the Three.js scene-->
     <script type="module">
-      import {OrbitControls} from 'https://threejs.org/examples/jsm/controls/OrbitControls.js';
-      import {GLTFLoader} from 'https://threejs.org/examples/jsm/loaders/GLTFLoader.js';
+      import { OrbitControls } from 'https://cdn.jsdelivr.net/npm/three@0.127.0/examples/jsm/controls/OrbitControls.js'
+      import { GLTFLoader } from 'https://cdn.jsdelivr.net/npm/three@0.127.0/examples/jsm/loaders/GLTFLoader.js'
 
       const renderFn = [];
       const speakers = new Map([
