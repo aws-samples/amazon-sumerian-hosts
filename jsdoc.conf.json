@@ -33,6 +33,6 @@
     "readme": "./docs/readme.md"
   },
   "source": {
-    "include": ["./src/core/", "./src/three.js", "./src/Babylon.js"]
+    "include": ["./packages/amazon-sumerian-hosts-core/src/core/", "./packages/amazon-sumerian-hosts-core/src/three.js", "./packages/amazon-sumerian-hosts-core/src/Babylon.js"]
   }
 }
