@@ -1,7 +1,9 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: MIT-0
-import { PointOfInterestFeature as CorePointOfInterestFeature, 
-  AxisMap } from '@amazon-sumerian-hosts/core';
+import {
+  PointOfInterestFeature as CorePointOfInterestFeature,
+  AxisMap,
+} from '@amazon-sumerian-hosts/core';
 
 /**
  * @extends core/PointOfInterestFeature
@@ -40,4 +42,4 @@ class PointOfInterestFeature extends CorePointOfInterestFeature {
 }
 
 export default PointOfInterestFeature;
-export { AxisMap };
+export {AxisMap};

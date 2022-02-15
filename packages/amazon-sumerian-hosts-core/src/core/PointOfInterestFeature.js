@@ -3,10 +3,10 @@
 /* eslint-disable no-underscore-dangle */
 /* eslint-disable no-unused-vars */
 import ManagedAnimationLayerInterface from './animpack/ManagedAnimationLayerInterface';
-import { AnimationTypes } from './animpack/AnimationFeature';
+import {AnimationTypes} from './animpack/AnimationFeature';
 import SSMLSpeechmarkInterface from './awspack/SSMLSpeechmarkInterface';
 import AbstractHostFeature from './AbstractHostFeature';
-import { Quadratic } from './animpack/Easing';
+import {Quadratic} from './animpack/Easing';
 import MathUtils from './MathUtils';
 import Utils from './Utils';
 
@@ -30,15 +30,15 @@ const FaceTargetTypes = {
   EyeLeft: 1,
   EyeRight: 2,
   Mouth: 3,
-}
+};
 
 // Average distance between pupils is .064m, golden ratio says that the distance
 // from center of the pupils to the center of the mouth should be about the same.
 const FaceVectors = [
   [0, 0, 0],
-  [-.032, 0, 0],
-  [.032, 0, 0],
-  [0, -.064, 0]
+  [-0.032, 0, 0],
+  [0.032, 0, 0],
+  [0, -0.064, 0],
 ];
 
 // Time ranges to use when choosing a new random wait time between saccades
@@ -50,7 +50,7 @@ const MicroSaccadeWaitRanges = {
 const MacroSaccadeWaitRanges = {
   default: [5.0, 8.0],
   mouthTarget: [0.2, 0.75], // Look away from a mouth target the fastest
-  eyeTarget: [1.5, 4.0]
+  eyeTarget: [1.5, 4.0],
 };
 
 // Minimum angle in degrees the eye direction must change to trigger a blink animation
@@ -107,11 +107,7 @@ class PointOfInterestFeature extends AbstractHostFeature.mix(
    */
   constructor(
     host,
-    {
-      target,
-      lookTracker,
-      scene
-    } = {},
+    {target, lookTracker, scene} = {},
     {
       blendTime: lookBlendTime = 0.1,
       easingFn: lookEasingFn = Quadratic.InOut,
@@ -126,7 +122,9 @@ class PointOfInterestFeature extends AbstractHostFeature.mix(
     super(host);
 
     if (!this.constructor._validateTransformObject(lookTracker)) {
-      throw new Error(`Cannot initialize PointOfInterestFeature on host ${this._host.id}. LookTracker must be defined as a valid transformation object.`);
+      throw new Error(
+        `Cannot initialize PointOfInterestFeature on host ${this._host.id}. LookTracker must be defined as a valid transformation object.`
+      );
     }
     this._lookTracker = lookTracker;
 
@@ -139,29 +137,31 @@ class PointOfInterestFeature extends AbstractHostFeature.mix(
     this._blinkLayers = this._blinkLayers || {};
 
     // Register the look layers
-    lookLayers.forEach(({
-      name,
-      animation,
-      maxSpeed,
-      reference,
-      forwardAxis,
-      hasSaccade,
-      blendTime,
-      easingFn
-    }) => {
-      this.registerLookLayer(name, {
+    lookLayers.forEach(
+      ({
+        name,
         animation,
         maxSpeed,
         reference,
         forwardAxis,
         hasSaccade,
-        blendTime: blendTime !== undefined ? blendTime : lookBlendTime,
-        easingFn: easingFn !== undefined ? easingFn : lookEasingFn,
-      });
-    });
+        blendTime,
+        easingFn,
+      }) => {
+        this.registerLookLayer(name, {
+          animation,
+          maxSpeed,
+          reference,
+          forwardAxis,
+          hasSaccade,
+          blendTime: blendTime !== undefined ? blendTime : lookBlendTime,
+          easingFn: easingFn !== undefined ? easingFn : lookEasingFn,
+        });
+      }
+    );
 
     // Register the blink layers
-    blinkLayers.forEach(({ name, animation, blendTime, easingFn }) => {
+    blinkLayers.forEach(({name, animation, blendTime, easingFn}) => {
       this.registerBlinkLayer(name, {
         animation,
         blendTime: blendTime !== undefined ? blendTime : blinkBlendTime,
@@ -249,14 +249,14 @@ class PointOfInterestFeature extends AbstractHostFeature.mix(
     const v = MathUtils.toDegrees(theta) - 90;
 
     // Convert vertical angle to -180, 180 range
-    return { h, v }
+    return {h, v};
   }
 
-  _onLayerAdded({ name }) {
+  _onLayerAdded({name}) {
     this._lookLayers = this._lookLayers || {};
     this._blinkLayers = this._blinkLayers || {};
 
-    super._onLayerAdded({ name });
+    super._onLayerAdded({name});
 
     // Validate the look animation
     if (this._lookLayers[name] !== undefined) {
@@ -264,11 +264,11 @@ class PointOfInterestFeature extends AbstractHostFeature.mix(
     }
   }
 
-  _onAnimationAdded({ layerName, animationName }) {
+  _onAnimationAdded({layerName, animationName}) {
     this._lookLayers = this._lookLayers || {};
     this._blinkLayers = this._blinkLayers || {};
 
-    super._onAnimationAdded({ layerName });
+    super._onAnimationAdded({layerName});
 
     // Validate the look animation
     if (this._lookLayers[layerName] === animationName) {
@@ -287,10 +287,9 @@ class PointOfInterestFeature extends AbstractHostFeature.mix(
   _registerLookAnimation(layerName, animationName) {
     if (this._managedLayers[layerName].animations[animationName].isActive) {
       if (
-        AnimationTypes[this._host.AnimationFeature.getAnimationType(
-          layerName,
-          animationName
-        )] !== AnimationTypes.blend2d
+        AnimationTypes[
+          this._host.AnimationFeature.getAnimationType(layerName, animationName)
+        ] !== AnimationTypes.blend2d
       ) {
         // Warn and deactivate if the registered state is not blend2d
         console.warn(
@@ -330,15 +329,16 @@ class PointOfInterestFeature extends AbstractHostFeature.mix(
    * @returns {Object}
    */
   _addTrackingConfig(config) {
-    const trackingConfig = this._trackingConfigs.find(c =>
-      c.reference === config.reference && c.forwardAxis === config.forwardAxis
+    const trackingConfig = this._trackingConfigs.find(
+      c =>
+        c.reference === config.reference && c.forwardAxis === config.forwardAxis
     );
 
     if (trackingConfig) {
       return trackingConfig;
     } else {
-      config.angles = { h: 0, v: 0 };
-      config.prevAngles = { h: 0, v: 0 };
+      config.angles = {h: 0, v: 0};
+      config.prevAngles = {h: 0, v: 0};
       this._trackingConfigs.push(config);
       return config;
     }
@@ -353,12 +353,14 @@ class PointOfInterestFeature extends AbstractHostFeature.mix(
    */
   _getTargetDistance() {
     // Find the vector between the global positions of tracker and target
-    const sourcePosition = this.constructor._getWorldPosition(this._lookTracker);
+    const sourcePosition = this.constructor._getWorldPosition(
+      this._lookTracker
+    );
     const targetPosition = this.constructor._getWorldPosition(this._target);
     const lookVector = [
       targetPosition[0] - sourcePosition[0],
       targetPosition[1] - sourcePosition[1],
-      targetPosition[2] - sourcePosition[2]
+      targetPosition[2] - sourcePosition[2],
     ];
 
     return MathUtils.getVectorMagnitude(lookVector);
@@ -370,7 +372,7 @@ class PointOfInterestFeature extends AbstractHostFeature.mix(
    * @private
    */
   _resetLookAngles() {
-    this._trackingConfigs.forEach(({ angles }) => {
+    this._trackingConfigs.forEach(({angles}) => {
       angles.h = 0;
       angles.v = 0;
     });
@@ -388,13 +390,13 @@ class PointOfInterestFeature extends AbstractHostFeature.mix(
     const trackerPos = this.constructor._getWorldPosition(this._lookTracker);
 
     // Check if the target has moved
-    this._isTargetMoving = MathUtils.getVectorMagnitude([
-      targetPos[0] - this._prevTargetPos[0],
-      targetPos[1] - this._prevTargetPos[1],
-      targetPos[2] - this._prevTargetPos[2]]
-    ) > 0;
+    this._isTargetMoving =
+      MathUtils.getVectorMagnitude([
+        targetPos[0] - this._prevTargetPos[0],
+        targetPos[1] - this._prevTargetPos[1],
+        targetPos[2] - this._prevTargetPos[2],
+      ]) > 0;
     Object.assign(this._prevTargetPos, targetPos);
-
 
     // Calculate the horizontal and vertical angles to rotate to the target
     const targetSpherical = MathUtils.cartesianToSpherical(
@@ -408,15 +410,11 @@ class PointOfInterestFeature extends AbstractHostFeature.mix(
     );
 
     // Calculate angles relative to the reference objects
-    this._trackingConfigs.forEach(({
-      reference,
-      forwardAxis,
-      angles
-    }) => {
+    this._trackingConfigs.forEach(({reference, forwardAxis, angles}) => {
       // Calculate the horizontal and vertical angles to rotate to the direction of the tracker
       const refDirection = this.constructor._getObjectDirection(
         reference,
-        forwardAxis,
+        forwardAxis
       );
       const refSpherical = MathUtils.cartesianToSpherical(...refDirection);
       const refAngles = this.constructor._sphericalToBlendValue(
@@ -445,7 +443,7 @@ class PointOfInterestFeature extends AbstractHostFeature.mix(
   _getFaceTargetAngles(targetType) {
     // No offset when the target is the center of the eyes
     if (targetType === 0) {
-      return { h: 0, v: 0 };
+      return {h: 0, v: 0};
     }
 
     // Build a vector to the face target type using the current distance to the target
@@ -455,7 +453,10 @@ class PointOfInterestFeature extends AbstractHostFeature.mix(
     const spherical = MathUtils.cartesianToSpherical(...faceVector);
 
     // Make sure values are clamped within the range of motion of the human eye, in case the target is very close
-    const blendValues = this.constructor._sphericalToBlendValue(spherical[1], spherical[2]);
+    const blendValues = this.constructor._sphericalToBlendValue(
+      spherical[1],
+      spherical[2]
+    );
     blendValues.h = MathUtils.clamp(blendValues.h, -35, 35);
     blendValues.v = MathUtils.clamp(blendValues.v, -25, 30);
 
@@ -495,16 +496,16 @@ class PointOfInterestFeature extends AbstractHostFeature.mix(
    */
   _setMicroSaccade(layerName) {
     const layer = this._managedLayers[layerName];
-    const { microSaccade } = layer;
+    const {microSaccade} = layer;
 
     if (this._target) {
       // Micro movements should be smaller when focused on a target
-      microSaccade.h = Utils.getRandomFloat(.01, .15);
-      microSaccade.v = Utils.getRandomFloat(.01, .15);
+      microSaccade.h = Utils.getRandomFloat(0.01, 0.15);
+      microSaccade.v = Utils.getRandomFloat(0.01, 0.15);
     } else {
       // Microsaccades. Encyclopedia of Neuroscience. (2009) Springer, Berlin, Heidelberg. https://doi.org/10.1007/978-3-540-29678-2_3492
-      microSaccade.h = Utils.getRandomFloat(.01, .3);
-      microSaccade.v = Utils.getRandomFloat(.01, .3);
+      microSaccade.h = Utils.getRandomFloat(0.01, 0.3);
+      microSaccade.v = Utils.getRandomFloat(0.01, 0.3);
     }
 
     this._updateLayerSpeed(layerName, microSaccade.h, microSaccade.v);
@@ -522,7 +523,7 @@ class PointOfInterestFeature extends AbstractHostFeature.mix(
    */
   _setMacroSaccade(layerName) {
     const layer = this._managedLayers[layerName];
-    const { macroSaccade } = layer;
+    const {macroSaccade} = layer;
     let macroSaccadeWaitRange;
 
     // Increase random value range when not focused on a target
@@ -530,12 +531,12 @@ class PointOfInterestFeature extends AbstractHostFeature.mix(
       macroSaccadeWaitRange = MacroSaccadeWaitRanges.default;
 
       // Normal human horizontal eye rotation limit is about 35 degrees
-      const hLimit = Utils.getRandomFloat(.143, .286);
+      const hLimit = Utils.getRandomFloat(0.143, 0.286);
       const hFactor = Utils.getRandomFloat(-hLimit, hLimit);
       macroSaccade.h = hFactor * 35;
 
       // Normal human vertical eye rotation limit is about 25 degrees upward and 30 degrees downward
-      const vLimit = Utils.getRandomFloat(.093, .186);
+      const vLimit = Utils.getRandomFloat(0.093, 0.186);
       const vFactor = Utils.getRandomFloat(-vLimit, vLimit);
       macroSaccade.v = vFactor > 0 ? vFactor * 25 : vFactor * 30;
     }
@@ -546,28 +547,36 @@ class PointOfInterestFeature extends AbstractHostFeature.mix(
       switch (layer.saccadeTarget) {
         case 1:
           macroSaccadeWaitRange = MacroSaccadeWaitRanges.eyeTarget;
-          layer.saccadeTarget = Math.random() < 0.75 ? FaceTargetTypes.EyeRight
-            : FaceTargetTypes.Mouth;
+          layer.saccadeTarget =
+            Math.random() < 0.75
+              ? FaceTargetTypes.EyeRight
+              : FaceTargetTypes.Mouth;
           break;
         case 2:
           macroSaccadeWaitRange = MacroSaccadeWaitRanges.eyeTarget;
-          layer.saccadeTarget = Math.random() < 0.75 ? FaceTargetTypes.EyeLeft
-            : FaceTargetTypes.Mouth;
+          layer.saccadeTarget =
+            Math.random() < 0.75
+              ? FaceTargetTypes.EyeLeft
+              : FaceTargetTypes.Mouth;
           break;
         case 3:
           macroSaccadeWaitRange = MacroSaccadeWaitRanges.mouthTarget;
-          layer.saccadeTarget = Math.random() < 0.5 ? FaceTargetTypes.EyeLeft
-            : FaceTargetTypes.EyeRight;
+          layer.saccadeTarget =
+            Math.random() < 0.5
+              ? FaceTargetTypes.EyeLeft
+              : FaceTargetTypes.EyeRight;
           break;
         case 0:
         default:
           macroSaccadeWaitRange = MacroSaccadeWaitRanges.eyeTarget;
-          layer.saccadeTarget = Math.random() < 0.5 ? FaceTargetTypes.EyeLeft
-            : FaceTargetTypes.EyeRight;
+          layer.saccadeTarget =
+            Math.random() < 0.5
+              ? FaceTargetTypes.EyeLeft
+              : FaceTargetTypes.EyeRight;
           break;
       }
 
-      const { h, v } = this._getFaceTargetAngles(layer.saccadeTarget);
+      const {h, v} = this._getFaceTargetAngles(layer.saccadeTarget);
       macroSaccade.h = h;
       macroSaccade.v = v;
     }
@@ -599,7 +608,9 @@ class PointOfInterestFeature extends AbstractHostFeature.mix(
       layer.microSaccadeTimer.cancel();
     }
     layer.microSaccadeTimer = Utils.wait(waitTime, {
-      onFinish: () => { this._setMicroSaccade(layerName) }
+      onFinish: () => {
+        this._setMicroSaccade(layerName);
+      },
     });
   }
 
@@ -623,7 +634,9 @@ class PointOfInterestFeature extends AbstractHostFeature.mix(
       layer.macroSaccadeTimer.cancel();
     }
     layer.macroSaccadeTimer = Utils.wait(waitTime, {
-      onFinish: () => { this._setMacroSaccade(layerName) }
+      onFinish: () => {
+        this._setMacroSaccade(layerName);
+      },
     });
   }
 
@@ -648,7 +661,9 @@ class PointOfInterestFeature extends AbstractHostFeature.mix(
     }
 
     if (!this._scene) {
-      throw new Error(`Cannot set PointOfInterestFeature target using name ${name} on host ${this._host.id}. Scene must be defined.`);
+      throw new Error(
+        `Cannot set PointOfInterestFeature target using name ${name} on host ${this._host.id}. Scene must be defined.`
+      );
     }
   }
 
@@ -664,7 +679,9 @@ class PointOfInterestFeature extends AbstractHostFeature.mix(
     }
 
     if (!this._scene) {
-      throw new Error(`Cannot set PointOfInterestFeature target using id ${id} on host ${this._host.id}. Scene must be defined.`);
+      throw new Error(
+        `Cannot set PointOfInterestFeature target using id ${id} on host ${this._host.id}. Scene must be defined.`
+      );
     }
   }
 
@@ -701,25 +718,28 @@ class PointOfInterestFeature extends AbstractHostFeature.mix(
       forwardAxis = 'PositiveZ',
       hasSaccade = false,
       blendTime = PointOfInterestFeature.DEFAULT_LAYER_OPTIONS.blendTime,
-      easingFn
+      easingFn,
     } = {}
   ) {
     // Validate reference object
     reference = reference || this._host.owner;
 
     if (!this.constructor._validateTransformObject(reference)) {
-      throw new Error(`Cannot initialize register look layer ${layerName} for PointOfInterestFeature on host ${this._host.id}. Reference must be defined as a valid transformation object.`);
+      throw new Error(
+        `Cannot initialize register look layer ${layerName} for PointOfInterestFeature on host ${this._host.id}. Reference must be defined as a valid transformation object.`
+      );
     }
 
     // Find vector associated with axis string
-    forwardAxis = AxisMap[forwardAxis] !== undefined
-      ? AxisMap[forwardAxis]
-      : AxisMap.PositiveZ;
+    forwardAxis =
+      AxisMap[forwardAxis] !== undefined
+        ? AxisMap[forwardAxis]
+        : AxisMap.PositiveZ;
 
     // Store tracking configuration
     const trackingConfig = this._addTrackingConfig({
       reference,
-      forwardAxis
+      forwardAxis,
     });
 
     // Register the layer and animation
@@ -735,10 +755,10 @@ class PointOfInterestFeature extends AbstractHostFeature.mix(
       hasSaccade,
       blendTime,
       easingFn,
-      microSaccade: { h: 0, v: 0 },
-      macroSaccade: { h: 0, v: 0 },
+      microSaccade: {h: 0, v: 0},
+      macroSaccade: {h: 0, v: 0},
       saccadeTarget: FaceTargetTypes.EyeCenter,
-      animations: { [animation]: {} },
+      animations: {[animation]: {}},
     });
     this._lookLayers[layerName] = animation;
 
@@ -774,14 +794,14 @@ class PointOfInterestFeature extends AbstractHostFeature.mix(
     {
       animation = 'blink',
       blendTime = PointOfInterestFeature.DEFAULT_LAYER_OPTIONS.blendTime,
-      easingFn
+      easingFn,
     } = {}
   ) {
     // Register the layer and animation
     this.registerLayer(layerName, {
       blendTime,
       easingFn,
-      animations: { [animation]: {} },
+      animations: {[animation]: {}},
     });
     this._blinkLayers[layerName] = animation;
   }
@@ -812,10 +832,14 @@ class PointOfInterestFeature extends AbstractHostFeature.mix(
       // Set the blend values
       if (options.animations[animName].isActive) {
         const currentH = this._host.AnimationFeature.getAnimationBlendWeight(
-          layerName, animName, 'X'
+          layerName,
+          animName,
+          'X'
         );
         const currentV = this._host.AnimationFeature.getAnimationBlendWeight(
-          layerName, animName, 'Y'
+          layerName,
+          animName,
+          'Y'
         );
 
         let targetH = options.trackingConfig.angles.h;
@@ -892,7 +916,7 @@ class PointOfInterestFeature extends AbstractHostFeature.mix(
       if (animation.isActive) {
         this._host.AnimationFeature.playAnimation(layerName, animName);
       }
-    })
+    });
   }
 
   installApi() {
@@ -910,7 +934,9 @@ class PointOfInterestFeature extends AbstractHostFeature.mix(
        */
       target: {
         get: () => this.target,
-        set: target => { this.target = target },
+        set: target => {
+          this.target = target;
+        },
       },
     });
 
@@ -957,4 +983,4 @@ class PointOfInterestFeature extends AbstractHostFeature.mix(
 }
 
 export default PointOfInterestFeature;
-export { AxisMap };
+export {AxisMap};

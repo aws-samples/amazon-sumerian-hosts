@@ -442,9 +442,9 @@ class GestureFeature extends AbstractHostFeature.mix(
           // Only store gestures that have any associated words
           if (words.length) {
             const options = {
-              ...(holdTime && { holdTime }),
-              ...(minimumInterval && { minimumInterval }),
-              ...(transitionTime && { transitionTime }),
+              ...(holdTime && {holdTime}),
+              ...(minimumInterval && {minimumInterval}),
+              ...(transitionTime && {transitionTime}),
             };
             const key = {
               feature: this.constructor.name,
@@ -489,14 +489,14 @@ class GestureFeature extends AbstractHostFeature.mix(
       Object.entries(layer.animations).forEach(
         ([
           animationName,
-          { holdTime, minimumInterval, words, transitionTime },
+          {holdTime, minimumInterval, words, transitionTime},
         ]) => {
           // Only store gestures that don't have any associated words
           if (!words.length) {
             const options = {
-              ...(holdTime && { holdTime }),
-              ...(minimumInterval && { minimumInterval }),
-              ...(transitionTime && { transitionTime }),
+              ...(holdTime && {holdTime}),
+              ...(minimumInterval && {minimumInterval}),
+              ...(transitionTime && {transitionTime}),
             };
             const key = JSON.stringify({
               feature: this.constructor.name,
@@ -582,7 +582,11 @@ class GestureFeature extends AbstractHostFeature.mix(
     }
 
     // Check the interval
-    if (!force && layer.playTimer !== null && layer.playTimer < minimumInterval) {
+    if (
+      !force &&
+      layer.playTimer !== null &&
+      layer.playTimer < minimumInterval
+    ) {
       console.warn(
         `Skipping gesture ${animationName} on layer ${layerName} for host ${this._host.id}. Minimum interval ${minimumInterval} has not been met.`
       );
@@ -670,7 +674,7 @@ Object.defineProperties(GestureFeature, {
         ...GestureFeature.EVENT_DEPENDENCIES.AnimationFeature,
         playNextAnimation: '_onNext',
         stopAnimation: '_onStop',
-        interruptAnimation: '_onStop'
+        interruptAnimation: '_onStop',
       },
     },
   },

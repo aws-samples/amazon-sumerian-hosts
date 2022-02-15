@@ -99,6 +99,6 @@ describeEnvironment('Speech', (_options, env) => {
   }
 
   describeCommonSpeech();
-  
+
   describeBabylonSpeech();
 });

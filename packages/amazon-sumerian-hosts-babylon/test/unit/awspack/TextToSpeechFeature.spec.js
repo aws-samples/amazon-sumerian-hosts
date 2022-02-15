@@ -113,7 +113,7 @@ describeEnvironment('TextToSpeechFeature', (options, env) => {
         expect(audio.spatialSound).toBeTrue();
       });
     }
-    
+
     itActsLikeBabylonSynthesizeAudio();
   });
 });

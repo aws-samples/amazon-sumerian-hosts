@@ -11,12 +11,13 @@ import Deferred from './Deferred';
 import {env} from './HostEnvironment';
 import Messenger from './Messenger';
 import HostObject from './HostObject';
-import LipsyncFeature, { DefaultVisemeMap } from './LipsyncFeature';
-import GestureFeature, { DefaultGestureWords } from './GestureFeature';
-import PointOfInterestFeature, { AxisMap } from './PointOfInterestFeature';
+import LipsyncFeature, {DefaultVisemeMap} from './LipsyncFeature';
+import GestureFeature, {DefaultGestureWords} from './GestureFeature';
+import PointOfInterestFeature, {AxisMap} from './PointOfInterestFeature';
 
 import animpack from './animpack';
-const { Easing,
+const {
+  Easing,
   AnimationFeature,
   AnimationTypes,
   AnimationLayer,
@@ -29,7 +30,8 @@ const { Easing,
   RandomAnimationState,
   Blend1dState,
   Blend2dState,
-  AnimationUtils } = animpack
+  AnimationUtils,
+} = animpack;
 
 import aws from './awspack';
 const {
@@ -37,9 +39,9 @@ const {
   TextToSpeechFeature,
   TextToSpeechUtils,
   AbstractSpeech,
-  Speech 
-  } = aws
-  
+  Speech,
+} = aws;
+
 export default {
   /**
    * @see env
@@ -93,59 +95,59 @@ export default {
    * @see core/AnimationFeature
    */
   AnimationFeature,
-   /**
-    * @see AnimationLayer
-    */
+  /**
+   * @see AnimationLayer
+   */
   AnimationLayer,
-   /**
-    * @see core/SingleState
-    */
+  /**
+   * @see core/SingleState
+   */
   SingleState,
-   /**
-    * @see TransitionState
-    */
+  /**
+   * @see TransitionState
+   */
   TransitionState,
-   /**
-    * @see FreeBlendState
-    */
+  /**
+   * @see FreeBlendState
+   */
   FreeBlendState,
-   /**
-    * @see QueueState
-    */
+  /**
+   * @see QueueState
+   */
   QueueState,
-   /**
-    * @see RandomAnimationState
-    */
+  /**
+   * @see RandomAnimationState
+   */
   RandomAnimationState,
-   /**
-    * @see Blend1dState
-    */
+  /**
+   * @see Blend1dState
+   */
   Blend1dState,
-   /**
-    * @see Blend2dState
-    */
+  /**
+   * @see Blend2dState
+   */
   Blend2dState,
-   /**
-    * @see AnimationUtils
-    */
+  /**
+   * @see AnimationUtils
+   */
   AnimationUtils,
- 
+
   Easing,
-   /**
-    * @see LayerBlendModes
-    */
+  /**
+   * @see LayerBlendModes
+   */
   LayerBlendModes,
-   /**
-    * @see DefaultLayerBlendMode
-    */
+  /**
+   * @see DefaultLayerBlendMode
+   */
   DefaultLayerBlendMode,
-   /**
-    * @see AnimationTypes
-    */
+  /**
+   * @see AnimationTypes
+   */
   AnimationTypes,
 
-   // AWS Pack
-   /**
+  // AWS Pack
+  /**
    * @see core/AbstractTextToSpeechFeature
    */
   AbstractTextToSpeechFeature,
@@ -161,9 +163,9 @@ export default {
    * @see core/AbstractSpeech
    */
   AbstractSpeech,
-  
+
   /**
    * @see core/Speech
    */
-   Speech
+  Speech,
 };

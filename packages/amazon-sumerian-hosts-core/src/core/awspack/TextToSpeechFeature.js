@@ -136,9 +136,15 @@ class TextToSpeechFeature extends AbstractTextToSpeechFeature {
     const currentPromise = {
       play: new Deferred(
         undefined,
-        () => { currentPromise.speech.cancel(); },
-        () => { currentPromise.speech.cancel(); },
-        () => { currentPromise.speech.cancel(); }
+        () => {
+          currentPromise.speech.cancel();
+        },
+        () => {
+          currentPromise.speech.cancel();
+        },
+        () => {
+          currentPromise.speech.cancel();
+        }
       ),
       speech: new Deferred(),
     };

@@ -4,7 +4,7 @@
 /* eslint-disable no-undef */
 /* eslint-disable no-underscore-dangle */
 import SingleState from 'app/animpack/state/SingleState';
-import { Deferred, LayerBlendModes } from '@amazon-sumerian-hosts/core';
+import {Deferred, LayerBlendModes} from '@amazon-sumerian-hosts/core';
 import describeEnvironment from '../../EnvironmentHarness';
 
 describeEnvironment('SingleState', (options = {}, env) => {
@@ -23,7 +23,7 @@ describeEnvironment('SingleState', (options = {}, env) => {
           animation: {},
         },
       ],
-      normalize: jasmine.createSpy('normalize')
+      normalize: jasmine.createSpy('normalize'),
     };
     beginAnimationSpy = spyOn(options.scene, 'beginDirectAnimation');
     beginAnimationSpy.and.callFake(
@@ -66,7 +66,7 @@ describeEnvironment('SingleState', (options = {}, env) => {
 
         expect(state.normalizedTime).toEqual(0.5);
       });
-    })
+    });
     describe('babylon set', () => {
       beforeEach(() => {
         state._babylonAnimatables = [{goToFrame: jasmine.createSpy()}];
@@ -83,7 +83,7 @@ describeEnvironment('SingleState', (options = {}, env) => {
 
         expect(state._babylonAnimatables[0].goToFrame).toHaveBeenCalledWith(2);
       });
-    })
+    });
   });
 
   describe('timeScale', () => {
@@ -184,17 +184,13 @@ describeEnvironment('SingleState', (options = {}, env) => {
       ];
       state.loopCount = 1;
 
-      expect(
-        state._babylonAnimatables.every(a => a.loopAnimation)
-      ).toBeFalse();
+      expect(state._babylonAnimatables.every(a => a.loopAnimation)).toBeFalse();
 
       state.loopCount = 10;
 
-      expect(
-        state._babylonAnimatables.every(a => a.loopAnimation)
-      ).toBeTrue();
+      expect(state._babylonAnimatables.every(a => a.loopAnimation)).toBeTrue();
     });
-});
+  });
 
   describe('blendMode', () => {
     it('should return a value from LayerBlendModes', () => {
@@ -253,17 +249,13 @@ describeEnvironment('SingleState', (options = {}, env) => {
       ];
 
       expect(
-        state._babylonAnimatables.every(
-          a => a.speedRatio === state.timeScale
-        )
+        state._babylonAnimatables.every(a => a.speedRatio === state.timeScale)
       ).not.toBeTrue();
 
       state.resume();
 
       expect(
-        state._babylonAnimatables.every(
-          a => a.speedRatio === state.timeScale
-        )
+        state._babylonAnimatables.every(a => a.speedRatio === state.timeScale)
       ).toBeTrue();
     });
     it("should create a new array of animatables if it hasn't been previously started", () => {

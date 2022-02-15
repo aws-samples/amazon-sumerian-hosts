@@ -1,7 +1,9 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: MIT-0
-import { AbstractTextToSpeechFeature,
-  TextToSpeechFeature as CoreTextToSpeechFeature } from '@amazon-sumerian-hosts/core';
+import {
+  AbstractTextToSpeechFeature,
+  TextToSpeechFeature as CoreTextToSpeechFeature,
+} from '@amazon-sumerian-hosts/core';
 import Speech from './Speech';
 
 /**
@@ -92,7 +94,7 @@ class TextToSpeechFeature extends CoreTextToSpeechFeature {
       });
   }
 
-   _createSpeech(text, speechmarks, audioConfig) {
+  _createSpeech(text, speechmarks, audioConfig) {
     return new Speech(this, text, speechmarks, audioConfig);
   }
 }

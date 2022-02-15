@@ -140,8 +140,8 @@ describeEnvironment('PointOfInterestFeature', ({owner}) => {
   describe('_addTrackingConfig', () => {
     it('should return an object stored in _trackingConfigs whose reference and forwardAxis properties match the input object, if one exists', () => {
       const reference = {};
-      poiFeature._trackingConfigs = [{ reference, forwardAxis: "PositiveZ" }];
-      const inputConfig = { reference, forwardAxis: "PositiveZ" };
+      poiFeature._trackingConfigs = [{reference, forwardAxis: 'PositiveZ'}];
+      const inputConfig = {reference, forwardAxis: 'PositiveZ'};
       const result = poiFeature._addTrackingConfig(inputConfig);
 
       expect(result).not.toBe(inputConfig);
@@ -150,7 +150,7 @@ describeEnvironment('PointOfInterestFeature', ({owner}) => {
     });
 
     it('should should add angles and prevAngles object properties to the input object if no stored _trackingConfigs match its reference and forwardAxis properties', () => {
-      const inputConfig = { reference: {}, forwardAxis: "PositiveZ" };
+      const inputConfig = {reference: {}, forwardAxis: 'PositiveZ'};
       poiFeature._addTrackingConfig(inputConfig);
 
       expect(inputConfig.angles).toBeDefined();
@@ -159,12 +159,12 @@ describeEnvironment('PointOfInterestFeature', ({owner}) => {
 
     it('should add the input object to the _trackingConfigs array if no stored _trackingConfigs match its reference and forwardAxis properties', () => {
       const reference = {};
-      poiFeature._trackingConfigs = [{ reference, forwardAxis: "PositiveZ" }];
-      poiFeature._addTrackingConfig({ reference, forwardAxis: "PositiveZ" });
+      poiFeature._trackingConfigs = [{reference, forwardAxis: 'PositiveZ'}];
+      poiFeature._addTrackingConfig({reference, forwardAxis: 'PositiveZ'});
 
       expect(poiFeature._trackingConfigs.length).toEqual(1);
 
-      poiFeature._addTrackingConfig({ reference, forwardAxis: "PositiveY" });
+      poiFeature._addTrackingConfig({reference, forwardAxis: 'PositiveY'});
 
       expect(poiFeature._trackingConfigs.length).toEqual(2);
     });
@@ -172,7 +172,10 @@ describeEnvironment('PointOfInterestFeature', ({owner}) => {
 
   describe('_getTargetDistance', () => {
     beforeEach(() => {
-      const onGetWorldPosition = spyOn(PointOfInterestFeature, '_getWorldPosition');
+      const onGetWorldPosition = spyOn(
+        PointOfInterestFeature,
+        '_getWorldPosition'
+      );
       onGetWorldPosition.and.callFake(obj => obj.position);
       poiFeature._target = {};
       poiFeature._lookTracker = {};
@@ -199,13 +202,13 @@ describeEnvironment('PointOfInterestFeature', ({owner}) => {
   describe('_resetLookAngles', () => {
     it('should set the h and v properties of every angle object stored in _trackingConfigs to 0', () => {
       poiFeature._trackingConfigs = [
-        { angles: {h: 1, v: 2} },
-        { angles: {h: -2, v: 1} },
-        { angles: {h: 0, v: -1} }
+        {angles: {h: 1, v: 2}},
+        {angles: {h: -2, v: 1}},
+        {angles: {h: 0, v: -1}},
       ];
       poiFeature._resetLookAngles();
       const allZero = poiFeature._trackingConfigs.every(
-        ({ angles }) => angles.h === 0 && angles.v === 0
+        ({angles}) => angles.h === 0 && angles.v === 0
       );
 
       expect(allZero).toBeTrue();
@@ -215,7 +218,10 @@ describeEnvironment('PointOfInterestFeature', ({owner}) => {
   describe('_setLookAngles', () => {
     beforeEach(() => {
       poiFeature._target = {};
-      const onGetWorldPosition = spyOn(PointOfInterestFeature, '_getWorldPosition');
+      const onGetWorldPosition = spyOn(
+        PointOfInterestFeature,
+        '_getWorldPosition'
+      );
       onGetWorldPosition.and.callFake(obj => obj._pos);
     });
 
@@ -238,27 +244,30 @@ describeEnvironment('PointOfInterestFeature', ({owner}) => {
       poiFeature._lookTracker._pos = [0, 0, 0];
       poiFeature._target._pos = [1, 0, 0];
       const config = {
-        reference: { _mat: [0, 0, 1, 0, 0, 1, 0, 0, -1, 0, 0, 0, 0, 0, 0, 1] },
+        reference: {_mat: [0, 0, 1, 0, 0, 1, 0, 0, -1, 0, 0, 0, 0, 0, 0, 1]},
         forwardAxis: [0, 0, 1],
-        angles: { h: 0, v: 0 }
+        angles: {h: 0, v: 0},
       };
       poiFeature._trackingConfigs = [config];
       const onGetWorldMatrix = spyOn(PointOfInterestFeature, '_getWorldMatrix');
       onGetWorldMatrix.and.callFake(obj => obj._mat);
       poiFeature._setLookAngles();
 
-      expect(config.angles).toEqual({ h: 180, v: 0 });
+      expect(config.angles).toEqual({h: 180, v: 0});
 
       config.reference._mat = [0, 0, -1, 0, 0, 1, 0, 0, 1, 0, 0, 0, 0, 0, 0, 1];
       poiFeature._setLookAngles();
 
-      expect(config.angles).toEqual({ h: 0, v: 0 });
+      expect(config.angles).toEqual({h: 0, v: 0});
     });
   });
 
   describe('_sphericalToBlendValue', () => {
     it('should return an object whose h property is the phi input value converted to degrees', () => {
-      let result = PointOfInterestFeature._sphericalToBlendValue(0, Math.PI / 2);
+      let result = PointOfInterestFeature._sphericalToBlendValue(
+        0,
+        Math.PI / 2
+      );
 
       expect(result.h).toEqual(90);
 
@@ -276,7 +285,10 @@ describeEnvironment('PointOfInterestFeature', ({owner}) => {
     });
 
     it('should return an object whose v property is theta input value converted to degrees and offset by -90', () => {
-      let result = PointOfInterestFeature._sphericalToBlendValue(Math.PI / 2, 0);
+      let result = PointOfInterestFeature._sphericalToBlendValue(
+        Math.PI / 2,
+        0
+      );
 
       expect(result.v).toEqual(0);
 
@@ -295,7 +307,7 @@ describeEnvironment('PointOfInterestFeature', ({owner}) => {
     });
 
     it('should return an object whose h and v properties equal 0 if the targetType input is 0', () => {
-      expect(poiFeature._getFaceTargetAngles(0)).toEqual({ h: 0, v: 0 });
+      expect(poiFeature._getFaceTargetAngles(0)).toEqual({h: 0, v: 0});
     });
 
     it('should return an object whose h property is negative and v property is 0 if the targetType input is 1', () => {
@@ -355,7 +367,7 @@ describeEnvironment('PointOfInterestFeature', ({owner}) => {
       expect(left.h).toEqual(-35);
       expect(right.h).toEqual(35);
       expect(mouth.v).toEqual(30);
-    })
+    });
   });
 
   describe('_updateLayerSpeed', () => {
@@ -369,17 +381,17 @@ describeEnvironment('PointOfInterestFeature', ({owner}) => {
     });
 
     it('should store new speed and duration values on the layer each time new horizontal and vertical angles are provided', () => {
-      let layer = { ...poiFeature._managedLayers.eyes };
+      let layer = {...poiFeature._managedLayers.eyes};
       poiFeature._updateLayerSpeed('eyes', Math.PI / 4, Math.PI / 4);
 
       expect(layer).not.toEqual(poiFeature._managedLayers.eyes);
 
-      layer = { ...poiFeature._managedLayers.eyes };
+      layer = {...poiFeature._managedLayers.eyes};
       poiFeature._updateLayerSpeed('eyes', Math.PI / 4, Math.PI / 4);
 
       expect(layer).toEqual(poiFeature._managedLayers.eyes);
 
-      layer = { ...poiFeature._managedLayers.eyes };
+      layer = {...poiFeature._managedLayers.eyes};
       poiFeature._updateLayerSpeed('eyes', 0, Math.PI / 8);
 
       expect(layer).not.toEqual(poiFeature._managedLayers.eyes);
@@ -661,7 +673,7 @@ describeEnvironment('PointOfInterestFeature', ({owner}) => {
     it('should execute registerLayer', () => {
       const onRegisterLayer = spyOn(poiFeature, 'registerLayer');
       onRegisterLayer.and.callFake((layerName, options) => {
-        poiFeature._managedLayers[layerName] = options
+        poiFeature._managedLayers[layerName] = options;
       });
       poiFeature.registerBlinkLayer('Blink', {animations: 'blink'});
 
@@ -682,7 +694,10 @@ describeEnvironment('PointOfInterestFeature', ({owner}) => {
 
   describe('update', () => {
     beforeAll(() => {
-      const onGetWorldPosition = spyOn(PointOfInterestFeature, '_getWorldPosition');
+      const onGetWorldPosition = spyOn(
+        PointOfInterestFeature,
+        '_getWorldPosition'
+      );
       onGetWorldPosition.and.callFake(obj => obj._pos);
       const onGetWorldMatrix = spyOn(PointOfInterestFeature, '_getWorldMatrix');
       onGetWorldMatrix.and.callFake(obj => obj._mat);
@@ -692,36 +707,41 @@ describeEnvironment('PointOfInterestFeature', ({owner}) => {
       poiFeature._lookTracker._pos = [0, 0, 0];
       poiFeature._prevTargetPos = [0, 0, 0];
       poiFeature._lookLayers = {
-        LookEyes: 'look', LookHead: 'look', LookSpine: 'look'
+        LookEyes: 'look',
+        LookHead: 'look',
+        LookSpine: 'look',
       };
       poiFeature._blinkLayers = {
-        Blink: 'blink', BlinkInactive: 'blink'
-      }
-      poiFeature._blinkLayers = {
-        Blink: 'blink'
+        Blink: 'blink',
+        BlinkInactive: 'blink',
       };
-      poiFeature._trackingConfigs = [{
-        reference: { _mat: [0, 0, 1, 0, 0, 1, 0, 0, -1, 0, 0, 0, 0, 0, 0, 1] },
-        forwardAxis: [0, 0, 1],
-        angles: { h: 0, v: 0 },
-        prevAngles: { h: 0, v: 0 },
-      }];
+      poiFeature._blinkLayers = {
+        Blink: 'blink',
+      };
+      poiFeature._trackingConfigs = [
+        {
+          reference: {_mat: [0, 0, 1, 0, 0, 1, 0, 0, -1, 0, 0, 0, 0, 0, 0, 1]},
+          forwardAxis: [0, 0, 1],
+          angles: {h: 0, v: 0},
+          prevAngles: {h: 0, v: 0},
+        },
+      ];
       poiFeature._managedLayers = {
         Blink: {
           isActive: true,
-          animations: {blink: {isActive: true}}
+          animations: {blink: {isActive: true}},
         },
         BlinkInactive: {
           isActive: true,
-          animations: { blink: { isActive: false } }
+          animations: {blink: {isActive: false}},
         },
         LookEyes: {
           isActive: true,
           hasSaccade: true,
           microSaccadeTimer: new Deferred(),
-          microSaccade: { h: 0, v: 0 },
+          microSaccade: {h: 0, v: 0},
           macroSaccadeTimer: new Deferred(),
-          macroSaccade: { h: 0, v: 0 },
+          macroSaccade: {h: 0, v: 0},
           trackingConfig: poiFeature._trackingConfigs[0],
           maxSpeed: 1,
           maxHSpeed: undefined,
@@ -731,16 +751,16 @@ describeEnvironment('PointOfInterestFeature', ({owner}) => {
           hVelocity: [0, 0],
           vVelocity: [0, 0],
           animations: {
-            look: { isActive: true },
+            look: {isActive: true},
           },
         },
         LookHead: {
           isActive: true,
           hasSaccade: false,
           microSaccadeTimer: new Deferred(),
-          microSaccade: { h: 0, v: 0 },
+          microSaccade: {h: 0, v: 0},
           macroSaccadeTimer: new Deferred(),
-          macroSaccade: { h: 0, v: 0 },
+          macroSaccade: {h: 0, v: 0},
           trackingConfig: poiFeature._trackingConfigs[0],
           maxSpeed: 1,
           maxHSpeed: undefined,
@@ -750,15 +770,15 @@ describeEnvironment('PointOfInterestFeature', ({owner}) => {
           hVelocity: [0, 0],
           vVelocity: [0, 0],
           animations: {
-            look: { isActive: false },
+            look: {isActive: false},
           },
         },
         LookSpine: {
           isActive: false,
           microSaccadeTimer: new Deferred(),
-          microSaccade: { h: 0, v: 0 },
+          microSaccade: {h: 0, v: 0},
           macroSaccadeTimer: new Deferred(),
-          macroSaccade: { h: 0, v: 0 },
+          macroSaccade: {h: 0, v: 0},
           trackingConfig: poiFeature._trackingConfigs[0],
           maxSpeed: 1,
           maxHSpeed: undefined,
@@ -768,10 +788,10 @@ describeEnvironment('PointOfInterestFeature', ({owner}) => {
           hVelocity: [0, 0],
           vVelocity: [0, 0],
           animations: {
-            look: { isActive: false },
+            look: {isActive: false},
           },
-        }
-      }
+        },
+      };
     });
 
     it('should execute _resetLookAngles if there is no target and _setLookAngles if there is', () => {
@@ -784,7 +804,7 @@ describeEnvironment('PointOfInterestFeature', ({owner}) => {
       expect(onResetLookAngles).toHaveBeenCalledTimes(1);
       expect(onSetLookAngles).not.toHaveBeenCalled();
 
-      poiFeature._target = { _pos: [0, 0, 1] };
+      poiFeature._target = {_pos: [0, 0, 1]};
       poiFeature.update(100);
 
       expect(onResetLookAngles).toHaveBeenCalledTimes(1);
@@ -793,17 +813,29 @@ describeEnvironment('PointOfInterestFeature', ({owner}) => {
 
     it('should execute the saccade timers of every stored look layer that is active and whose hasSaccade property is true', () => {
       const onEyeMicroSaccade = spyOn(
-        poiFeature._managedLayers.LookEyes.microSaccadeTimer, 'execute');
+        poiFeature._managedLayers.LookEyes.microSaccadeTimer,
+        'execute'
+      );
       const onEyeMacroSaccade = spyOn(
-        poiFeature._managedLayers.LookEyes.macroSaccadeTimer, 'execute');
+        poiFeature._managedLayers.LookEyes.macroSaccadeTimer,
+        'execute'
+      );
       const onHeadMicroSaccade = spyOn(
-        poiFeature._managedLayers.LookHead.microSaccadeTimer, 'execute');
+        poiFeature._managedLayers.LookHead.microSaccadeTimer,
+        'execute'
+      );
       const onHeadMacroSaccade = spyOn(
-        poiFeature._managedLayers.LookHead.macroSaccadeTimer, 'execute');
+        poiFeature._managedLayers.LookHead.macroSaccadeTimer,
+        'execute'
+      );
       const onSpineMicroSaccade = spyOn(
-        poiFeature._managedLayers.LookSpine.microSaccadeTimer, 'execute');
+        poiFeature._managedLayers.LookSpine.microSaccadeTimer,
+        'execute'
+      );
       const onSpineMacroSaccade = spyOn(
-        poiFeature._managedLayers.LookSpine.macroSaccadeTimer, 'execute');
+        poiFeature._managedLayers.LookSpine.macroSaccadeTimer,
+        'execute'
+      );
       poiFeature.update(100);
 
       expect(onEyeMicroSaccade).toHaveBeenCalledTimes(1);
@@ -817,35 +849,46 @@ describeEnvironment('PointOfInterestFeature', ({owner}) => {
     it('should execute setAnimationBlendWeight for X and Y blend values on every stored look layer whose animation is active', () => {
       poiFeature.update(100);
 
-      expect(mockAnimationFeature.setAnimationBlendWeight)
-        .toHaveBeenCalledWith('LookEyes', 'look', 'X', 0);
+      expect(mockAnimationFeature.setAnimationBlendWeight).toHaveBeenCalledWith(
+        'LookEyes',
+        'look',
+        'X',
+        0
+      );
 
-      expect(mockAnimationFeature.setAnimationBlendWeight)
-        .toHaveBeenCalledWith('LookEyes', 'look', 'Y', 0);
+      expect(mockAnimationFeature.setAnimationBlendWeight).toHaveBeenCalledWith(
+        'LookEyes',
+        'look',
+        'Y',
+        0
+      );
 
-      expect(mockAnimationFeature.setAnimationBlendWeight)
-        .not.toHaveBeenCalledWith('LookHead', 'look', 'X', 0);
+      expect(
+        mockAnimationFeature.setAnimationBlendWeight
+      ).not.toHaveBeenCalledWith('LookHead', 'look', 'X', 0);
 
-      expect(mockAnimationFeature.setAnimationBlendWeight)
-        .not.toHaveBeenCalledWith('LookHead', 'look', 'Y', 0);
+      expect(
+        mockAnimationFeature.setAnimationBlendWeight
+      ).not.toHaveBeenCalledWith('LookHead', 'look', 'Y', 0);
 
-      expect(mockAnimationFeature.setAnimationBlendWeight)
-        .not.toHaveBeenCalledWith('LookSpine', 'look', 'X', 0);
+      expect(
+        mockAnimationFeature.setAnimationBlendWeight
+      ).not.toHaveBeenCalledWith('LookSpine', 'look', 'X', 0);
 
-      expect(mockAnimationFeature.setAnimationBlendWeight)
-        .not.toHaveBeenCalledWith('LookSpine', 'look', 'Y', 0);
-
+      expect(
+        mockAnimationFeature.setAnimationBlendWeight
+      ).not.toHaveBeenCalledWith('LookSpine', 'look', 'Y', 0);
     });
 
     it('should execute the playMethod of each stored blink layer if _isTargetMoving is true and the stored angles of any look layer changed more than the BlinkThreshold', () => {
       const onSetLookAngles = spyOn(poiFeature, '_setLookAngles');
       onSetLookAngles.and.callFake(() => {
         Object.values(poiFeature._managedLayers).forEach(layer => {
-          layer.prevAngles = { h: 0, v: 0 };
-          layer.angles = { h: 0, v: 0 };
-        })
+          layer.prevAngles = {h: 0, v: 0};
+          layer.angles = {h: 0, v: 0};
+        });
       });
-      poiFeature._target = { _pos: [0, 0, 1] };
+      poiFeature._target = {_pos: [0, 0, 1]};
       poiFeature.update(100);
 
       expect(mockAnimationFeature.playAnimation).not.toHaveBeenCalled();
@@ -854,17 +897,21 @@ describeEnvironment('PointOfInterestFeature', ({owner}) => {
         poiFeature._isTargetMoving = true;
         Object.keys(poiFeature._lookLayers).forEach(name => {
           const layer = poiFeature._managedLayers[name];
-          layer.trackingConfig.prevAngles = { h: 0, v: 0 };
-          layer.trackingConfig.angles = { h: 90, v: 90 }
+          layer.trackingConfig.prevAngles = {h: 0, v: 0};
+          layer.trackingConfig.angles = {h: 90, v: 90};
         });
       });
       poiFeature.update(100);
 
-      expect(mockAnimationFeature.playAnimation)
-        .toHaveBeenCalledWith('Blink', 'blink');
+      expect(mockAnimationFeature.playAnimation).toHaveBeenCalledWith(
+        'Blink',
+        'blink'
+      );
 
-      expect(mockAnimationFeature.playAnimation)
-        .not.toHaveBeenCalledWith('BlinkInactive', 'blink');
+      expect(mockAnimationFeature.playAnimation).not.toHaveBeenCalledWith(
+        'BlinkInactive',
+        'blink'
+      );
     });
   });
 });

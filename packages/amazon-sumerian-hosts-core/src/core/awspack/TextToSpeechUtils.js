@@ -96,10 +96,7 @@ class TextToSpeechUtils {
 
     if (randomMarks && randomMarks.length > 0) {
       // add random marks to any unmarked sentences
-      markedText = this.addMarksToUnmarkedSentences(
-        markedText,
-        randomMarks
-      );
+      markedText = this.addMarksToUnmarkedSentences(markedText, randomMarks);
     }
 
     return TextToSpeechUtils.validateText(markedText);

@@ -1,6 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: MIT-0
-import { HostObject as CoreHostObject } from '@amazon-sumerian-hosts/core';
+import {HostObject as CoreHostObject} from '@amazon-sumerian-hosts/core';
 
 /**
  * @extends core/HostObject

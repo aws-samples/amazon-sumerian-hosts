@@ -1,7 +1,9 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: MIT-0
-import { SingleState as CoreSingleState,
-  MathUtils } from '@amazon-sumerian-hosts/core';
+import {
+  SingleState as CoreSingleState,
+  MathUtils,
+} from '@amazon-sumerian-hosts/core';
 
 /**
  * Babylonjs AnimationGroup object
@@ -52,16 +54,16 @@ class SingleState extends CoreSingleState {
   get normalizedTime() {
     const animatable = this._babylonAnimatables[0];
     if (animatable && animatable.masterFrame) {
-      return (animatable.masterFrame - this._from)/(this._to - this._from);
+      return (animatable.masterFrame - this._from) / (this._to - this._from);
     }
     return 0;
   }
 
   set normalizedTime(time) {
     time = MathUtils.clamp(time);
-    this._babylonAnimatables.forEach((animatable) => {
+    this._babylonAnimatables.forEach(animatable => {
       const targetFrame = (this._to - this._from) * time + this._from;
-      animatable.goToFrame(targetFrame)
+      animatable.goToFrame(targetFrame);
     });
   }
 

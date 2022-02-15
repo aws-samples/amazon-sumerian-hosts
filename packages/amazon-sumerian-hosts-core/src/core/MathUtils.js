@@ -356,8 +356,8 @@ class MathUtils {
         );
       }
 
-      return accumulator + (currentValue ** 2);
-    }
+      return accumulator + currentValue ** 2;
+    };
 
     return Math.sqrt(vector.reduce(reducer, 0));
   }
@@ -371,8 +371,14 @@ class MathUtils {
    * @returns {number}
    */
   static getDotProduct(vectorA, vectorB) {
-    if (!(vectorA instanceof Array) || !(vectorB instanceof Array) || vectorA.length !== vectorB.length) {
-      throw new Error(`Cannot get dot product between ${vectorA} and ${vectorB}. Inputs must be vectors of the same length.`);
+    if (
+      !(vectorA instanceof Array) ||
+      !(vectorB instanceof Array) ||
+      vectorA.length !== vectorB.length
+    ) {
+      throw new Error(
+        `Cannot get dot product between ${vectorA} and ${vectorB}. Inputs must be vectors of the same length.`
+      );
     }
 
     let result = 0;
@@ -380,7 +386,9 @@ class MathUtils {
       const valueB = vectorB[index];
 
       if (typeof valueA !== 'number' || typeof valueB !== 'number') {
-        throw new Error(`Cannot get dot product between ${vectorA} and ${vectorB}. Vectors must only consist of numeric values.`);
+        throw new Error(
+          `Cannot get dot product between ${vectorA} and ${vectorB}. Vectors must only consist of numeric values.`
+        );
       }
 
       result += valueA * valueB;
@@ -417,31 +425,38 @@ class MathUtils {
    * of the vector.
    */
   static rotateVector(vector3, matrix3) {
-    if (!(vector3 instanceof Array)
-      || vector3.length !== 3
-      || !vector3.every(v => typeof v === 'number')) {
+    if (
+      !(vector3 instanceof Array) ||
+      vector3.length !== 3 ||
+      !vector3.every(v => typeof v === 'number')
+    ) {
       throw new Error(
         `Cannot rotate vector ${vector3} by rotation matrix ${matrix3}. Input vector must be an array of 3 numbers.`
       );
     }
 
-    if (!(matrix3 instanceof Array)
-      || matrix3.length !== 9
-      || !matrix3.every(v => typeof v === 'number')) {
+    if (
+      !(matrix3 instanceof Array) ||
+      matrix3.length !== 9 ||
+      !matrix3.every(v => typeof v === 'number')
+    ) {
       throw new Error(
         `Cannot rotate vector ${vector3} by rotation matrix ${matrix3}. Input matrix3 must be an array of 9 numbers.`
       );
     }
 
-    const x = matrix3[0] * vector3[0]
-      + matrix3[3] * vector3[1]
-      + matrix3[6] * vector3[2];
-    const y = matrix3[1] * vector3[0]
-      + matrix3[4] * vector3[1]
-      + matrix3[7] * vector3[2];
-    const z = matrix3[2] * vector3[0]
-      + matrix3[5] * vector3[1]
-      + matrix3[8] * vector3[2];
+    const x =
+      matrix3[0] * vector3[0] +
+      matrix3[3] * vector3[1] +
+      matrix3[6] * vector3[2];
+    const y =
+      matrix3[1] * vector3[0] +
+      matrix3[4] * vector3[1] +
+      matrix3[7] * vector3[2];
+    const z =
+      matrix3[2] * vector3[0] +
+      matrix3[5] * vector3[1] +
+      matrix3[8] * vector3[2];
 
     return [x, y, z];
   }
@@ -457,7 +472,7 @@ class MathUtils {
     const magnitude = this.getVectorMagnitude(vector);
 
     if (magnitude === 0) {
-      vector.fill(0)
+      vector.fill(0);
     } else {
       vector.forEach((value, index) => {
         vector[index] = value / magnitude;
@@ -477,9 +492,11 @@ class MathUtils {
    * rotation matrix.
    */
   static getRotationMatrix(matrix4) {
-    if (!(matrix4 instanceof Array)
-      || matrix4.length !== 16
-      || !matrix4.every(v => typeof v === 'number')) {
+    if (
+      !(matrix4 instanceof Array) ||
+      matrix4.length !== 16 ||
+      !matrix4.every(v => typeof v === 'number')
+    ) {
       throw new Error(
         `Cannot convert matrix ${matrix4} to a rotation matrix. Input matrix must be an array of 16 numbers.`
       );
@@ -491,9 +508,15 @@ class MathUtils {
     const scaleZ = 1 / (this.getVectorMagnitude(matrix4.slice(8, 12)) || 1);
 
     return [
-      matrix4[0] * scaleX, matrix4[1] * scaleX, matrix4[2] * scaleX,
-      matrix4[4] * scaleY, matrix4[5] * scaleY, matrix4[6] * scaleY,
-      matrix4[8] * scaleZ, matrix4[9] * scaleZ, matrix4[10] * scaleZ
+      matrix4[0] * scaleX,
+      matrix4[1] * scaleX,
+      matrix4[2] * scaleX,
+      matrix4[4] * scaleY,
+      matrix4[5] * scaleY,
+      matrix4[6] * scaleY,
+      matrix4[8] * scaleZ,
+      matrix4[9] * scaleZ,
+      matrix4[10] * scaleZ,
     ];
   }
 
@@ -519,11 +542,7 @@ class MathUtils {
       return [0, 0, 0];
     }
 
-    return [
-      r,
-      Math.acos(this.clamp(y / r, - 1, 1)),
-      Math.atan2(x, z),
-    ];
+    return [r, Math.acos(this.clamp(y / r, -1, 1)), Math.atan2(x, z)];
   }
 
   /**

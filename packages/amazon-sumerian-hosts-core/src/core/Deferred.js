@@ -284,8 +284,8 @@ class Deferred extends Promise {
     const itemTracker = {
       failed: false,
       numResolved: 0,
-      resolutions: []
-    }
+      resolutions: [],
+    };
 
     array.forEach((item, index) => {
       if (itemTracker.failed) {

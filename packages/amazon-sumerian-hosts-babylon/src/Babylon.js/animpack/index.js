@@ -5,7 +5,8 @@
  * @module babylon/animpack
  */
 
-import { Easing,
+import {
+  Easing,
   AnimationUtils,
   TransitionState,
   FreeBlendState,
@@ -15,59 +16,11 @@ import { Easing,
   Blend2dState,
   AnimationLayer,
   LayerBlendModes,
-  DefaultLayerBlendMode } from '@amazon-sumerian-hosts/core';
+  DefaultLayerBlendMode,
+} from '@amazon-sumerian-hosts/core';
 import AnimationFeature, {AnimationTypes} from './AnimationFeature';
 import SingleState from './state/SingleState';
 
-// /**
-//  * @namespace
-//  */
-// const Easing = {
-//   /**
-//    * @see Linear
-//    */
-//   Linear,
-//   /**
-//    * @see Quadratic
-//    */
-//   Quadratic,
-//   /**
-//    * @see Cubic
-//    */
-//   Cubic,
-//   /**
-//    * @see Quartic
-//    */
-//   Quartic,
-//   /**
-//    * @see Quintic
-//    */
-//   Quintic,
-//   /**
-//    * @see Sinusoidal
-//    */
-//   Sinusoidal,
-//   /**
-//    * @see Exponential
-//    */
-//   Exponential,
-//   /**
-//    * @see Circular
-//    */
-//   Circular,
-//   /**
-//    * @see Elastic
-//    */
-//   Elastic,
-//   /**
-//    * @see Back
-//    */
-//   Back,
-//   /**
-//    * @see Bounce
-//    */
-//   Bounce,
-// };
 export default {
   /**
    * @see Babylon.js/AnimationFeature

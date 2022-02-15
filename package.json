@@ -1,5 +1,15 @@
 {
   "name": "amazon-sumerian-hosts",
+  "license": "MIT",
+  "author": {
+    "name": "Amazon Web Services",
+    "url": "https://aws.amazon.com",
+    "organization": true
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/aws-samples/amazon-sumerian-hosts.git"
+  },
   "workspaces": [
     "./packages/amazon-sumerian-hosts-core",
     "./packages/amazon-sumerian-hosts-babylon",

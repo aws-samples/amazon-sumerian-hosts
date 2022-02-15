@@ -22,12 +22,12 @@ export default {
    * @see core/TextToSpeechUtils
    */
   TextToSpeechUtils,
-  /** 
+  /**
    * @see core/AbstractSpeech
    */
   AbstractSpeech,
   /**
    * @see core/Speech
    */
-  Speech  
+  Speech,
 };

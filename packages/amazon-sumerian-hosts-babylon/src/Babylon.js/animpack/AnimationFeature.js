@@ -1,7 +1,9 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: MIT-0
-import { AnimationFeature as CoreAnimationFeature,
-  AnimationTypes } from '@amazon-sumerian-hosts/core';
+import {
+  AnimationFeature as CoreAnimationFeature,
+  AnimationTypes,
+} from '@amazon-sumerian-hosts/core';
 import SingleState from './state/SingleState';
 
 AnimationTypes.single = SingleState;

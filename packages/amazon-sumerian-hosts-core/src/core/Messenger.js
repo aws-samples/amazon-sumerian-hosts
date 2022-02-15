@@ -189,7 +189,9 @@ class Messenger {
    * remove all callbacks for messages matching the regular expression.
    */
   stopListeningByRegexp(regexp, callback) {
-    const messages = Object.keys(this._callbacks).filter(message => regexp.test(message));
+    const messages = Object.keys(this._callbacks).filter(message =>
+      regexp.test(message)
+    );
 
     messages.forEach(message => {
       this.stopListening(message, callback);
@@ -260,9 +262,9 @@ class Messenger {
    * remove all callbacks for messages matching the regular expression.
    */
   static stopListeningByRegexp(regexp, callback) {
-    const messages = Object.keys(this.GlobalMessenger._callbacks).filter(
-      message => regexp.test(message)
-    );
+    const messages = Object.keys(
+      this.GlobalMessenger._callbacks
+    ).filter(message => regexp.test(message));
 
     messages.forEach(message => {
       this.stopListening(message, callback);

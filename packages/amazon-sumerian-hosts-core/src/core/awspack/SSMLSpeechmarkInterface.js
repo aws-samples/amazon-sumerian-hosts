@@ -42,12 +42,14 @@ class SSMLSpeechmarkInterface extends TextToSpeechFeatureDependentInterface {
           if (this.constructor.name === feature) {
             const callback = this[method];
             if (callback && typeof callback === 'function') {
-              callback.apply(this, args)
+              callback.apply(this, args);
             } else {
-              console.warn(`Function ${method} does not exist within feature ${feature}`)
+              console.warn(
+                `Function ${method} does not exist within feature ${feature}`
+              );
             }
           }
-        } catch(e) {}
+        } catch (e) {}
       }
     };
 

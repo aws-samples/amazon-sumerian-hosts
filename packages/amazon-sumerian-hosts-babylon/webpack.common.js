@@ -10,9 +10,7 @@ const baseConfig = {
   mode: 'production',
   devtool: 'eval-source-map',
   resolve: {
-    modules: [
-      path.resolve(__dirname, '../../node_modules'), 'node_modules'
-    ],
+    modules: [path.resolve(__dirname, '../../node_modules'), 'node_modules'],
   },
   output: {
     filename: '[name].js',
@@ -21,7 +19,8 @@ const baseConfig = {
     libraryTarget: 'umd',
     libraryExport: 'default',
     umdNamedDefine: true,
-    globalObject: '(typeof self !== "undefined" ? self : typeof global !== "undefined" ? global : this)'
+    globalObject:
+      '(typeof self !== "undefined" ? self : typeof global !== "undefined" ? global : this)',
   },
   optimization: {
     minimize: true,
@@ -42,12 +41,11 @@ const baseConfig = {
         use: [
           {
             loader: 'file-loader',
-            options: 
-            {
-              name: '[name].[ext]'
-            }
-          }
-        ]
+            options: {
+              name: '[name].[ext]',
+            },
+          },
+        ],
       },
       {
         test: /\.js$/,
@@ -57,7 +55,7 @@ const baseConfig = {
             options: {
               presets: ['@babel/preset-env'],
             },
-          }
+          },
         ],
         exclude: /(node_modules|bower_components)/,
       },
@@ -66,7 +64,7 @@ const baseConfig = {
   plugins: [
     new webpack.BannerPlugin({
       banner: `Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.\nSPDX-License-Identifier: MIT-0`,
-      entryOnly: true
+      entryOnly: true,
     }),
   ],
 };
