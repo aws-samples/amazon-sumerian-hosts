@@ -12,7 +12,7 @@ const baseConfig = {
   output: {
     filename: '[name].js',
     path: path.resolve(__dirname, 'dist'),
-    library: 'HOST_CORE',
+    library: 'HOST',
     libraryTarget: 'umd',
     libraryExport: 'default',
     umdNamedDefine: true,
