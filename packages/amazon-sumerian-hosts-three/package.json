@@ -19,8 +19,7 @@
     "build-test": "npm run build; npm run test",
     "start": "webpack-dev-server --open --config webpack.dev.js",
     "build-start": "npm run build; npm run start",
-    "release": "npm run build",
-    "docs": "jsdoc -c jsdoc.conf.json"
+    "release": "npm run build"
   },
   "devDependencies": {
     "@amazon-sumerian-hosts/core": "^2.0.0",
