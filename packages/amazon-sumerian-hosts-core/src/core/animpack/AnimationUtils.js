@@ -12,9 +12,7 @@ import {Linear} from './Easing';
  */
 class AnimationUtils {
   static lerp(from, to, factor) {
-    console.warn(
-      `AnimationUtils.lerp is being deprecated. Use MathUtils.lerp instead.`
-    );
+    console.warn(`AnimationUtils.lerp is being deprecated. Use MathUtils.lerp instead.`);
 
     return MathUtils.lerp(from, to, factor);
   }
@@ -29,9 +27,7 @@ class AnimationUtils {
    * @returns {number}
    */
   static clamp(value, min = 0, max = 1) {
-    console.warn(
-      `AnimationUtils.clamp is being deprecated. Use MathUtils.clamp instead.`
-    );
+    console.warn(`AnimationUtils.clamp is being deprecated. Use MathUtils.clamp instead.`);
 
     return MathUtils.clamp(value, min, max);
   }

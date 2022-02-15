@@ -229,18 +229,9 @@ describe('AbstractState', () => {
         play: new Deferred(),
         finish: new Deferred(),
       };
-      const onCancelWeight = spyOn(
-        state._promises.weight,
-        'cancel'
-      ).and.callThrough();
-      const onCancelPlay = spyOn(
-        state._promises.play,
-        'cancel'
-      ).and.callThrough();
-      const onCancelFinish = spyOn(
-        state._promises.finish,
-        'cancel'
-      ).and.callThrough();
+      const onCancelWeight = spyOn(state._promises.weight, 'cancel').and.callThrough();
+      const onCancelPlay = spyOn(state._promises.play, 'cancel').and.callThrough();
+      const onCancelFinish = spyOn(state._promises.finish, 'cancel').and.callThrough();
 
       state.cancel();
 
@@ -271,18 +262,9 @@ describe('AbstractState', () => {
         play: new Deferred(),
         finish: new Deferred(),
       };
-      const onResolveWeight = spyOn(
-        state._promises.weight,
-        'resolve'
-      ).and.callThrough();
-      const onResolvePlay = spyOn(
-        state._promises.play,
-        'resolve'
-      ).and.callThrough();
-      const onResolveFinish = spyOn(
-        state._promises.finish,
-        'resolve'
-      ).and.callThrough();
+      const onResolveWeight = spyOn(state._promises.weight, 'resolve').and.callThrough();
+      const onResolvePlay = spyOn(state._promises.play, 'resolve').and.callThrough();
+      const onResolveFinish = spyOn(state._promises.finish, 'resolve').and.callThrough();
 
       state.stop();
 

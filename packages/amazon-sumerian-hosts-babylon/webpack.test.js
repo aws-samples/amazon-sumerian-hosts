@@ -17,7 +17,7 @@ const baseConfig = {
             options: {
               presets: ['@babel/preset-env'],
             },
-          },
+          }
         ],
         exclude: /(node_modules|bower_components)/,
       },

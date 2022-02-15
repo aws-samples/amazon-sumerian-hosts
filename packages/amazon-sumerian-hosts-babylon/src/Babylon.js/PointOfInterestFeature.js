@@ -7,7 +7,7 @@ import {
 
 /**
  * @extends core/PointOfInterestFeature
- * @alias Babylon.js/PointOfInterestFeature
+ * @alias babylonjs/PointOfInterestFeature
  */
 class PointOfInterestFeature extends CorePointOfInterestFeature {
   static _getWorldPosition(obj) {

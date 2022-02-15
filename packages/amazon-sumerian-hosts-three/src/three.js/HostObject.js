@@ -8,11 +8,11 @@
  * @see https://threejs.org/docs/#api/en/core/Clock
  */
 
-import CoreHostObject from '@amazon-sumerian-hosts/core';
+import {HostObject as CoreHostObject} from '@amazon-sumerian-hosts/core';
 
 /**
- * @alias three.js/HostObject
  * @extends core/HostObject
+ * @alias threejs/HostObject
  */
 class HostObject extends CoreHostObject {
   /**

@@ -24,7 +24,9 @@ class AbstractState {
     this.name =
       options.name !== undefined ? options.name : this.constructor.name;
     this._weight =
-      options.weight !== undefined ? MathUtils.clamp(options.weight, 0, 1) : 0;
+      options.weight !== undefined
+        ? MathUtils.clamp(options.weight, 0, 1)
+        : 0;
     this._internalWeight = this._weight;
     this._paused = false;
 

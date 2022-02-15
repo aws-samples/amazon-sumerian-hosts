@@ -6,13 +6,13 @@ import {
 } from '@amazon-sumerian-hosts/core';
 /**
  * @extends core/Speech
- * @alias Babylon.js/Speech
+ * @alias babylonjs/Speech
  */
 class Speech extends CoreSpeech {
   /**
    * @constructor
    *
-   * @param {Babylon.js/TextToSpeechFeature} speaker - The owner of the Speech
+   * @param {babylonjs/TextToSpeechFeature} speaker - The owner of the Speech
    * that will emit speechmark messages.
    * @param {string} text - The text of the speech.
    * @param {Array.<Object>} [speechmarks=[]] - An array of speechmark objects representing

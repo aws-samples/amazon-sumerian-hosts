@@ -1,10 +1,10 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: MIT-0
-import CoreMessenger from '@amazon-sumerian-hosts/core';
+import {Messenger as CoreMessenger} from '@amazon-sumerian-hosts/core';
 
 /**
  * @extends core/Messenger
- * @alias three.js/Messenger
+ * @alias threejs/Messenger
  */
 class Messenger extends CoreMessenger {
   /**

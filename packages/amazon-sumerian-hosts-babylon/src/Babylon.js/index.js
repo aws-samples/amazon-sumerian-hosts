@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: MIT-0
 
 /**
- * @module babylon/HOST
+ * @module hosts/babylonjs
  */
 
 import {
@@ -25,59 +25,59 @@ import anim from './animpack';
 
 export default {
   /**
-   * @see env
-   */
-  env,
-  /**
-   * @see Utils
+   * @see module:hosts/core.Utils
    */
   Utils,
   /**
-   * @see MathUtils
+   * @see module:hosts/core.MathUtils
    */
   MathUtils,
   /**
-   * @see Deferred
+   * @see module:hosts/core.Deferred
    */
   Deferred,
   /**
-   * @see Babylon.js/Messenger
-   */
-  Messenger,
-  /**
-   * @see Babylon.js/HostObject
-   */
-  HostObject,
-  /**
-   * @see @amazon-sumerian-hosts/core/LipsyncFeature
+   * @see module:hosts/core.LipsyncFeature
    */
   LipsyncFeature,
   /**
-   * @see GestureFeature
+   * @see module:hosts/core.GestureFeature
    */
   GestureFeature,
   /**
-   * @see Babylon.js/PointOfInterestFeature
+   * @see babylonjs/PointOfInterestFeature
    */
   PointOfInterestFeature,
   /**
-   * @see DefaultVisemeMap
+   * @see module:hosts/core.DefaultVisemeMap
    */
   DefaultVisemeMap,
   /**
-   * @see DefaultGestureWords
+   * @see module:hosts/core.DefaultGestureWords
    */
   DefaultGestureWords,
+  /**
+   * @see env
+   */
+  env,
   /**
    * @see AxisMap
    */
   AxisMap,
   /**
-   * @see module:babylon/awspack
+   * @see babylonjs/Messenger
+   */
+  Messenger,
+  /**
+   * @see babylonjs/HostObject
+   */
+  HostObject,
+  /**
+   * @see module:babylonjs/awspack
    */
   aws,
   /**
-   * @see module:babylon/animpack
+   * @see module:babylonjs/animpack
    */
   anim,
 };

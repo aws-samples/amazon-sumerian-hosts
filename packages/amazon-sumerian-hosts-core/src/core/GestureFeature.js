@@ -6,6 +6,9 @@ import AbstractHostFeature from './AbstractHostFeature';
 import Deferred from './Deferred';
 import Utils from './Utils';
 
+/**
+ * @constant
+ */
 const DefaultGestureWords = {
   big: [
     'add',

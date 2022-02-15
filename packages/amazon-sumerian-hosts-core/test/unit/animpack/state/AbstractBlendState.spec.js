@@ -4,7 +4,7 @@
 /* eslint-disable no-undef */
 /* eslint-disable no-underscore-dangle */
 import Deferred from 'core/Deferred';
-import describeHostEnvironment from '../../EnvironmentHarness';
+import describeHostEnvironment from "../../EnvironmentHarness";
 import AbstractBlendState from 'core/animpack/state/AbstractBlendState';
 
 describeHostEnvironment('AbstractBlendState', (options = {}, env) => {
@@ -77,7 +77,7 @@ describeHostEnvironment('AbstractBlendState', (options = {}, env) => {
     });
 
     it('should get the weight for the state', () => {
-      const weight = 0.52;
+      const weight = 0.52
       state1.weight = weight;
       expect(blend.getBlendWeight('state1')).toEqual(weight);
     });
@@ -90,7 +90,7 @@ describeHostEnvironment('AbstractBlendState', (options = {}, env) => {
       }).toThrowError();
     });
 
-    it('should set the state weight to the target weight', async () => {
+    it('should set the state weight to the target weight', async () =>  {
       const weight = 0.52;
       expect(state1.weight).not.toEqual(weight);
 
@@ -153,7 +153,7 @@ describeHostEnvironment('AbstractBlendState', (options = {}, env) => {
 
       blend._states.forEach(state => {
         expect(state.resume).toHaveBeenCalledTimes(1);
-      });
+      })
     });
   });
 
@@ -188,6 +188,6 @@ describeHostEnvironment('AbstractBlendState', (options = {}, env) => {
       });
 
       expect(blend._states).not.toBeDefined();
-    });
-  });
+    })
+  })
 });

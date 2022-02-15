@@ -2,12 +2,9 @@
 // SPDX-License-Identifier: MIT-0
 const webpackConfig = require('./webpack.test.js');
 
-const TEST_BROWSERS =
-  process.env.TEST_BROWSERS !== undefined
-    ? process.env.TEST_BROWSERS.split(',')
-        .map(s => s.trim())
-        .filter(s => s !== '')
-    : ['Chrome'];
+const TEST_BROWSERS = process.env.TEST_BROWSERS !== undefined
+  ? process.env.TEST_BROWSERS.split(',').map(s => s.trim()).filter(s => s !== '')
+  : ['Chrome'];
 console.log(`TEST_BROWSERS=${TEST_BROWSERS.join(',')}`);
 
 module.exports = function(config) {
@@ -31,7 +28,7 @@ module.exports = function(config) {
       'karma-firefox-launcher',
       'karma-chrome-launcher',
       'karma-spec-reporter',
-      'karma-sourcemap-loader',
+      'karma-sourcemap-loader'
     ],
 
     // list of files / patterns to load in the browser
@@ -53,7 +50,7 @@ module.exports = function(config) {
     // available preprocessors: https://npmjs.org/browse/keyword/karma-preprocessor
     preprocessors: {
       'test/unit/**/*.spec.js': ['webpack'],
-      '**/*.js': ['sourcemap'],
+      '**/*.js': ['sourcemap']
     },
 
     // test results reporter to use
@@ -62,11 +59,11 @@ module.exports = function(config) {
     reporters: ['spec'],
 
     specReporter: {
-      suppressErrorSummary: false, // print error summary
-      suppressFailed: false, // print information about failed tests
-      suppressPassed: false, // print information about passed tests
-      suppressSkipped: false, // print information about skipped tests
-      showSpecTiming: true, // print the time elapsed for each spec
+      suppressErrorSummary: false,  // print error summary
+      suppressFailed: false,        // print information about failed tests
+      suppressPassed: false,        // print information about passed tests
+      suppressSkipped: false,       // print information about skipped tests
+      showSpecTiming: true          // print the time elapsed for each spec
     },
 
     // web server port

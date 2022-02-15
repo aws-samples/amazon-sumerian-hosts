@@ -506,9 +506,7 @@ describeEnvironment('AnimationFeature', (options = {}) => {
 
   describe('setLayerWeight', () => {
     it('should return a rejected promise if no layer exists with the given name', () => {
-      return expectAsync(
-        animationFeature.setLayerWeight('someLayer')
-      ).toBeRejected();
+      return expectAsync(animationFeature.setLayerWeight('someLayer')).toBeRejected();
     });
 
     it('should execute setWeight on the layer', () => {
@@ -566,9 +564,7 @@ describeEnvironment('AnimationFeature', (options = {}) => {
 
   describe('resumeLayer', () => {
     it('should return a rejected promise if no layer exists with the given name', () => {
-      return expectAsync(
-        animationFeature.resumeLayer('someLayer')
-      ).toBeRejected();
+      return expectAsync(animationFeature.resumeLayer('someLayer')).toBeRejected();
     });
 
     it('should execute resume on the layer', () => {

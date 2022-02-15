@@ -1,6 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: MIT-0
-import CoreTextToSpeechFeature from '@amazon-sumerian-hosts/core';
+import {TextToSpeechFeature as CoreTextToSpeechFeature} from '@amazon-sumerian-hosts/core';
+import Speech from './Speech';
 
 /**
  * Threejs PositionalAudio object
@@ -16,13 +17,13 @@ import CoreTextToSpeechFeature from '@amazon-sumerian-hosts/core';
 
 /**
  * @extends core/TextToSpeechFeature
- * @alias three.js/TextToSpeechFeature
+ * @alias threejs/TextToSpeechFeature
  */
 class TextToSpeechFeature extends CoreTextToSpeechFeature {
   /**
    * @constructor
    *
-   * @param {three/HostObject} host - Host object managing the feature.
+   * @param {app/HostObject} host - Host object managing the feature.
    * @param {Object=} options - Options that will be sent to Polly for each speech.
    * @param {external:"THREE.AudioListener"} options.listener - Three audio listener to use with
    * audio.
@@ -81,6 +82,9 @@ class TextToSpeechFeature extends CoreTextToSpeechFeature {
 
       return result;
     });
+  }
+  _createSpeech(text, speechmarks, audioConfig) {
+    return new Speech(this, text, speechmarks, audioConfig);
   }
 }
 

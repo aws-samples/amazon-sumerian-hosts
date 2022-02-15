@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: MIT-0
 
 /**
- * @module core/HOST
+ * @module hosts/core
  */
 
 import Utils from './Utils';
@@ -68,7 +68,7 @@ export default {
    */
   HostObject,
   /**
-   * @see core/LipsyncFeature
+   * @see LipsyncFeature
    */
   LipsyncFeature,
   /**
@@ -76,7 +76,7 @@ export default {
    */
   GestureFeature,
   /**
-   * @see core/PointOfInterestFeature
+   * @see PointOfInterestFeature
    */
   PointOfInterestFeature,
   /**
@@ -91,81 +91,84 @@ export default {
    * @see AxisMap
    */
   AxisMap,
+
+  // Amnimpack
   /**
-   * @see core/AnimationFeature
+   * @see module:core/animpack.Easing
+   */
+  Easing,
+  /**
+   * @see module:core/animpack.AnimationFeature
    */
   AnimationFeature,
   /**
-   * @see AnimationLayer
+   * @see module:core/animpack.AnimationLayer
    */
   AnimationLayer,
   /**
-   * @see core/SingleState
+   * @see module:core/animpack.SingleState
    */
   SingleState,
   /**
-   * @see TransitionState
+   * @see module:core/animpack.TransitionState
    */
   TransitionState,
   /**
-   * @see FreeBlendState
+   * @see module:core/animpack.FreeBlendState
    */
   FreeBlendState,
   /**
-   * @see QueueState
+   * @see module:core/animpack.QueueState
    */
   QueueState,
   /**
-   * @see RandomAnimationState
+   * @see module:core/animpack.RandomAnimationState
    */
   RandomAnimationState,
   /**
-   * @see Blend1dState
+   * @see module:core/animpack.Blend1dState
    */
   Blend1dState,
   /**
-   * @see Blend2dState
+   * @see module:core/animpack.Blend2dState
    */
   Blend2dState,
   /**
-   * @see AnimationUtils
+   * @see module:core/animpack.AnimationUtils
    */
   AnimationUtils,
-
-  Easing,
   /**
-   * @see LayerBlendModes
+   * @see module:core/animpack.LayerBlendModes
    */
   LayerBlendModes,
   /**
-   * @see DefaultLayerBlendMode
+   * @see module:core/animpack.DefaultLayerBlendMode
    */
   DefaultLayerBlendMode,
   /**
-   * @see AnimationTypes
+   * @see module:core/animpack.AnimationTypes
    */
   AnimationTypes,
 
   // AWS Pack
   /**
-   * @see core/AbstractTextToSpeechFeature
+   * @see module:core/awspack.AbstractTextToSpeechFeature
    */
   AbstractTextToSpeechFeature,
   /**
-   * @see core/TextToSpeechFeature
+   * @see module:core/awspack.TextToSpeechFeature
    */
   TextToSpeechFeature,
   /**
-   * @see core/TextToSpeechUtils
+   * @see module:core/awspack.TextToSpeechUtils
    */
   TextToSpeechUtils,
   /**
-   * @see core/AbstractSpeech
+   * @see module:core/awspack.AbstractSpeech
    */
   AbstractSpeech,
-
   /**
-   * @see core/Speech
+   * @see module:core/awspack.Speech
    */
   Speech,
 };
