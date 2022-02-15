@@ -1,0 +1,29 @@
+{
+  "name": "@amazon-sumerian-hosts/babylon",
+  "version": "2.0.0",
+  "description": "",
+  "license": "MIT",
+  "author": {
+    "name": "Amazon Web Services",
+    "url": "https://aws.amazon.com",
+    "organization": true
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/aws-samples/amazon-sumerian-hosts.git"
+  },
+  "main": "./dist/host.babylon.js",
+  "scripts": {
+    "test": "node ../../node_modules/karma/bin/karma start",
+    "build": "webpack --config webpack.common.js",
+    "build-test": "npm run build; npm run test",
+    "start": "webpack-dev-server --open --config webpack.dev.js",
+    "build-start": "npm run build; npm run start",
+    "release": "npm run build",
+    "docs": "jsdoc -c jsdoc.conf.json"
+  },
+  "devDependencies": {
+    "@amazon-sumerian-hosts/core": "^2.0.0",
+    "babylonjs": "=4.2.1"
+  }
+}
