@@ -117,7 +117,7 @@ describeEnvironment('TextToSpeechFeature', (options, env) => {
         expect(result.threeAudio).toBeInstanceOf(THREE.PositionalAudio);
       });
     }
-    
+
     itActsLikeThreeSynthesizeAudio();
   });
 });

@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: MIT-0
 
 /**
- * @module babylon/animpack
+ * @module babylonjs/animpack
  */
 
 import {
@@ -23,59 +23,59 @@ import SingleState from './state/SingleState';
 
 export default {
   /**
-   * @see Babylon.js/AnimationFeature
+   * @see babylonjs/AnimationFeature
    */
   AnimationFeature,
   /**
-   * @see AnimationLayer
-   */
-  AnimationLayer,
-  /**
-   * @see Babylon.js/SingleState
+   * @see babylonjs/SingleState
    */
   SingleState,
   /**
-   * @see TransitionState
+   * @see module:core/HOST.AnimationLayer
+   */
+  AnimationLayer,
+  /**
+   * @see module:core/HOST.TransitionState
    */
   TransitionState,
   /**
-   * @see FreeBlendState
+   * @see module:core/HOST.FreeBlendState
    */
   FreeBlendState,
   /**
-   * @see QueueState
+   * @see module:core/HOST.QueueState
    */
   QueueState,
   /**
-   * @see RandomAnimationState
+   * @see module:core/HOST.RandomAnimationState
    */
   RandomAnimationState,
   /**
-   * @see Blend1dState
+   * @see module:core/HOST.Blend1dState
    */
   Blend1dState,
   /**
-   * @see Blend2dState
+   * @see module:core/HOST.Blend2dState
    */
   Blend2dState,
   /**
-   * @see AnimationUtils
+   * @see module:core/HOST.AnimationUtils
    */
   AnimationUtils,
   /**
-   * @see Easing
+   * @see module:core/HOST.Easing
    */
   Easing,
   /**
-   * @see LayerBlendModes
+   * @see module:core/HOST.LayerBlendModes
    */
   LayerBlendModes,
   /**
-   * @see DefaultLayerBlendMode
+   * @see module:core/HOST.DefaultLayerBlendMode
    */
   DefaultLayerBlendMode,
   /**
-   * @see AnimationTypes
+   * @see module:core/HOST.AnimationTypes
    */
   AnimationTypes,
 };

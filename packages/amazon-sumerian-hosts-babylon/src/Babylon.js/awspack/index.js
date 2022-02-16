@@ -5,20 +5,20 @@ import TextToSpeechFeature from './TextToSpeechFeature';
 import Speech from './Speech';
 
 /**
- * @module babylon/awspack
+ * @module babylonjs/awspack
  */
 
 export default {
   /**
-   * @see Babylon.js/TextToSpeechFeature
+   * @see babylonjs/TextToSpeechFeature
    */
   TextToSpeechFeature,
   /**
-   * @see core/TextToSpeechUtils
+   * @see module:core/HOST.TextToSpeechUtils
    */
   TextToSpeechUtils,
   /**
-   * @see Babylon.js/Speech
+   * @see babylonjs/Speech
    */
   Speech,
 };

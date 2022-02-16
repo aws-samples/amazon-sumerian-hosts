@@ -11,13 +11,13 @@ export {AnimationTypes};
 
 /**
  * @extends core/AnimationFeature
- * @alias Babylon.js/AnimationFeature
+ * @alias babylonjs/AnimationFeature
  */
 class AnimationFeature extends CoreAnimationFeature {
   /**
    * @constructor
    *
-   * @param {Babylon.js/HostObject} host - Host object that owns the feature.
+   * @param {babylonjs/HostObject} host - Host object that owns the feature.
    */
   constructor(host) {
     super(host);

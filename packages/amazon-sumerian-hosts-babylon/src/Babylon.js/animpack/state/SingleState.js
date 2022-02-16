@@ -18,7 +18,7 @@ const babylonBlendModes = {
 
 /**
  * @extends core/SingleState
- * @alias Babylon.js/SingleState
+ * @alias babylonjs/SingleState
  */
 class SingleState extends CoreSingleState {
   /**

@@ -11,7 +11,7 @@ import TextToSpeechFeature from './TextToSpeechFeature';
 
 export default {
   /**
-   * @see core/AbstractTextToSpeechFeature
+   * @see AbstractTextToSpeechFeature
    */
   AbstractTextToSpeechFeature,
   /**
@@ -19,11 +19,11 @@ export default {
    */
   TextToSpeechFeature,
   /**
-   * @see core/TextToSpeechUtils
+   * @see TextToSpeechUtils
    */
   TextToSpeechUtils,
   /**
-   * @see core/AbstractSpeech
+   * @see AbstractSpeech
    */
   AbstractSpeech,
   /**

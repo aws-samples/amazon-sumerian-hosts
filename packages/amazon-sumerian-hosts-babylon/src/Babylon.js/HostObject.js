@@ -4,7 +4,7 @@ import {HostObject as CoreHostObject} from '@amazon-sumerian-hosts/core';
 
 /**
  * @extends core/HostObject
- * @alias Babylon.js/HostObject
+ * @alias babylonjs/HostObject
  */
 class HostObject extends CoreHostObject {
   /**
