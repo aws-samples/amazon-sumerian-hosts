@@ -31,51 +31,51 @@ export default {
    */
   SingleState,
   /**
-   * @see module:hosts/core.AnimationLayer
+   * @see module:core/HOST.AnimationLayer
    */
   AnimationLayer,
   /**
-   * @see module:hosts/core.TransitionState
+   * @see module:core/HOST.TransitionState
    */
   TransitionState,
   /**
-   * @see module:hosts/core.FreeBlendState
+   * @see module:core/HOST.FreeBlendState
    */
   FreeBlendState,
   /**
-   * @see module:hosts/core.QueueState
+   * @see module:core/HOST.QueueState
    */
   QueueState,
   /**
-   * @see module:hosts/core.RandomAnimationState
+   * @see module:core/HOST.RandomAnimationState
    */
   RandomAnimationState,
   /**
-   * @see module:hosts/core.Blend1dState
+   * @see module:core/HOST.Blend1dState
    */
   Blend1dState,
   /**
-   * @see module:hosts/core.Blend2dState
+   * @see module:core/HOST.Blend2dState
    */
   Blend2dState,
   /**
-   * @see module:hosts/core.AnimationUtils
+   * @see module:core/HOST.AnimationUtils
    */
   AnimationUtils,
   /**
-   * @see module:hosts/core.Easing
+   * @see module:core/HOST.Easing
    */
   Easing,
   /**
-   * @see module:hosts/core.LayerBlendModes
+   * @see module:core/HOST.LayerBlendModes
    */
   LayerBlendModes,
   /**
-   * @see module:hosts/core.DefaultLayerBlendMode
+   * @see module:core/HOST.DefaultLayerBlendMode
    */
   DefaultLayerBlendMode,
   /**
-   * @see module:hosts/core.AnimationTypes
+   * @see module:core/HOST.AnimationTypes
    */
   AnimationTypes,
 };

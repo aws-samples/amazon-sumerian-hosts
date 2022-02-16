@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: MIT-0
 
 /**
- * @module hosts/core
+ * @module core/HOST
  */
 
 import Utils from './Utils';

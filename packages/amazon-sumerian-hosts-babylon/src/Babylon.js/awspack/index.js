@@ -14,7 +14,7 @@ export default {
    */
   TextToSpeechFeature,
   /**
-   * @see module:hosts/core.TextToSpeechUtils
+   * @see module:core/HOST.TextToSpeechUtils
    */
   TextToSpeechUtils,
   /**

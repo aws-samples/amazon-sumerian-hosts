@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: MIT-0
 
 /**
- * @module hosts/babylonjs
+ * @module babylonjs/HOST
  */
 
 import {
@@ -25,31 +25,31 @@ import anim from './animpack';
 
 export default {
   /**
-   * @see module:hosts/core.Utils
+   * @see module:core/HOST.Utils
    */
   Utils,
   /**
-   * @see module:hosts/core.MathUtils
+   * @see module:core/HOST.MathUtils
    */
   MathUtils,
   /**
-   * @see module:hosts/core.Deferred
+   * @see module:core/HOST.Deferred
    */
   Deferred,
   /**
-   * @see module:hosts/core.LipsyncFeature
+   * @see module:core/HOST.LipsyncFeature
    */
   LipsyncFeature,
   /**
-   * @see module:hosts/core.GestureFeature
+   * @see module:core/HOST.GestureFeature
    */
   GestureFeature,
   /**
-   * @see module:hosts/core.DefaultVisemeMap
+   * @see module:core/HOST.DefaultVisemeMap
    */
   DefaultVisemeMap,
   /**
-   * @see module:hosts/core.DefaultGestureWords
+   * @see module:core/HOST.DefaultGestureWords
    */
   DefaultGestureWords,
   /**
