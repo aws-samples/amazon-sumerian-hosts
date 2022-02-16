@@ -4,7 +4,7 @@ import {Messenger as CoreMessenger} from '@amazon-sumerian-hosts/core';
 
 /**
  * @extends core/Messenger
- * @alias Babylon.js/Messenger
+ * @alias babylonjs/Messenger
  */
 class Messenger extends CoreMessenger {
   /**

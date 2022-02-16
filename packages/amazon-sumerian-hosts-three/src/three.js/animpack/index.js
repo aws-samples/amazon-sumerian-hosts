@@ -2,140 +2,80 @@
 // SPDX-License-Identifier: MIT-0
 
 /**
- * @module three/animpack
+ * @module threejs/animpack
  */
 
 import {
-  Linear,
-  Quadratic,
-  Cubic,
-  Quartic,
-  Quintic,
-  Sinusoidal,
-  Exponential,
-  Circular,
-  Elastic,
-  Back,
-  Bounce,
-} from '@amazon-sumerian-hosts/core';
-import AnimationUtils from '@amazon-sumerian-hosts/core';
-import TransitionState from '@amazon-sumerian-hosts/core';
-import RandomAnimationState from '@amazon-sumerian-hosts/core';
-import AnimationLayer, {
+  Easing,
+  AnimationUtils,
+  TransitionState,
+  RandomAnimationState,
+  AnimationLayer,
   LayerBlendModes,
   DefaultLayerBlendMode,
+  FreeBlendState,
+  QueueState,
+  Blend1dState,
+  Blend2dState,
 } from '@amazon-sumerian-hosts/core';
-import FreeBlendState from '@amazon-sumerian-hosts/core';
-import QueueState from '@amazon-sumerian-hosts/core';
-import Blend1dState from '@amazon-sumerian-hosts/core';
-import Blend2dState from '@amazon-sumerian-hosts/core';
 import AnimationFeature, {AnimationTypes} from './AnimationFeature';
 import SingleState from './state/SingleState';
 
-/**
- * @namespace
- */
-const Easing = {
-  /**
-   * @see Linear
-   */
-  Linear,
-  /**
-   * @see Quadratic
-   */
-  Quadratic,
-  /**
-   * @see Cubic
-   */
-  Cubic,
-  /**
-   * @see Quartic
-   */
-  Quartic,
-  /**
-   * @see Quintic
-   */
-  Quintic,
-  /**
-   * @see Sinusoidal
-   */
-  Sinusoidal,
-  /**
-   * @see Exponential
-   */
-  Exponential,
-  /**
-   * @see Circular
-   */
-  Circular,
-  /**
-   * @see Elastic
-   */
-  Elastic,
-  /**
-   * @see Back
-   */
-  Back,
-  /**
-   * @see Bounce
-   */
-  Bounce,
-};
 export default {
   /**
-   * @see three.js/AnimationFeature
+   * @see threejs/AnimationFeature
    */
   AnimationFeature,
   /**
-   * @see AnimationLayer
-   */
-  AnimationLayer,
-  /**
-   * @see three.js/SingleState
+   * @see threejs/SingleState
    */
   SingleState,
   /**
-   * @see TransitionState
+   * @see module:core/HOST.AnimationLayer
+   */
+  AnimationLayer,
+  /**
+   * @see module:core/HOST.TransitionState
    */
   TransitionState,
   /**
-   * @see FreeBlendState
+   * @see module:core/HOST.FreeBlendState
    */
   FreeBlendState,
   /**
-   * @see QueueState
+   * @see module:core/HOST.QueueState
    */
   QueueState,
   /**
-   * @see RandomAnimationState
+   * @see module:core/HOST.RandomAnimationState
    */
   RandomAnimationState,
   /**
-   * @see Blend1dState
+   * @see module:core/HOST.Blend1dState
    */
   Blend1dState,
   /**
-   * @see Blend2dState
+   * @see module:core/HOST.Blend2dState
    */
   Blend2dState,
   /**
-   * @see AnimationUtils
+   * @see module:core/HOST.AnimationUtils
    */
   AnimationUtils,
   /**
-   * @see Easing
+   * @see module:core/HOST.Easing
    */
   Easing,
   /**
-   * @see LayerBlendModes
+   * @see module:core/HOST.LayerBlendModes
    */
   LayerBlendModes,
   /**
-   * @see DefaultLayerBlendMode
+   * @see module:core/HOST.DefaultLayerBlendMode
    */
   DefaultLayerBlendMode,
   /**
-   * @see AnimationTypes
+   * @see module:core/HOST.AnimationTypes
    */
   AnimationTypes,
 };

@@ -4,8 +4,7 @@
 /* eslint-disable no-undef */
 /* eslint-disable no-underscore-dangle */
 import SingleState from 'app/animpack/state/SingleState';
-import {LayerBlendModes} from '@amazon-sumerian-hosts/core';
-import Deferred from '@amazon-sumerian-hosts/core';
+import {LayerBlendModes, Deferred} from '@amazon-sumerian-hosts/core';
 import describeEnvironment from '../../EnvironmentHarness';
 
 describeEnvironment('SingleState', (options = {}, env) => {
@@ -44,15 +43,23 @@ describeEnvironment('SingleState', (options = {}, env) => {
 
       it('should return time divided by clip duration', () => {
         state._threeAction.time = 0.5;
-        state._threeAction.getClip = jasmine.createSpy().and.callFake(function() { return {duration: 1} });
+        state._threeAction.getClip = jasmine
+          .createSpy()
+          .and.callFake(function() {
+            return {duration: 1};
+          });
 
         expect(state.normalizedTime).toEqual(0.5);
       });
-    })
+    });
     describe('three set', () => {
       beforeEach(() => {
         state._threeAction.time = 0.5;
-        state._threeAction.getClip = jasmine.createSpy().and.callFake(function() { return {duration: 1} });
+        state._threeAction.getClip = jasmine
+          .createSpy()
+          .and.callFake(function() {
+            return {duration: 1};
+          });
       });
 
       it('should set the _threeAction time to the target time by multiplying clip duration', () => {
@@ -66,7 +73,7 @@ describeEnvironment('SingleState', (options = {}, env) => {
 
         expect(state._threeAction.time).toEqual(1);
       });
-    })
+    });
   });
 
   describe('timeScale', () => {

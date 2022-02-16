@@ -1,6 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: MIT-0
-import CoreSpeech from '@amazon-sumerian-hosts/core';
+import {Speech as CoreSpeech} from '@amazon-sumerian-hosts/core';
 
 /**
  * Threejs Audio object
@@ -16,13 +16,13 @@ import CoreSpeech from '@amazon-sumerian-hosts/core';
 
 /**
  * @extends core/Speech
- * @alias three.js/Speech
+ * @alias threejs/Speech
  */
 class Speech extends CoreSpeech {
   /**
    * @constructor
    *
-   * @param {three.js/TextToSpeechFeature} speaker - The owner of the Speech that
+   * @param {threejs/TextToSpeechFeature} speaker - The owner of the Speech that
    * will emit speechmark messages.
    * @param {string} text - The text of the speech.
    * @param {Array.<Object>} speechmarks - An array of speechmark objects representing
