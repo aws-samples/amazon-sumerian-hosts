@@ -35,6 +35,8 @@ const {
 
 import aws from './awspack';
 const {
+  LexFeature,
+  LexUtils,
   AbstractTextToSpeechFeature,
   TextToSpeechFeature,
   TextToSpeechUtils,
@@ -147,6 +149,14 @@ export default {
   AnimationTypes,
 
   // AWS Pack
+  /**
+   * @see core/LexFeature
+   */
+  LexFeature,
+  /**
+   * @see core/LexUtils
+   */
+  LexUtils,
   /**
    * @see core/AbstractTextToSpeechFeature
    */
