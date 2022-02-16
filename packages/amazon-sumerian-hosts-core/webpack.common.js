@@ -78,4 +78,4 @@ const coreConfig = {
   },
 };
 
-module.exports = [coreConfig];
+module.exports = coreConfig;

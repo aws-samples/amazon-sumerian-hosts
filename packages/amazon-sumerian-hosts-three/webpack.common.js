@@ -78,4 +78,4 @@ const threeConfig = {
   },
 };
 
-module.exports = [threeConfig];
+module.exports = threeConfig;

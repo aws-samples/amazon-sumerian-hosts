@@ -92,7 +92,7 @@ module.exports = function(config) {
     // how many browser should be started simultaneous
     concurrency: Infinity,
 
-    webpack: webpackConfig[0],
+    webpack: webpackConfig,
 
     webpackServer: {
       noInfo: true,
