@@ -74,7 +74,7 @@ const baseConfig = {
 const coreConfig = {
   ...baseConfig,
   entry: {
-    'host.core': ['./src/core/index.js'],
+    'host.core': ['babel-polyfill', './src/core/index.js'],
   },
 };
 

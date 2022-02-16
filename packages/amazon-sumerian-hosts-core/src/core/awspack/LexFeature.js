@@ -11,8 +11,6 @@ import LexUtils from 'core/awspack/LexUtils';
  * @see https://docs.aws.amazon.com/AWSJavaScriptSDK/latest/AWS/LexRuntime.html
  */
 
-let awsVersion;
-
 /**
  * Feature class for interacting with Lex bot which the response from lex bot can be used for speech or other purpose.
  *
@@ -67,25 +65,22 @@ class LexFeature extends AbstractHostFeature {
    */
   static initializeService(lexRuntime, version) {
     // Make sure all were defined
-    if (
-      lexRuntime === undefined ||
-      version === undefined
-    ) {
+    if (lexRuntime === undefined)
+    {
       throw new Error(
-        'Cannot initialize Lex feature. All arguments must be defined.'
+        'Cannot initialize Lex feature. LexRuntime must be defined'
       );
     }
 
     // Add sumerian hosts user-agent
     if (lexRuntime.config) {
-      lexRuntime.config.customUserAgent = this._withCustomUserAgent(
+      lexRuntime.config.customUserAgent = Utils.withCustomUserAgent(
         lexRuntime.config.customUserAgent
       );
     }
 
     // Store parameters
     this.SERVICES.lexRuntime = lexRuntime;
-    awsVersion = version;
   }
 
   /**
@@ -97,7 +92,7 @@ class LexFeature extends AbstractHostFeature {
    * 
    * @returns {Deferred}
    */
-  processWithAudio(inputAudio, sourceSampleRate, config) {
+  processWithAudio(inputAudio, sourceSampleRate, config = {}) {
     const audio = this._processAudio(inputAudio, sourceSampleRate);
     return this._process('audio/x-l16; rate=16000', audio, config);
   }
@@ -110,7 +105,7 @@ class LexFeature extends AbstractHostFeature {
    * 
    * @returns {Deferred}
    */
-  processWithText(inputText, config) {
+  processWithText(inputText, config = {}) {
     return this._process('text/plain; charset=utf-8', inputText, config);
   }
 
@@ -141,7 +136,7 @@ class LexFeature extends AbstractHostFeature {
         }
       }
 
-      this.emit(this.EVENTS.response, data.message);
+      this.emit(this.constructor.EVENTS.response, data.message);
 
       return data.message;
     });
@@ -152,7 +147,7 @@ class LexFeature extends AbstractHostFeature {
 
     settings.botName = config.botName ? config.botName : this._botName;
     settings.botAlias = config.botAlias ? config.botAlias : this._botAlias;
-    settings.botAlias = config.botAlias ? config.botAlias : this._botAlias;
+    settings.userId = config.userId ? config.userId : this._userId;
 
     if (
       settings.botName == undefined ||
@@ -212,9 +207,6 @@ class LexFeature extends AbstractHostFeature {
 }
 
 Object.defineProperties(LexFeature, {
-  AWS_VERSION: {
-    get: () => awsVersion,
-  },
   LEX_DEFAULTS: {
     value: {
       SampleRate: '16000',

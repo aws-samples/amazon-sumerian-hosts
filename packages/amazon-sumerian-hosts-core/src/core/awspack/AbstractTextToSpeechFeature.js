@@ -3,6 +3,7 @@
 import AbstractHostFeature from 'core/AbstractHostFeature';
 import AnimationUtils from 'core/animpack/AnimationUtils';
 import MathUtils from 'core/MathUtils';
+import Utils from 'core/Utils';
 import Deferred from 'core/Deferred';
 import Speech from './AbstractSpeech';
 import TextToSpeechUtils from './TextToSpeechUtils';
@@ -224,12 +225,12 @@ class AbstractTextToSpeechFeature extends AbstractHostFeature {
 
     // Add sumerian hosts user-agent
     if (polly.config) {
-      polly.config.customUserAgent = this._withCustomUserAgent(
+      polly.config.customUserAgent = Utils.withCustomUserAgent(
         polly.config.customUserAgent
       );
     }
     if (presigner.service && presigner.service.config) {
-      presigner.service.config.customUserAgent = this._withCustomUserAgent(
+      presigner.service.config.customUserAgent = Utils.withCustomUserAgent(
         presigner.service.config.customUserAgent
       );
     }
@@ -343,30 +344,6 @@ class AbstractTextToSpeechFeature extends AbstractHostFeature {
 
   set minEndMarkDuration(duration) {
     this._minEndMarkDuration = duration * 1000;
-  }
-
-  /**
-   * Appends the Sumerian Hosts custom user-agent to a string if it is not
-   * already present.
-   *
-   * @private
-   *
-   * @param {string} currentUserAgent - String to append to if needed.
-   *
-   * @returns {string}
-   */
-  static _withCustomUserAgent(currentUserAgent) {
-    const sumerianHostsUserAgent = 'request-source/SumerianHosts';
-
-    if (currentUserAgent == null) {
-      return sumerianHostsUserAgent;
-    }
-
-    if (currentUserAgent.indexOf(sumerianHostsUserAgent) !== -1) {
-      return currentUserAgent;
-    }
-
-    return currentUserAgent.concat(' ', sumerianHostsUserAgent);
   }
 
   /**

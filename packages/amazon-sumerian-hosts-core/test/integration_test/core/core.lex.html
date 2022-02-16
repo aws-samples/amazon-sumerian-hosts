@@ -1,5 +1,5 @@
 <!--
-  Copyright 2019 Amazon.com, Inc. or its affiliates. All Rights Reserved.
+  Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
   SPDX-License-Identifier: MIT-0
 -->
 <!DOCTYPE html>
@@ -10,6 +10,11 @@
     <link rel="icon" href="data:;base64,iVBORw0KGgo=" />
   </head>
   <body>
+    <button>Start Recording</button>
+    <button>Stop Recording</button>
+    <input type="text" size="20">
+    <button>Send Text Input</button>
+    <p>Lex Response:</p>
     <script
       type="text/javascript"
       src="https://sdk.amazonaws.com/js/aws-sdk-2.645.0.min.js"
@@ -17,19 +22,25 @@
     <script type="text/javascript" src="../../../dist/host.core.js"></script>
     <script>
       function main() {
+        const startBtn = document.querySelector('button:nth-of-type(1)');
+        const stopBtn = document.querySelector('button:nth-of-type(2)');
+        const textBtn = document.querySelector('button:nth-of-type(3)');
+        const input = document.querySelector('input');
+        const textDisplay = document.querySelector('p');
+
+        stopBtn.setAttribute('disabled','disabled');
+
         // Initialize AWS and create Polly service objects
         window.AWS.config.region = 'us-east-1';
         window.AWS.config.credentials = new AWS.CognitoIdentityCredentials({
-          IdentityPoolId: 'us-east-1:d788160e-56c8-42c1-adcd-dd271fbfc312',
+          IdentityPoolId: '<Enter Cognito Identity Pool ID here>',
         });
         const lexRuntime = new AWS.LexRuntime();
 
         // Add services to Host text to speech
-        const {HostObject} = HOST_CORE;
-        const {LexFeature} = HOST_CORE.aws;
+        const {HostObject, LexFeature} = HOST;
         LexFeature.initializeService(
-          lexRuntime,
-          window.AWS.VERSION
+          lexRuntime        
         );
 
         // Create the speaker who will deliver speeches
@@ -37,8 +48,8 @@
 
         // Add text to speech capability to the speaker
         speaker.addFeature(LexFeature, false, {
-          botName: "BookTrip",
-          botAlias: "Latest",
+          botName: "<Enter Lex Bot Name here>",
+          botAlias: "<Enter Lex Bot Alias here>",
         });
 
         // Listen for speech events from the speaker
@@ -46,6 +57,7 @@
           speaker.LexFeature.EVENTS.response,
           s => {
             console.log('lex response', s);
+            textDisplay.textContent = 'Lex Reponse: ' + s;
           },
           speaker
         );
@@ -58,14 +70,68 @@
 
         render();
 
-        // Test speeches
-        function testLex() {
-          speaker.LexFeature.processWithText(
-            'Book a Trip'
+        let recording = false;
+        let recLength = 0;
+        let recBuffer = [];
+
+        AudioContext = window.AudioContext || window.webkitAudioContext;
+        const audioContext = new AudioContext();
+        navigator.mediaDevices.getUserMedia({audio: true, video: false})
+          .then(stream => {
+            const source = audioContext.createMediaStreamSource(stream);
+            const node = audioContext.createScriptProcessor(4096, 1, 1);
+
+            node.onaudioprocess = (e) => {
+                if (!recording) return;
+
+                const buffer = e.inputBuffer.getChannelData(0);
+                recBuffer.push(new Float32Array(buffer));
+                recLength += buffer.length;
+            };
+
+            source.connect(node);
+            node.connect(audioContext.destination);
+          })
+
+        startBtn.onclick = function() {
+          startBtn.setAttribute('disabled','disabled');
+          stopBtn.removeAttribute('disabled');
+
+          if(audioContext.state === 'suspended') {
+            audioContext.resume();
+          }
+          recLength = 0;
+          recBuffer = [];
+          recording = true;
+        }
+
+        stopBtn.onclick = function() {
+          stopBtn.setAttribute('disabled','disabled');
+          startBtn.removeAttribute('disabled');
+
+          recording = false;
+
+          const result = new Float32Array(recLength);
+          let offset = 0;
+          for (let i = 0; i < recBuffer.length; i++) {
+              result.set(recBuffer[i], offset);
+              offset += recBuffer[i].length;
+          }
+          speaker.LexFeature.processWithAudio(
+            result,
+            audioContext.sampleRate
           );
         }
 
-        testLex();
+        textBtn.onclick = function() {
+          speaker.LexFeature.processWithText(
+            input.value
+          );
+        }
+        
+
+
+        //testLex();
       }
 
       main();
