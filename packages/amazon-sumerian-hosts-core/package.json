@@ -2,6 +2,16 @@
   "name": "@amazon-sumerian-hosts/core",
   "version": "2.0.0",
   "description": "",
+  "license": "MIT",
+  "author": {
+    "name": "Amazon Web Services",
+    "url": "https://aws.amazon.com",
+    "organization": true
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/aws-samples/amazon-sumerian-hosts.git"
+  },
   "main": "./dist/host.core.js",
   "scripts": {
     "test": "node ../../node_modules/karma/bin/karma start",
@@ -11,15 +21,5 @@
     "build-start": "npm run build; npm run start",
     "release": "npm run build",
     "docs": "jsdoc -c jsdoc.conf.json"
-  },
-  "keywords": [],
-  "author": "",
-  "license": "MIT",
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/aws-samples/amazon-sumerian-hosts.git"
-  },
-  "devDependencies": {
-    "webpack-cli": "^4.9.2"
   }
 }
