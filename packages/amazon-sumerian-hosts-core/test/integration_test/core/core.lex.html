@@ -31,40 +31,40 @@
         stopBtn.setAttribute('disabled','disabled');
 
         // Initialize AWS and create Polly service objects
-        window.AWS.config.region = 'us-east-1';
+        window.AWS.config.region = 'us-west-2';
         window.AWS.config.credentials = new AWS.CognitoIdentityCredentials({
           IdentityPoolId: '<Enter Cognito Identity Pool ID here>',
         });
         const lexRuntime = new AWS.LexRuntime();
 
-        // Add services to Host text to speech
+        // Add services to Host LexRuntime
         const {HostObject, LexFeature} = HOST;
         LexFeature.initializeService(
           lexRuntime        
         );
 
-        // Create the speaker who will deliver speeches
-        const speaker = new HostObject();
+        // Create the host who will interact with lex bot
+        const host = new HostObject();
 
-        // Add text to speech capability to the speaker
-        speaker.addFeature(LexFeature, false, {
+        // Add lex feature to the host
+        host.addFeature(LexFeature, false, {
           botName: "<Enter Lex Bot Name here>",
           botAlias: "<Enter Lex Bot Alias here>",
         });
 
-        // Listen for speech events from the speaker
-        speaker.listenTo(
-          speaker.LexFeature.EVENTS.response,
+        // Listen for lex response events from the host
+        host.listenTo(
+          host.LexFeature.EVENTS.response,
           s => {
             console.log('lex response', s);
             textDisplay.textContent = 'Lex Reponse: ' + s;
           },
-          speaker
+          host
         );
 
         // Render loop
         function render() {
-          speaker.update();
+          host.update();
           requestAnimationFrame(render);
         }
 
@@ -117,21 +117,17 @@
               result.set(recBuffer[i], offset);
               offset += recBuffer[i].length;
           }
-          speaker.LexFeature.processWithAudio(
+          host.LexFeature.processWithAudio(
             result,
             audioContext.sampleRate
           );
         }
 
         textBtn.onclick = function() {
-          speaker.LexFeature.processWithText(
+          host.LexFeature.processWithText(
             input.value
           );
         }
-        
-
-
-        //testLex();
       }
 
       main();
