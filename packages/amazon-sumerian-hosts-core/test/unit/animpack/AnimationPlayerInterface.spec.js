@@ -216,7 +216,13 @@ describe('AnimationPlayerInterface', () => {
       const onError = jasmine.createSpy('onError');
 
       try {
-        await player.resumeAnimation('state5', 0, undefined, undefined, onError);
+        await player.resumeAnimation(
+          'state5',
+          0,
+          undefined,
+          undefined,
+          onError
+        );
       } catch (e) {}
 
       expect(onError).toHaveBeenCalledTimes(1);

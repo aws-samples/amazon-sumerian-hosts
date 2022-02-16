@@ -203,7 +203,9 @@ describe('MathUtils', () => {
     it('should throw an error if the elements of the input array are not all numeric', () => {
       expect(() => MathUtils.getVectorMagnitude([1, '2'])).toThrowError();
 
-      expect(() => MathUtils.getVectorMagnitude([1, false, 3, 4])).toThrowError();
+      expect(() =>
+        MathUtils.getVectorMagnitude([1, false, 3, 4])
+      ).toThrowError();
     });
 
     it('should return the length of a vector of arbitrary dimensions', () => {
@@ -223,10 +225,22 @@ describe('MathUtils', () => {
   describe('cartesianToSpherical', () => {
     it('should return an array containing the radius, polar angle and azimuthal angle corresponding to the given x, y, z coordinates from the input array', () => {
       [
-        [[0, 0, 0], [0, 0, 0]],
-        [[0, 3, 0], [3, 0, 0]],
-        [[0, 0, 5], [5, Math.PI / 2, 0]],
-        [[-1, 0, 0], [1, Math.PI / 2, -Math.PI / 2]]
+        [
+          [0, 0, 0],
+          [0, 0, 0],
+        ],
+        [
+          [0, 3, 0],
+          [3, 0, 0],
+        ],
+        [
+          [0, 0, 5],
+          [5, Math.PI / 2, 0],
+        ],
+        [
+          [-1, 0, 0],
+          [1, Math.PI / 2, -Math.PI / 2],
+        ],
       ].forEach(set => {
         expect(MathUtils.cartesianToSpherical(...set[0])).toEqual(set[1]);
       });
@@ -237,7 +251,9 @@ describe('MathUtils', () => {
     it('should throw an error if either input is not an Array', () => {
       expect(() => MathUtils.getDotProduct()).toThrowError();
 
-      expect(() => MathUtils.getDotProduct('notAnArray', [0, 1])).toThrowError();
+      expect(() =>
+        MathUtils.getDotProduct('notAnArray', [0, 1])
+      ).toThrowError();
 
       expect(() => MathUtils.getDotProduct([0, 1], {})).toThrowError();
     });
@@ -267,8 +283,9 @@ describe('MathUtils', () => {
 
       expect(Math.abs(angle1)).toBeLessThanOrEqual(Number.EPSILON);
 
-      expect(Math.abs(MathUtils.getAngleBetween([0, 1], [1, 0]) - Math.PI / 2))
-        .toBeLessThanOrEqual(Number.EPSILON);
+      expect(
+        Math.abs(MathUtils.getAngleBetween([0, 1], [1, 0]) - Math.PI / 2)
+      ).toBeLessThanOrEqual(Number.EPSILON);
     });
   });
 
@@ -278,35 +295,35 @@ describe('MathUtils', () => {
 
       expect(() => MathUtils.rotateVector([1, 0, 0])).toThrowError();
 
-      expect(() => MathUtils.rotateVector(
-        [0, 1, 0], [1, 0, 0, 0, 1, 0, 0, 0, 1])
+      expect(() =>
+        MathUtils.rotateVector([0, 1, 0], [1, 0, 0, 0, 1, 0, 0, 0, 1])
       ).not.toThrowError();
     });
 
     it('should throw an error if the first input does not have 3 elements', () => {
-      expect(() => MathUtils.rotateVector(
-        [0, 1], [1, 0, 0, 0, 1, 0, 0, 0, 1])
+      expect(() =>
+        MathUtils.rotateVector([0, 1], [1, 0, 0, 0, 1, 0, 0, 0, 1])
       ).toThrowError();
 
-      expect(() => MathUtils.rotateVector(
-        [0, 1, 0], [1, 0, 0, 0, 1, 0, 0, 0, 1])
+      expect(() =>
+        MathUtils.rotateVector([0, 1, 0], [1, 0, 0, 0, 1, 0, 0, 0, 1])
       ).not.toThrowError();
     });
 
     it('should throw an error if the second input does not have 9 elements', () => {
-      expect(() => MathUtils.rotateVector(
-        [0, 1, 0], [1, 0, 0, 0, 1, 0])
+      expect(() =>
+        MathUtils.rotateVector([0, 1, 0], [1, 0, 0, 0, 1, 0])
       ).toThrowError();
 
-      expect(() => MathUtils.rotateVector(
-        [0, 1, 0], [1, 0, 0, 0, 1, 0, 0, 0, 1])
+      expect(() =>
+        MathUtils.rotateVector([0, 1, 0], [1, 0, 0, 0, 1, 0, 0, 0, 1])
       ).not.toThrowError();
     });
 
     it('should return a new vector array rotated by the amount of the matrix array', () => {
-      expect(MathUtils.rotateVector(
-        [0, 1, 0], [0, -1, 0, 1, 0, 0, 0, 0, 1])
-      ).toEqual([1, 0, 0])
+      expect(
+        MathUtils.rotateVector([0, 1, 0], [0, -1, 0, 1, 0, 0, 0, 0, 1])
+      ).toEqual([1, 0, 0]);
     });
   });
 
@@ -330,24 +347,74 @@ describe('MathUtils', () => {
 
       expect(() => MathUtils.getRotationMatrix('not an array')).toThrowError();
 
-      expect(() => MathUtils.getRotationMatrix(
-        [1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1])
+      expect(() =>
+        MathUtils.getRotationMatrix([
+          1,
+          0,
+          0,
+          0,
+          0,
+          1,
+          0,
+          0,
+          0,
+          0,
+          1,
+          0,
+          0,
+          0,
+          0,
+          1,
+        ])
       ).not.toThrowError();
     });
 
     it('should throw an error if the input does not have 16 elements', () => {
-      expect(() => MathUtils.getRotationMatrix(
-        [1, 0, 0, 0, 1, 0, 0, 0, 1])
+      expect(() =>
+        MathUtils.getRotationMatrix([1, 0, 0, 0, 1, 0, 0, 0, 1])
       ).toThrowError();
 
-      expect(() => MathUtils.getRotationMatrix(
-        [1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1])
+      expect(() =>
+        MathUtils.getRotationMatrix([
+          1,
+          0,
+          0,
+          0,
+          0,
+          1,
+          0,
+          0,
+          0,
+          0,
+          1,
+          0,
+          0,
+          0,
+          0,
+          1,
+        ])
       ).not.toThrowError();
     });
 
     it('should return an array of nine numbers', () => {
-      const result = MathUtils.getRotationMatrix(
-        [1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1]);
+      const result = MathUtils.getRotationMatrix([
+        1,
+        0,
+        0,
+        0,
+        0,
+        1,
+        0,
+        0,
+        0,
+        0,
+        1,
+        0,
+        0,
+        0,
+        0,
+        1,
+      ]);
 
       expect(result).toBeInstanceOf(Array);
       expect(result.length).toEqual(9);
@@ -355,10 +422,27 @@ describe('MathUtils', () => {
     });
 
     it('should return the rotation component of the input 4x4 matrix array', () => {
-      expect(MathUtils.getRotationMatrix(
-        [1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1]
-      )).toEqual([1, 0, 0, 0, 1, 0, 0, 0, 1]);
-    })
+      expect(
+        MathUtils.getRotationMatrix([
+          1,
+          0,
+          0,
+          0,
+          0,
+          1,
+          0,
+          0,
+          0,
+          0,
+          1,
+          0,
+          0,
+          0,
+          0,
+          1,
+        ])
+      ).toEqual([1, 0, 0, 0, 1, 0, 0, 0, 1]);
+    });
   });
 
   describe('dampValue', () => {
@@ -373,5 +457,5 @@ describe('MathUtils', () => {
       expect(result2).toBeGreaterThanOrEqual(50);
       expect(result2).toBeLessThanOrEqual(85);
     });
-  })
+  });
 });
