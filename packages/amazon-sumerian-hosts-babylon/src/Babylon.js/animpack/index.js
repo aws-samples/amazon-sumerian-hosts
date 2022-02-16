@@ -23,17 +23,17 @@ import SingleState from './state/SingleState';
 
 export default {
   /**
-   * @see AnimationFeature
+   * @see babylonjs/AnimationFeature
    */
   AnimationFeature,
-  /**
-   * @see AnimationLayer
-   */
-  AnimationLayer,
   /**
    * @see babylonjs/SingleState
    */
   SingleState,
+  /**
+   * @see module:hosts/core.AnimationLayer
+   */
+  AnimationLayer,
   /**
    * @see module:hosts/core.TransitionState
    */

@@ -10,7 +10,7 @@ import Speech from './Speech';
 
 export default {
   /**
-   * @see TextToSpeechFeature
+   * @see babylonjs/TextToSpeechFeature
    */
   TextToSpeechFeature,
   /**

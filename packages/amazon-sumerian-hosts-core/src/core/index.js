@@ -68,15 +68,15 @@ export default {
    */
   HostObject,
   /**
-   * @see LipsyncFeature
+   * @see core/LipsyncFeature
    */
   LipsyncFeature,
   /**
-   * @see GestureFeature
+   * @see core/GestureFeature
    */
   GestureFeature,
   /**
-   * @see PointOfInterestFeature
+   * @see core/PointOfInterestFeature
    */
   PointOfInterestFeature,
   /**

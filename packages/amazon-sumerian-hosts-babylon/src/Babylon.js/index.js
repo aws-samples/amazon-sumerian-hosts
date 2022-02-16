@@ -45,10 +45,6 @@ export default {
    */
   GestureFeature,
   /**
-   * @see babylonjs/PointOfInterestFeature
-   */
-  PointOfInterestFeature,
-  /**
    * @see module:hosts/core.DefaultVisemeMap
    */
   DefaultVisemeMap,
@@ -64,6 +60,10 @@ export default {
    * @see AxisMap
    */
   AxisMap,
+  /**
+   * @see babylonjs/PointOfInterestFeature
+   */
+  PointOfInterestFeature,
   /**
    * @see babylonjs/Messenger
    */

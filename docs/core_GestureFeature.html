@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8" />
-    <title>JSDoc: Class: babylonjs/PointOfInterestFeature</title>
+    <title>JSDoc: Class: core/GestureFeature</title>
 
     <script src="scripts/prettify/prettify.js"></script>
     <script src="scripts/prettify/lang-css.js"></script>
@@ -78,7 +78,7 @@
     </nav>
 
     <div id="main">
-      <h1 class="page-title">Class: babylonjs/PointOfInterestFeature</h1>
+      <h1 class="page-title">Class: core/GestureFeature</h1>
 
       
 
@@ -89,7 +89,13 @@
 
 <header>
     
-        <h2><span class="attribs"><span class="type-signature"></span></span>babylonjs/PointOfInterestFeature<span class="signature">()</span><span class="type-signature"></span></h2>
+        <h2><span class="attribs"><span class="type-signature"></span></span>core/GestureFeature<span class="signature">(host, options<span class="signature-attributes">opt</span>, layers)</span><span class="type-signature"></span></h2>
+        
+            <div class="class-description"><p>Gesture allows you to play animations on demand on one or more layers from script<br>
+or ssml. If gesture is played that is a QueueState, the queue will automatically<br>
+be progressed after a given hold time if a looping queued state is reached. Gesture<br>
+layers can optionally be automatically disabled when no gesture animation is<br>
+in progress.</p></div>
         
     
 </header>
@@ -100,12 +106,14 @@
         
 
     
-
-    
-    <h4 class="name" id="babylonjs/PointOfInterestFeature"><span class="type-signature"></span>new babylonjs/PointOfInterestFeature<span class="signature">()</span><span class="type-signature"></span></h4>
+    <h2>Constructor</h2>
     
 
     
+    <h4 class="name" id="core/GestureFeature"><span class="type-signature"></span>new core/GestureFeature<span class="signature">(host, options<span class="signature-attributes">opt</span>, layers)</span><span class="type-signature"></span></h4>
+    
+
+    
 
 
 
@@ -115,6 +123,243 @@
 
 
 
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+        <th>Attributes</th>
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>host</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><a href="core_HostObject.html">core/HostObject</a></span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>Host object that owns the feature.</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>options</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Object</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>Optional options for the feature.</p>
+                <h6>Properties</h6>
+                
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+        <th>Attributes</th>
+        
+
+        
+        <th>Default</th>
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>holdTime</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+                <td class="default">
+                
+                    3
+                
+                </td>
+            
+
+            <td class="description last"><p>Amount of time in seconds that must<br>
+elapse before advancing a gesture that's a <a href="QueueState.html">QueueState</a> when the current<br>
+state in the queue is set to loop infinitely.</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>minimumInterval</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+                <td class="default">
+                
+                    0.25
+                
+                </td>
+            
+
+            <td class="description last"><p>The minimum amount of time<br>
+in seconds that must elapse before another gesture can be played.</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+            </td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>layers</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Object</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>An object that maps layer names to layer options.<br>
+These are the layers that will be registered as tracked gesture layers. See<br>
+<a href="ManagedAnimationLayerInterface.html#registerLayer">ManagedAnimationLayerInterface#registerLayer</a> for more information<br>
+on expected format for each layer options object.</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
 
 
 
@@ -133,6 +378,15 @@
 
     
 
+    
+    <dt class="implements">Implements:</dt>
+    <dd class="implements"><ul>
+        
+            <li><a href="SSMLSpeechmarkInterface.html">SSMLSpeechmarkInterface</a></li>
+        
+            <li><a href="ManagedAnimationLayerInterface.html">ManagedAnimationLayerInterface</a></li>
+        
+    </ul></dd>
     
 
     
@@ -185,7 +439,7 @@
 
 
     <ul>
-        <li><a href="core_PointOfInterestFeature.html">core/PointOfInterestFeature</a></li>
+        <li><a href="AbstractHostFeature.html">AbstractHostFeature</a></li>
     </ul>
 
 
@@ -228,12 +482,12 @@
     
 
     
-    <dt class="inherited-from">Inherited From:</dt>
-    <dd class="inherited-from"><ul class="dummy"><li>
+
+    
+    <dt class="tag-overrides">Overrides:</dt>
+    <dd class="tag-overrides"><ul class="dummy"><li>
         <a href="AbstractHostFeature.html#host">AbstractHostFeature#host</a>
     </li></ul></dd>
-    
-
     
 
     
@@ -290,86 +544,11 @@
     
 
     
-    <dt class="inherited-from">Inherited From:</dt>
-    <dd class="inherited-from"><ul class="dummy"><li>
-        <a href="AbstractHostFeature.html#owner">AbstractHostFeature#owner</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
-
-        
-            
-<h4 class="name" id="target"><span class="type-signature"></span>target<span class="type-signature"> :Object|null</span></h4>
-
-
-
-
-<div class="description">
-    <p>Gets and sets the target object the host should look at.</p>
-</div>
-
-
-
-    <h5>Type:</h5>
-    <ul>
-        <li>
-            
-<span class="param-type">Object</span>
-|
-
-<span class="param-type">null</span>
-
-
-        </li>
-    </ul>
-
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
 
     
     <dt class="tag-overrides">Overrides:</dt>
     <dd class="tag-overrides"><ul class="dummy"><li>
-        <a href="core_PointOfInterestFeature.html#target">core/PointOfInterestFeature#target</a>
+        <a href="AbstractHostFeature.html#owner">AbstractHostFeature#owner</a>
     </li></ul></dd>
     
 
@@ -415,6 +594,280 @@
     
 
     
+    <h4 class="name" id="createGenericGestureArray"><span class="type-signature"></span>createGenericGestureArray<span class="signature">(layers<span class="signature-attributes">opt</span>)</span><span class="type-signature"> &rarr; {Array.&lt;string>}</span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    <p>Create an array that contains ssml mark syntax required to play each gesture<br>
+that does not have any associated words. The resulting array can be used as<br>
+an input for <a href="TextToSpeechUtils.html#.autoGenerateSSMLMarks">TextToSpeechUtils.autoGenerateSSMLMarks</a> or<br>
+<a href="TextToSpeechUtils.html#.addMarksToUnmarkedSentences">TextToSpeechUtils.addMarksToUnmarkedSentences</a> to update a speech<br>
+string with the markup required to play random gestures at each unmarked<br>
+sentence in the string.</p>
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+        <th>Attributes</th>
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>layers</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Array.&lt;string></span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>An array of names of managed layers to generate<br>
+marks for. If undefined, use all managed layers.</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">Array.&lt;string></span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id="createGestureMap"><span class="type-signature"></span>createGestureMap<span class="signature">()</span><span class="type-signature"> &rarr; {Object}</span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    <p>Create an object that maps ssml mark syntax required to play each gesture to<br>
+the words array associated with each gesture. Words arrays are defined at when<br>
+the gesture animation is registered. Gestures without associated words will<br>
+be excluded from the result. The resulting object can be used as an input<br>
+for <a href="TextToSpeechUtils.html#.autoGenerateSSMLMarks">TextToSpeechUtils.autoGenerateSSMLMarks</a> to update a speech string<br>
+with the markup required to play gestures timed with their associated words.</p>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">Object</span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+
+
+        
+            
+
+    
+
+    
     <h4 class="name" id="discard"><span class="type-signature"></span>discard<span class="signature">()</span><span class="type-signature"></span></h4>
     
 
@@ -446,8 +899,10 @@ from the host and remove reference to the host.</p>
     
 
     
-    <dt class="inherited-from">Inherited From:</dt>
-    <dd class="inherited-from"><ul class="dummy"><li>
+
+    
+    <dt class="tag-overrides">Overrides:</dt>
+    <dd class="tag-overrides"><ul class="dummy"><li>
         <a href="AbstractHostFeature.html#discard">AbstractHostFeature#discard</a>
     </li></ul></dd>
     
@@ -455,7 +910,14 @@ from the host and remove reference to the host.</p>
     
 
     
-
+    <dt class="implements">Implements:</dt>
+    <dd class="implements"><ul>
+        
+            <li><a href="SSMLSpeechmarkInterface.html#discard">SSMLSpeechmarkInterface#discard</a></li>
+        
+            <li><a href="ManagedAnimationLayerInterface.html#discard">ManagedAnimationLayerInterface#discard</a></li>
+        
+    </ul></dd>
     
 
     
@@ -627,12 +1089,12 @@ the class name of the feature.</p>
     
 
     
-    <dt class="inherited-from">Inherited From:</dt>
-    <dd class="inherited-from"><ul class="dummy"><li>
+
+    
+    <dt class="tag-overrides">Overrides:</dt>
+    <dd class="tag-overrides"><ul class="dummy"><li>
         <a href="AbstractHostFeature.html#emit">AbstractHostFeature#emit</a>
     </li></ul></dd>
-    
-
     
 
     
@@ -716,12 +1178,12 @@ and methods from the feature that users of the host need access to.</p>
     
 
     
-    <dt class="inherited-from">Inherited From:</dt>
-    <dd class="inherited-from"><ul class="dummy"><li>
+
+    
+    <dt class="tag-overrides">Overrides:</dt>
+    <dd class="tag-overrides"><ul class="dummy"><li>
         <a href="AbstractHostFeature.html#installApi">AbstractHostFeature#installApi</a>
     </li></ul></dd>
-    
-
     
 
     
@@ -876,8 +1338,10 @@ and methods from the feature that users of the host need access to.</p>
     
 
     
-    <dt class="inherited-from">Inherited From:</dt>
-    <dd class="inherited-from"><ul class="dummy"><li>
+
+    
+    <dt class="tag-overrides">Overrides:</dt>
+    <dd class="tag-overrides"><ul class="dummy"><li>
         <a href="AbstractHostFeature.html#listenTo">AbstractHostFeature#listenTo</a>
     </li></ul></dd>
     
@@ -905,8 +1369,6 @@ and methods from the feature that users of the host need access to.</p>
     
 
     
-
-    
 </dl>
 
 
@@ -934,7 +1396,7 @@ and methods from the feature that users of the host need access to.</p>
     
 
     
-    <h4 class="name" id="registerBlinkLayer"><span class="type-signature"></span>registerBlinkLayer<span class="signature">(layerName, options<span class="signature-attributes">opt</span>)</span><span class="type-signature"></span></h4>
+    <h4 class="name" id="playGesture"><span class="type-signature"></span>playGesture<span class="signature">(layerName, animationName, options<span class="signature-attributes">opt</span>)</span><span class="type-signature"></span></h4>
     
 
     
@@ -942,9 +1404,7 @@ and methods from the feature that users of the host need access to.</p>
 
 
 <div class="description">
-    <p>Start keeping track of an animation layer that owns a blink animation. Blink<br>
-animations can be of any type, but if it is of type randomAnimation then a<br>
-it will be randomized each time a blink is called.</p>
+    <p>Play a managed gesture animation.</p>
 </div>
 
 
@@ -983,6 +1443,528 @@ it will be randomized each time a blink is called.</p>
         <tr>
             
                 <td class="name"><code>layerName</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>The name of the layer that contains the gesture<br>
+animation.</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>animationName</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>The name of the gesture animation.</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>options</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Object</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>Optional gesture options.</p>
+                <h6>Properties</h6>
+                
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+        <th>Attributes</th>
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>holdTime</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>This option only applies to <a href="QueueState.html">QueueState</a><br>
+gestures. When a QueueState gesture progresses to a looping state, this option<br>
+defines how many seconds should elapse before moving the queue forward. If<br>
+undefined, it will fall back first to the holdTime defined in the options when<br>
+the gesture animation was registered and then to the holdTime defined on the<br>
+feature.</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>minimumInterval</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>The minimum amount of time that<br>
+must have elapsed since the last time a gesture was played.</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+            </td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id="registerAnimation"><span class="type-signature"></span>registerAnimation<span class="signature">(layerName, animationName, options<span class="signature-attributes">opt</span>)</span><span class="type-signature"></span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    <p>Start tracking keeping track of whether an animation with the given name is<br>
+present on the host.</p>
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+        <th>Attributes</th>
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>layerName</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>Name of the layer that will own the animation.</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>animationName</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>Name of the animation to keep track of.</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>options</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Object</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>Options for the animation.</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="implements">Implements:</dt>
+    <dd class="implements"><ul>
+        
+            <li><a href="ManagedAnimationLayerInterface.html#registerAnimation">ManagedAnimationLayerInterface#registerAnimation</a></li>
+        
+    </ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id="registerLayer"><span class="type-signature"></span>registerLayer<span class="signature">(name, options<span class="signature-attributes">opt</span>)</span><span class="type-signature"></span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    <p>Start tracking keeping track of whether a layer with the given name is present<br>
+on the host.</p>
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+        <th>Attributes</th>
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>name</code></td>
             
 
             <td class="type">
@@ -1057,54 +2039,12 @@ it will be randomized each time a blink is called.</p>
         
 
         
-        <th>Default</th>
-        
 
         <th class="last">Description</th>
     </tr>
     </thead>
 
     <tbody>
-    
-
-        <tr>
-            
-                <td class="name"><code>animation</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">string</span>
-
-
-            
-            </td>
-
-            
-                <td class="attributes">
-                
-                    &lt;optional><br>
-                
-
-                
-
-                
-                </td>
-            
-
-            
-                <td class="default">
-                
-                    'blink'
-                
-                </td>
-            
-
-            <td class="description last"><p>Name of the blink animation<br>
-on the layer.</p></td>
-        </tr>
-
     
 
         <tr>
@@ -1134,14 +2074,9 @@ on the layer.</p></td>
             
 
             
-                <td class="default">
-                
-                    PointOfInterestFeature.DEFAULT_LAYER_OPTIONS.blendTime
-                
-                </td>
-            
 
-            <td class="description last"><p>Default amount of time to use when manipulating the layer's weight.</p></td>
+            <td class="description last"><p>Default amount of time to use when<br>
+manipulating layer weights on this layer.</p></td>
         </tr>
 
     
@@ -1173,175 +2108,16 @@ on the layer.</p></td>
             
 
             
-                <td class="default">
-                
-                </td>
-            
 
             <td class="description last"><p>Default easing function to use when<br>
-manipulating the layer's weight.</p></td>
-        </tr>
-
-    
-    </tbody>
-</table>
-
-            </td>
-        </tr>
-
-    
-    </tbody>
-</table>
-
-
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-    <dt class="inherited-from">Inherited From:</dt>
-    <dd class="inherited-from"><ul class="dummy"><li>
-        <a href="core_PointOfInterestFeature.html#registerBlinkLayer">core/PointOfInterestFeature#registerBlinkLayer</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-        
-            
-
-    
-
-    
-    <h4 class="name" id="registerLookLayer"><span class="type-signature"></span>registerLookLayer<span class="signature">(layerName, options<span class="signature-attributes">opt</span>)</span><span class="type-signature"></span></h4>
-    
-
-    
-
-
-
-<div class="description">
-    <p>Start keeping track of an animation layer that owns a blend2d animation with<br>
-blendWeights corresponding to horizontal and vertical look angles.</p>
-</div>
-
-
-
-
-
-
-
-
-
-    <h5>Parameters:</h5>
-    
-
-<table class="params">
-    <thead>
-    <tr>
-        
-        <th>Name</th>
-        
-
-        <th>Type</th>
-
-        
-        <th>Attributes</th>
-        
-
-        
-
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-
-    <tbody>
-    
-
-        <tr>
-            
-                <td class="name"><code>layerName</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">string</span>
-
-
-            
-            </td>
-
-            
-                <td class="attributes">
-                
-
-                
-
-                
-                </td>
-            
-
-            
-
-            <td class="description last"><p>Name of the layer to keep track of.</p></td>
+manipulating layer weights on this layer.</p></td>
         </tr>
 
     
 
         <tr>
             
-                <td class="name"><code>options</code></td>
+                <td class="name"><code>animations</code></td>
             
 
             <td class="type">
@@ -1367,308 +2143,9 @@ blendWeights corresponding to horizontal and vertical look angles.</p>
 
             
 
-            <td class="description last"><p>Options for the layer.</p>
-                <h6>Properties</h6>
-                
-
-<table class="params">
-    <thead>
-    <tr>
-        
-        <th>Name</th>
-        
-
-        <th>Type</th>
-
-        
-        <th>Attributes</th>
-        
-
-        
-        <th>Default</th>
-        
-
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-
-    <tbody>
-    
-
-        <tr>
-            
-                <td class="name"><code>animation</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">string</span>
-
-
-            
-            </td>
-
-            
-                <td class="attributes">
-                
-                    &lt;optional><br>
-                
-
-                
-
-                
-                </td>
-            
-
-            
-                <td class="default">
-                
-                    'look'
-                
-                </td>
-            
-
-            <td class="description last"><p>Name of the animation on the<br>
-layer whose blendWeights will be driven based on the angle between the lookTracker<br>
-and the lookTarget. This animation must be of type blend2d.</p></td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>maxSpeed</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">number</span>
-
-
-            
-            </td>
-
-            
-                <td class="attributes">
-                
-                    &lt;optional><br>
-                
-
-                
-
-                
-                </td>
-            
-
-            
-                <td class="default">
-                
-                    25
-                
-                </td>
-            
-
-            <td class="description last"><p>The maximum speed at which the blend2d<br>
-blendWeights can be manipulated.</p></td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>forwardAxis</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">string</span>
-
-
-            
-            </td>
-
-            
-                <td class="attributes">
-                
-                    &lt;optional><br>
-                
-
-                
-
-                
-                </td>
-            
-
-            
-                <td class="default">
-                
-                    'PositiveZ'
-                
-                </td>
-            
-
-            <td class="description last"><p>Axis pointing from the<br>
-front of the lookReference object. Valid options are 'PositiveX', 'NegativeX',<br>
-'PositiveY', 'NegativeY', 'PositiveZ', 'NegativeZ'.</p></td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>lookReference</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">Object</span>
-
-
-            
-            </td>
-
-            
-                <td class="attributes">
-                
-                    &lt;optional><br>
-                
-
-                
-
-                
-                </td>
-            
-
-            
-                <td class="default">
-                
-                </td>
-            
-
-            <td class="description last"><p>3D transformation node that the lookTracker<br>
-rotation limits should be calculated relative to. Defaults to the host owner.</p></td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>hasSaccade</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">number</span>
-
-
-            
-            </td>
-
-            
-                <td class="attributes">
-                
-                    &lt;optional><br>
-                
-
-                
-
-                
-                </td>
-            
-
-            
-                <td class="default">
-                
-                    false
-                
-                </td>
-            
-
-            <td class="description last"><p>Whether or not to include<br>
-saccadic motion onto the blendWeight animation. This should only be set to<br>
-true for blend2d animations representing eye animation.</p></td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>blendTime</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">number</span>
-
-
-            
-            </td>
-
-            
-                <td class="attributes">
-                
-                    &lt;optional><br>
-                
-
-                
-
-                
-                </td>
-            
-
-            
-                <td class="default">
-                
-                    PointOfInterestFeature.DEFAULT_LAYER_OPTIONS.blendTime
-                
-                </td>
-            
-
-            <td class="description last"><p>Default amount of time to use when manipulating layer weight.</p></td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>easingFn</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">function</span>
-
-
-            
-            </td>
-
-            
-                <td class="attributes">
-                
-                    &lt;optional><br>
-                
-
-                
-
-                
-                </td>
-            
-
-            
-                <td class="default">
-                
-                </td>
-            
-
-            <td class="description last"><p>Default easing function to use when<br>
-manipulating layer weight.</p></td>
+            <td class="description last"><p>Animations to keep track of on the layer.<br>
+Animations are represented as key/value pairs of animation names and their<br>
+options.</p></td>
         </tr>
 
     
@@ -1694,435 +2171,18 @@ manipulating layer weight.</p></td>
     
 
     
-    <dt class="inherited-from">Inherited From:</dt>
-    <dd class="inherited-from"><ul class="dummy"><li>
-        <a href="core_PointOfInterestFeature.html#registerLookLayer">core/PointOfInterestFeature#registerLookLayer</a>
-    </li></ul></dd>
-    
 
     
 
     
 
     
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+    <dt class="implements">Implements:</dt>
+    <dd class="implements"><ul>
         
-            
-
-    
-
-    
-    <h4 class="name" id="setTarget"><span class="type-signature"></span>setTarget<span class="signature">(target)</span><span class="type-signature"></span></h4>
-    
-
-    
-
-
-
-<div class="description">
-    <p>Sets a new target to look at.</p>
-</div>
-
-
-
-
-
-
-
-
-
-    <h5>Parameters:</h5>
-    
-
-<table class="params">
-    <thead>
-    <tr>
+            <li><a href="ManagedAnimationLayerInterface.html#registerLayer">ManagedAnimationLayerInterface#registerLayer</a></li>
         
-        <th>Name</th>
-        
-
-        <th>Type</th>
-
-        
-
-        
-
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-
-    <tbody>
-    
-
-        <tr>
-            
-                <td class="name"><code>target</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">Object</span>
-|
-
-<span class="param-type">null</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last"><p>The new target to look at.</p></td>
-        </tr>
-
-    
-    </tbody>
-</table>
-
-
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-    <dt class="inherited-from">Inherited From:</dt>
-    <dd class="inherited-from"><ul class="dummy"><li>
-        <a href="core_PointOfInterestFeature.html#setTarget">core/PointOfInterestFeature#setTarget</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-        
-            
-
-    
-
-    
-    <h4 class="name" id="setTargetById"><span class="type-signature"></span>setTargetById<span class="signature">(target)</span><span class="type-signature"></span></h4>
-    
-
-    
-
-
-
-<div class="description">
-    <p>Finds an object given its id and sets it as the new target to look at.<br>
-Should be overloaded for each rendering engine implementation.</p>
-</div>
-
-
-
-
-
-
-
-
-
-    <h5>Parameters:</h5>
-    
-
-<table class="params">
-    <thead>
-    <tr>
-        
-        <th>Name</th>
-        
-
-        <th>Type</th>
-
-        
-
-        
-
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-
-    <tbody>
-    
-
-        <tr>
-            
-                <td class="name"><code>target</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">string</span>
-|
-
-<span class="param-type">number</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last"><p>Id to search for.</p></td>
-        </tr>
-
-    
-    </tbody>
-</table>
-
-
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-overrides">Overrides:</dt>
-    <dd class="tag-overrides"><ul class="dummy"><li>
-        <a href="core_PointOfInterestFeature.html#setTargetById">core/PointOfInterestFeature#setTargetById</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-        
-            
-
-    
-
-    
-    <h4 class="name" id="setTargetByName"><span class="type-signature"></span>setTargetByName<span class="signature">(target)</span><span class="type-signature"></span></h4>
-    
-
-    
-
-
-
-<div class="description">
-    <p>Finds an object given its name and sets it as the new target to look at.<br>
-Should be overloaded for each rendering engine implementation.</p>
-</div>
-
-
-
-
-
-
-
-
-
-    <h5>Parameters:</h5>
-    
-
-<table class="params">
-    <thead>
-    <tr>
-        
-        <th>Name</th>
-        
-
-        <th>Type</th>
-
-        
-
-        
-
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-
-    <tbody>
-    
-
-        <tr>
-            
-                <td class="name"><code>target</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">string</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last"><p>Name to search for.</p></td>
-        </tr>
-
-    
-    </tbody>
-</table>
-
-
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-overrides">Overrides:</dt>
-    <dd class="tag-overrides"><ul class="dummy"><li>
-        <a href="core_PointOfInterestFeature.html#setTargetByName">core/PointOfInterestFeature#setTargetByName</a>
-    </li></ul></dd>
-    
-
-    
-
+    </ul></dd>
     
 
     
@@ -2294,12 +2354,12 @@ remove all callbacks for the message.</p></td>
     
 
     
-    <dt class="inherited-from">Inherited From:</dt>
-    <dd class="inherited-from"><ul class="dummy"><li>
+
+    
+    <dt class="tag-overrides">Overrides:</dt>
+    <dd class="tag-overrides"><ul class="dummy"><li>
         <a href="AbstractHostFeature.html#stopListening">AbstractHostFeature#stopListening</a>
     </li></ul></dd>
-    
-
     
 
     
@@ -2476,12 +2536,12 @@ remove all callbacks for the message.</p></td>
     
 
     
-    <dt class="inherited-from">Inherited From:</dt>
-    <dd class="inherited-from"><ul class="dummy"><li>
+
+    
+    <dt class="tag-overrides">Overrides:</dt>
+    <dd class="tag-overrides"><ul class="dummy"><li>
         <a href="AbstractHostFeature.html#stopListeningByRegexp">AbstractHostFeature#stopListeningByRegexp</a>
     </li></ul></dd>
-    
-
     
 
     
@@ -2564,12 +2624,12 @@ remove all callbacks for the message.</p></td>
     
 
     
-    <dt class="inherited-from">Inherited From:</dt>
-    <dd class="inherited-from"><ul class="dummy"><li>
+
+    
+    <dt class="tag-overrides">Overrides:</dt>
+    <dd class="tag-overrides"><ul class="dummy"><li>
         <a href="AbstractHostFeature.html#stopListeningToAll">AbstractHostFeature#stopListeningToAll</a>
     </li></ul></dd>
-    
-
     
 
     
@@ -2702,12 +2762,12 @@ called.</p></td>
     
 
     
-    <dt class="inherited-from">Inherited From:</dt>
-    <dd class="inherited-from"><ul class="dummy"><li>
+
+    
+    <dt class="tag-overrides">Overrides:</dt>
+    <dd class="tag-overrides"><ul class="dummy"><li>
         <a href="AbstractHostFeature.html#update">AbstractHostFeature#update</a>
     </li></ul></dd>
-    
-
     
 
     

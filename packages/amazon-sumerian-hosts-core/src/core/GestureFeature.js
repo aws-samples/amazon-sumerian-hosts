@@ -209,6 +209,7 @@ const DefaultGestureWords = {
  * in progress.
  *
  * @extends AbstractHostFeature
+ * @alias core/GestureFeature
  * @implements SSMLSpeechmarkInterface
  * @implements ManagedAnimationLayerInterface
  */
