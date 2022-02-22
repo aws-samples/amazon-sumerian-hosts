@@ -725,26 +725,9 @@ class AbstractTextToSpeechFeature extends AbstractHostFeature {
             }
 
             markTypes[mark.type].push(mark);
-            endMarkTypes[mark.type] = mark;
             return mark;
           }
         );
-
-        // Find the time of the latest speechmark
-        const endTimes = [];
-        if (endMarkTypes.sentence) {
-          endTimes.push(endMarkTypes.sentence.time);
-        }
-        if (endMarkTypes.word) {
-          endTimes.push(endMarkTypes.word.time);
-        }
-        if (endMarkTypes.viseme) {
-          endTimes.push(endMarkTypes.viseme.time);
-        }
-        if (endMarkTypes.ssml) {
-          endTimes.push(endMarkTypes.ssml.time);
-        }
-
         return speechMarks;
       });
   }
