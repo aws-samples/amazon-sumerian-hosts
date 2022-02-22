@@ -744,33 +744,6 @@ class AbstractTextToSpeechFeature extends AbstractHostFeature {
         if (endMarkTypes.ssml) {
           endTimes.push(endMarkTypes.ssml.time);
         }
-        const endTime = Math.max(...endTimes);
-
-        // Calculate duration for the ending speechMarks of each type
-        if (endMarkTypes.sentence) {
-          endMarkTypes.sentence.duration = Math.max(
-            this._minEndMarkDuration,
-            endTime - endMarkTypes.sentence.time
-          );
-        }
-        if (endMarkTypes.word) {
-          endMarkTypes.word.duration = Math.max(
-            this._minEndMarkDuration,
-            endTime - endMarkTypes.word.time
-          );
-        }
-        if (endMarkTypes.viseme) {
-          endMarkTypes.viseme.duration = Math.max(
-            this._minEndMarkDuration,
-            endTime - endMarkTypes.viseme.time
-          );
-        }
-        if (endMarkTypes.ssml) {
-          endMarkTypes.ssml.duration = Math.max(
-            this._minEndMarkDuration,
-            endTime - endMarkTypes.ssml.time
-          );
-        }
 
         return speechMarks;
       });
