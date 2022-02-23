@@ -28,6 +28,7 @@
         const input = document.querySelector('input');
         const textDisplay = document.querySelector('p');
 
+        startBtn.setAttribute('disabled','disabled');
         stopBtn.setAttribute('disabled','disabled');
 
         // Initialize AWS and create Polly service objects
@@ -37,27 +38,33 @@
         });
         const lexRuntime = new AWS.LexRuntime();
 
-        // Add services to Host LexRuntime
         const {HostObject, LexFeature} = HOST;
+
+        // Create the host which will serve as the messenger
+        const host = new HostObject();
+
         LexFeature.initializeService(
           lexRuntime        
         );
-
-        // Create the host who will interact with lex bot
-        const host = new HostObject();
-
-        // Add lex feature to the host
-        host.addFeature(LexFeature, false, {
-          botName: "<Enter Lex Bot Name here>",
-          botAlias: "<Enter Lex Bot Alias here>",
-        });
+        const lexFeature = new LexFeature(host, {
+          botName: "BookTrip",
+          botAlias: "Test",
+        })
 
         // Listen for lex response events from the host
         host.listenTo(
-          host.LexFeature.EVENTS.response,
-          s => {
-            console.log('lex response', s);
-            textDisplay.textContent = 'Lex Reponse: ' + s;
+          LexFeature.EVENTS.lexResponse,
+          data => {
+            console.log('lex response', data.message);
+            textDisplay.textContent = 'Lex Reponse: ' + data.message;
+          },
+          host
+        );
+
+        host.listenTo(
+          LexFeature.EVENTS.micReady,
+          () => {
+            startBtn.removeAttribute('disabled');
           },
           host
         );
@@ -70,61 +77,24 @@
 
         render();
 
-        let recording = false;
-        let recLength = 0;
-        let recBuffer = [];
-
-        AudioContext = window.AudioContext || window.webkitAudioContext;
-        const audioContext = new AudioContext();
-        navigator.mediaDevices.getUserMedia({audio: true, video: false})
-          .then(stream => {
-            const source = audioContext.createMediaStreamSource(stream);
-            const node = audioContext.createScriptProcessor(4096, 1, 1);
-
-            node.onaudioprocess = (e) => {
-                if (!recording) return;
-
-                const buffer = e.inputBuffer.getChannelData(0);
-                recBuffer.push(new Float32Array(buffer));
-                recLength += buffer.length;
-            };
-
-            source.connect(node);
-            node.connect(audioContext.destination);
-          })
+        lexFeature.enableMicInput();
 
         startBtn.onclick = function() {
           startBtn.setAttribute('disabled','disabled');
           stopBtn.removeAttribute('disabled');
 
-          if(audioContext.state === 'suspended') {
-            audioContext.resume();
-          }
-          recLength = 0;
-          recBuffer = [];
-          recording = true;
+          lexFeature.beginVoiceRecording();
         }
 
         stopBtn.onclick = function() {
           stopBtn.setAttribute('disabled','disabled');
           startBtn.removeAttribute('disabled');
 
-          recording = false;
-
-          const result = new Float32Array(recLength);
-          let offset = 0;
-          for (let i = 0; i < recBuffer.length; i++) {
-              result.set(recBuffer[i], offset);
-              offset += recBuffer[i].length;
-          }
-          host.LexFeature.processWithAudio(
-            result,
-            audioContext.sampleRate
-          );
+          lexFeature.endVoiceRecording();
         }
 
         textBtn.onclick = function() {
-          host.LexFeature.processWithText(
+          lexFeature.processWithText(
             input.value
           );
         }

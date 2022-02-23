@@ -12,6 +12,12 @@ class LexUtils {
    *
    * Inspired by the following blog post from the Lex team:
    * https://aws.amazon.com/blogs/machine-learning/capturing-voice-input-in-a-browser/
+   * 
+   * @param {Float32Array} buffer - Input audio buffer
+   * @param {float} sourceSampleRate - Sample rate of the input audio buffer
+   * @param {float} targetSampleRate - Sample rate to try to convert to
+   *
+   * @return {Float32Array} Downsampled audio buffer
    */
    static downsampleAudio(buffer, sourceSampleRate, targetSampleRate) {
     if (!buffer || !buffer.length) {
@@ -58,6 +64,11 @@ class LexUtils {
    *
    * Inspired by the following blog post from the Lex team:
    * https://aws.amazon.com/blogs/machine-learning/capturing-voice-input-in-a-browser/
+   * 
+   * @param {Float32Array} buffer - Input audio buffer
+   * @param {float} targetSampleRate - Sample rate for the output audio
+   *
+   * @return {DataView} Converted audio data
    */
   static encodeWAV(buffer, targetSampleRate) {
     function _writeString(view, offset, string) {
@@ -65,6 +76,12 @@ class LexUtils {
         view.setUint8(offset + i, string.charCodeAt(i));
       }
     }  
+    function _floatTo16BitPCM(view, offset, input) {
+      for (let i = 0; i < input.length; i++, offset += 2) {
+        const s = Math.max(-1, Math.min(1, input[i]));
+        view.setInt16(offset, s < 0 ? s * 0x8000 : s * 0x7fff, true);
+      }
+    }
 
     if (!buffer) {
       return;
@@ -86,24 +103,9 @@ class LexUtils {
     view.setUint16(34, 16, true);
     _writeString(view, 36, 'data');
     view.setUint32(40, buffer.length * 2, true);
+    _floatTo16BitPCM(view, 44, buffer)
 
     return view;
-  }
-
-  /**
-   * Encode WAV audio as 16bit PCM
-   *
-   * @param {DataView} view The WAV audio
-   * @param {number} offset The starting offset to use for encoding
-   * @param {ArrayBuffer} input The original audio buffer data.
-   */
-  static floatTo16BitPCM(view, offset, input) {
-    if(input) {
-      for (let i = 0; i < input.length; i++, offset += 2) {
-        const s = Math.max(-1, Math.min(1, input[i]));
-        view.setInt16(offset, s < 0 ? s * 0x8000 : s * 0x7fff, true);
-      }
-    }
   }
 }
 

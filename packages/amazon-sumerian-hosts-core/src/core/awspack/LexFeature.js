@@ -1,6 +1,5 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: MIT-0
-import AbstractHostFeature from 'core/AbstractHostFeature';
 import Deferred from 'core/Deferred';
 import Utils from 'core/Utils';
 import LexUtils from 'core/awspack/LexUtils';
@@ -14,56 +13,60 @@ import LexUtils from 'core/awspack/LexUtils';
 /**
  * Feature class for interacting with Lex bot which the response from lex bot can be used for speech or other purpose.
  *
- * @extends AbstractHostFeature
- *
- * @property {(number|undefined)} AWS_VERSION - Gets the version of AWS SDK being
- * used. Will be undefined until [initializeService]{@link LexFeature.initializeService}
- * has been successfully executed.
  * @property {Object} LEX_DEFAULTS - Default values to use with calls to {@link external:LexRuntime}.
  * @property {string} [LEX_DEFAULTS.SampleRate='16000']
- * @property {Object} EVENTS - Built-in messages that the feature emits. When the
- * feature is added to a {@link core/HostObject}, event names will be prefixed by the
- * name of the feature class + '.'.
- * @property {string} [EVENTS.response=onLexResponseEvent] - Message that is emitted after
+ * @property {Object} EVENTS - Built-in messages that the feature emits.
+ * @property {string} [EVENTS.lexResponse=onLexResponseEvent] - Message that is emitted after
  * receiving lex response for the input sent
+ * @property {string} [EVENTS.micReady=onMicrophoneReadyEvent] - Message that is emitted after
+ * microphone is ready to use
+ * @property {string} [EVENTS.micReady=onMicrophoneBeginRecordingEvent] - Message that is emitted after
+ * microphone starts recording
+ * @property {string} [EVENTS.micReady=onMicrophoneEndRecordingEvent] - Message that is emitted after
+ * microphone ends recording
  * @property {Object} SERVICES - AWS services that are necessary for the feature
  * to function.
  * @property {external:LexRuntime} SERVICES.lexRuntime - The LexRuntime service that is used
  * to interact with lex bot. Will be undefined until [initializeService]{@link LexFeature.initializeService}
  * has been successfully executed
  */
-class LexFeature extends AbstractHostFeature {
+class LexFeature{
   /**
    * @constructor
    *
-   * @param {core/HostObject} host - Host object managing the feature.
-   * @param {Object} options - Options that will be used to interact with lex bot.
-   * @param {string} options.botName - The name of the lex bot.
-   * @param {string} options.botAlias - The alias of the lex bot.
-   * @param {string} options.userId - The userId used to keep track of the session with lex bot. 
+   * @param {Messenger=} messenger - Optional Messenger object which the event will be emitted through
+   * @param {Object=} options - Options that will be used to interact with lex bot.
+   * @param {string=} options.botName - The name of the lex bot.
+   * @param {string=} options.botAlias - The alias of the lex bot.
+   * @param {string=} options.userId - The userId used to keep track of the session with lex bot. 
   */
   constructor(
-    host,
+    messenger = undefined,
     options = {
       botName: undefined,
       botAlias: undefined,
       userId: undefined,
     }
   ) {
-    super(host);
+    this._messenger = messenger;
 
     this._botName = options.botName;
     this._botAlias = options.botAlias;
     this._userId = options.userId ? options.userId : Utils.createId();
+
+    //Microphone related fields
+    this._recording = false;
+    this._recLength = 0;
+    this._recBuffer = [];
+    this._setAudioContext();
   }
 
   /**
    * Store LexRuntime and AWS SDK Version for use across all instances.
    *
    * @param {external:LexRuntime} lexRuntime - lexRuntime instance to use to interact with lex bot.
-   * @param {string} version - Version of the AWS SDK to use.
    */
-  static initializeService(lexRuntime, version) {
+  static initializeService(lexRuntime) {
     // Make sure all were defined
     if (lexRuntime === undefined)
     {
@@ -83,17 +86,26 @@ class LexFeature extends AbstractHostFeature {
     this.SERVICES.lexRuntime = lexRuntime;
   }
 
+  _setAudioContext() {
+    AudioContext = window.AudioContext || window.webkitAudioContext;
+    this._audioContext = new AudioContext();
+  }
+
   /**
    * Sends audio user input to Amazon Lex.
    *
-   * @param {Float32Array} inputAudio - TypedArray view of audio buffer
+   * @param {Float32Array} inputAudio - Input audio buffer
    * @param {float} sourceSampleRate - Sample rate of input audio 
-   * @param {Object} config - Optional config for overriding lex bot info
+   * @param {Object=} config - Optional config for overriding lex bot info
+   * @param {string=} config.botName - The name of the lex bot.
+   * @param {string=} config.botAlias - The alias of the lex bot.
+   * @param {string=} config.userId - The userId used to keep track of the session with lex bot. 
    * 
-   * @returns {Deferred}
+   * @returns {Deferred} A Promise-like object that resolves to a Lex response object. 
+   * For details on the structure of that response object see: https://docs.aws.amazon.com/AWSJavaScriptSDK/latest/AWS/LexRuntime.html#postContent-property
    */
   processWithAudio(inputAudio, sourceSampleRate, config = {}) {
-    const audio = this._processAudio(inputAudio, sourceSampleRate);
+    const audio = this._prepareAudio(inputAudio, sourceSampleRate);
     return this._process('audio/x-l16; rate=16000', audio, config);
   }
 
@@ -101,9 +113,13 @@ class LexFeature extends AbstractHostFeature {
    * Sends text user input to Amazon Lex.
    *
    * @param {String} inputText - Text to send to lex bot
-   * @param {Object} config - Optional config for overriding lex bot info
+   * @param {Object=} config - Optional config for overriding lex bot info
+   * @param {string=} config.botName - The name of the lex bot.
+   * @param {string=} config.botAlias - The alias of the lex bot.
+   * @param {string=} config.userId - The userId used to keep track of the session with lex bot. 
    * 
-   * @returns {Deferred}
+   * @returns {Deferred} A Promise-like object that resolves to a Lex response object. 
+   * For details on the structure of that response object see: https://docs.aws.amazon.com/AWSJavaScriptSDK/latest/AWS/LexRuntime.html#postContent-property
    */
   processWithText(inputText, config = {}) {
     return this._process('text/plain; charset=utf-8', inputText, config);
@@ -112,7 +128,6 @@ class LexFeature extends AbstractHostFeature {
   _process(contentType, inputStream, config) {
     const settings = this._validateConfig(config);
     const lexSettings = {
-      accept: 'text/plain; charset=utf-8',
       botName: settings.botName,
       botAlias: settings.botAlias,
       contentType,
@@ -136,9 +151,11 @@ class LexFeature extends AbstractHostFeature {
         }
       }
 
-      this.emit(this.constructor.EVENTS.response, data.message);
+      if (this._messenger && this._messenger.emit) {
+        this._messenger.emit(this.constructor.EVENTS.lexResponse, data);
+      }
 
-      return data.message;
+      return data;
     });
   }
 
@@ -163,46 +180,83 @@ class LexFeature extends AbstractHostFeature {
     return settings;
   }
 
-  _processAudio(audioBuffer, sourceSampleRate) {
+  _prepareAudio(audioBuffer, sourceSampleRate) {
     const downsampledAudio = LexUtils.downsampleAudio(audioBuffer, sourceSampleRate, this.constructor.LEX_DEFAULTS.SampleRate);
     const encodedAudio = LexUtils.encodeWAV(downsampledAudio, this.constructor.LEX_DEFAULTS.SampleRate);
-    LexUtils.floatTo16BitPCM(encodedAudio, 44, downsampledAudio);
 
     return new Blob([encodedAudio], {type: 'application/octet-stream'});
   }
 
   /**
-   * Adds a namespace to the host with the name of the feature to contain properties
-   * and methods from the feature that users of the host need access to.
-   *
-   * @see LexFeature
+   * Setup microphone recorder which will get user permission for accessing microphone
+   * 
+   * @returns {Promise} A Promise-like object that resolves after getting permission from accessing microphone. 
    */
-  installApi() {
-    /**
-     * @inner
-     * @namespace LexFeature
-     */
-    const api = super.installApi();
+  enableMicInput() {
+    return navigator.mediaDevices.getUserMedia({audio: true, video: false})
+      .then(stream => {
+        const source = this._audioContext.createMediaStreamSource(stream);
+        const node = this._audioContext.createScriptProcessor(4096, 1, 1);
 
-    Object.assign(api, {
-      /**
-       * @memberof LexFeature
-       * @instance
-       * @method
-       * @see LexFeature#processWithAudio
-       */
-      processWithAudio: this.processWithAudio.bind(this),
+        node.onaudioprocess = (e) => {
+            if (!this._recording) return;
 
-      /**
-       * @memberof LexFeature
-       * @instance
-       * @method
-       * @see LexFeature#processWithText
-       */
-      processWithText: this.processWithText.bind(this),
-    });
+            const buffer = e.inputBuffer.getChannelData(0);
+            this._recBuffer.push(new Float32Array(buffer));
+            this._recLength += buffer.length;
+        };
 
-    return api;
+        source.connect(node);
+        node.connect(this._audioContext.destination);
+
+        if (this._messenger && this._messenger.emit) {
+          this._messenger.emit(this.constructor.EVENTS.micReady);
+        }
+      }).catch(function(err) {
+        console.warn("Cannot setup microphone: " + err.message);
+      });
+  }
+
+  /**
+   * Begin microphone recording. This function will also try to resume audioContext so that
+   * it's suggested to call this function after a user interaction
+   */
+  beginVoiceRecording() {
+    if(this._audioContext.state === 'suspended') {
+      this._audioContext.resume();
+    }
+    this._recLength = 0;
+    this._recBuffer = [];
+    this._recording = true;
+
+    if (this._messenger && this._messenger.emit) {
+      this._messenger.emit(this.constructor.EVENTS.recordBegin);
+    }
+  }
+
+  /**
+   * Stop microphone recording and send recorded audio data to lex.
+   * 
+   * @returns {Deferred} A Promise-like object that resolves to a Lex response object. 
+   * For details on the structure of that response object see: https://docs.aws.amazon.com/AWSJavaScriptSDK/latest/AWS/LexRuntime.html#postContent-property
+   */
+  endVoiceRecording() {
+    this._recording = false;
+
+    const result = new Float32Array(this._recLength);
+    let offset = 0;
+    for (let i = 0; i < this._recBuffer.length; i++) {
+        result.set(this._recBuffer[i], offset);
+        offset += this._recBuffer[i].length;
+    }
+
+    if (this._messenger && this._messenger.emit) {
+      this._messenger.emit(this.constructor.EVENTS.recordEnd);
+    }
+    return this.processWithAudio(
+      result,
+      this._audioContext.sampleRate
+    );
   }
 }
 
@@ -216,7 +270,10 @@ Object.defineProperties(LexFeature, {
   EVENTS: {
     value: {
       ...Object.getPrototypeOf(LexFeature).EVENTS,
-      response: 'onLexResponseEvent',
+      lexResponse: 'onLexResponseEvent',
+      micReady: 'onMicrophoneReadyEvent',
+      recordBegin: 'onMicrophoneBeginRecordingEvent',
+      recordEnd: 'onMicrophoneEndRecordingEvent',
     },
   },
   SERVICES: {
