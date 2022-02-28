@@ -8,7 +8,7 @@ import Speech from 'app/awspack/Speech';
 import {Messenger} from '@amazon-sumerian-hosts/core';
 import describeEnvironment from '../EnvironmentHarness';
 
-describeEnvironment('Speech', (_options, env) => {
+describeEnvironment('Speech', () => {
   let speech;
   let speaker;
   Object.assign(Messenger.EVENTS, {

@@ -7,7 +7,7 @@ import TextToSpeechFeature from 'app/awspack/TextToSpeechFeature';
 import Speech from 'app/awspack/Speech';
 import describeEnvironment from '../EnvironmentHarness';
 
-describeEnvironment('TextToSpeechFeature', (options, env) => {
+describeEnvironment('TextToSpeechFeature', () => {
   let mockHost;
   const mockNeuralVersion = '2.503.0';
 
@@ -17,8 +17,8 @@ describeEnvironment('TextToSpeechFeature', (options, env) => {
     // mock AWS.Polly
     const mockPolly = jasmine.createSpyObj('Polly', ['describeVoices']);
     mockPolly.describeVoices.and.returnValue({
-      promise: jasmine.createSpy().and.returnValue(
-        Promise.resolve({
+      promise: jasmine.createSpy().and.resolveTo(
+        {
           Voices: [
             {
               Gender: 'Female',
@@ -45,7 +45,7 @@ describeEnvironment('TextToSpeechFeature', (options, env) => {
               SupportedEngines: ['standard'],
             },
           ],
-        })
+        }
       ),
     });
 

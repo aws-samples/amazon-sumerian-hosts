@@ -87,7 +87,7 @@ describeEnvironment('AbstractSpeech', () => {
       const promise = speech._createPromise(undefined, onError);
 
       promise.reject('error');
-      promise.catch(e => {});
+      promise.catch();
 
       expect(onError).toHaveBeenCalledWith('error');
     });
@@ -96,7 +96,7 @@ describeEnvironment('AbstractSpeech', () => {
       const promise = speech._createPromise();
       const boundPromise = promise.reject.bind(promise, 'error');
       boundPromise();
-      promise.catch(e => {});
+      promise.catch();
 
       expect(boundPromise).not.toThrowError(TypeError);
     });
@@ -141,7 +141,7 @@ describeEnvironment('AbstractSpeech', () => {
 
       promise = speech._createPromise();
       promise.reject('error');
-      promise.catch(e => {});
+      promise.catch();
 
       expect(speech._playing).toBeFalse();
     });

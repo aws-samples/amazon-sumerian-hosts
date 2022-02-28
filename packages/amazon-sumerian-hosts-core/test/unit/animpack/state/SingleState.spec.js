@@ -8,7 +8,7 @@ import {LayerBlendModes} from 'core/animpack/AnimationLayer';
 import Deferred from 'core/Deferred';
 import describeEnvironment from '../../EnvironmentHarness';
 
-describeEnvironment('SingleState', (options = {}, env) => {
+describeEnvironment('SingleState', () => {
   let state;
 
   beforeEach(() => {
@@ -45,7 +45,7 @@ describeEnvironment('SingleState', (options = {}, env) => {
 
       state._promises.timeScale.reject();
 
-      state._promises.timeScale.catch(e => {});
+      state._promises.timeScale.catch();
 
       expect(state.timeScalePending).toBeFalse();
     });

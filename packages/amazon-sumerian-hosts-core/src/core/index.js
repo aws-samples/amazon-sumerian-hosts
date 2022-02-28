@@ -16,6 +16,9 @@ import GestureFeature, {DefaultGestureWords} from './GestureFeature';
 import PointOfInterestFeature, {AxisMap} from './PointOfInterestFeature';
 
 import animpack from './animpack';
+
+import aws from './awspack';
+
 const {
   Easing,
   AnimationFeature,
@@ -32,8 +35,6 @@ const {
   Blend2dState,
   AnimationUtils,
 } = animpack;
-
-import aws from './awspack';
 const {
   AbstractTextToSpeechFeature,
   TextToSpeechFeature,

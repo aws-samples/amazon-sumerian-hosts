@@ -38,11 +38,11 @@ describeEnvironment('AbstractTextToSpeechFeature', () => {
     mockPolly.synthesizeSpeech.and.returnValue({
       promise: jasmine
         .createSpy()
-        .and.returnValue(Promise.resolve(mockSpeechMarkResult)),
+        .and.resolveTo(mockSpeechMarkResult),
     });
     mockPolly.describeVoices.and.returnValue({
-      promise: jasmine.createSpy().and.returnValue(
-        Promise.resolve({
+      promise: jasmine.createSpy().and.resolveTo(
+        {
           Voices: [
             {
               Gender: 'Female',
@@ -69,7 +69,7 @@ describeEnvironment('AbstractTextToSpeechFeature', () => {
               SupportedEngines: ['standard'],
             },
           ],
-        })
+        }
       ),
     });
 
@@ -857,7 +857,7 @@ describeEnvironment('AbstractTextToSpeechFeature', () => {
 
       tts._promises.volume.reject();
 
-      tts._promises.volume.catch(e => {});
+      tts._promises.volume.catch();
 
       expect(tts.volumePending).toBeFalse();
     });

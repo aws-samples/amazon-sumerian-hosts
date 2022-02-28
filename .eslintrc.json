@@ -1,7 +1,7 @@
 {
-  "parser": "babel-eslint",
   "extends": ["airbnb", "prettier", "plugin:jasmine/recommended"],
   "plugins": ["prettier", "jasmine"],
+  "ignorePatterns": ["dist/", "docs_template/", "docs/"],
   "parserOptions": {
     "ecmaFeatures": {
       "experimentalObjectResetSpread": true
@@ -63,12 +63,5 @@
     "browser": true,
     "node": true,
     "jasmine": true
-  },
-  "settings": {
-    "import/resolver": {
-      "webpack": {
-        "config": "./webpack.common.js"
-      }
-    }
   }
 }

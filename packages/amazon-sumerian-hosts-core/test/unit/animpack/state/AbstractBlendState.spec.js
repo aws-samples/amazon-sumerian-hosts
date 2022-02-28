@@ -4,10 +4,10 @@
 /* eslint-disable no-undef */
 /* eslint-disable no-underscore-dangle */
 import Deferred from 'core/Deferred';
-import describeHostEnvironment from '../../EnvironmentHarness';
 import AbstractBlendState from 'core/animpack/state/AbstractBlendState';
+import describeHostEnvironment from '../../EnvironmentHarness';
 
-describeHostEnvironment('AbstractBlendState', (options = {}, env) => {
+describeHostEnvironment('AbstractBlendState', () => {
   let blend;
   let state1;
   let state2;
@@ -79,6 +79,7 @@ describeHostEnvironment('AbstractBlendState', (options = {}, env) => {
     it('should get the weight for the state', () => {
       const weight = 0.52;
       state1.weight = weight;
+
       expect(blend.getBlendWeight('state1')).toEqual(weight);
     });
   });
@@ -92,6 +93,7 @@ describeHostEnvironment('AbstractBlendState', (options = {}, env) => {
 
     it('should set the state weight to the target weight', async () => {
       const weight = 0.52;
+
       expect(state1.weight).not.toEqual(weight);
 
       await blend.setBlendWeight(state1.name, weight);
@@ -101,8 +103,10 @@ describeHostEnvironment('AbstractBlendState', (options = {}, env) => {
 
     it('should clamp state weights between 0 and 1', async () => {
       await blend.setBlendWeight('state1', -10);
+
       expect(blend.getBlendWeight('state1')).toEqual(0);
       await blend.setBlendWeight('state1', 10);
+
       expect(blend.getBlendWeight('state1')).toEqual(1);
     });
   });

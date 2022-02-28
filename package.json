@@ -16,9 +16,11 @@
     "./packages/amazon-sumerian-hosts-three"
   ],
   "scripts": {
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix",
     "test": "npm run --workspaces test", 
-    "build": "npm run --workspaces build",
-    "build-test": "npm run --workspaces build; npm run --workspaces test",
+    "build": "npm run lint && npm run --workspaces build",
+    "build-test": "npm run --workspaces build && npm run --workspaces test",
     "release": "npm run --workspaces build",
     "docs": "jsdoc -c jsdoc.conf.json"
   },
