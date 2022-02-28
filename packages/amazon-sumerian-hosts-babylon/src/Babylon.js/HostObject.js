@@ -23,10 +23,66 @@ class HostObject extends CoreHostObject {
         },
       });
     }
+    this._events = {};
   }
 
   get now() {
     return BABYLON.PrecisionDate.Now;
+  }
+
+  _createListener(callback) {
+    return value => {
+      callback(value);
+    };
+  }
+
+  _addListener(message, listener) {
+    this._events[message].add(listener);
+  }
+
+  _removeListener(message, listener) {
+    this._events[message].removeCallback(listener);
+  }
+
+  listenTo(message, callback) {
+    if (this._events[message] === undefined) {
+      this._events[message] = new BABYLON.Observable();
+    }
+
+    try {
+      super.listenTo(message, callback);
+    } catch (e) {
+      // Clean up the observable if nothing is listening to it
+      if (!this._events[message].hasObservers()) {
+        delete this._events[message];
+
+        throw e;
+      }
+    }
+  }
+
+  stopListening(message, callback) {
+    const event = this._events[message];
+
+    if (event === undefined) {
+      return;
+    }
+
+    super.stopListening(message, callback);
+
+    if (!event.hasObservers()) {
+      delete this._events[message];
+    }
+  }
+
+  emit(message, value) {
+    const event = this._events[message];
+
+    if (event === undefined) {
+      return;
+    }
+
+    event.notifyObservers(value);
   }
 }
 

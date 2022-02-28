@@ -13,11 +13,11 @@ import {
   DefaultVisemeMap,
   GestureFeature,
   DefaultGestureWords,
+  Messenger,
 } from '@amazon-sumerian-hosts/core';
 
 import PointOfInterestFeature, {AxisMap} from './PointOfInterestFeature';
 import {env} from './HostEnvironment';
-import Messenger from './Messenger';
 import HostObject from './HostObject';
 
 import aws from './awspack';
@@ -65,7 +65,7 @@ export default {
    */
   PointOfInterestFeature,
   /**
-   * @see babylonjs/Messenger
+   * @see module:core/Messenger
    */
   Messenger,
   /**
