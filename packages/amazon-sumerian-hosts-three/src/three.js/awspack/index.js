@@ -6,28 +6,28 @@ import LexFeature from './LexFeature';
 import Speech from './Speech';
 
 /**
- * @module three/awspack
+ * @module threejs/awspack
  */
 
 export default {
   /**
-   * @see three.js/TextToSpeechFeature
+   * @see threejs/TextToSpeechFeature
    */
   TextToSpeechFeature,
   /**
-   * @see core/TextToSpeechUtils
-   */
-  TextToSpeechUtils,
-  /**
-   * @see three.js/Speech
+   * @see threejs/Speech
    */
   Speech,
+  /**
+   * @see module:core/HOST.TextToSpeechUtils
+   */
+  TextToSpeechUtils,
   /**
    * @see three.js/LexFeature
    */
   LexFeature,
   /**
-   * @see core/LexUtils
+   * @see module:core/HOST.LexUtils
    */
   LexUtils
 };

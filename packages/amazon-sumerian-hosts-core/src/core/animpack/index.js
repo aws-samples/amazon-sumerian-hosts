@@ -81,6 +81,7 @@ const Easing = {
    */
   Bounce,
 };
+
 export default {
   /**
    * @see core/AnimationFeature

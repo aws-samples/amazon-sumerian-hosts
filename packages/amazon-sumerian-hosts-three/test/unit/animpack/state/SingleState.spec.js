@@ -4,20 +4,16 @@
 /* eslint-disable no-undef */
 /* eslint-disable no-underscore-dangle */
 import SingleState from 'app/animpack/state/SingleState';
-import {LayerBlendModes} from '@amazon-sumerian-hosts/core';
-import Deferred from '@amazon-sumerian-hosts/core';
+import {LayerBlendModes, Deferred} from '@amazon-sumerian-hosts/core';
 import describeEnvironment from '../../EnvironmentHarness';
 
-describeEnvironment('SingleState', (options = {}, env) => {
+describeEnvironment('SingleState', () => {
   let state;
-  let beginAnimationSpy;
 
   beforeEach(() => {
-    let mockThreeAction;
-    let mockThreeMixer;
 
-    mockThreeMixer = new THREE.EventDispatcher();
-    mockThreeAction = {
+    const mockThreeMixer = new THREE.EventDispatcher();
+    const mockThreeAction = {
       clampWhenFinished: false,
       enabled: false,
       loop: THREE.LoopRepeat,
@@ -44,15 +40,24 @@ describeEnvironment('SingleState', (options = {}, env) => {
 
       it('should return time divided by clip duration', () => {
         state._threeAction.time = 0.5;
-        state._threeAction.getClip = jasmine.createSpy().and.callFake(function() { return {duration: 1} });
+        state._threeAction.getClip = jasmine
+          .createSpy()
+          .and.callFake(function() {
+            return {duration: 1};
+          });
 
         expect(state.normalizedTime).toEqual(0.5);
       });
-    })
+    });
+
     describe('three set', () => {
       beforeEach(() => {
         state._threeAction.time = 0.5;
-        state._threeAction.getClip = jasmine.createSpy().and.callFake(function() { return {duration: 1} });
+        state._threeAction.getClip = jasmine
+          .createSpy()
+          .and.callFake(function() {
+            return {duration: 1};
+          });
       });
 
       it('should set the _threeAction time to the target time by multiplying clip duration', () => {
@@ -66,7 +71,7 @@ describeEnvironment('SingleState', (options = {}, env) => {
 
         expect(state._threeAction.time).toEqual(1);
       });
-    })
+    });
   });
 
   describe('timeScale', () => {
@@ -107,7 +112,7 @@ describeEnvironment('SingleState', (options = {}, env) => {
 
       state._promises.timeScale.reject();
 
-      state._promises.timeScale.catch(e => {});
+      state._promises.timeScale.catch();
 
       expect(state.timeScalePending).toBeFalse();
     });
@@ -163,11 +168,13 @@ describeEnvironment('SingleState', (options = {}, env) => {
 
       expect(state._threeAction.repetitions).toEqual(10);
     });
+
     it('should set _threeAction.loop to THREE.LoopRepeat if loopCount is greater than 1', () => {
       state.loopCount = 10;
 
       expect(state._threeAction.loop).toEqual(THREE.LoopRepeat);
     });
+
     it('should set _threeAction.loop to THREE.LoopOnce if loopCount equals 1', () => {
       state.loopCount = 1;
 
@@ -198,6 +205,7 @@ describeEnvironment('SingleState', (options = {}, env) => {
 
       expect(state._threeAction.reset).toHaveBeenCalledTimes(1);
     });
+
     it('should execute play on _threeAction', () => {
       state.play();
 
@@ -213,6 +221,7 @@ describeEnvironment('SingleState', (options = {}, env) => {
 
       expect(state._threeAction.paused).toBeTrue();
     });
+
     it('should execute play on _threeAction', () => {});
   });
 
@@ -224,6 +233,7 @@ describeEnvironment('SingleState', (options = {}, env) => {
 
       expect(state._threeAction.paused).toBeFalse();
     });
+
     it('should set _threeAction.enabled to true', () => {
       state._threeAction.enabled = false;
 
@@ -231,6 +241,7 @@ describeEnvironment('SingleState', (options = {}, env) => {
 
       expect(state._threeAction.enabled).toBeTrue();
     });
+
     it('should execute play on _threeAction', () => {
       state.resume();
 
@@ -254,6 +265,7 @@ describeEnvironment('SingleState', (options = {}, env) => {
 
       expect(state._threeAction.reset).toHaveBeenCalledTimes(1);
     });
+
     it('should set _threeAction.paused to true', () => {
       state._threeAction.paused = false;
 
@@ -261,6 +273,7 @@ describeEnvironment('SingleState', (options = {}, env) => {
 
       expect(state._threeAction.paused).toBeTrue();
     });
+
     it('should execute play on _threeAction', () => {
       state.stop();
 
@@ -281,6 +294,7 @@ describeEnvironment('SingleState', (options = {}, env) => {
         state._onFinishedEvent
       );
     });
+
     it('should set enabled on _threeAction to false', () => {
       state._threeAction.enabled = true;
 

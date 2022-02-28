@@ -8,11 +8,11 @@
  * @see https://threejs.org/docs/#api/en/core/Clock
  */
 
-import CoreHostObject from '@amazon-sumerian-hosts/core';
+import {HostObject as CoreHostObject, Messenger} from '@amazon-sumerian-hosts/core';
 
 /**
- * @alias three.js/HostObject
  * @extends core/HostObject
+ * @alias threejs/HostObject
  */
 class HostObject extends CoreHostObject {
   /**
@@ -36,7 +36,19 @@ class HostObject extends CoreHostObject {
 
       this._lastUpdate = this.now;
     }
+
+    this._dispatcher = this;
+  }
+
+  _createEvent(message, value) {
+    return {detail: value, type: message};
   }
 }
+
+Object.getOwnPropertyNames(THREE.EventDispatcher.prototype)
+  .filter(prop => prop !== 'constructor')
+  .forEach(prop => {
+    Messenger.prototype[prop] = THREE.EventDispatcher.prototype[prop];
+  });
 
 export default HostObject;

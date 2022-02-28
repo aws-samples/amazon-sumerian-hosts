@@ -427,7 +427,7 @@ describeEnvironment('GestureFeature', () => {
       expect(gestureFeature.createGenericGestureArray()).toEqual([]);
 
       gestureFeature._managedLayers = {
-        Gesture: { animations: { big: { words: DefaultGestureWords.big } } },
+        Gesture: {animations: {big: {words: DefaultGestureWords.big}}},
       };
 
       expect(gestureFeature.createGenericGestureArray()).toEqual([]);
@@ -438,7 +438,7 @@ describeEnvironment('GestureFeature', () => {
 
       expect(gestureFeature.createGenericGestureArray()).toEqual([key]);
     });
-  })
+  });
 
   describe('playGesture', () => {
     let onWarn;

@@ -213,9 +213,11 @@ describe('QueueState', () => {
     });
 
     it('should resolve and return the finish promise if _done gets updated to true', () => {
-      state1.play = jasmine.createSpy().and.callFake((onFinished) => { return onFinished(); });
+      state1.play = jasmine.createSpy().and.callFake(onFinished => {
+        return onFinished();
+      });
       queueState._promises.finish = new Deferred();
-      spyOn(queueState._queue.__proto__, 'next').and.callFake(() => {
+      spyOn(Object.getPrototypeOf(queueState._queue), 'next').and.callFake(() => {
         return {value: undefined, done: true};
       });
       const result = queueState.play();

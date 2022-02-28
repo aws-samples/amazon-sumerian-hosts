@@ -7,10 +7,9 @@
 import RandomAnimationState from 'core/animpack/state/RandomAnimationState';
 import Deferred from 'core/Deferred';
 import Utils from 'core/Utils';
-import describeHostEnvironment from "../../EnvironmentHarness";
+import describeHostEnvironment from '../../EnvironmentHarness';
 
-
-describeHostEnvironment('RandomAnimationState', (options = {}, env) => {
+describeHostEnvironment('RandomAnimationState', () => {
   let randomAnimState;
   let state1;
   let state2;
@@ -93,8 +92,12 @@ describeHostEnvironment('RandomAnimationState', (options = {}, env) => {
       spyOn(Utils, 'getRandomFloat').and.returnValue(0.5);
       randomAnimState._resetTimer();
 
-      expect(Utils.getRandomFloat).toHaveBeenCalledWith(randomAnimState._playInterval/4, randomAnimState._playInterval * 2);
-      expect(randomAnimState._promises.timer).toBeInstanceOf(Deferred);;
+      expect(Utils.getRandomFloat).toHaveBeenCalledWith(
+        randomAnimState._playInterval / 4,
+        randomAnimState._playInterval * 2
+      );
+
+      expect(randomAnimState._promises.timer).toBeInstanceOf(Deferred);
     });
   });
 
@@ -107,9 +110,9 @@ describeHostEnvironment('RandomAnimationState', (options = {}, env) => {
       state2.weight = 1.0;
       randomAnimState._currentState = state1;
 
-      randomAnimState.updateInternalWeight(1/2);
+      randomAnimState.updateInternalWeight(1 / 2);
 
-      expect(state1._internalWeight).toEqual(1/2);
+      expect(state1._internalWeight).toEqual(1 / 2);
       expect(state2._internalWeight).toBeUndefined();
     });
   });

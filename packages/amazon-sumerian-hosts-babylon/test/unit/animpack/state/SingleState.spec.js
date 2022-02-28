@@ -7,14 +7,13 @@ import SingleState from 'app/animpack/state/SingleState';
 import {Deferred, LayerBlendModes} from '@amazon-sumerian-hosts/core';
 import describeEnvironment from '../../EnvironmentHarness';
 
-describeEnvironment('SingleState', (options = {}, env) => {
+describeEnvironment('SingleState', (options = {}) => {
   let state;
   let beginAnimationSpy;
 
   beforeEach(() => {
-    let mockBabylonGroup;
 
-    mockBabylonGroup = {
+    const mockBabylonGroup = {
       from: 0,
       to: 2,
       targetedAnimations: [
@@ -67,6 +66,7 @@ describeEnvironment('SingleState', (options = {}, env) => {
         expect(state.normalizedTime).toEqual(0.5);
       });
     });
+
     describe('babylon set', () => {
       beforeEach(() => {
         state._babylonAnimatables = [{goToFrame: jasmine.createSpy()}];
@@ -130,7 +130,7 @@ describeEnvironment('SingleState', (options = {}, env) => {
 
       state._promises.timeScale.reject();
 
-      state._promises.timeScale.catch(e => {});
+      state._promises.timeScale.catch();
 
       expect(state.timeScalePending).toBeFalse();
     });
@@ -258,6 +258,7 @@ describeEnvironment('SingleState', (options = {}, env) => {
         state._babylonAnimatables.every(a => a.speedRatio === state.timeScale)
       ).toBeTrue();
     });
+
     it("should create a new array of animatables if it hasn't been previously started", () => {
       const currentAnimatables = [...state._babylonAnimatables];
       state._started = true;

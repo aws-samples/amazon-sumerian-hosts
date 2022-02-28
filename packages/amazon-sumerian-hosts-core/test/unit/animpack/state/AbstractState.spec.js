@@ -55,7 +55,7 @@ describe('AbstractState', () => {
 
       state._promises.weight.reject();
 
-      state._promises.weight.catch(e => {});
+      state._promises.weight.catch();
 
       expect(state.weightPending).toBeFalse();
     });

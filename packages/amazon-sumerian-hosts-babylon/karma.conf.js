@@ -1,12 +1,12 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: MIT-0
-const webpackConfig = require('./webpack.test.js');
+const webpackConfig = require('./webpack.test');
 
 const TEST_BROWSERS =
   process.env.TEST_BROWSERS !== undefined
     ? process.env.TEST_BROWSERS.split(',')
-        .map(s => s.trim())
-        .filter(s => s !== '')
+      .map(s => s.trim())
+      .filter(s => s !== '')
     : ['Chrome'];
 console.log(`TEST_BROWSERS=${TEST_BROWSERS.join(',')}`);
 
@@ -94,7 +94,7 @@ module.exports = function(config) {
     // how many browser should be started simultaneous
     concurrency: Infinity,
 
-    webpack: webpackConfig[0],
+    webpack: webpackConfig,
 
     webpackServer: {
       noInfo: true,

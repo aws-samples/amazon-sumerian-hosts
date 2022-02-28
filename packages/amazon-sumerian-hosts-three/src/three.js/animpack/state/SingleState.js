@@ -1,7 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: MIT-0
-import CoreSingleState from '@amazon-sumerian-hosts/core';
-import MathUtils from '@amazon-sumerian-hosts/core';
+import {SingleState as CoreSingleState, MathUtils} from '@amazon-sumerian-hosts/core';
 
 /**
  * Threejs AnimationAction object
@@ -16,7 +15,7 @@ const threeBlendModes = {
 
 /**
  * @extends core/SingleState
- * @alias three.js/SingleState
+ * @alias threejs/SingleState
  */
 class SingleState extends CoreSingleState {
   /**
@@ -72,8 +71,12 @@ class SingleState extends CoreSingleState {
   }
 
   get normalizedTime() {
-    if (this._threeAction.time && this._threeAction.getClip() && this._threeAction.getClip().duration) {
-      return this._threeAction.time/this._threeAction.getClip().duration;
+    if (
+      this._threeAction.time &&
+      this._threeAction.getClip() &&
+      this._threeAction.getClip().duration
+    ) {
+      return this._threeAction.time / this._threeAction.getClip().duration;
     }
     return 0;
   }

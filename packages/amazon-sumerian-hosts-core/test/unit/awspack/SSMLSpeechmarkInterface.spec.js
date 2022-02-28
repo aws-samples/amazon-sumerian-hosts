@@ -16,25 +16,30 @@ describeEnvironment('SSMLSpeechmarkInterface', () => {
 
   beforeEach(() => {
     host = new HostObject();
-    const HostFeature = AbstractHostFeature.mix(
-      SSMLSpeechmarkInterface.Mixin
-    );
+    const HostFeature = AbstractHostFeature.mix(SSMLSpeechmarkInterface.Mixin);
     host.addFeature(HostFeature);
     ssmlMarkFeature = host._features.SSMLSpeechMarkMixin;
     ssmlMarkFeature.callback = jasmine.createSpy();
   });
 
   describe('_onSsml', () => {
-
     it('should call the callback function if all the criteria meet', () => {
-      const speechMark = {type: 'ssml', value: '{"feature":"SSMLSpeechMarkMixin","method":"callback","args":["name", 1]}'};
+      const speechMark = {
+        type: 'ssml',
+        value:
+          '{"feature":"SSMLSpeechMarkMixin","method":"callback","args":["name", 1]}',
+      };
       ssmlMarkFeature._onSsml({mark: speechMark});
 
-      expect(ssmlMarkFeature.callback).toHaveBeenCalledWith('name',1);
+      expect(ssmlMarkFeature.callback).toHaveBeenCalledWith('name', 1);
     });
 
     it('should not call the callback function if feature doesnt exist', () => {
-      const speechMark = {type: 'ssml', value: '{"feature":"AnimationFeature","method":"callback","args":["name", 1]}'};
+      const speechMark = {
+        type: 'ssml',
+        value:
+          '{"feature":"AnimationFeature","method":"callback","args":["name", 1]}',
+      };
       ssmlMarkFeature._onSsml({mark: speechMark});
 
       expect(ssmlMarkFeature.callback).not.toHaveBeenCalled();
@@ -42,7 +47,11 @@ describeEnvironment('SSMLSpeechmarkInterface', () => {
 
     it('should not call the callback function if function doesnt exist in feature', () => {
       spyOn(console, 'warn');
-      const speechMark = {type: 'ssml', value: '{"feature":"SSMLSpeechMarkMixin","method":"notExist","args":["name", 1]}'};
+      const speechMark = {
+        type: 'ssml',
+        value:
+          '{"feature":"SSMLSpeechMarkMixin","method":"notExist","args":["name", 1]}',
+      };
       ssmlMarkFeature._onSsml({mark: speechMark});
 
       expect(ssmlMarkFeature.callback).not.toHaveBeenCalled();

@@ -217,7 +217,7 @@ describe('Deferred', () => {
         reject();
       });
 
-      autoRejected.catch(e => {});
+      autoRejected.catch();
 
       expect(autoRejected.rejected).toBeTrue();
 
@@ -227,7 +227,7 @@ describe('Deferred', () => {
 
       manualRejected.reject();
 
-      manualRejected.catch(e => {});
+      manualRejected.catch();
 
       expect(manualRejected.rejected).toBeTrue();
     });
@@ -267,7 +267,7 @@ describe('Deferred', () => {
         reject();
       });
 
-      autoRejected.catch(e => {});
+      autoRejected.catch();
 
       expect(autoRejected.pending).toBeFalse();
 
@@ -277,7 +277,7 @@ describe('Deferred', () => {
 
       manualRejected.reject();
 
-      manualRejected.catch(e => {});
+      manualRejected.catch();
 
       expect(manualRejected.pending).toBeFalse();
     });
@@ -322,7 +322,7 @@ describe('Deferred', () => {
 
       deferred.reject('error');
 
-      deferred.catch(e => {});
+      deferred.catch();
 
       expect(onReject).toHaveBeenCalledWith('error');
       expect(deferred.pending).toBeFalse();

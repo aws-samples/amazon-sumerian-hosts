@@ -38,11 +38,11 @@ describeEnvironment('AbstractTextToSpeechFeature', () => {
     mockPolly.synthesizeSpeech.and.returnValue({
       promise: jasmine
         .createSpy()
-        .and.returnValue(Promise.resolve(mockSpeechMarkResult)),
+        .and.resolveTo(mockSpeechMarkResult),
     });
     mockPolly.describeVoices.and.returnValue({
-      promise: jasmine.createSpy().and.returnValue(
-        Promise.resolve({
+      promise: jasmine.createSpy().and.resolveTo(
+        {
           Voices: [
             {
               Gender: 'Female',
@@ -69,7 +69,7 @@ describeEnvironment('AbstractTextToSpeechFeature', () => {
               SupportedEngines: ['standard'],
             },
           ],
-        })
+        }
       ),
     });
 
@@ -209,7 +209,7 @@ describeEnvironment('AbstractTextToSpeechFeature', () => {
 
     it('should set the Polly service customUserAgent to the sumerian designated value if the user has not set it', async () => {
       mockPolly.config = {
-        customUserAgent: null
+        customUserAgent: null,
       };
       const sumerianUserAgent = 'request-source/SumerianHosts';
 
@@ -225,9 +225,9 @@ describeEnvironment('AbstractTextToSpeechFeature', () => {
     });
 
     it('should append to the Polly service customUserAgent the sumerian designated value if the user has set it', async () => {
-      const customerUserAgent = "CustomerUserAgent";
+      const customerUserAgent = 'CustomerUserAgent';
       mockPolly.config = {
-        customUserAgent: customerUserAgent
+        customUserAgent: customerUserAgent,
       };
       const sumerianUserAgent = 'request-source/SumerianHosts';
 
@@ -239,12 +239,14 @@ describeEnvironment('AbstractTextToSpeechFeature', () => {
         mockNeuralVersion
       );
 
-      expect(mockPolly.config.customUserAgent).toEqual(customerUserAgent.concat(' ', sumerianUserAgent));
+      expect(mockPolly.config.customUserAgent).toEqual(
+        customerUserAgent.concat(' ', sumerianUserAgent)
+      );
     });
 
     it('should not append to the Polly service customeUserAgent the sumeriand designated value more than once', async () => {
       mockPolly.config = {
-        customUserAgent: null
+        customUserAgent: null,
       };
       const sumerianUserAgent = 'request-source/SumerianHosts';
 
@@ -270,11 +272,13 @@ describeEnvironment('AbstractTextToSpeechFeature', () => {
     it('should set the Polly Presigner service customUserAgent to the sumerian designated value if the user has not set it', async () => {
       mockPresigner.service = {};
       mockPresigner.service.config = {
-        customUserAgent: null
+        customUserAgent: null,
       };
       const sumerianUserAgent = 'request-source/SumerianHosts';
 
-      expect(mockPresigner.service.config.customUserAgent).not.toEqual(sumerianUserAgent);
+      expect(mockPresigner.service.config.customUserAgent).not.toEqual(
+        sumerianUserAgent
+      );
 
       await AbstractTextToSpeechFeature.initializeService(
         mockPolly,
@@ -282,18 +286,22 @@ describeEnvironment('AbstractTextToSpeechFeature', () => {
         mockNeuralVersion
       );
 
-      expect(mockPresigner.service.config.customUserAgent).toEqual(sumerianUserAgent);
+      expect(mockPresigner.service.config.customUserAgent).toEqual(
+        sumerianUserAgent
+      );
     });
 
     it('should append to the Polly Presigner service customUserAgent the sumerian designated value if the user has set it', async () => {
-      const customerUserAgent = "CustomerUserAgent";
+      const customerUserAgent = 'CustomerUserAgent';
       mockPresigner.service = {};
       mockPresigner.service.config = {
-        customUserAgent: customerUserAgent
+        customUserAgent: customerUserAgent,
       };
       const sumerianUserAgent = 'request-source/SumerianHosts';
 
-      expect(mockPresigner.service.config.customUserAgent).toEqual(customerUserAgent);
+      expect(mockPresigner.service.config.customUserAgent).toEqual(
+        customerUserAgent
+      );
 
       await AbstractTextToSpeechFeature.initializeService(
         mockPolly,
@@ -301,17 +309,21 @@ describeEnvironment('AbstractTextToSpeechFeature', () => {
         mockNeuralVersion
       );
 
-      expect(mockPresigner.service.config.customUserAgent).toEqual(customerUserAgent.concat(' ', sumerianUserAgent));
+      expect(mockPresigner.service.config.customUserAgent).toEqual(
+        customerUserAgent.concat(' ', sumerianUserAgent)
+      );
     });
 
     it('should not append to the Polly Presigner service customeUserAgent the sumeriand designated value more than once', async () => {
       mockPresigner.service = {};
       mockPresigner.service.config = {
-        customUserAgent: null
+        customUserAgent: null,
       };
       const sumerianUserAgent = 'request-source/SumerianHosts';
 
-      expect(mockPresigner.service.config.customUserAgent).not.toEqual(sumerianUserAgent);
+      expect(mockPresigner.service.config.customUserAgent).not.toEqual(
+        sumerianUserAgent
+      );
 
       await AbstractTextToSpeechFeature.initializeService(
         mockPolly,
@@ -319,7 +331,9 @@ describeEnvironment('AbstractTextToSpeechFeature', () => {
         mockNeuralVersion
       );
 
-      expect(mockPresigner.service.config.customUserAgent).toEqual(sumerianUserAgent);
+      expect(mockPresigner.service.config.customUserAgent).toEqual(
+        sumerianUserAgent
+      );
 
       await AbstractTextToSpeechFeature.initializeService(
         mockPolly,
@@ -327,7 +341,9 @@ describeEnvironment('AbstractTextToSpeechFeature', () => {
         mockNeuralVersion
       );
 
-      expect(mockPresigner.service.config.customUserAgent).toEqual(sumerianUserAgent);
+      expect(mockPresigner.service.config.customUserAgent).toEqual(
+        sumerianUserAgent
+      );
     });
   });
 
@@ -841,7 +857,7 @@ describeEnvironment('AbstractTextToSpeechFeature', () => {
 
       tts._promises.volume.reject();
 
-      tts._promises.volume.catch(e => {});
+      tts._promises.volume.catch();
 
       expect(tts.volumePending).toBeFalse();
     });
@@ -879,7 +895,7 @@ describeEnvironment('AbstractTextToSpeechFeature', () => {
       expect(tts.volume).toEqual(0.25);
     });
 
-    it('should resolve once the volume reaches the target value', async() => {
+    it('should resolve once the volume reaches the target value', async () => {
       const interpolator = tts.setVolume(1, 1);
 
       interpolator.execute(1000);
@@ -994,7 +1010,9 @@ describeEnvironment('AbstractTextToSpeechFeature', () => {
         mockNeuralVersion
       );
       const tts = new AbstractTextToSpeechFeature(mockHost);
-      const mockSpeech = jasmine.createSpyObj('mockSpeech', {'play': new Deferred(resolve => resolve())});
+      const mockSpeech = jasmine.createSpyObj('mockSpeech', {
+        play: new Deferred(resolve => resolve()),
+      });
       tts._speechCache['<speak>test</speak>'] = {
         promise: Promise.resolve(mockSpeech),
         config: tts._getConfig(),
@@ -1013,7 +1031,9 @@ describeEnvironment('AbstractTextToSpeechFeature', () => {
         mockNeuralVersion
       );
       const tts = new AbstractTextToSpeechFeature(mockHost);
-      const mockSpeech = jasmine.createSpyObj('mockSpeech', {'play': new Deferred(resolve => resolve())});
+      const mockSpeech = jasmine.createSpyObj('mockSpeech', {
+        play: new Deferred(resolve => resolve()),
+      });
       tts._speechCache['<speak>test</speak>'] = {
         promise: Promise.resolve(mockSpeech),
         config: tts._getConfig(),
@@ -1126,7 +1146,9 @@ describeEnvironment('AbstractTextToSpeechFeature', () => {
         mockNeuralVersion
       );
       const tts = new AbstractTextToSpeechFeature(mockHost);
-      const mockSpeech = jasmine.createSpyObj('mockSpeech', {'resume': new Deferred(resolve => resolve())});
+      const mockSpeech = jasmine.createSpyObj('mockSpeech', {
+        resume: new Deferred(resolve => resolve()),
+      });
       tts._speechCache['<speak>test</speak>'] = {
         promise: Promise.resolve(mockSpeech),
         config: tts._getConfig(),
@@ -1145,9 +1167,13 @@ describeEnvironment('AbstractTextToSpeechFeature', () => {
         mockNeuralVersion
       );
       const tts = new AbstractTextToSpeechFeature(mockHost);
-      const mockSpeech = jasmine.createSpyObj('mockSpeech', {'resume': new Deferred(resolve => resolve())}, {
-        text: '<speak>test</speak>',
-      });
+      const mockSpeech = jasmine.createSpyObj(
+        'mockSpeech',
+        {resume: new Deferred(resolve => resolve())},
+        {
+          text: '<speak>test</speak>',
+        }
+      );
       tts._currentSpeech = mockSpeech;
       tts._speechCache['<speak>test</speak>'] = {
         promise: Promise.resolve(mockSpeech),
@@ -1167,7 +1193,9 @@ describeEnvironment('AbstractTextToSpeechFeature', () => {
         mockNeuralVersion
       );
       const tts = new AbstractTextToSpeechFeature(mockHost);
-      const mockSpeech = jasmine.createSpyObj('mockSpeech', {'resume': new Deferred(resolve => resolve())});
+      const mockSpeech = jasmine.createSpyObj('mockSpeech', {
+        resume: new Deferred(resolve => resolve()),
+      });
       tts._speechCache['<speak>test</speak>'] = {
         promise: Promise.resolve(mockSpeech),
         config: tts._getConfig(),

@@ -4,8 +4,8 @@
 /* eslint-disable no-undef */
 /* eslint-disable no-underscore-dangle */
 
-import describeHostEnvironment from "../../EnvironmentHarness";
-import FreeBlendState from "../../../../src/core/animpack/state/FreeBlendState";
+import describeHostEnvironment from '../../EnvironmentHarness';
+import FreeBlendState from '../../../../src/core/animpack/state/FreeBlendState';
 
 describeHostEnvironment('FreeBlendState', () => {
   let freeBlend;
@@ -57,7 +57,7 @@ describeHostEnvironment('FreeBlendState', () => {
       freeBlend.updateInternalWeight(1);
 
       freeBlend._states.forEach(state => {
-        expect(state._internalWeight).toEqual(1/2);
+        expect(state._internalWeight).toEqual(1 / 2);
       });
 
       state3.weight = 1.0;
@@ -65,7 +65,7 @@ describeHostEnvironment('FreeBlendState', () => {
       freeBlend.updateInternalWeight(1);
 
       freeBlend._states.forEach(state => {
-        expect(state._internalWeight).toEqual(1/3);
+        expect(state._internalWeight).toEqual(1 / 3);
       });
     });
 
@@ -81,7 +81,7 @@ describeHostEnvironment('FreeBlendState', () => {
       freeBlend.updateInternalWeight(1);
 
       freeBlend._states.forEach(state => {
-        expect(state._internalWeight).toEqual(1/4);
+        expect(state._internalWeight).toEqual(1 / 4);
       });
     });
 

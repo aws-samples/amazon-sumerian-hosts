@@ -13,15 +13,15 @@ import LexUtils from './LexUtils';
 
 export default {
   /**
-   * @see core/LexFeature
+   * @see LexFeature
    */
   LexFeature,
   /**
-   * @see core/LexUtils
+   * @see LexUtils
    */
   LexUtils,
   /**
-   * @see core/AbstractTextToSpeechFeature
+   * @see AbstractTextToSpeechFeature
    */
   AbstractTextToSpeechFeature,
   /**
@@ -29,11 +29,11 @@ export default {
    */
   TextToSpeechFeature,
   /**
-   * @see core/TextToSpeechUtils
+   * @see TextToSpeechUtils
    */
   TextToSpeechUtils,
   /**
-   * @see core/AbstractSpeech
+   * @see AbstractSpeech
    */
   AbstractSpeech,
   /**

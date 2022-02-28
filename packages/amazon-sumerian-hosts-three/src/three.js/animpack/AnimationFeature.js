@@ -1,6 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: MIT-0
-import CoreAnimationFeature, {
+import {
+  AnimationFeature as CoreAnimationFeature,
   AnimationTypes,
 } from '@amazon-sumerian-hosts/core';
 import SingleState from './state/SingleState';
@@ -14,13 +15,13 @@ AnimationTypes.single = SingleState;
 
 /**
  * @extends core/AnimationFeature
- * @alias three.js/AnimationFeature
+ * @alias threejs/AnimationFeature
  */
 class AnimationFeature extends CoreAnimationFeature {
   /**
    * @constructor
    *
-   * @param {three.js/HostObject} host - Host object that owns the feature.
+   * @param {threejs/HostObject} host - Host object that owns the feature.
    */
   constructor(host) {
     super(host);

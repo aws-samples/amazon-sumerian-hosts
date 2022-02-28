@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: MIT-0
 
 /**
- * @module babylon/HOST
+ * @module babylonjs/HOST
  */
 
 import {
@@ -13,11 +13,11 @@ import {
   DefaultVisemeMap,
   GestureFeature,
   DefaultGestureWords,
+  Messenger,
 } from '@amazon-sumerian-hosts/core';
 
 import PointOfInterestFeature, {AxisMap} from './PointOfInterestFeature';
 import {env} from './HostEnvironment';
-import Messenger from './Messenger';
 import HostObject from './HostObject';
 
 import aws from './awspack';
@@ -25,59 +25,59 @@ import anim from './animpack';
 
 export default {
   /**
-   * @see env
-   */
-  env,
-  /**
-   * @see Utils
+   * @see module:core/HOST.Utils
    */
   Utils,
   /**
-   * @see MathUtils
+   * @see module:core/HOST.MathUtils
    */
   MathUtils,
   /**
-   * @see Deferred
+   * @see module:core/HOST.Deferred
    */
   Deferred,
   /**
-   * @see Babylon.js/Messenger
-   */
-  Messenger,
-  /**
-   * @see Babylon.js/HostObject
-   */
-  HostObject,
-  /**
-   * @see @amazon-sumerian-hosts/core/LipsyncFeature
+   * @see module:core/HOST.LipsyncFeature
    */
   LipsyncFeature,
   /**
-   * @see GestureFeature
+   * @see module:core/HOST.GestureFeature
    */
   GestureFeature,
   /**
-   * @see Babylon.js/PointOfInterestFeature
-   */
-  PointOfInterestFeature,
-  /**
-   * @see DefaultVisemeMap
+   * @see module:core/HOST.DefaultVisemeMap
    */
   DefaultVisemeMap,
   /**
-   * @see DefaultGestureWords
+   * @see module:core/HOST.DefaultGestureWords
    */
   DefaultGestureWords,
+  /**
+   * @see env
+   */
+  env,
   /**
    * @see AxisMap
    */
   AxisMap,
   /**
-   * @see module:babylon/awspack
+   * @see babylonjs/PointOfInterestFeature
+   */
+  PointOfInterestFeature,
+  /**
+   * @see module:core/Messenger
+   */
+  Messenger,
+  /**
+   * @see babylonjs/HostObject
+   */
+  HostObject,
+  /**
+   * @see module:babylonjs/awspack
    */
   aws,
   /**
-   * @see module:babylon/animpack
+   * @see module:babylonjs/animpack
    */
   anim,
 };

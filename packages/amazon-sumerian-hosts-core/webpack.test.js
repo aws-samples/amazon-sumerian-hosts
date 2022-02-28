@@ -1,6 +1,5 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: MIT-0
-const webpack = require('webpack');
 const path = require('path');
 
 const corePath = path.resolve(__dirname, './src/core/');
@@ -17,7 +16,7 @@ const baseConfig = {
             options: {
               presets: ['@babel/preset-env'],
             },
-          }
+          },
         ],
         exclude: /(node_modules|bower_components)/,
       },
@@ -42,4 +41,4 @@ const coreConfig = {
   },
 };
 
-module.exports = [coreConfig];
+module.exports = coreConfig;

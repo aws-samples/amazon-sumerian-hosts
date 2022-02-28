@@ -142,7 +142,10 @@ describeEnvironment('TextToSpeechUtils', () => {
     });
 
     it('should execute addMarksToUnmarkedSentences if there are random marks defined', () => {
-      const onAddRandomMarks = spyOn(TextToSpeechUtils, 'addMarksToUnmarkedSentences');
+      const onAddRandomMarks = spyOn(
+        TextToSpeechUtils,
+        'addMarksToUnmarkedSentences'
+      );
       const map = {
         'mark:no': ['no'],
         'mark:text': ['text'],
@@ -170,16 +173,22 @@ describeEnvironment('TextToSpeechUtils', () => {
 
       expect(TextToSpeechUtils.addMarksToUnmarkedSentences(text)).toEqual(text);
 
-      expect(TextToSpeechUtils.addMarksToUnmarkedSentences(text, []))
-        .toEqual(text);
+      expect(TextToSpeechUtils.addMarksToUnmarkedSentences(text, [])).toEqual(
+        text
+      );
     });
 
     it('should return the original input text if all sentences contain marks', () => {
-      const text = '<mark name="mark1"/> This sentence has a mark. So does <mark name="mark2"/> this one';
+      const text =
+        '<mark name="mark1"/> This sentence has a mark. So does <mark name="mark2"/> this one';
 
-      expect(TextToSpeechUtils
-        .addMarksToUnmarkedSentences(text, ['random1', 'random2', 'random3']))
-        .toEqual(text);
+      expect(
+        TextToSpeechUtils.addMarksToUnmarkedSentences(text, [
+          'random1',
+          'random2',
+          'random3',
+        ])
+      ).toEqual(text);
     });
 
     it('should add marks to each sentence not containing marks', () => {
@@ -190,10 +199,9 @@ describeEnvironment('TextToSpeechUtils', () => {
         ['This is a sentence. This is another! Still more?', 3],
         [`<mark name='test'/>This contains a mark. But, this doesn't!!!`, 2],
       ].forEach(set => {
-        const result = TextToSpeechUtils.addMarksToUnmarkedSentences(
-          set[0],
-          ['test']
-        );
+        const result = TextToSpeechUtils.addMarksToUnmarkedSentences(set[0], [
+          'test',
+        ]);
 
         expect((result.match(ssmlMarkRegex) || []).length).toEqual(set[1]);
       });
@@ -236,11 +244,7 @@ describeEnvironment('TextToSpeechUtils', () => {
         'mark:the': ['the'],
       });
 
-      const markedText = TextToSpeechUtils._insertMarks(
-        originalText,
-        map,
-        []
-      );
+      const markedText = TextToSpeechUtils._insertMarks(originalText, map, []);
 
       presentMarks.forEach(regex => {
         expect(markedText.match(regex).length).toEqual(1);
@@ -257,11 +261,7 @@ describeEnvironment('TextToSpeechUtils', () => {
         'mark:text': ['text'],
       });
 
-      const markedText = TextToSpeechUtils._insertMarks(
-        originalText,
-        map,
-        []
-      );
+      const markedText = TextToSpeechUtils._insertMarks(originalText, map, []);
 
       presentMarks.forEach(regex => {
         expect(markedText.match(regex).length).toEqual(1);
@@ -275,11 +275,7 @@ describeEnvironment('TextToSpeechUtils', () => {
         'mark:no': ['text', 'reads', 'the'],
       });
 
-      const markedText = TextToSpeechUtils._insertMarks(
-        originalText,
-        map,
-        []
-      );
+      const markedText = TextToSpeechUtils._insertMarks(originalText, map, []);
 
       expect(markedText.match(regexNoMark).length).toEqual(3);
     });
@@ -374,9 +370,9 @@ describeEnvironment('TextToSpeechUtils', () => {
         TextToSpeechUtils._insertRandomMarksAt(text, [1, 2], null)
       ).toEqual(text);
 
-      expect(
-        TextToSpeechUtils._insertRandomMarksAt(text, [1, 2], [])
-      ).toEqual(text);
+      expect(TextToSpeechUtils._insertRandomMarksAt(text, [1, 2], [])).toEqual(
+        text
+      );
     });
 
     it('should insert marks at the specified indices without losing any of the original text', () => {

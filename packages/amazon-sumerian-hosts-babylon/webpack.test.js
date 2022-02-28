@@ -40,4 +40,4 @@ const babylonConfig = {
   ],
 };
 
-module.exports = [babylonConfig];
+module.exports = babylonConfig;

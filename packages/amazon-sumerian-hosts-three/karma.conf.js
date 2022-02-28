@@ -1,10 +1,13 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: MIT-0
-const webpackConfig = require('./webpack.test.js');
+const webpackConfig = require('./webpack.test');
 
-const TEST_BROWSERS = process.env.TEST_BROWSERS !== undefined
-  ? process.env.TEST_BROWSERS.split(',').map(s => s.trim()).filter(s => s !== '')
-  : ['Chrome'];
+const TEST_BROWSERS =
+  process.env.TEST_BROWSERS !== undefined
+    ? process.env.TEST_BROWSERS.split(',')
+      .map(s => s.trim())
+      .filter(s => s !== '')
+    : ['Chrome'];
 console.log(`TEST_BROWSERS=${TEST_BROWSERS.join(',')}`);
 
 module.exports = function(config) {
@@ -57,11 +60,11 @@ module.exports = function(config) {
     reporters: ['spec'],
 
     specReporter: {
-      suppressErrorSummary: false,  // print error summary
-      suppressFailed: false,        // print information about failed tests
-      suppressPassed: false,        // print information about passed tests
-      suppressSkipped: false,       // print information about skipped tests
-      showSpecTiming: true          // print the time elapsed for each spec
+      suppressErrorSummary: false, // print error summary
+      suppressFailed: false, // print information about failed tests
+      suppressPassed: false, // print information about passed tests
+      suppressSkipped: false, // print information about skipped tests
+      showSpecTiming: true, // print the time elapsed for each spec
     },
 
     // web server port
@@ -89,7 +92,7 @@ module.exports = function(config) {
     // how many browser should be started simultaneous
     concurrency: Infinity,
 
-    webpack: webpackConfig[0],
+    webpack: webpackConfig,
 
     webpackServer: {
       noInfo: true,

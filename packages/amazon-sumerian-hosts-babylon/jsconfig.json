@@ -1,0 +1,11 @@
+{
+  "compilerOptions": {
+    "baseUrl": ".",
+    "target": "ES2015",
+    "paths": {
+      "@amazon-sumerian-hosts/core": ["../amazon-sumerian-hosts-core/src/core"],
+      "app/*": ["src/Babylon.js/*"],
+    },
+  },
+ "exclude": ["node_modules", "dist", "examples"]
+}

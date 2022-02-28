@@ -114,7 +114,7 @@ describe('AnimationLayer', () => {
 
       layer._promises.weight.reject();
 
-      layer._promises.weight.catch(e => {});
+      layer._promises.weight.catch();
 
       expect(layer.weightPending).toBeFalse();
     });

@@ -2,12 +2,12 @@
 // SPDX-License-Identifier: MIT-0
 /* eslint-disable jasmine/no-spec-dupes */
 /* eslint-disable no-underscore-dangle */
-import Messenger from 'app/Messenger';
+import {Messenger} from '@amazon-sumerian-hosts/core';
 import TextToSpeechFeature from 'app/awspack/TextToSpeechFeature';
 import Speech from 'app/awspack/Speech';
 import describeEnvironment from '../EnvironmentHarness';
 
-describeEnvironment('TextToSpeechFeature', (options, env) => {
+describeEnvironment('TextToSpeechFeature', (options) => {
   let mockHost;
   const mockNeuralVersion = '2.503.0';
 
@@ -17,8 +17,8 @@ describeEnvironment('TextToSpeechFeature', (options, env) => {
     // mock AWS.Polly
     const mockPolly = jasmine.createSpyObj('Polly', ['describeVoices']);
     mockPolly.describeVoices.and.returnValue({
-      promise: jasmine.createSpy().and.returnValue(
-        Promise.resolve({
+      promise: jasmine.createSpy().and.resolveTo(
+        {
           Voices: [
             {
               Gender: 'Female',
@@ -45,7 +45,7 @@ describeEnvironment('TextToSpeechFeature', (options, env) => {
               SupportedEngines: ['standard'],
             },
           ],
-        })
+        }
       ),
     });
 

@@ -2,17 +2,21 @@
 // SPDX-License-Identifier: MIT-0
 
 /**
- * @module three/HOST
+ * @module threejs/HOST
  */
 
-import Utils from '@amazon-sumerian-hosts/core';
-import MathUtils from '@amazon-sumerian-hosts/core';
-import Deferred from '@amazon-sumerian-hosts/core';
-import LipsyncFeature, {DefaultVisemeMap} from '@amazon-sumerian-hosts/core';
-import GestureFeature, {DefaultGestureWords} from '@amazon-sumerian-hosts/core';
+import {
+  Utils,
+  MathUtils,
+  Deferred,
+  LipsyncFeature,
+  DefaultVisemeMap,
+  GestureFeature,
+  DefaultGestureWords,
+  Messenger,
+} from '@amazon-sumerian-hosts/core';
 import PointOfInterestFeature, {AxisMap} from './PointOfInterestFeature';
 import {env} from './HostEnvironment';
-import Messenger from './Messenger';
 import HostObject from './HostObject';
 
 import aws from './awspack';
@@ -20,59 +24,59 @@ import anim from './animpack';
 
 export default {
   /**
+   * @see module:core/HOST.Utils
+   */
+  Utils,
+  /**
+   * @see module:core/HOST.MathUtils
+   */
+  MathUtils,
+  /**
+   * @see module:core/HOST.Deferred
+   */
+  Deferred,
+  /**
+   * @see module:core/HOST.LipsyncFeature
+   */
+  LipsyncFeature,
+  /**
+   * @see module:core/HOST.GestureFeature
+   */
+  GestureFeature,
+  /**
+   * @see module:core/HOST.DefaultVisemeMap
+   */
+  DefaultVisemeMap,
+  /**
+   * @see module:core/HOST.DefaultGestureWords
+   */
+  DefaultGestureWords,
+  /**
+   * @see threejs/PointOfInterestFeature
+   */
+  PointOfInterestFeature,
+  /**
    * @see env
    */
   env,
   /**
-   * @see Utils
-   */
-  Utils,
-  /**
-   * @see MathUtils
-   */
-  MathUtils,
-  /**
-   * @see Deferred
-   */
-  Deferred,
-  /**
-   * @see three.js/Messenger
+   * @see module:core/Messenger
    */
   Messenger,
   /**
-   * @see three.js/HostObject
+   * @see threejs/HostObject
    */
   HostObject,
-  /**
-   * @see @amazon-sumerian-hosts/core/index/LipsyncFeature
-   */
-  LipsyncFeature,
-  /**
-   * @see GestureFeature
-   */
-  GestureFeature,
-  /**
-   * @see three.js/PointOfInterestFeature
-   */
-  PointOfInterestFeature,
-  /**
-   * @see DefaultVisemeMap
-   */
-  DefaultVisemeMap,
-  /**
-   * @see DefaultGestureWords
-   */
-  DefaultGestureWords,
   /**
    * @see AxisMap
    */
   AxisMap,
   /**
-   * @see module:three/awspack
+   * @see module:threejs/awspack
    */
   aws,
   /**
-   * @see module:three/animpack
+   * @see module:threejs/animpack
    */
   anim,
 };
