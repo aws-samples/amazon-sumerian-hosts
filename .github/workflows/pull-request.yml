@@ -1,0 +1,23 @@
+name: Run build/tests/lint on pull requests
+
+on:
+  pull_request:
+
+# By default the karma test runners use the karma 'Chrome' runner
+# This is great when running locally because the browser pops up and you get to see what it does
+# This doesn't work in Actions, however, so we set this env var to force the Headless runner
+env:
+  TEST_BROWSERS: ChromeHeadless
+  
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v1
+        with:
+          node-version: '16.x'
+          registry-url: 'https://registry.npmjs.org'
+      - run: npm install
+      - run: chromium --version
+      - run: npm run build-test

@@ -45,8 +45,6 @@ class SingleState extends AbstractState {
     return 0;
   }
 
-  set normalizedTime(time) {}
-
   /**
    * Gets and sets the a factor to scale animation playback speed with.
    *

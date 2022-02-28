@@ -1,0 +1,10 @@
+{
+  "extends": ["../../.eslintrc"],
+  "settings": {
+    "import/resolver": {
+      "webpack": {
+        "config": "./webpack.common.js"
+      }
+    }
+  }
+}

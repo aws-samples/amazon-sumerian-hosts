@@ -83,6 +83,7 @@ class TextToSpeechFeature extends CoreTextToSpeechFeature {
       return result;
     });
   }
+
   _createSpeech(text, speechmarks, audioConfig) {
     return new Speech(this, text, speechmarks, audioConfig);
   }

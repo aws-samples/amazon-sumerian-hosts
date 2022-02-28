@@ -9,7 +9,7 @@ import Deferred from 'core/Deferred';
 import Utils from 'core/Utils';
 import describeHostEnvironment from '../../EnvironmentHarness';
 
-describeHostEnvironment('RandomAnimationState', (options = {}, env) => {
+describeHostEnvironment('RandomAnimationState', () => {
   let randomAnimState;
   let state1;
   let state2;
@@ -96,6 +96,7 @@ describeHostEnvironment('RandomAnimationState', (options = {}, env) => {
         randomAnimState._playInterval / 4,
         randomAnimState._playInterval * 2
       );
+
       expect(randomAnimState._promises.timer).toBeInstanceOf(Deferred);
     });
   });
