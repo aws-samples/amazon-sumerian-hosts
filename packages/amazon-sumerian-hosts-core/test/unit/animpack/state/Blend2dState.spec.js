@@ -5,8 +5,7 @@
 /* eslint-disable no-underscore-dangle */
 /* eslint-disable jasmine/prefer-toHaveBeenCalledWith */
 /* eslint-disable prefer-destructuring */
-import Deferred from 'core/Deferred';
-import Blend2dState from 'core/animpack/state/Blend2dState';
+import {Blend2dState, Deferred} from '@amazon-sumerian-hosts/core';
 import describeHostEnviornment from '../../EnvironmentHarness';
 
 describeHostEnviornment('Blend2dState', () => {

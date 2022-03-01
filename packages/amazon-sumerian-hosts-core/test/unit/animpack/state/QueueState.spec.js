@@ -2,8 +2,7 @@
 // SPDX-License-Identifier: MIT-0
 /* eslint-disable no-underscore-dangle */
 /* eslint-disable jasmine/no-spec-dupes */
-import QueueState from 'core/animpack/state/QueueState';
-import Deferred from 'core/Deferred';
+import {Deferred, QueueState} from '@amazon-sumerian-hosts/core';
 
 describe('QueueState', () => {
   let queueState;

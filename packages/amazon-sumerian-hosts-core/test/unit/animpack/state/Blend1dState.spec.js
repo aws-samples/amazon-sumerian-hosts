@@ -3,8 +3,7 @@
 /* eslint-disable jasmine/no-spec-dupes */
 /* eslint-disable no-unused-vars */
 /* eslint-disable no-underscore-dangle */
-import Deferred from 'core/Deferred';
-import Blend1dState from 'core/animpack/state/Blend1dState';
+import {Blend1dState, Deferred} from '@amazon-sumerian-hosts/core';
 import describeHostEnviornment from '../../EnvironmentHarness';
 
 describeHostEnviornment('Blend1dState', () => {

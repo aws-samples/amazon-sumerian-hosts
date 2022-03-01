@@ -2,7 +2,7 @@
 /* eslint-disable no-underscore-dangle */
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: MIT-0
-import LexFeature from 'core/awspack/LexFeature';
+import {LexFeature} from '@amazon-sumerian-hosts/core';
 import describeEnvironment from '../EnvironmentHarness';
 
 describeEnvironment('LexFeature', () => {
@@ -62,7 +62,7 @@ describeEnvironment('LexFeature', () => {
     });
   });
 
-  describe('_process', async () => {
+  describe('_process', () => {
     it('should execute LexRuntime.postContent', async () => {
       lexFeature = new LexFeature(mockLexRuntime, {botName: 'Bot', botAlias: 'Alias', userId: 'UserId'});
       await lexFeature._process('TestType', 'TestInput', {});
@@ -100,7 +100,7 @@ describeEnvironment('LexFeature', () => {
     });
   });
 
-  describe('enableMicInput', async () => {
+  describe('enableMicInput', () => {
     beforeEach(() => {
       spyOn(navigator.mediaDevices, 'getUserMedia').and.resolveTo();
 

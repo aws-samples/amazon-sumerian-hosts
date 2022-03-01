@@ -4,8 +4,7 @@
 /* eslint-disable jasmine/no-spec-dupes */
 /* eslint-disable jasmine/prefer-toHaveBeenCalledWith */
 /* eslint-disable no-underscore-dangle */
-import Speech from 'core/awspack/Speech';
-import Messenger from 'core/Messenger';
+import {Speech, Messenger} from '@amazon-sumerian-hosts/core';
 import describeEnvironment from '../EnvironmentHarness';
 
 describeEnvironment('Speech', (_options, env) => {

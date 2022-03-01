@@ -3,8 +3,7 @@
 /* eslint-disable jasmine/no-spec-dupes */
 /* eslint-disable no-underscore-dangle */
 import {Messenger} from '@amazon-sumerian-hosts/core';
-import TextToSpeechFeature from 'app/awspack/TextToSpeechFeature';
-import Speech from 'app/awspack/Speech';
+import {aws} from '@amazon-sumerian-hosts/three';
 import describeEnvironment from '../EnvironmentHarness';
 
 describeEnvironment('TextToSpeechFeature', () => {
@@ -57,7 +56,7 @@ describeEnvironment('TextToSpeechFeature', () => {
       fn(undefined, '/base/test/assets/audio.mp3');
     });
 
-    await TextToSpeechFeature.initializeService(
+    await aws.TextToSpeechFeature.initializeService(
       mockPolly,
       mockPresigner,
       mockNeuralVersion
@@ -66,7 +65,7 @@ describeEnvironment('TextToSpeechFeature', () => {
 
   describe('_createSpeech', () => {
     it('should return an object that extends Speech', async () => {
-      const tts = new TextToSpeechFeature(mockHost);
+      const tts = new aws.TextToSpeechFeature(mockHost);
       const speech = tts._createSpeech('', [], {
         audio: {
           onended: jasmine.createSpy('onended'),
@@ -74,7 +73,7 @@ describeEnvironment('TextToSpeechFeature', () => {
         },
       });
 
-      expect(speech).toBeInstanceOf(Speech);
+      expect(speech).toBeInstanceOf(aws.Speech);
     });
   });
 
@@ -82,7 +81,7 @@ describeEnvironment('TextToSpeechFeature', () => {
     function itActsLikeThreeSynthesizeAudio() {
       it("should return a promise that resolves to an object with an audio property that's and instance of Audio", async () => {
         const listener = new THREE.AudioListener();
-        const tts = new TextToSpeechFeature(mockHost, {listener});
+        const tts = new aws.TextToSpeechFeature(mockHost, {listener});
         const promise = tts._synthesizeAudio({});
 
         expect(promise).toBeInstanceOf(Promise);
@@ -96,7 +95,7 @@ describeEnvironment('TextToSpeechFeature', () => {
 
       it("should return a promise that resolves to an object with a threeAudio property that's and instance of THREE.Audio", async () => {
         const listener = new THREE.AudioListener();
-        const tts = new TextToSpeechFeature(mockHost, {listener});
+        const tts = new aws.TextToSpeechFeature(mockHost, {listener});
         const promise = tts._synthesizeAudio({});
 
         const result = await promise;
@@ -108,7 +107,7 @@ describeEnvironment('TextToSpeechFeature', () => {
       it("should return a promise that resolves to an object with a threeAudio property that's and instance of THREE.PositionalAudio if attachTo is defined in the constructor options", async () => {
         const listener = new THREE.AudioListener();
         const attachTo = new THREE.Object3D();
-        const tts = new TextToSpeechFeature(mockHost, {listener, attachTo});
+        const tts = new aws.TextToSpeechFeature(mockHost, {listener, attachTo});
         const promise = tts._synthesizeAudio({});
 
         const result = await promise;

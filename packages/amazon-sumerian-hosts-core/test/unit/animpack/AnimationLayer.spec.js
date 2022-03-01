@@ -4,8 +4,7 @@
 /* eslint-disable no-undef */
 /* eslint-disable jasmine/no-spec-dupes */
 /* eslint-disable no-underscore-dangle */
-import AnimationLayer, {LayerBlendModes} from 'core/animpack/AnimationLayer';
-import Deferred from 'core/Deferred';
+import {AnimationLayer, Deferred, LayerBlendModes} from '@amazon-sumerian-hosts/core';
 
 describe('AnimationLayer', () => {
   let layer;

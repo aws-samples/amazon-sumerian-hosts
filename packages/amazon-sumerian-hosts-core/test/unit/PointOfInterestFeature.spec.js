@@ -2,9 +2,7 @@
 // SPDX-License-Identifier: MIT-0
 /* eslint-disable jasmine/no-spec-dupes */
 /* eslint-disable no-underscore-dangle */
-import PointOfInterestFeature from 'core/PointOfInterestFeature';
-import HostObject from 'core/HostObject';
-import Deferred from 'core/Deferred';
+import {PointOfInterestFeature, HostObject, Deferred} from '@amazon-sumerian-hosts/core';
 import describeEnvironment from './EnvironmentHarness';
 
 describeEnvironment('PointOfInterestFeature', ({owner}) => {

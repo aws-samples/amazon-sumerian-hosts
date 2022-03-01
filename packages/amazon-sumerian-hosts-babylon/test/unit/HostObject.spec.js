@@ -1,6 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: MIT-0
-import HostObject from 'app/HostObject';
+import { HostObject } from '@amazon-sumerian-hosts/babylon';
 import describeEnvironment from './EnvironmentHarness';
 
 describeEnvironment('HostObject', (options = {}) => {

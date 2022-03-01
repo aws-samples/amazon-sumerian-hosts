@@ -5,7 +5,7 @@
 /* eslint-disable jasmine/no-spec-dupes */
 /* eslint-disable jasmine/prefer-toHaveBeenCalledWith */
 /* eslint-disable no-underscore-dangle */
-import TextToSpeechUtils from 'core/awspack/TextToSpeechUtils';
+import { TextToSpeechUtils } from '@amazon-sumerian-hosts/core';
 import describeEnvironment from '../EnvironmentHarness';
 
 describeEnvironment('TextToSpeechUtils', () => {

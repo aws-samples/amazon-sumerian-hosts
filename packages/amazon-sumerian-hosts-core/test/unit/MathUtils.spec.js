@@ -1,6 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: MIT-0
-import MathUtils from 'core/MathUtils';
+import {MathUtils} from '@amazon-sumerian-hosts/core';
 
 // eslint-disable-next-line jasmine/no-focused-tests
 describe('MathUtils', () => {

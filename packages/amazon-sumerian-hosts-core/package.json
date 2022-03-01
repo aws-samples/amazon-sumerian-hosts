@@ -12,15 +12,9 @@
     "type": "git",
     "url": "https://github.com/aws-samples/amazon-sumerian-hosts.git"
   },
-  "main": "./dist/host.core.js",
+  "main": "./src/core/index.js",
   "scripts": {
-    "test": "node ../../node_modules/karma/bin/karma start",
-    "build": "webpack --config webpack.common.js",
-    "build-test": "npm run build; npm run test",
     "lint": "eslint .",
-    "start": "webpack-dev-server --open --config webpack.dev.js",
-    "build-start": "npm run build; npm run start",
-    "release": "npm run build",
     "docs": "jsdoc -c jsdoc.conf.json"
   }
 }

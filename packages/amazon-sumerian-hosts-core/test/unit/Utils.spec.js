@@ -1,7 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: MIT-0
-import Utils from 'core/Utils';
-import Deferred from 'core/Deferred';
+import {Deferred, Utils} from '@amazon-sumerian-hosts/core';
 
 describe('Utils', () => {
   describe('createId', () => {

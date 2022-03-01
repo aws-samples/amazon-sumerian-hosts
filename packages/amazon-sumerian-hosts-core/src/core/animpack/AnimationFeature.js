@@ -1,7 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: MIT-0
-import AbstractHostFeature from 'core/AbstractHostFeature';
-import Utils from 'core/Utils';
+import AbstractHostFeature from '../AbstractHostFeature';
+import Utils from '../Utils';
 import QueueState from './state/QueueState';
 import FreeBlendState from './state/FreeBlendState';
 import Blend1dState from './state/Blend1dState';

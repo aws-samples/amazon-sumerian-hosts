@@ -1,6 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: MIT-0
-import Deferred from 'core/Deferred';
+import Deferred from './Deferred';
 
 /**
  * A collection of useful generic functions.

@@ -3,7 +3,7 @@
 /* eslint-disable jasmine/no-spec-dupes */
 /* eslint-disable no-undef */
 /* eslint-disable no-underscore-dangle */
-import SingleState from 'app/animpack/state/SingleState';
+import {anim} from '@amazon-sumerian-hosts/babylon';
 import {Deferred, LayerBlendModes} from '@amazon-sumerian-hosts/core';
 import describeEnvironment from '../../EnvironmentHarness';
 
@@ -51,7 +51,7 @@ describeEnvironment('SingleState', (options = {}) => {
         };
       }
     );
-    state = new SingleState(undefined, mockBabylonGroup, options.scene);
+    state = new anim.SingleState(undefined, mockBabylonGroup, options.scene);
   });
 
   describe('normalizedTime', () => {
@@ -72,7 +72,7 @@ describeEnvironment('SingleState', (options = {}) => {
         state._babylonAnimatables = [{goToFrame: jasmine.createSpy()}];
       });
 
-      it('should set the _threeAction time to the target time by multiplying clip duration', () => {
+      it('should set the babylon time to the target time by multiplying clip duration', () => {
         state.normalizedTime = 1;
 
         expect(state._babylonAnimatables[0].goToFrame).toHaveBeenCalledWith(2);

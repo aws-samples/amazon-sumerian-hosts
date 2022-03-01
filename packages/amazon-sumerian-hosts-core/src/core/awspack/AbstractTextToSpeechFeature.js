@@ -1,10 +1,10 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: MIT-0
-import AbstractHostFeature from 'core/AbstractHostFeature';
-import AnimationUtils from 'core/animpack/AnimationUtils';
-import MathUtils from 'core/MathUtils';
-import Utils from 'core/Utils';
-import Deferred from 'core/Deferred';
+import AbstractHostFeature from '../AbstractHostFeature';
+import AnimationUtils from '../animpack/AnimationUtils';
+import MathUtils from '../MathUtils';
+import Utils from '../Utils';
+import Deferred from '../Deferred';
 import Speech from './AbstractSpeech';
 import TextToSpeechUtils from './TextToSpeechUtils';
 

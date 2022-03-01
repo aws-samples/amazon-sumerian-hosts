@@ -4,9 +4,7 @@
 /* eslint-disable no-undef */
 /* eslint-disable no-underscore-dangle */
 
-import RandomAnimationState from 'core/animpack/state/RandomAnimationState';
-import Deferred from 'core/Deferred';
-import Utils from 'core/Utils';
+import {Deferred ,RandomAnimationState,Utils} from '@amazon-sumerian-hosts/core';
 import describeHostEnvironment from '../../EnvironmentHarness';
 
 describeHostEnvironment('RandomAnimationState', () => {

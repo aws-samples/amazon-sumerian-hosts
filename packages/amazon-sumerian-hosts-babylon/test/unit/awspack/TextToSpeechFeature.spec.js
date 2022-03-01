@@ -3,8 +3,7 @@
 /* eslint-disable jasmine/no-spec-dupes */
 /* eslint-disable no-underscore-dangle */
 import {Messenger} from '@amazon-sumerian-hosts/core';
-import TextToSpeechFeature from 'app/awspack/TextToSpeechFeature';
-import Speech from 'app/awspack/Speech';
+import { aws } from '@amazon-sumerian-hosts/babylon'
 import describeEnvironment from '../EnvironmentHarness';
 
 describeEnvironment('TextToSpeechFeature', (options) => {
@@ -57,7 +56,7 @@ describeEnvironment('TextToSpeechFeature', (options) => {
       fn(undefined, '/base/test/assets/audio.mp3');
     });
 
-    await TextToSpeechFeature.initializeService(
+    await aws.TextToSpeechFeature.initializeService(
       mockPolly,
       mockPresigner,
       mockNeuralVersion
@@ -66,7 +65,7 @@ describeEnvironment('TextToSpeechFeature', (options) => {
 
   describe('_createSpeech', () => {
     it('should return an object that extends Speech', async () => {
-      const tts = new TextToSpeechFeature(mockHost);
+      const tts = new aws.TextToSpeechFeature(mockHost);
       const speech = tts._createSpeech('', [], {
         audio: {
           onended: jasmine.createSpy('onended'),
@@ -74,7 +73,7 @@ describeEnvironment('TextToSpeechFeature', (options) => {
         },
       });
 
-      expect(speech).toBeInstanceOf(Speech);
+      expect(speech).toBeInstanceOf(aws.Speech);
     });
   });
 
@@ -82,7 +81,7 @@ describeEnvironment('TextToSpeechFeature', (options) => {
     function itActsLikeBabylonSynthesizeAudio() {
       it("should return a promise that resolves to an object with an audio property that's and instance of BABYLON.Sound", async () => {
         const {scene} = options;
-        const tts = new TextToSpeechFeature(mockHost, {scene});
+        const tts = new aws.TextToSpeechFeature(mockHost, {scene});
         const promise = tts._synthesizeAudio({});
 
         const result = await promise;
@@ -94,7 +93,7 @@ describeEnvironment('TextToSpeechFeature', (options) => {
 
       it("should define the result audio's spatialSound property to be false if attachTo is not defined in the constructor options", async () => {
         const {scene} = options;
-        const tts = new TextToSpeechFeature(mockHost, {scene});
+        const tts = new aws.TextToSpeechFeature(mockHost, {scene});
         const promise = tts._synthesizeAudio({});
 
         const {audio} = await promise;
@@ -105,7 +104,7 @@ describeEnvironment('TextToSpeechFeature', (options) => {
       it("should define the result audio's spatialSound property to be true if attachTo is defined in the constructor options", async () => {
         const {scene} = options;
         const attachTo = new BABYLON.TransformNode('attach', scene);
-        const tts = new TextToSpeechFeature(mockHost, {scene, attachTo});
+        const tts = new aws.TextToSpeechFeature(mockHost, {scene, attachTo});
         const promise = tts._synthesizeAudio({});
 
         const {audio} = await promise;

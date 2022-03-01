@@ -3,8 +3,8 @@
 /* eslint-disable no-undef */
 /* eslint-disable no-underscore-dangle */
 /* eslint-disable jasmine/no-spec-dupes */
-import AbstractState from 'core/animpack/state/AbstractState';
-import Deferred from 'core/Deferred';
+import {Deferred} from '@amazon-sumerian-hosts/core';
+import AbstractState from '../../../../src/core/animpack/state/AbstractState'
 
 describe('AbstractState', () => {
   let state;

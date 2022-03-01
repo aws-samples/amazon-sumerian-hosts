@@ -3,7 +3,7 @@
 
 /* eslint-disable no-unused-vars */
 /* eslint-disable max-classes-per-file */
-import AnimationFeatureDependentInterface from 'core/animpack/AnimationFeatureDependentInterface';
+import AnimationFeatureDependentInterface from './AnimationFeatureDependentInterface';
 
 /**
  * Class factory interface for that keeps track of layers and animations on a host.

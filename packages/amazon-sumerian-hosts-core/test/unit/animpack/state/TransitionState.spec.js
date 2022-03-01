@@ -4,8 +4,7 @@
 /* eslint-disable no-undef */
 /* eslint-disable no-underscore-dangle */
 /* eslint-disable jasmine/no-spec-dupes */
-import TransitionState from 'core/animpack/state/TransitionState';
-import Deferred from 'core/Deferred';
+import {Deferred, TransitionState} from '@amazon-sumerian-hosts/core';
 
 describe('TransitionState', () => {
   let state;

@@ -3,8 +3,7 @@
 /* eslint-disable jasmine/no-spec-dupes */
 /* eslint-disable no-undef */
 /* eslint-disable no-underscore-dangle */
-import Deferred from 'core/Deferred';
-import AbstractBlendState from 'core/animpack/state/AbstractBlendState';
+import AbstractBlendState from '../../../../src/core/animpack/state/AbstractBlendState'
 import describeHostEnvironment from '../../EnvironmentHarness';
 
 describeHostEnvironment('AbstractBlendState', () => {

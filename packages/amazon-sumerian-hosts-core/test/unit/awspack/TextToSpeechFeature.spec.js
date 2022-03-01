@@ -2,9 +2,7 @@
 // SPDX-License-Identifier: MIT-0
 /* eslint-disable jasmine/no-spec-dupes */
 /* eslint-disable no-underscore-dangle */
-import Messenger from 'core/Messenger';
-import TextToSpeechFeature from 'core/awspack/TextToSpeechFeature';
-import Speech from 'core/awspack/Speech';
+import {Messenger, TextToSpeechFeature, Speech} from '@amazon-sumerian-hosts/core';
 import describeEnvironment from '../EnvironmentHarness';
 
 describeEnvironment('TextToSpeechFeature', () => {
