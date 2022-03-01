@@ -10,10 +10,10 @@
     <link rel="icon" href="data:;base64,iVBORw0KGgo=" />
   </head>
   <body>
-    <button>Start Recording</button>
-    <button>Stop Recording</button>
+    <button id="startButton">Start Recording</button>
+    <button id="stopButton">Stop Recording</button>
     <input type="text" size="20">
-    <button>Send Text Input</button>
+    <button id="textInputButton">Send Text Input</button>
     <p>Lex Response:</p>
     <script
       type="text/javascript"
@@ -22,9 +22,9 @@
     <script type="text/javascript" src="../../../dist/host.core.js"></script>
     <script>
       function main() {
-        const startBtn = document.querySelector('button:nth-of-type(1)');
-        const stopBtn = document.querySelector('button:nth-of-type(2)');
-        const textBtn = document.querySelector('button:nth-of-type(3)');
+        const startBtn = document.getElementById('startButton');
+        const stopBtn = document.getElementById('stopButton');
+        const textBtn = document.getElementById('textInputButton');
         const input = document.querySelector('input');
         const textDisplay = document.querySelector('p');
 
@@ -38,44 +38,28 @@
         });
         const lexRuntime = new AWS.LexRuntime();
 
-        const {HostObject, LexFeature} = HOST;
+        const {LexFeature} = HOST;
 
-        // Create the host which will serve as the messenger
-        const host = new HostObject();
-
-        LexFeature.initializeService(
-          lexRuntime        
-        );
-        const lexFeature = new LexFeature(host, {
+        const lexFeature = new LexFeature(lexRuntime, {
           botName: "BookTrip",
           botAlias: "Test",
         })
 
         // Listen for lex response events from the host
-        host.listenTo(
-          LexFeature.EVENTS.lexResponse,
+        lexFeature.listenTo(
+          LexFeature.EVENTS.lexResponseReady,
           data => {
             console.log('lex response', data.message);
             textDisplay.textContent = 'Lex Reponse: ' + data.message;
-          },
-          host
+          }
         );
 
-        host.listenTo(
+        lexFeature.listenTo(
           LexFeature.EVENTS.micReady,
           () => {
             startBtn.removeAttribute('disabled');
-          },
-          host
+          }
         );
-
-        // Render loop
-        function render() {
-          host.update();
-          requestAnimationFrame(render);
-        }
-
-        render();
 
         lexFeature.enableMicInput();
 

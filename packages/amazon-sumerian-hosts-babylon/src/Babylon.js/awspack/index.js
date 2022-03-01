@@ -23,11 +23,11 @@ export default {
    */
   Speech,
   /**
-   * @see Babylon.js/LexFeature
+   * @see babylonjs/LexFeature
    */
   LexFeature,
   /**
-   * @see core/LexUtils
+   * @see module:core/LexUtils
    */
   LexUtils
 };

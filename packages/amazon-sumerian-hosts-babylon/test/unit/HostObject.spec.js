@@ -128,6 +128,7 @@ describeEnvironment('HostObject', (options = {}) => {
       host2.listenTo('test', listener2);
 
       host.emit('test', value);
+
       expect(listener2).not.toHaveBeenCalled();
     });
 

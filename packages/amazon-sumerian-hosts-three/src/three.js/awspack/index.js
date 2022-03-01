@@ -23,7 +23,7 @@ export default {
    */
   TextToSpeechUtils,
   /**
-   * @see three.js/LexFeature
+   * @see threejs/LexFeature
    */
   LexFeature,
   /**

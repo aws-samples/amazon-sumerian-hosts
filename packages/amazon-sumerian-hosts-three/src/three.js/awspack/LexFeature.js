@@ -4,10 +4,10 @@ import {LexFeature as CoreLexFeature} from '@amazon-sumerian-hosts/core';
 
 /**
  * @extends core/LexFeature
- * @alias three.js/LexFeature
+ * @alias threejs/LexFeature
  */
 class LexFeature extends CoreLexFeature {
-  _setAudioContext() {
+  _setupAudioContext() {
     this._audioContext = THREE.AudioContext.getContext();
   }
 }

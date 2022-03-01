@@ -4,10 +4,10 @@ import {LexFeature as CoreLexFeature} from '@amazon-sumerian-hosts/core';
 
 /**
  * @extends core/LexFeature
- * @alias Babylon.js/LexFeature
+ * @alias babylonjs/LexFeature
  */
 class LexFeature extends CoreLexFeature {
-  _setAudioContext() {
+  _setupAudioContext() {
     this._audioContext = BABYLON.Engine.audioEngine.audioContext;
   }
 }

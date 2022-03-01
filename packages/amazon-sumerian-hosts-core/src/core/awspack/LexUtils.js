@@ -1,3 +1,4 @@
+/* eslint-disable no-underscore-dangle */
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: MIT-0
 
@@ -12,14 +13,14 @@ class LexUtils {
    *
    * Inspired by the following blog post from the Lex team:
    * https://aws.amazon.com/blogs/machine-learning/capturing-voice-input-in-a-browser/
-   * 
+   *
    * @param {Float32Array} buffer - Input audio buffer
    * @param {float} sourceSampleRate - Sample rate of the input audio buffer
    * @param {float} targetSampleRate - Sample rate to try to convert to
    *
    * @return {Float32Array} Downsampled audio buffer
    */
-   static downsampleAudio(buffer, sourceSampleRate, targetSampleRate) {
+  static downsampleAudio(buffer, sourceSampleRate, targetSampleRate) {
     if (!buffer || !buffer.length) {
       return;
     }
@@ -29,8 +30,7 @@ class LexUtils {
     }
 
     if (sourceSampleRate < targetSampleRate) {
-      console.error(`Input Sample rate ${sourceSampleRate} is less than target sample rate ${targetSampleRate}.`);
-      return buffer;
+      throw Error(`Input Sample rate ${sourceSampleRate} is less than target sample rate ${targetSampleRate}.`);
     }
 
     const bufferLength = buffer.length;
@@ -64,7 +64,7 @@ class LexUtils {
    *
    * Inspired by the following blog post from the Lex team:
    * https://aws.amazon.com/blogs/machine-learning/capturing-voice-input-in-a-browser/
-   * 
+   *
    * @param {Float32Array} buffer - Input audio buffer
    * @param {float} targetSampleRate - Sample rate for the output audio
    *
@@ -75,7 +75,7 @@ class LexUtils {
       for (let i = 0; i < string.length; i++) {
         view.setUint8(offset + i, string.charCodeAt(i));
       }
-    }  
+    }
     function _floatTo16BitPCM(view, offset, input) {
       for (let i = 0; i < input.length; i++, offset += 2) {
         const s = Math.max(-1, Math.min(1, input[i]));
@@ -87,6 +87,7 @@ class LexUtils {
       return;
     }
 
+    //Insert WAV format related info at the beginning of the buffer up to offset 44
     const encodedBuffer = new ArrayBuffer(44 + buffer.length * 2);
     const view = new DataView(encodedBuffer);
 

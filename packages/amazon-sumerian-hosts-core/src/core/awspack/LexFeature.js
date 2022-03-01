@@ -1,6 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: MIT-0
-import Deferred from 'core/Deferred';
+import Messenger from 'core/Messenger';
 import Utils from 'core/Utils';
 import LexUtils from 'core/awspack/LexUtils';
 
@@ -13,42 +13,52 @@ import LexUtils from 'core/awspack/LexUtils';
 /**
  * Feature class for interacting with Lex bot which the response from lex bot can be used for speech or other purpose.
  *
+ * @extends core/Messenger
+ * @alias core/LexFeature
+ *
  * @property {Object} LEX_DEFAULTS - Default values to use with calls to {@link external:LexRuntime}.
  * @property {string} [LEX_DEFAULTS.SampleRate='16000']
  * @property {Object} EVENTS - Built-in messages that the feature emits.
- * @property {string} [EVENTS.lexResponse=onLexResponseEvent] - Message that is emitted after
+ * @property {string} [EVENTS.lexResponseReady=lexResponseReady] - Message that is emitted after
  * receiving lex response for the input sent
- * @property {string} [EVENTS.micReady=onMicrophoneReadyEvent] - Message that is emitted after
+ * @property {string} [EVENTS.micReady=micReady] - Message that is emitted after
  * microphone is ready to use
- * @property {string} [EVENTS.micReady=onMicrophoneBeginRecordingEvent] - Message that is emitted after
+ * @property {string} [EVENTS.recordBegin=recordBegin] - Message that is emitted after
  * microphone starts recording
- * @property {string} [EVENTS.micReady=onMicrophoneEndRecordingEvent] - Message that is emitted after
+ * @property {string} [EVENTS.recordEnd=recordEnd] - Message that is emitted after
  * microphone ends recording
- * @property {Object} SERVICES - AWS services that are necessary for the feature
- * to function.
- * @property {external:LexRuntime} SERVICES.lexRuntime - The LexRuntime service that is used
- * to interact with lex bot. Will be undefined until [initializeService]{@link LexFeature.initializeService}
- * has been successfully executed
  */
-class LexFeature{
+class LexFeature extends Messenger {
   /**
    * @constructor
    *
-   * @param {Messenger=} messenger - Optional Messenger object which the event will be emitted through
+   * @param {external:LexRuntime} lexRuntime - The LexRuntime service that is used
+ * to interact with lex bot. Will be undefined until [initializeService]{@link LexFeature.initializeService}
+ * has been successfully executed
    * @param {Object=} options - Options that will be used to interact with lex bot.
    * @param {string=} options.botName - The name of the lex bot.
    * @param {string=} options.botAlias - The alias of the lex bot.
-   * @param {string=} options.userId - The userId used to keep track of the session with lex bot. 
+   * @param {string=} options.userId - The userId used to keep track of the session with lex bot.
   */
   constructor(
-    messenger = undefined,
+    lexRuntime,
     options = {
       botName: undefined,
       botAlias: undefined,
       userId: undefined,
-    }
+    },
   ) {
-    this._messenger = messenger;
+    super();
+
+    if (!lexRuntime) {
+      throw Error('Cannot initialize Lex feature. LexRuntime must be defined');
+    }
+    if (lexRuntime.config) {
+      lexRuntime.config.customUserAgent = Utils.withCustomUserAgent(
+        lexRuntime.config.customUserAgent
+      );
+    }
+    this._lexRuntime = lexRuntime;
 
     this._botName = options.botName;
     this._botAlias = options.botAlias;
@@ -58,53 +68,14 @@ class LexFeature{
     this._recording = false;
     this._recLength = 0;
     this._recBuffer = [];
-    this._setAudioContext();
+    this._setupAudioContext();
   }
 
-  /**
-   * Store LexRuntime and AWS SDK Version for use across all instances.
-   *
-   * @param {external:LexRuntime} lexRuntime - lexRuntime instance to use to interact with lex bot.
-   */
-  static initializeService(lexRuntime) {
-    // Make sure all were defined
-    if (lexRuntime === undefined)
-    {
-      throw new Error(
-        'Cannot initialize Lex feature. LexRuntime must be defined'
-      );
-    }
-
-    // Add sumerian hosts user-agent
-    if (lexRuntime.config) {
-      lexRuntime.config.customUserAgent = Utils.withCustomUserAgent(
-        lexRuntime.config.customUserAgent
-      );
-    }
-
-    // Store parameters
-    this.SERVICES.lexRuntime = lexRuntime;
-  }
-
-  _setAudioContext() {
-    AudioContext = window.AudioContext || window.webkitAudioContext;
+  _setupAudioContext() {
     this._audioContext = new AudioContext();
   }
 
-  /**
-   * Sends audio user input to Amazon Lex.
-   *
-   * @param {Float32Array} inputAudio - Input audio buffer
-   * @param {float} sourceSampleRate - Sample rate of input audio 
-   * @param {Object=} config - Optional config for overriding lex bot info
-   * @param {string=} config.botName - The name of the lex bot.
-   * @param {string=} config.botAlias - The alias of the lex bot.
-   * @param {string=} config.userId - The userId used to keep track of the session with lex bot. 
-   * 
-   * @returns {Deferred} A Promise-like object that resolves to a Lex response object. 
-   * For details on the structure of that response object see: https://docs.aws.amazon.com/AWSJavaScriptSDK/latest/AWS/LexRuntime.html#postContent-property
-   */
-  processWithAudio(inputAudio, sourceSampleRate, config = {}) {
+  _processWithAudio(inputAudio, sourceSampleRate, config = {}) {
     const audio = this._prepareAudio(inputAudio, sourceSampleRate);
     return this._process('audio/x-l16; rate=16000', audio, config);
   }
@@ -116,9 +87,9 @@ class LexFeature{
    * @param {Object=} config - Optional config for overriding lex bot info
    * @param {string=} config.botName - The name of the lex bot.
    * @param {string=} config.botAlias - The alias of the lex bot.
-   * @param {string=} config.userId - The userId used to keep track of the session with lex bot. 
-   * 
-   * @returns {Deferred} A Promise-like object that resolves to a Lex response object. 
+   * @param {string=} config.userId - The userId used to keep track of the session with lex bot.
+   *
+   * @returns {Promise} A Promise-like object that resolves to a Lex response object.
    * For details on the structure of that response object see: https://docs.aws.amazon.com/AWSJavaScriptSDK/latest/AWS/LexRuntime.html#postContent-property
    */
   processWithText(inputText, config = {}) {
@@ -134,44 +105,28 @@ class LexFeature{
       inputStream,
       userId: settings.userId
     };
-    return new Deferred((resolve, reject) => {
-      this.constructor.SERVICES.lexRuntime.postContent(lexSettings, (error, data) => {
+    return new Promise((resolve, reject) => {
+      this._lexRuntime.postContent(lexSettings, (error, data) => {
         if (error) {
           return reject(error);
         }
         return resolve(data);
       });
     }).then(data => {
-      if (!data.message) {
-        if (data.encodedMessage) {
-          data.message = atob(data.encodedMessage);
-        }
-        else {
-          data.message = '';
-        }
-      }
-
-      if (this._messenger && this._messenger.emit) {
-        this._messenger.emit(this.constructor.EVENTS.lexResponse, data);
-      }
+      this.emit(this.constructor.EVENTS.lexResponseReady, data);
 
       return data;
     });
   }
 
   _validateConfig(config) {
-    let settings = {};
+    const settings = {};
 
     settings.botName = config.botName ? config.botName : this._botName;
     settings.botAlias = config.botAlias ? config.botAlias : this._botAlias;
     settings.userId = config.userId ? config.userId : this._userId;
 
-    if (
-      settings.botName == undefined ||
-      settings.botAlias == undefined ||
-      settings.userId == undefined
-    )
-    {
+    if (!settings.botName || !settings.botAlias || !settings.userId) {
       throw new Error(
         'Cannot process lex request. All arguments must be defined.'
       );
@@ -188,33 +143,32 @@ class LexFeature{
   }
 
   /**
-   * Setup microphone recorder which will get user permission for accessing microphone
-   * 
-   * @returns {Promise} A Promise-like object that resolves after getting permission from accessing microphone. 
+   * Async function to setup microphone recorder which will get user permission for accessing microphone
+   * This function will throw error if microphone access is blocked by user
    */
-  enableMicInput() {
-    return navigator.mediaDevices.getUserMedia({audio: true, video: false})
-      .then(stream => {
-        const source = this._audioContext.createMediaStreamSource(stream);
-        const node = this._audioContext.createScriptProcessor(4096, 1, 1);
+  async enableMicInput() {
+    try {
+      const stream = await navigator.mediaDevices.getUserMedia({ audio: true, video: false });
+      const source = this._audioContext.createMediaStreamSource(stream);
+      //TODO: createScriptProcessor is deprecated which should be replaced
+      const node = this._audioContext.createScriptProcessor(4096, 1, 1);
 
-        node.onaudioprocess = (e) => {
-            if (!this._recording) return;
+      node.onaudioprocess = (e) => {
+        if (!this._recording)
+          return;
 
-            const buffer = e.inputBuffer.getChannelData(0);
-            this._recBuffer.push(new Float32Array(buffer));
-            this._recLength += buffer.length;
-        };
+        const buffer = e.inputBuffer.getChannelData(0);
+        this._recBuffer.push(new Float32Array(buffer));
+        this._recLength += buffer.length;
+      };
 
-        source.connect(node);
-        node.connect(this._audioContext.destination);
+      source.connect(node);
+      node.connect(this._audioContext.destination);
 
-        if (this._messenger && this._messenger.emit) {
-          this._messenger.emit(this.constructor.EVENTS.micReady);
-        }
-      }).catch(function(err) {
-        console.warn("Cannot setup microphone: " + err.message);
-      });
+      this.emit(this.constructor.EVENTS.micReady);
+    } catch (err) {
+      throw Error(`Cannot setup microphone: ${err.message}`);
+    }
   }
 
   /**
@@ -222,22 +176,20 @@ class LexFeature{
    * it's suggested to call this function after a user interaction
    */
   beginVoiceRecording() {
-    if(this._audioContext.state === 'suspended') {
+    if(this._audioContext.state === 'suspended' || this._audioContext.state === 'interrupted') {
       this._audioContext.resume();
     }
     this._recLength = 0;
     this._recBuffer = [];
     this._recording = true;
 
-    if (this._messenger && this._messenger.emit) {
-      this._messenger.emit(this.constructor.EVENTS.recordBegin);
-    }
+    this.emit(this.constructor.EVENTS.recordBegin);
   }
 
   /**
    * Stop microphone recording and send recorded audio data to lex.
-   * 
-   * @returns {Deferred} A Promise-like object that resolves to a Lex response object. 
+   *
+   * @returns {Promise} A Promise-like object that resolves to a Lex response object.
    * For details on the structure of that response object see: https://docs.aws.amazon.com/AWSJavaScriptSDK/latest/AWS/LexRuntime.html#postContent-property
    */
   endVoiceRecording() {
@@ -246,14 +198,13 @@ class LexFeature{
     const result = new Float32Array(this._recLength);
     let offset = 0;
     for (let i = 0; i < this._recBuffer.length; i++) {
-        result.set(this._recBuffer[i], offset);
-        offset += this._recBuffer[i].length;
+      result.set(this._recBuffer[i], offset);
+      offset += this._recBuffer[i].length;
     }
 
-    if (this._messenger && this._messenger.emit) {
-      this._messenger.emit(this.constructor.EVENTS.recordEnd);
-    }
-    return this.processWithAudio(
+    this.emit(this.constructor.EVENTS.recordEnd);
+
+    return this._processWithAudio(
       result,
       this._audioContext.sampleRate
     );
@@ -270,16 +221,10 @@ Object.defineProperties(LexFeature, {
   EVENTS: {
     value: {
       ...Object.getPrototypeOf(LexFeature).EVENTS,
-      lexResponse: 'onLexResponseEvent',
-      micReady: 'onMicrophoneReadyEvent',
-      recordBegin: 'onMicrophoneBeginRecordingEvent',
-      recordEnd: 'onMicrophoneEndRecordingEvent',
-    },
-  },
-  SERVICES: {
-    value: {
-      ...Object.getPrototypeOf(LexFeature).SERVICES,
-      lexRuntime: undefined,
+      lexResponseReady: 'lexResponseReady',
+      micReady: 'micReady',
+      recordBegin: 'recordBegin',
+      recordEnd: 'recordEnd',
     },
   },
 });

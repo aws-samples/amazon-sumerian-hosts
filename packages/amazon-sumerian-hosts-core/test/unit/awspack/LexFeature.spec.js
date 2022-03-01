@@ -1,42 +1,24 @@
+/* eslint-disable jasmine/prefer-toHaveBeenCalledWith */
+/* eslint-disable no-underscore-dangle */
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: MIT-0
-import Messenger from 'core/Messenger';
 import LexFeature from 'core/awspack/LexFeature';
 import describeEnvironment from '../EnvironmentHarness';
 
-describeEnvironment('LexFeature', (options, env) => {
-  let mockHost;
+describeEnvironment('LexFeature', () => {
+  let lexFeature;
   let mockLexRuntime;
 
   beforeEach(() => {
-    mockHost = new Messenger();
-    spyOn(mockHost, "emit");
-
     mockLexRuntime = jasmine.createSpyObj('LexRuntime', ['postContent']);
     mockLexRuntime.postContent.and.callFake(function(param, callback) {
       callback(undefined, {message: "TestResponse"});
     });
-
-    LexFeature.initializeService(
-      mockLexRuntime
-    );
   });
 
-  describe('constructor.initializeService', () => {
+  describe('constructor', () => {
     it('should throw an error if lexRuntime is not defined', () => {
-      expect(
-        LexFeature.initializeService.bind(
-          undefined
-        )
-      ).toThrowError();
-    });
-
-    it('should set constructor.SERVICES.lexRuntime', () => {
-      LexFeature.initializeService(
-        mockLexRuntime
-      );
-
-      expect(LexFeature.SERVICES.lexRuntime).toEqual(mockLexRuntime);
+      expect(() => new LexFeature()).toThrowError();
     });
 
     it('should set the LexRuntime service customUserAgent to the sumerian designated value if the user has not set it', () => {
@@ -45,19 +27,26 @@ describeEnvironment('LexFeature', (options, env) => {
       };
       const sumerianUserAgent = 'request-source/SumerianHosts';
 
-      expect(mockLexRuntime.config.customUserAgent).not.toEqual(sumerianUserAgent);
-
-      LexFeature.initializeService(
-        mockLexRuntime
-      );
+      lexFeature = new LexFeature(mockLexRuntime);
 
       expect(mockLexRuntime.config.customUserAgent).toEqual(sumerianUserAgent);
+    });
+
+    it('should append sumerian designated value to user defined LexRuntime service customUserAgent', () => {
+      mockLexRuntime.config = {
+        customUserAgent: 'UserDefined'
+      };
+      const sumerianUserAgent = 'request-source/SumerianHosts';
+
+      lexFeature = new LexFeature(mockLexRuntime);
+
+      expect(mockLexRuntime.config.customUserAgent).toEqual(`UserDefined ${sumerianUserAgent}`);
     });
   });
 
   describe('_validateConfig', () => {
     it('should use config override', () => {
-      const lexFeature = new LexFeature(mockHost, {botName: 'Bot', botAlias: 'Alias'});
+      lexFeature = new LexFeature(mockLexRuntime, {botName: 'Bot', botAlias: 'Alias'});
       const expected = {botName: 'TestBot', botAlias: 'TestAlias', userId: 'UserId'};
       const actual = lexFeature._validateConfig(expected);
 
@@ -67,21 +56,30 @@ describeEnvironment('LexFeature', (options, env) => {
     });
 
     it('should throw error if any of the required field is undefined', () => {
-      const lexFeature = new LexFeature(mockHost);
-      expect(lexFeature._validateConfig.bind(lexFeature, {})).toThrowError();
+      lexFeature = new LexFeature(mockLexRuntime);
+
+      expect(() => {lexFeature._validateConfig({})}).toThrowError();
     });
   });
 
   describe('_process', async () => {
     it('should execute LexRuntime.postContent', async () => {
-      const lexFeature = new LexFeature(mockHost, {botName: 'Bot', botAlias: 'Alias'});
-      await lexFeature._process("TestType", "TestInput", {});
+      lexFeature = new LexFeature(mockLexRuntime, {botName: 'Bot', botAlias: 'Alias', userId: 'UserId'});
+      await lexFeature._process('TestType', 'TestInput', {});
 
-      expect(mockLexRuntime.postContent).toHaveBeenCalled();
+      const expectArg = {
+        botName: 'Bot',
+        botAlias: 'Alias',
+        contentType: 'TestType',
+        inputStream: 'TestInput',
+        userId: 'UserId'
+      };
+
+      expect(mockLexRuntime.postContent).toHaveBeenCalledWith(expectArg, jasmine.anything());
     });
 
     it('should return a promise that resolves to a response object containing message', async () => {
-      const lexFeature = new LexFeature(mockHost, {botName: 'Bot', botAlias: 'Alias'});
+      lexFeature = new LexFeature(mockLexRuntime, {botName: 'Bot', botAlias: 'Alias'});
       const result = await lexFeature._process("TestType", "TestInput", {});
 
       expect(result).toBeInstanceOf(Object);
@@ -94,33 +92,35 @@ describeEnvironment('LexFeature', (options, env) => {
     });
 
     it('should emit lex response ready message through messenger if messenger is set', async () => {
-      const lexFeature = new LexFeature(mockHost, {botName: 'Bot', botAlias: 'Alias'});
-      const result = await lexFeature._process("TestType", "TestInput", {});
+      lexFeature = new LexFeature(mockLexRuntime, {botName: 'Bot', botAlias: 'Alias'});
+      spyOn(lexFeature, "emit");
+      await lexFeature._process("TestType", "TestInput", {});
 
-      expect(mockHost.emit).toHaveBeenCalledWith(LexFeature.EVENTS.lexResponse, {message: "TestResponse"});
+      expect(lexFeature.emit).toHaveBeenCalledWith(LexFeature.EVENTS.lexResponseReady, {message: "TestResponse"});
     });
   });
 
   describe('enableMicInput', async () => {
     beforeEach(() => {
-      spyOn(navigator.mediaDevices, 'getUserMedia').and.returnValue(Promise.resolve());
+      spyOn(navigator.mediaDevices, 'getUserMedia').and.resolveTo();
 
       spyOn(AudioContext.prototype, 'createMediaStreamSource').and.returnValue({connect: () => {}});
       spyOn(AudioContext.prototype, 'createScriptProcessor').and.returnValue({connect: () => {}});
     });
 
     it('should execute getUserMedia with appropriate arguments', async () => {
-      const lexFeature = new LexFeature(mockHost, {botName: 'Bot', botAlias: 'Alias'});
+      lexFeature = new LexFeature(mockLexRuntime, {botName: 'Bot', botAlias: 'Alias'});
       await lexFeature.enableMicInput();
 
       expect(navigator.mediaDevices.getUserMedia).toHaveBeenCalledWith({audio: true, video: false});
     });
 
     it('should emit microphone ready message through messenger if messenger is set', async () => {
-      const lexFeature = new LexFeature(mockHost, {botName: 'Bot', botAlias: 'Alias'});
+      lexFeature = new LexFeature(mockLexRuntime, {botName: 'Bot', botAlias: 'Alias'});
+      spyOn(lexFeature, "emit");
       await lexFeature.enableMicInput();
 
-      expect(mockHost.emit).toHaveBeenCalledWith(LexFeature.EVENTS.micReady);
+      expect(lexFeature.emit).toHaveBeenCalledWith(LexFeature.EVENTS.micReady);
     });
   });
 
@@ -130,37 +130,39 @@ describeEnvironment('LexFeature', (options, env) => {
     });
 
     it('should resume audiocontext if its suspended', () => {
-      const lexFeature = new LexFeature(mockHost, {botName: 'Bot', botAlias: 'Alias'});
+      lexFeature = new LexFeature(mockLexRuntime, {botName: 'Bot', botAlias: 'Alias'});
+      lexFeature._audioContext.suspend();
       lexFeature.beginVoiceRecording();
 
       expect(AudioContext.prototype.resume).toHaveBeenCalled();
     });
 
     it('should emit begin recording message through messenger if messenger is set', async () => {
-      const lexFeature = new LexFeature(mockHost, {botName: 'Bot', botAlias: 'Alias'});
+      lexFeature = new LexFeature(mockLexRuntime, {botName: 'Bot', botAlias: 'Alias'});
+      spyOn(lexFeature, "emit");
       lexFeature.beginVoiceRecording();
 
-      expect(mockHost.emit).toHaveBeenCalledWith(LexFeature.EVENTS.recordBegin);
+      expect(lexFeature.emit).toHaveBeenCalledWith(LexFeature.EVENTS.recordBegin);
     });
   });
 
   describe('endVoiceRecording', () => {
-    let lexFeature;
     beforeEach(() => {
-      lexFeature = new LexFeature(mockHost, {botName: 'Bot', botAlias: 'Alias'});
-      spyOn(lexFeature, 'processWithAudio');
+      lexFeature = new LexFeature(mockLexRuntime, {botName: 'Bot', botAlias: 'Alias'});
+      spyOn(lexFeature, '_processWithAudio');
+      spyOn(lexFeature, "emit");
     });
 
     it('should emit end recording message through messenger if messenger is set', async () => {
       lexFeature.endVoiceRecording();
 
-      expect(mockHost.emit).toHaveBeenCalledWith(LexFeature.EVENTS.recordEnd);
+      expect(lexFeature.emit).toHaveBeenCalledWith(LexFeature.EVENTS.recordEnd);
     });
 
-    it('should call processWithAudio function', () => {
+    it('should call _processWithAudio function', () => {
       lexFeature.endVoiceRecording();
 
-      expect(lexFeature.processWithAudio).toHaveBeenCalled();
+      expect(lexFeature._processWithAudio).toHaveBeenCalled();
     });
   });
 });
