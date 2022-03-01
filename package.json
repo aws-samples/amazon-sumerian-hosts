@@ -24,7 +24,6 @@
     "build-test": "npm run build build && npm run test",
     "release": "NODE_ENV=production npm run build",
     "docs": "jsdoc -c jsdoc.conf.json",
-    "babylon-examples-start": "npm run start --open packages/amazon-sumerian-hosts-babylon/",
     "start": "NODE_ENV=development webpack-dev-server --open "
   },
   "devDependencies": {
