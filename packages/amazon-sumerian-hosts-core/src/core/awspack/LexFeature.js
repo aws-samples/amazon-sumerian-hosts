@@ -71,10 +71,26 @@ class LexFeature extends Messenger {
     this._setupAudioContext();
   }
 
+  /**
+   * Setup audio context which will be used for setting up microphone related audio node
+   */
   _setupAudioContext() {
     this._audioContext = new AudioContext();
   }
 
+  /**
+   * Sends audio input to Amazon Lex.
+   *
+   * @param {TypedArray} inputAudio - TypedArray view of the input audio buffer
+   * @param {Number} sourceSampleRate - Sample rate of the input audio
+   * @param {Object=} config - Optional config for overriding lex bot info
+   * @param {string=} config.botName - The name of the lex bot.
+   * @param {string=} config.botAlias - The alias of the lex bot.
+   * @param {string=} config.userId - The userId used to keep track of the session with lex bot.
+   *
+   * @returns {Promise} A Promise-like object that resolves to a Lex response object.
+   * For details on the structure of that response object see: https://docs.aws.amazon.com/AWSJavaScriptSDK/latest/AWS/LexRuntime.html#postContent-property
+   */
   _processWithAudio(inputAudio, sourceSampleRate, config = {}) {
     const audio = this._prepareAudio(inputAudio, sourceSampleRate);
     return this._process('audio/x-l16; rate=16000', audio, config);

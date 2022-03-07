@@ -7,6 +7,11 @@ import {LexFeature as CoreLexFeature} from '@amazon-sumerian-hosts/core';
  * @alias threejs/LexFeature
  */
 class LexFeature extends CoreLexFeature {
+
+  /**
+   * Setup audio context
+   * @override
+   */
   _setupAudioContext() {
     this._audioContext = THREE.AudioContext.getContext();
   }
