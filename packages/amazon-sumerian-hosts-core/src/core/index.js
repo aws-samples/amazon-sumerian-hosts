@@ -36,6 +36,8 @@ const {
   AnimationUtils,
 } = animpack;
 const {
+  LexFeature,
+  LexUtils,
   AbstractTextToSpeechFeature,
   TextToSpeechFeature,
   TextToSpeechUtils,
@@ -152,6 +154,14 @@ export default {
   AnimationTypes,
 
   // AWS Pack
+  /**
+   * @see module:core/awspack.LexFeature
+   */
+  LexFeature,
+  /**
+   * @see module:core/awspack.LexUtils
+   */
+  LexUtils,
   /**
    * @see module:core/awspack.AbstractTextToSpeechFeature
    */

@@ -5,11 +5,21 @@ import AbstractSpeech from './AbstractSpeech';
 import Speech from './Speech';
 import AbstractTextToSpeechFeature from './AbstractTextToSpeechFeature';
 import TextToSpeechFeature from './TextToSpeechFeature';
+import LexFeature from './LexFeature';
+import LexUtils from './LexUtils';
 /**
  * @module core/awspack
  */
 
 export default {
+  /**
+   * @see LexFeature
+   */
+  LexFeature,
+  /**
+   * @see LexUtils
+   */
+  LexUtils,
   /**
    * @see AbstractTextToSpeechFeature
    */

@@ -72,7 +72,7 @@ const baseConfig = {
 const babylonConfig = {
   ...baseConfig,
   entry: {
-    'host.babylon': ['babel-polyfill', './src/Babylon.js/index.js'],
+    'host.babylon': ['./src/Babylon.js/index.js'],
   },
   resolve: {
     alias: {

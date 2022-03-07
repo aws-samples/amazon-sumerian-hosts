@@ -165,6 +165,30 @@ class Utils {
     max = Math.floor(max);
     return Math.floor(Math.random() * (max - min)) + min;
   }
+
+  /**
+   * Appends the Sumerian Hosts custom user-agent to a string if it is not
+   * already present.
+   *
+   * @private
+   *
+   * @param {string} currentUserAgent - String to append to if needed.
+   *
+   * @returns {string}
+   */
+  static withCustomUserAgent(currentUserAgent) {
+    const sumerianHostsUserAgent = 'request-source/SumerianHosts';
+
+    if (currentUserAgent == null) {
+      return sumerianHostsUserAgent;
+    }
+
+    if (currentUserAgent.indexOf(sumerianHostsUserAgent) !== -1) {
+      return currentUserAgent;
+    }
+
+    return currentUserAgent.concat(' ', sumerianHostsUserAgent);
+  }
 }
 
 export default Utils;
