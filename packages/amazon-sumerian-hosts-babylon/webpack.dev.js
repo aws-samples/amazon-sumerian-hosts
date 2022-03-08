@@ -11,7 +11,7 @@ module.exports = merge(common, {
     modules: [path.resolve(__dirname, '../../node_modules'), 'node_modules'],
   },
   devServer: {
-    open: 'Google Chrome',
+    open: ['/examples'],
     liveReload: true,
     hot: false,
     static: {
