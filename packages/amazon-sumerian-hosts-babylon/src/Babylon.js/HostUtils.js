@@ -180,29 +180,24 @@ async function loadAssets(
  ````
  */
 async function loadAnimation(scene, childMeshes, url, clipGroupId) {
-  const promise = BABYLON.SceneLoader.LoadAssetContainerAsync(url)
-    .then(
-      (container) => {
-        const startingIndex = scene.animatables.length;
-        const firstIndex = scene.animationGroups.length;
+  const container = await BABYLON.SceneLoader.LoadAssetContainerAsync(url)
 
-        // Apply animation to character
-        container.mergeAnimationsTo(
-          scene,
-          scene.animatables.slice(startingIndex),
-          (target) => childMeshes.find((mesh) => mesh.name === target.name) || null,
-        );
+  const startingIndex = scene.animatables.length;
+  const firstIndex = scene.animationGroups.length;
 
-        // Find the new animations and destroy the container
-        const clips = scene.animationGroups.slice(firstIndex);
-        container.dispose();
-        scene.onAnimationFileImportedObservable.notifyObservers(scene);
+  // Apply animation to character
+  container.mergeAnimationsTo(
+    scene,
+    scene.animatables.slice(startingIndex),
+    (target) => childMeshes.find((mesh) => mesh.name === target.name) || null,
+  );
 
-        return { clipGroupId, clips };
-      },
-    );
+  // Find the new animations and destroy the container
+  const clips = scene.animationGroups.slice(firstIndex);
+  container.dispose();
+  scene.onAnimationFileImportedObservable.notifyObservers(scene);
 
-  return promise;
+  return { clipGroupId, clips };
 }
 
 /**
@@ -548,6 +543,11 @@ characterTypeMap.set('Wes', 'adult_male');
  * @param {string} characterId The ID of the character to be used.
  */
 function getCharacterConfig(assetsPath, characterId) {
+
+  if (characterTypeMap.get(characterId) === undefined) {
+    throw new Error(`"${characterId}" is not a supported character ID.`);
+  }
+
   const characterConfigs = new Map();
 
   characterTypeMap.forEach((characterType, characterId) => {
