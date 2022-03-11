@@ -12,7 +12,6 @@ function setupSceneEnvironment(scene) {
   shadowLight.diffuse = new BABYLON.Color3(1, 0.9, 0.62);
   shadowLight.intensity = 2;
 
-  // const keyLight = new BABYLON.HemisphericLight("light", new BABYLON.Vector3(-0.3, 1, 2));
   const keyLight = new BABYLON.DirectionalLight('keyLight', new BABYLON.Vector3(0.3, -1, -2));
   keyLight.diffuse = new BABYLON.Color3(1, 0.9, 0.65);
   keyLight.intensity = 3;
