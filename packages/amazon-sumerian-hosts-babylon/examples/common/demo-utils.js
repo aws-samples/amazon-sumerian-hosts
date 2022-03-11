@@ -2,13 +2,20 @@ function setupSceneEnvironment(scene) {
   // Create a simple environment.
   const environmentHelper = scene.createDefaultEnvironment({
     groundOpacity: 1,
-    groundShadowLevel: 0.3
+    groundShadowLevel: 0.1
   });
   environmentHelper.setMainColor(BABYLON.Color3.Teal());
 
+  scene.environmentIntensity = 1.5;
+
   // const light = new BABYLON.HemisphericLight("light", new BABYLON.Vector3(-0.3, 1, 0));
-  const light = new BABYLON.DirectionalLight('keyLight', new BABYLON.Vector3(0.3, -2, -1));
-  light.intensity = 3;
+  const shadowLight = new BABYLON.DirectionalLight('shadowLight', new BABYLON.Vector3(0.8, -2, -1));
+  shadowLight.intensity = 2;
+
+  const keyLight = new BABYLON.DirectionalLight('keyLight', new BABYLON.Vector3(0.3, -1, -2));
+  keyLight.intensity = 3;
+
+  // const light2 = new BABYLON.HemisphericLight("light", new BABYLON.Vector3(-0.3, 1, 0));
 
   // Add a camera.
   const cameraRotation = BABYLON.Angle.FromDegrees(85).radians();
@@ -26,7 +33,7 @@ function setupSceneEnvironment(scene) {
   const canvas = scene.getEngine().getRenderingCanvas();
   camera.attachControl(canvas, true);
 
-  const shadowGenerator = new BABYLON.ShadowGenerator(2048, light);
+  const shadowGenerator = new BABYLON.ShadowGenerator(2048, shadowLight);
   shadowGenerator.useBlurExponentialShadowMap = true;
   shadowGenerator.blurKernel = 8;
   scene.meshes.forEach(mesh => {

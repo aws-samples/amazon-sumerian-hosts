@@ -10,7 +10,7 @@ async function createScene() {
   scene = new BABYLON.Scene();
   scene.useRightHandedSystem = true; // IMPORTANT for Sumerian Hosts!
 
-  DemoUtils.setupSceneEnvironment(scene);
+  const { shadowGenerator } = DemoUtils.setupSceneEnvironment(scene);
   initUi();
 
   // ===== Configure the AWS SDK =====
@@ -33,6 +33,11 @@ async function createScene() {
   // Tell the host to always look at the camera.
   const camera = scene.cameras[0];
   host.PointOfInterestFeature.setTarget(camera);
+
+  // Enable shadows.
+  scene.meshes.forEach(mesh => {
+    shadowGenerator.addShadowCaster(mesh);
+  });
 
   return scene;
 }

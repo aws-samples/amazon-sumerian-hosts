@@ -10,7 +10,7 @@ async function createScene() {
   scene = new BABYLON.Scene();
   scene.useRightHandedSystem = true; // IMPORTANT for Sumerian Hosts!
 
-  DemoUtils.setupSceneEnvironment(scene);
+  const { shadowGenerator } = DemoUtils.setupSceneEnvironment(scene);
   initUi();
 
   // ===== Configure the AWS SDK =====
@@ -25,7 +25,7 @@ async function createScene() {
   // Edit the characterId if you would like to use one of
   // the other pre-built host characters. Available character IDs are:
   // "Cristine", "Fiona", "Grace", "Maya", "Jay", "Luke", "Preston", "Wes"
-  const characterId = 'Cristine';
+  const characterId = 'Maya';
   const characterConfig = HOST.HostUtils.getCharacterConfig('./assets/character-assets', characterId);
   const pollyConfig = { pollyVoice: 'Joanna', pollyEngine: 'neural' };
   host = await HOST.HostUtils.createHost(scene, characterConfig, pollyConfig);
@@ -35,10 +35,6 @@ async function createScene() {
   host.PointOfInterestFeature.setTarget(camera);
 
   // Enable shadows.
-  const light = scene.lights[0];
-  const shadowGenerator = new BABYLON.ShadowGenerator(2048, light);
-  shadowGenerator.useBlurExponentialShadowMap = true;
-  shadowGenerator.blurKernel = 8;
   scene.meshes.forEach(mesh => {
     shadowGenerator.addShadowCaster(mesh);
   });
