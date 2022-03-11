@@ -27,8 +27,8 @@ async function createScene() {
   // "Cristine", "Fiona", "Grace", "Maya", "Jay", "Luke", "Preston", "Wes"
   const characterId = 'Cristine';
   const pollyConfig = { pollyVoice: 'Joanna', pollyEngine: 'neural' };
-  const characterConfig = HOST.HostUtils.getCharacterConfig('./assets/character-assets', characterId);
-  host = await HOST.HostUtils.createHost(scene, characterConfig, pollyConfig);
+  const characterConfig = HOST.HostObject.getCharacterConfig('./assets/character-assets', characterId);
+  host = await HOST.HostObject.createHost(scene, characterConfig, pollyConfig);
 
   // Tell the host to always look at the camera.
   const camera = scene.cameras[0];

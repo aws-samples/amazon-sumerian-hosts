@@ -6,16 +6,16 @@ function setupSceneEnvironment(scene) {
   });
   environmentHelper.setMainColor(BABYLON.Color3.Teal());
 
-  scene.environmentIntensity = 1.5;
+  scene.environmentIntensity = 1.2;
 
-  // const light = new BABYLON.HemisphericLight("light", new BABYLON.Vector3(-0.3, 1, 0));
   const shadowLight = new BABYLON.DirectionalLight('shadowLight', new BABYLON.Vector3(0.8, -2, -1));
+  shadowLight.diffuse = new BABYLON.Color3(1, 0.9, 0.62);
   shadowLight.intensity = 2;
 
+  // const keyLight = new BABYLON.HemisphericLight("light", new BABYLON.Vector3(-0.3, 1, 2));
   const keyLight = new BABYLON.DirectionalLight('keyLight', new BABYLON.Vector3(0.3, -1, -2));
+  keyLight.diffuse = new BABYLON.Color3(1, 0.9, 0.65);
   keyLight.intensity = 3;
-
-  // const light2 = new BABYLON.HemisphericLight("light", new BABYLON.Vector3(-0.3, 1, 0));
 
   // Add a camera.
   const cameraRotation = BABYLON.Angle.FromDegrees(85).radians();

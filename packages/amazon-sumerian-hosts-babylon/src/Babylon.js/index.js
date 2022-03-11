@@ -19,7 +19,6 @@ import {
 import PointOfInterestFeature, {AxisMap} from './PointOfInterestFeature';
 import {env} from './HostEnvironment';
 import HostObject from './HostObject';
-import HostUtils from './HostUtils';
 
 import aws from './awspack';
 import anim from './animpack';
@@ -73,10 +72,6 @@ export default {
    * @see babylonjs/HostObject
    */
   HostObject,
-  /**
-   * @see babylonjs/HostUtils
-   */
-  HostUtils,
   /**
    * @see module:babylonjs/awspack
    */
