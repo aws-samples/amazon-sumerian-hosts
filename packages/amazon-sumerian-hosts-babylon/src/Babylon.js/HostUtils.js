@@ -20,8 +20,6 @@ import aws from './awspack';
 import HostObject from './HostObject';
 import PointOfInterestFeature from './PointOfInterestFeature';
 
-let isTextToSpeechInitialized = false;
-
 /**
  * Creates a new Sumerian Host from the assets listed in the characterConfig
  * parameter. This can be used to create one of the built-in hosts or your own
@@ -66,8 +64,7 @@ async function createHost(scene, characterConfig, pollyConfig) {
  */
 async function initTextToSpeech() {
   // Ensure services get initialized only once per session.
-  if (isTextToSpeechInitialized) return;
-  isTextToSpeechInitialized = true;
+  if (aws.TextToSpeechFeature.isReady) return;
 
   // Enable Polly service functionality.
   const polly = new AWS.Polly();
