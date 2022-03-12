@@ -1,4 +1,5 @@
-// TODO: Update this value to match a Cognito Identity Pool created in your AWS
+// TODO: Make a copy of this file and name it "demo-credentials.js". Then,
+// update the value below to match a Cognito Identity Pool created in your AWS
 // account. The unauthenticated IAM role for the pool (usually ending in the
 // suffix "Unauth_Role") must have the following managed permissions policies
 // assigned to it:
