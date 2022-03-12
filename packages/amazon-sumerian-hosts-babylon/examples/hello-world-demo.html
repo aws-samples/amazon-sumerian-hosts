@@ -16,6 +16,9 @@
     <!-- Sumerian Host dependencies -->
     <script type="text/javascript" src="https://sdk.amazonaws.com/js/aws-sdk-2.645.0.min.js"></script>
     <script type="text/javascript" src="../dist/host.babylon.js"></script>
+
+    <!-- Demo logic -->
+    <script type="module" src="./hello-world-demo.js"></script>
   </head>
   <body>
     <div id="mainScreen" class="screen loading">
@@ -31,19 +34,5 @@
     <div id="loadingScreen" class="screen">
       <p>Loading...</p>
     </div>
-
-    <script type="module">
-      import createScene from './hello-world-demo.js';
-
-      const canvas = document.getElementById('renderCanvas');
-      const engine = new BABYLON.Engine(canvas, true);
-      const scene = await createScene(BABYLON, canvas);
-      scene.render();
-      engine.runRenderLoop(() => scene.render());
-      window.addEventListener('resize', () => engine.resize());
-
-      // Reveal the loaded scene.
-      document.getElementById('mainScreen').classList.remove('loading');
-    </script>
   </body>
 </html>

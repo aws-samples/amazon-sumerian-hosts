@@ -31,8 +31,7 @@ async function createScene() {
   host = await HOST.HostObject.createHost(scene, characterConfig, pollyConfig);
 
   // Tell the host to always look at the camera.
-  const camera = scene.cameras[0];
-  host.PointOfInterestFeature.setTarget(camera);
+  host.PointOfInterestFeature.setTarget(scene.activeCamera);
 
   // Enable shadows.
   scene.meshes.forEach(mesh => {
@@ -72,4 +71,4 @@ function playEmote(name) {
   host.GestureFeature.playGesture('Emote', name);
 }
 
-export default createScene;
+DemoUtils.loadDemo(createScene);

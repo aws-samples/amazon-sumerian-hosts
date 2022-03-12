@@ -1,3 +1,35 @@
+/**
+ * This function is the entry point for running a demo. It handles all Babylon
+ * engine setup and instantiates a Babylon scene by calling the user-defined
+ * `createScene` function argument.
+ *
+ * @param {function} createScene A function that returns a Babylon scene object
+ */
+async function loadDemo(createScene) {
+  const canvas = document.getElementById('renderCanvas');
+  const engine = new BABYLON.Engine(canvas, true);
+  const scene = await createScene(BABYLON, canvas);
+  scene.render();
+  engine.runRenderLoop(() => scene.render());
+  window.addEventListener('resize', () => engine.resize());
+
+  // Reveal the loaded scene.
+  document.getElementById('mainScreen').classList.remove('loading');
+}
+
+/**
+ * Creates a base scene by adding environment elements, lights, and a camera
+ * to the provided scene object.
+ *
+ * @param {BABYLON.Scene} scene An empty scene object to which elements will be
+ * added.
+ * @returns {object} An object with the shape:
+ ```
+ {
+   scene: BABYLON.Scene,
+   shadowGenerator: BABYLON.ShadowGenerator
+ }
+ */
 function setupSceneEnvironment(scene) {
   // Create a simple environment.
   const environmentHelper = scene.createDefaultEnvironment({
@@ -43,5 +75,6 @@ function setupSceneEnvironment(scene) {
 }
 
 export default {
+  loadDemo,
   setupSceneEnvironment
 }

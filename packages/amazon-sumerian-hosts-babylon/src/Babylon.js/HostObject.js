@@ -576,6 +576,7 @@ class HostObject extends CoreHostObject {
         animFaceIdleUrl: `${assetsPath}/animations/${characterType}/face_idle.glb`,
         animBlinkUrl: `${assetsPath}/animations/${characterType}/blink.glb`,
         animPointOfInterestUrl: `${assetsPath}/animations/${characterType}/poi.glb`,
+        lookJoint: 'char:jx_c_look',
       };
 
       characterConfigs.set(characterId, characterConfig);
@@ -617,6 +618,10 @@ const host = await HOST.HostUtils.createHost(scene, characterConfig, pollyConfig
    *   use. Either "standard" or "neural". Note that the neural engine incurs a
    *   higher cost and is not compatible with all voices or regions. See
    *   {@link https://docs.aws.amazon.com/polly/latest/dg/NTTS-main.html}
+   * @param {string} lookJoint The name of the joint to use for point-of-interest
+   * tracking. Defaults to 'char:jx_c_look' which is the appropriate value for
+   * the built-in host characters. Custom characters may need to specify a
+   * different joint name.
    *
    * @returns {babylonjs/HostObject} A functioning Sumerian Host
    */
@@ -625,7 +630,7 @@ const host = await HOST.HostUtils.createHost(scene, characterConfig, pollyConfig
     const assets = await this.loadAssets(scene, characterConfig);
     const host = this.assembleHost(assets, scene);
     this.addTextToSpeech(host, scene, pollyConfig.pollyVoice, pollyConfig.pollyEngine);
-    this.addPointOfInterestTracking(host, scene, assets.poiConfig);
+    this.addPointOfInterestTracking(host, scene, assets.poiConfig, characterConfig.lookJoint);
 
     return host;
   }
