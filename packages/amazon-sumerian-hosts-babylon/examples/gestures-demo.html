@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Gestures Demo</title>
+
+    <link rel="stylesheet" href="gesture-demo.css" />
+
+    <!-- Babylon.js dependencies -->
+    <script src="https://cdn.jsdelivr.net/npm/babylonjs@4.2.1/babylon.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/babylonjs-loaders@4.2.1/babylonjs.loaders.min.js"></script>
+
+    <!-- Sumerian Host dependencies -->
+    <script
+      type="text/javascript"
+      src="https://sdk.amazonaws.com/js/aws-sdk-2.645.0.min.js"
+    ></script>
+    <script type="text/javascript" src="../dist/host.babylon.js"></script>
+  </head>
+  <body>
+    <div id="mainScreen" class="screen loading">
+      <canvas id="renderCanvas"></canvas>
+
+      <div id="uiPanel" class="hide">
+        <label for="gestureSelect">Gestures</label>
+        <select id="gestureSelect">
+          <option></option>
+          <option value="aggressive">aggressive</option>
+          <option value="big">big</option>
+          <option value="defense">defense</option>
+          <option value="generic_a">generic_a</option>
+          <option value="generic_b">generic_b</option>
+          <option value="generic_c">generic_c</option>
+          <option value="heart">heart</option>
+          <option value="in">in</option>
+          <option value="many">many</option>
+          <option value="movement">movement</option>
+          <option value="one">one</option>
+          <option value="self">self</option>
+          <option value="wave">wave</option>
+          <option value="you">you</option>
+        </select>
+        <label for="emoteSelect">Emotes</label>
+        <select id="emoteSelect">
+          <option></option>
+          <option value="applause">applause</option>
+          <option value="bored">bored</option>
+          <option value="cheer">cheer</option>
+        </select>
+      </div>
+    </div>
+
+    <div id="loadingScreen" class="screen">
+      <p>Loading...</p>
+    </div>
+
+    <script type="module">
+      import createScene from './gestures-demo.js';
+
+      const canvas = document.getElementById('renderCanvas');
+      const engine = new BABYLON.Engine(canvas, true);
+      const scene = await createScene(BABYLON, canvas);
+      scene.render();
+      engine.runRenderLoop(() => scene.render());
+      window.addEventListener('resize', () => engine.resize());
+
+      // Reveal the loaded scene.
+      document.getElementById('mainScreen').classList.remove('loading');
+    </script>
+  </body>
+</html>

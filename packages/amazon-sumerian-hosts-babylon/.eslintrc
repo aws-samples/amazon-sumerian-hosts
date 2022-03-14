@@ -1,5 +1,7 @@
 {
-  "extends": ["../../.eslintrc"],
+  "extends": [
+    "../../.eslintrc.json"
+  ],
   "settings": {
     "import/resolver": {
       "webpack": {

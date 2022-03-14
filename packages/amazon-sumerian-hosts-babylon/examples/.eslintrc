@@ -1,0 +1,24 @@
+{
+  "extends": [
+    "../.eslintrc"
+  ],
+  "globals": {
+    "HOST": "readonly"
+  },
+  "rules": {
+    "import/extensions": [
+      "error",
+      {
+        "js": "always"
+      }
+    ],
+    "prefer-destructuring": [
+      "error",
+      {
+        "AssignmentExpression": {
+          "object": false
+        }
+      }
+    ]
+  }
+}
