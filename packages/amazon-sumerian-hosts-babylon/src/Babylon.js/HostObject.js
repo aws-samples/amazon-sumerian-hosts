@@ -92,14 +92,22 @@ class HostObject extends CoreHostObject {
 
   /**
    * @private
+   * @param {AWS.Polly} polly An AWS Polly service client, assumed to have the proper
+   *     credentials and configuration.
+   * @param {AWS.Polly.presigner} presigner The presigner used for Polly calls
    */
-  static async initTextToSpeech() {
+  static async initTextToSpeech(polly, presigner) {
     // Ensure services get initialized only once per session.
     if (aws.TextToSpeechFeature.isReady) return;
 
-    // Enable Polly service functionality.
-    const polly = new AWS.Polly();
-    const presigner = new AWS.Polly.Presigner();
+    // Enable Polly service functionality if necessary.
+    if (typeof polly === 'undefined') {
+      polly = new AWS.Polly();
+    }
+    if (typeof presigner === 'undefined') {
+      presigner = new AWS.Polly.Presigner();
+    }
+
     await aws.TextToSpeechFeature.initializeService(polly, presigner, AWS.VERSION);
   }
 
@@ -614,6 +622,8 @@ const host = await HOST.HostUtils.createHost(scene, characterConfig, pollyConfig
    * @param {String} characterConfig.animBlinkUrl
    * @param {String} characterConfig.animPointOfInterestUrl
    * @param {Object} pollyConfig
+   * @param {AWS.Polly} [pollyConfig.pollyClient] The reference to the Polly service client to use.
+   * @param {AWS.Polly.presigner} [pollyConfig.pollyPresigner] The reference to the Polly presigner to use.
    * @param {string} pollyConfig.pollyVoice The Polly voice to use. See
    *   {@link https://docs.aws.amazon.com/polly/latest/dg/voicelist.html}
    * @param {string} pollyConfig.pollyEngine The Polly engine you would like to
@@ -628,7 +638,7 @@ const host = await HOST.HostUtils.createHost(scene, characterConfig, pollyConfig
    * @returns {babylonjs/HostObject} A functioning Sumerian Host
    */
   static async createHost(scene, characterConfig, pollyConfig) {
-    await this.initTextToSpeech();
+    await this.initTextToSpeech(pollyConfig.pollyClient, pollyConfig.pollyPresigner);
     const assets = await this.loadAssets(scene, characterConfig);
     const host = this.assembleHost(assets, scene);
     this.addTextToSpeech(host, scene, pollyConfig.pollyVoice, pollyConfig.pollyEngine);
