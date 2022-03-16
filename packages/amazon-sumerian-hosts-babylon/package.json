@@ -25,5 +25,7 @@
     "@amazon-sumerian-hosts/core": "^2.0.0",
     "babylonjs": "=4.2.1"
   },
-  "dependencies": {}
+  "dependencies": {
+    "aws-sdk": "^2.1094.0"
+  }
 }
