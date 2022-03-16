@@ -155,6 +155,10 @@ class HostObject extends CoreHostObject {
     // Load character model
     const characterAsset = await BABYLON.SceneLoader.LoadAssetContainerAsync(modelUrl);
     const characterMesh = characterAsset.meshes[0];
+
+    // rename mesh to something human-readable instead of the default '__root__'
+    characterMesh.name = modelUrl.slice(modelUrl.lastIndexOf('/') + 1, modelUrl.lastIndexOf('.'));
+
     const bindPoseOffset = characterAsset.animationGroups[0];
 
     // Make the offset pose additive
