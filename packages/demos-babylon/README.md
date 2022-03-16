@@ -29,3 +29,5 @@ npm start
 ```
 
 This starts a local web server and launches a web browser displaying the list of available demos. Click on any demo to give it a try.
+
+When you're finished with the demos, you can quite the local dev server by pressing CTRL-C in the same terminal in which you started the server.
