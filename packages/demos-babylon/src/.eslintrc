@@ -6,12 +6,6 @@
     "HOST": "readonly"
   },
   "rules": {
-    // "import/extensions": [
-    //   "error",
-    //   {
-    //     "js": "always"
-    //   }
-    // ],
     "prefer-destructuring": [
       "error",
       {
