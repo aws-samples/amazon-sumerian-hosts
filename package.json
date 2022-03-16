@@ -13,6 +13,7 @@
   "workspaces": [
     "./packages/amazon-sumerian-hosts-core",
     "./packages/amazon-sumerian-hosts-babylon",
+    "./packages/demos-babylon",
     "./packages/amazon-sumerian-hosts-three"
   ],
   "scripts": {

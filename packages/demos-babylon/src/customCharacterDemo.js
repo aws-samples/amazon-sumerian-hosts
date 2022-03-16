@@ -1,5 +1,6 @@
-import DemoUtils from './common/demo-utils.js';
-import cognitoIdentityPoolId from './common/demo-credentials.js';
+import HOST from '@amazon-sumerian-hosts/babylon';
+import DemoUtils from './common/demo-utils';
+import cognitoIdentityPoolId from './common/demo-credentials';
 
 let host;
 let scene;
@@ -31,16 +32,16 @@ async function createScene() {
   // Create a characterConfig object describing the custom character and its
   // assets.
   const characterConfig = {
-    modelUrl: './assets/character-assets/characters/alien/alien.gltf',
-    gestureConfigUrl: './assets/character-assets/animations/alien/gesture.json',
-    pointOfInterestConfigUrl: './assets/character-assets/animations/alien/poi.json',
-    animStandIdleUrl: './assets/character-assets/animations/alien/stand_idle.glb',
-    animLipSyncUrl: './assets/character-assets/animations/alien/lipsync.glb',
-    animGestureUrl: './assets/character-assets/animations/alien/gesture.glb',
-    animEmoteUrl: './assets/character-assets/animations/alien/emote.glb',
-    animFaceIdleUrl: './assets/character-assets/animations/alien/face_idle.glb',
-    animBlinkUrl: './assets/character-assets/animations/alien/blink.glb',
-    animPointOfInterestUrl: './assets/character-assets/animations/alien/poi.glb',
+    modelUrl: './character-assets/characters/alien/alien.gltf',
+    gestureConfigUrl: './character-assets/animations/alien/gesture.json',
+    pointOfInterestConfigUrl: './character-assets/animations/alien/poi.json',
+    animStandIdleUrl: './character-assets/animations/alien/stand_idle.glb',
+    animLipSyncUrl: './character-assets/animations/alien/lipsync.glb',
+    animGestureUrl: './character-assets/animations/alien/gesture.glb',
+    animEmoteUrl: './character-assets/animations/alien/emote.glb',
+    animFaceIdleUrl: './character-assets/animations/alien/face_idle.glb',
+    animBlinkUrl: './character-assets/animations/alien/blink.glb',
+    animPointOfInterestUrl: './character-assets/animations/alien/poi.glb',
     lookJoint: 'char:gaze',
   }
 

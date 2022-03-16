@@ -1,0 +1,23 @@
+{
+  "name": "demos-babylon",
+  "version": "2.0.0",
+  "description": "Demos of the Babylon version of the Sumerain Hosts JS library",
+  "private": true,
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "webpack-dev-server --config webpack.config.js",
+    "build": "webpack --config webpack.config.js"
+  },
+  "keywords": [],
+  "author": {
+    "name": "Amazon Web Services",
+    "url": "https://aws.amazon.com",
+    "organization": true
+  },
+  "license": "MIT",
+  "devDependencies": {
+    "@amazon-sumerian-hosts/babylon": "^2.0.0",
+    "babylonjs": "=4.2.1",
+    "copy-webpack-plugin": "^10.2.4"
+  }
+}

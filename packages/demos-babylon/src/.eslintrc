@@ -1,17 +1,17 @@
 {
   "extends": [
-    "../.eslintrc"
+    "../../../.eslintrc.json"
   ],
   "globals": {
     "HOST": "readonly"
   },
   "rules": {
-    "import/extensions": [
-      "error",
-      {
-        "js": "always"
-      }
-    ],
+    // "import/extensions": [
+    //   "error",
+    //   {
+    //     "js": "always"
+    //   }
+    // ],
     "prefer-destructuring": [
       "error",
       {

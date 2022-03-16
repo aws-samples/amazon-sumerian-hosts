@@ -4,9 +4,9 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Hello World Demo</title>
+    <title>Custom Character Demo</title>
 
-    <link rel="stylesheet" href="hello-world-demo.css" />
+    <link rel="stylesheet" href="customCharacterDemo.css" />
 
     <!-- Babylon.js dependencies -->
     <script src="https://cdn.babylonjs.com/babylon.js"></script>
@@ -14,18 +14,21 @@
     <script src="https://code.jquery.com/pep/0.4.3/pep.js"></script>
 
     <!-- Sumerian Host dependencies -->
-    <script type="text/javascript" src="https://sdk.amazonaws.com/js/aws-sdk-2.645.0.min.js"></script>
-    <script type="text/javascript" src="../dist/host.babylon.js"></script>
+    <script
+      type="text/javascript"
+      src="https://sdk.amazonaws.com/js/aws-sdk-2.645.0.min.js"
+    ></script>
+    <!-- <script type="text/javascript" src="../dist/host.babylon.js"></script> -->
 
     <!-- Demo logic -->
-    <script type="module" src="./hello-world-demo.js"></script>
+    <script type="module" src="customCharacterDemo.bundle.js"></script>
   </head>
   <body>
     <div id="mainScreen" class="screen loading">
       <canvas id="renderCanvas"></canvas>
 
       <div id="uiPanel">
-        <textarea id="speechText" rows="8">Hello. I'm Christine, a Sumerian host. It's nice to meet you.</textarea>
+        <textarea id="speechText" rows="8">Hello. I am a custom host character. Although I have a different skeleton and different animations than the other Sumerian hosts, I still have all the same capabilities!</textarea>
         <button id="speakButton">Speak</button>
       </div>
     </div>

@@ -1,5 +1,6 @@
-import DemoUtils from './common/demo-utils.js';
-import cognitoIdentityPoolId from './common/demo-credentials.js';
+import HOST from '@amazon-sumerian-hosts/babylon';
+import DemoUtils from './common/demo-utils';
+import cognitoIdentityPoolId from './common/demo-credentials';
 
 let host;
 let scene;
@@ -25,9 +26,9 @@ async function createScene() {
   // Edit the characterId if you would like to use one of
   // the other pre-built host characters. Available character IDs are:
   // "Cristine", "Fiona", "Grace", "Maya", "Jay", "Luke", "Preston", "Wes"
-  const characterId = 'Maya';
-  const characterConfig = HOST.HostObject.getCharacterConfig('./assets/character-assets', characterId);
+  const characterId = 'Cristine';
   const pollyConfig = { pollyVoice: 'Joanna', pollyEngine: 'neural' };
+  const characterConfig = HOST.HostObject.getCharacterConfig('./character-assets', characterId);
   host = await HOST.HostObject.createHost(scene, characterConfig, pollyConfig);
 
   // Tell the host to always look at the camera.
@@ -42,33 +43,12 @@ async function createScene() {
 }
 
 function initUi() {
-  // Register Gesture menu handlers.
-  const gestureSelect = document.getElementById('gestureSelect');
-  gestureSelect.addEventListener('change', (evt) => playGesture(evt.target.value));
-
-  // Register Emote menu handlers.
-  const emoteSelect = document.getElementById('emoteSelect');
-  emoteSelect.addEventListener('change', (evt) => playEmote(evt.target.value));
-
-  // Reveal the UI.
-  document.getElementById('uiPanel').classList.remove('hide');
+  document.getElementById('speakButton').onclick = speak.bind(this);
 }
 
-function playGesture(name) {
-  if (!name) return;
-
-  // This options object is optional. It's included here to demonstrate the available options.
-  const gestureOptions = {
-    holdTime: 1.5, // how long the gesture should last
-    minimumInterval: 0 // how soon another gesture can be triggered
-  };
-  host.GestureFeature.playGesture('Gesture', name, gestureOptions);
-}
-
-function playEmote(name) {
-  if (!name) return;
-
-  host.GestureFeature.playGesture('Emote', name);
+function speak() {
+  const speech = document.getElementById('speechText').value;
+  host.TextToSpeechFeature.play(speech);
 }
 
 DemoUtils.loadDemo(createScene);
