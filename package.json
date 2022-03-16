@@ -24,7 +24,7 @@
     "build-test": "npm run --workspaces build && npm run --workspaces test",
     "release": "npm run --workspaces build",
     "docs": "jsdoc -c jsdoc.conf.json",
-    "babylon-examples-start": "npm run start --workspace ./packages/amazon-sumerian-hosts-babylon"
+    "babylon-demos-start": "npm run build && npm run start --workspace ./packages/demos-babylon"
   },
   "devDependencies": {
     "@babel/core": "^7.8.4",
