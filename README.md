@@ -201,7 +201,7 @@ Replace `<Enter Cognito Identity Pool ID here>` with the id you created in the [
 ### Step 6. Initializing the Host TextToSpeechFeature
 
 The [TextToSpeechFeature](https://aws-samples.github.io/amazon-sumerian-hosts/three.js_TextToSpeechFeature.html) is the host feature that communicates with Amazon Polly to generate speech audio and speechmarks and plays them back at runtime. Before this feature can be used, it must be initialized with Polly and PollyPresigner instances, as well as the version of the AWS SDK being used.
-
+n
 ```javascript
 const polly = new AWS.Polly();
 const presigner = new AWS.Polly.Presigner();
