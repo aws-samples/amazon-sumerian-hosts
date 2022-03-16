@@ -8,6 +8,9 @@ module.exports = {
     modules: ['node_modules'],
   },
   plugins: [
+    // This CopyPlugin config ensures that all static assets used for the demos
+    // are included in the build including HTML, CSS, images, and the character
+    // assets.
     new CopyPlugin({
       patterns: [
         {
