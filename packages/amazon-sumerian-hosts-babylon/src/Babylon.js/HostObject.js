@@ -5,6 +5,8 @@ import anim from './animpack';
 import aws from './awspack';
 import PointOfInterestFeature from './PointOfInterestFeature';
 
+const AWS = require('aws-sdk');
+
 /**
  * @extends core/HostObject
  * @alias babylonjs/HostObject
@@ -230,7 +232,7 @@ class HostObject extends CoreHostObject {
    * @private
    */
   static assembleHost(assets, scene) {
-    const {characterMesh} = assets;
+    const { characterMesh } = assets;
 
     // Add the host to the render loop
     const host = new HostObject({ owner: assets.characterMesh });
@@ -330,7 +332,7 @@ class HostObject extends CoreHostObject {
       BABYLON.AnimationGroup.MakeAnimationAdditive(clip);
 
       if (config !== undefined) {
-      // Add the clip to each queueOption so it can be split up
+        // Add the clip to each queueOption so it can be split up
         config.queueOptions.forEach((option) => {
           option.clip = clip;
           option.to /= 30.0;
@@ -426,7 +428,7 @@ class HostObject extends CoreHostObject {
     });
 
     // Apply bindPoseOffset clip if it exists
-    const {bindPoseOffset} = assets;
+    const { bindPoseOffset } = assets;
     if (bindPoseOffset !== undefined) {
       host.AnimationFeature.addLayer('BindPoseOffset', { blendMode: anim.LayerBlendModes.Additive });
       host.AnimationFeature.addAnimation(
@@ -563,7 +565,7 @@ class HostObject extends CoreHostObject {
     const characterConfigs = new Map();
 
     characterTypeMap.forEach((characterType, characterId) => {
-    // Convert char ID to lowercase to match filenames on disk.
+      // Convert char ID to lowercase to match filenames on disk.
       const characterIdLower = characterId.toLowerCase();
       const characterConfig = {
         modelUrl: `${assetsPath}/characters/${characterType}/${characterIdLower}/${characterIdLower}.gltf`,
