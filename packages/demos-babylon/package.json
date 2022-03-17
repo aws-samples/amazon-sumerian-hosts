@@ -4,7 +4,7 @@
   "description": "Demos of the Babylon version of the Sumerian Hosts JS library",
   "private": true,
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "",
     "start": "webpack-dev-server --config webpack.config.js",
     "build": "webpack --config webpack.config.js"
   },
