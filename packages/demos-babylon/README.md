@@ -10,7 +10,7 @@ In a terminal, navigate to the repository root directory and run (if you haven't
 npm install
 ```
 
-In the folder `/packages/demos-babylon/src/common/`, duplicate the `demo-credentials.template.js` file and name it `demo-credentials.js`.  Then, open the file for editing.
+In the folder `/packages/demos-babylon/src/common/`, open the `demo-credentials.js` file for editing.
 
 Set the `cognitoIdentityPoolId` value to a Cognito Identity Pool ID created in your own AWS account. The unauthenticated IAM role associated with the pool (usually ending in the suffix "Unauth_Role") must have the following managed permissions policies assigned to it:
 - AmazonPollyReadOnlyAccess
