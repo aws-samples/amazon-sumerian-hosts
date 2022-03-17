@@ -31,12 +31,9 @@ module.exports = {
     path: path.resolve(__dirname, 'dist')
   },
   devServer: {
-    open: ['/'],
-    liveReload: true,
-    hot: false,
+    open: true,
     static: {
       directory: path.join(__dirname),
-      watch: true,
     },
   },
 };
