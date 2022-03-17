@@ -1,11 +1,11 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: MIT-0
 import { HostObject as CoreHostObject, LipsyncFeature, GestureFeature } from '@amazon-sumerian-hosts/core';
+import AWS from 'aws-sdk';
 import anim from './animpack';
 import aws from './awspack';
 import PointOfInterestFeature from './PointOfInterestFeature';
 
-const AWS = require('aws-sdk');
 
 /**
  * @extends core/HostObject
@@ -92,9 +92,9 @@ class HostObject extends CoreHostObject {
 
   /**
    * @private
-   * @param {AWS.Polly} polly An AWS Polly service client, assumed to have the proper
+   * @param {AWS.Polly=} polly An AWS Polly service client, assumed to have the proper
    *     credentials and configuration.
-   * @param {AWS.Polly.presigner} presigner The presigner used for Polly calls
+   * @param {AWS.Polly.presigner=} presigner The presigner used for Polly calls
    */
   static async initTextToSpeech(polly, presigner) {
     // Ensure services get initialized only once per session.
@@ -244,7 +244,7 @@ class HostObject extends CoreHostObject {
    * @private
    */
   static assembleHost(assets, scene) {
-    const { characterMesh } = assets;
+    const {characterMesh} = assets;
 
     // Add the host to the render loop
     const host = new HostObject({ owner: assets.characterMesh });
@@ -626,8 +626,8 @@ const host = await HOST.HostUtils.createHost(scene, characterConfig, pollyConfig
    * @param {String} characterConfig.animBlinkUrl
    * @param {String} characterConfig.animPointOfInterestUrl
    * @param {Object} pollyConfig
-   * @param {AWS.Polly} [pollyConfig.pollyClient] The reference to the Polly service client to use.
-   * @param {AWS.Polly.presigner} [pollyConfig.pollyPresigner] The reference to the Polly presigner to use.
+   * @param {AWS.Polly=} pollyConfig.pollyClient The reference to the Polly service client to use.
+   * @param {AWS.Polly.presigner=} pollyConfig.pollyPresigner The reference to the Polly presigner to use.
    * @param {string} pollyConfig.pollyVoice The Polly voice to use. See
    *   {@link https://docs.aws.amazon.com/polly/latest/dg/voicelist.html}
    * @param {string} pollyConfig.pollyEngine The Polly engine you would like to
