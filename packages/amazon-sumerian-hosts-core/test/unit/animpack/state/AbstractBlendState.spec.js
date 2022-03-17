@@ -1,10 +1,10 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: MIT-0
-/* eslint-disable jasmine/no-spec-dupes */
-/* eslint-disable no-undef */
 /* eslint-disable no-underscore-dangle */
+import {Deferred} from '@amazon-sumerian-hosts/core';
 import AbstractBlendState from '../../../../src/core/animpack/state/AbstractBlendState'
 import describeHostEnvironment from '../../EnvironmentHarness';
+
 
 describeHostEnvironment('AbstractBlendState', () => {
   let blend;
@@ -84,7 +84,7 @@ describeHostEnvironment('AbstractBlendState', () => {
   });
 
   describe('setBlendWeight', () => {
-    it('should throw an error when the state is not in the container', () => {
+    it('should throw an error when the state is not in the container2', () => {
       expect(() => {
         blend.setBlendWeight('NotState');
       }).toThrowError();

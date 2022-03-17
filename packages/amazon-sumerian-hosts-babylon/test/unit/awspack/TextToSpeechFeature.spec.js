@@ -53,7 +53,7 @@ describeEnvironment('TextToSpeechFeature', (options) => {
       'getSynthesizeSpeechUrl',
     ]);
     mockPresigner.getSynthesizeSpeechUrl.and.callFake((_params, fn) => {
-      fn(undefined, '/base/test/assets/audio.mp3');
+      fn(undefined, '/base/packages/amazon-sumerian-hosts-babylon/test/assets/audio.mp3');
     });
 
     await aws.TextToSpeechFeature.initializeService(
