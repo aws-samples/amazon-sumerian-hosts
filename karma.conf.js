@@ -35,7 +35,6 @@ module.exports = function(config) {
 
     // list of files / patterns to load in the browser
     files: [
-      // '../../node_modules/regenerator-runtime/runtime.js',
       'packages/**/test/unit/**/*.spec.js',
       {
         pattern: 'packages/**/test/assets/*',
@@ -91,7 +90,7 @@ module.exports = function(config) {
 
     // Concurrency level
     // how many browser should be started simultaneous
-    concurrency: 1,
+    concurrency: Infinity,
 
     webpack: webpackConfig,
 
