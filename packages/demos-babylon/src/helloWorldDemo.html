@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Hello World Demo</title>
+
+    <link rel="stylesheet" href="helloWorldDemo.css" />
+
+    <!-- Babylon.js dependencies -->
+    <script src="https://cdn.jsdelivr.net/npm/babylonjs@4.2.1/babylon.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/babylonjs-loaders@4.2.1/babylonjs.loaders.min.js"></script>
+
+    <!-- Sumerian Host dependencies -->
+    <script
+      type="text/javascript"
+      src="https://sdk.amazonaws.com/js/aws-sdk-2.645.0.min.js"
+    ></script>
+
+    <!-- Demo logic -->
+    <script type="module" src="helloWorldDemo.bundle.js"></script>
+  </head>
+  <body>
+    <div id="mainScreen" class="screen loading">
+      <canvas id="renderCanvas"></canvas>
+
+      <div id="uiPanel">
+        <textarea id="speechText" rows="8">Hello. I'm Cristine, a Sumerian host. It's nice to meet you.</textarea>
+        <button id="speakButton">Speak</button>
+      </div>
+    </div>
+    </div>
+
+    <div id="loadingScreen" class="screen">
+      <p>Loading...</p>
+    </div>
+  </body>
+</html>

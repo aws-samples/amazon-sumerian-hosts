@@ -1,7 +1,18 @@
 {
-  "extends": ["airbnb", "prettier", "plugin:jasmine/recommended"],
-  "plugins": ["prettier", "jasmine"],
-  "ignorePatterns": ["dist/", "docs_template/", "docs/"],
+  "extends": [
+    "airbnb",
+    "prettier",
+    "plugin:jasmine/recommended"
+  ],
+  "plugins": [
+    "prettier",
+    "jasmine"
+  ],
+  "ignorePatterns": [
+    "dist/",
+    "docs_template/",
+    "docs/"
+  ],
   "parserOptions": {
     "ecmaFeatures": {
       "experimentalObjectResetSpread": true
@@ -37,6 +48,11 @@
     "no-bitwise": "off",
     "max-len": "off",
     "import/no-extraneous-dependencies": "off",
+    // Turning off import resolution checks because they cause linting to fail
+    // if linting is performend before the sub-packages in this monorepo have
+    // been built. We'll rely instead on Webpack to catch any import resolution 
+    // problems.
+    "import/no-unresolved": "off",
     "no-shadow": "off",
     "no-plusplus": "off",
     "no-underscore-dangle": [

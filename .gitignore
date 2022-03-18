@@ -11,3 +11,5 @@ npm-debug.log
 build
 build/
 docs/
+packages/amazon-sumerian-hosts-babylon/examples/common/demo-credentials.js
+**/dist/

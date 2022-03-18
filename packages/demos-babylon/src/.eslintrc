@@ -1,0 +1,18 @@
+{
+  "extends": [
+    "../../../.eslintrc.json"
+  ],
+  "globals": {
+    "HOST": "readonly"
+  },
+  "rules": {
+    "prefer-destructuring": [
+      "error",
+      {
+        "AssignmentExpression": {
+          "object": false
+        }
+      }
+    ]
+  }
+}
