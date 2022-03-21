@@ -123,18 +123,6 @@ describeEnvironment('SingleState', (options = {}) => {
       expect(state.timeScalePending).toBeFalse();
     });
 
-    it('should return false if the timeScale promise has been rejected', () => {
-      state._promises.timeScale = new Deferred();
-
-      expect(state.timeScalePending).toBeTrue();
-
-      state._promises.timeScale.reject();
-
-      state._promises.timeScale.catch();
-
-      expect(state.timeScalePending).toBeFalse();
-    });
-
     it('should return false if the timeScale promise has been canceled', () => {
       state._promises.timeScale = new Deferred();
 
