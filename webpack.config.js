@@ -2,6 +2,7 @@
 // SPDX-License-Identifier: MIT-0
 const path = require('path');
 const webpack = require('webpack');
+const CopyPlugin = require('copy-webpack-plugin');
 
 module.exports = {
   entry: {
@@ -17,6 +18,15 @@ module.exports = {
       import: './packages/amazon-sumerian-hosts-three/src/three.js/index.js',
       filename: "./packages/amazon-sumerian-hosts-three/dist/[name].js",
     },
+    helloWorldDemo: {
+      import: './packages/demos-babylon/src/helloWorldDemo.js',
+    },
+    gesturesDemo: {
+      import: './packages/demos-babylon/src/gesturesDemo.js',
+    },
+    customCharacterDemo: {
+      import: './packages/demos-babylon/src/customCharacterDemo.js',
+    }
   },
   output: {
     filename: '[name].js',
@@ -32,12 +42,20 @@ module.exports = {
     new webpack.BannerPlugin({
       banner: `Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.\nSPDX-License-Identifier: MIT-0`,
       entryOnly: true,
-    })
+    }),
+    new CopyPlugin({
+      patterns: [
+        {
+          from: 'packages/demos-babylon/**/*.*',
+          globOptions: { ignore: ['**/*.js' ]}
+        }
+      ]
+    }),
   ],
   devServer: {
-    open: ['/'],
+    open: ['/packages/demos-babylon/src/'],
     liveReload: true,
-    hot: false,
+    hot: true,
     static: {
       directory: path.join(__dirname),
       watch: true,

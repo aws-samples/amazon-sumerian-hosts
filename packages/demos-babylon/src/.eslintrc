@@ -1,10 +1,6 @@
 {
   "extends": [
-<<<<<<< HEAD:packages/demos-babylon/src/.eslintrc
     "../../../.eslintrc.json"
-=======
-    "../../../.eslintrc"
->>>>>>> 355593d ([WIP]Cleanup webpack/karma build):packages/amazon-sumerian-hosts-babylon/examples/.eslintrc
   ],
   "globals": {
     "HOST": "readonly"

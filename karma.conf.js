@@ -1,6 +1,10 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: MIT-0
+
+// We will use the core Webpack with a few changes for unit testing
 const webpackConfig = require('./webpack.test');
+// Removing the output will stop karma from outputing chunks for the test code
+delete webpackConfig.output;
 
 const TEST_BROWSERS =
   process.env.TEST_BROWSERS !== undefined
