@@ -1,8 +1,8 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: MIT-0
-import Messenger from 'core/Messenger';
-import Utils from 'core/Utils';
-import LexUtils from 'core/awspack/LexUtils';
+import Messenger from '../Messenger';
+import Utils from '../Utils';
+import LexUtils from './LexUtils';
 
 /**
  * The AWS LexRuntime service object.

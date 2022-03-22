@@ -3,9 +3,7 @@
 /* eslint-disable jasmine/no-spec-dupes */
 /* eslint-disable no-undef */
 /* eslint-disable no-underscore-dangle */
-import SingleState from 'core/animpack/state/SingleState';
-import {LayerBlendModes} from 'core/animpack/AnimationLayer';
-import Deferred from 'core/Deferred';
+import {Deferred, LayerBlendModes, SingleState} from '@amazon-sumerian-hosts/core';
 import describeEnvironment from '../../EnvironmentHarness';
 
 describeEnvironment('SingleState', () => {

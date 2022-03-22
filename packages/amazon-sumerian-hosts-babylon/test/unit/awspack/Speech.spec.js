@@ -4,7 +4,7 @@
 /* eslint-disable jasmine/no-spec-dupes */
 /* eslint-disable jasmine/prefer-toHaveBeenCalledWith */
 /* eslint-disable no-underscore-dangle */
-import Speech from 'app/awspack/Speech';
+import {aws} from '@amazon-sumerian-hosts/babylon';
 import {Messenger} from '@amazon-sumerian-hosts/core';
 import describeEnvironment from '../EnvironmentHarness';
 
@@ -43,7 +43,7 @@ describeEnvironment('Speech', () => {
 
     const audioConfig = {audio: mockAudio};
 
-    speech = new Speech(speaker, '', [], audioConfig);
+    speech = new aws.Speech(speaker, '', [], audioConfig);
   });
 
   function describeCommonSpeech() {

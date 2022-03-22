@@ -3,7 +3,7 @@
 
 /* eslint-disable no-unused-vars */
 /* eslint-disable max-classes-per-file */
-import HostObject from 'core/HostObject';
+import HostObject from './HostObject';
 
 /**
  * Class factory interface for features that are dependent on other features being

@@ -1,8 +1,8 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: MIT-0
-import Deferred from 'core/Deferred';
-import Utils from 'core/Utils';
-import MathUtils from 'core/MathUtils';
+import Deferred from '../Deferred';
+import Utils from '../Utils';
+import MathUtils from '../MathUtils';
 import {Linear} from './Easing';
 
 /**

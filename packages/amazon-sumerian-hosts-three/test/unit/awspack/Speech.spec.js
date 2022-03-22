@@ -4,8 +4,8 @@
 /* eslint-disable jasmine/no-spec-dupes */
 /* eslint-disable jasmine/prefer-toHaveBeenCalledWith */
 /* eslint-disable no-underscore-dangle */
-import Speech from 'app/awspack/Speech';
 import {Messenger} from '@amazon-sumerian-hosts/core';
+import { aws } from '@amazon-sumerian-hosts/three';
 import describeEnvironment from '../EnvironmentHarness';
 
 describeEnvironment('Speech', (_options, env) => {
@@ -48,7 +48,7 @@ describeEnvironment('Speech', (_options, env) => {
       mockAudio.pause = spyOn(audioConfig.threeAudio, 'pause');
     }
 
-    speech = new Speech(speaker, '', [], audioConfig);
+    speech = new aws.Speech(speaker, '', [], audioConfig);
   });
 
   function describeCommonSpeech() {

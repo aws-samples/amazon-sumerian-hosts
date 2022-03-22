@@ -2,9 +2,7 @@
 // SPDX-License-Identifier: MIT-0
 /* eslint-disable jasmine/no-spec-dupes */
 /* eslint-disable no-underscore-dangle */
-import LipsyncFeature, {DefaultVisemeMap} from 'core/LipsyncFeature';
-import HostObject from 'core/HostObject';
-import Deferred from 'core/Deferred';
+import {Deferred, LipsyncFeature, HostObject, DefaultVisemeMap} from '@amazon-sumerian-hosts/core';
 import describeEnvironment from '../EnvironmentHarness';
 
 describeEnvironment('LipsyncFeature', () => {

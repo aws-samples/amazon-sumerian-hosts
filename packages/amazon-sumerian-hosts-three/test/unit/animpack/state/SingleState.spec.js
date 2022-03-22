@@ -3,7 +3,7 @@
 /* eslint-disable jasmine/no-spec-dupes */
 /* eslint-disable no-undef */
 /* eslint-disable no-underscore-dangle */
-import SingleState from 'app/animpack/state/SingleState';
+import { anim } from '@amazon-sumerian-hosts/three'
 import {LayerBlendModes, Deferred} from '@amazon-sumerian-hosts/core';
 import describeEnvironment from '../../EnvironmentHarness';
 
@@ -29,7 +29,7 @@ describeEnvironment('SingleState', () => {
         return mockThreeMixer;
       },
     };
-    state = new SingleState(undefined, mockThreeAction);
+    state = new anim.SingleState(undefined, mockThreeAction);
   });
 
   describe('normalizedTime', () => {

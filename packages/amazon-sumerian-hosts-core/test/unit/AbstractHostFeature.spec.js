@@ -4,8 +4,7 @@
 /* eslint-disable jasmine/no-spec-dupes */
 /* eslint-disable jasmine/prefer-toHaveBeenCalledWith */
 /* eslint-disable no-underscore-dangle */
-import AbstractHostFeature from 'core/AbstractHostFeature';
-import Messenger from 'core/Messenger';
+import {Messenger, AbstractHostFeature} from '@amazon-sumerian-hosts/core';
 import describeEnvironment from './EnvironmentHarness';
 
 describeEnvironment('AbstractHostFeature', (options = {}) => {

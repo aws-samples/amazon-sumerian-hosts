@@ -1,6 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: MIT-0
-import Messenger from 'core/Messenger';
+import Messenger from './Messenger';
 import AbstractHostFeature from './AbstractHostFeature';
 import Utils from './Utils';
 

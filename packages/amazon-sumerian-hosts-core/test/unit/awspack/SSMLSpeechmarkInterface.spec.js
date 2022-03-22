@@ -5,9 +5,8 @@
 /* eslint-disable jasmine/no-spec-dupes */
 /* eslint-disable jasmine/prefer-toHaveBeenCalledWith */
 /* eslint-disable no-underscore-dangle */
-import SSMLSpeechmarkInterface from 'core/awspack/SSMLSpeechmarkInterface';
-import AbstractHostFeature from 'core/AbstractHostFeature';
-import HostObject from 'core/HostObject';
+import {AbstractHostFeature, HostObject} from '@amazon-sumerian-hosts/core';
+import SSMLSpeechmarkInterface from '../../../src/core/awspack/SSMLSpeechmarkInterface';
 import describeEnvironment from '../EnvironmentHarness';
 
 describeEnvironment('SSMLSpeechmarkInterface', () => {

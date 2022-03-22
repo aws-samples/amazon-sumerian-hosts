@@ -1,4 +1,4 @@
-import HOST from '@amazon-sumerian-hosts/babylon';
+import { HostObject } from '@amazon-sumerian-hosts/babylon';
 import DemoUtils from './common/demo-utils';
 import cognitoIdentityPoolId from './common/demo-credentials';
 
@@ -27,9 +27,9 @@ async function createScene() {
   // the other pre-built host characters. Available character IDs are:
   // "Cristine", "Fiona", "Grace", "Maya", "Jay", "Luke", "Preston", "Wes"
   const characterId = 'Maya';
-  const characterConfig = HOST.HostObject.getCharacterConfig('./character-assets', characterId);
+  const characterConfig = HostObject.getCharacterConfig('./character-assets', characterId);
   const pollyConfig = { pollyVoice: 'Joanna', pollyEngine: 'neural' };
-  host = await HOST.HostObject.createHost(scene, characterConfig, pollyConfig);
+  host = await HostObject.createHost(scene, characterConfig, pollyConfig);
 
   // Tell the host to always look at the camera.
   host.PointOfInterestFeature.setTarget(scene.activeCamera);

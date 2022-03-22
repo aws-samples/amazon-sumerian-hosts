@@ -10,6 +10,7 @@ import MathUtils from './MathUtils';
 import Deferred from './Deferred';
 import {env} from './HostEnvironment';
 import Messenger from './Messenger';
+import AbstractHostFeature from './AbstractHostFeature';
 import HostObject from './HostObject';
 import LipsyncFeature, {DefaultVisemeMap} from './LipsyncFeature';
 import GestureFeature, {DefaultGestureWords} from './GestureFeature';
@@ -45,7 +46,7 @@ const {
   Speech,
 } = aws;
 
-export default {
+export {
   /**
    * @see env
    */
@@ -83,6 +84,10 @@ export default {
    */
   PointOfInterestFeature,
   /**
+   * @see module:core/AbstractHostFeature
+   */
+  AbstractHostFeature,
+  /**
    * @see DefaultVisemeMap
    */
   DefaultVisemeMap,
@@ -95,7 +100,7 @@ export default {
    */
   AxisMap,
 
-  // Amnimpack
+  // Animpack
   /**
    * @see module:core/animpack.Easing
    */

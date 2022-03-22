@@ -1,8 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: MIT-0
 /* eslint-disable no-undef */
-import Deferred from 'core/Deferred';
-import AnimationUtils from 'core/animpack/AnimationUtils';
+import {AnimationUtils, Deferred} from '@amazon-sumerian-hosts/core';
 
 describe('AnimationUtils', () => {
   describe('interpolateProperty', () => {

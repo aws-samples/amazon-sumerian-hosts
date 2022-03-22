@@ -23,7 +23,7 @@ import HostObject from './HostObject';
 import aws from './awspack';
 import anim from './animpack';
 
-export default {
+export {
   /**
    * @see module:core/HOST.Utils
    */

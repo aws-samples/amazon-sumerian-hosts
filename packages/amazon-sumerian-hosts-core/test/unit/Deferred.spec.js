@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: MIT-0
 /* eslint-disable no-underscore-dangle */
 /* eslint-disable no-empty */
-import Deferred from 'core/Deferred';
+import {Deferred} from '@amazon-sumerian-hosts/core';
 
 describe('Deferred', () => {
   describe('constructor', () => {

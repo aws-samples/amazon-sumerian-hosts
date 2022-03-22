@@ -1,6 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: MIT-0
-import Deferred from 'core/Deferred';
+import Deferred from '../../Deferred';
 import AbstractState from './AbstractState';
 import {validateBlendMode} from '../AnimationLayer';
 import AnimationUtils from '../AnimationUtils';

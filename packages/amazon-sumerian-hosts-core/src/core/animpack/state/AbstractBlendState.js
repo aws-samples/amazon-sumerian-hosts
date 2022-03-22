@@ -1,7 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: MIT-0
-import Deferred from 'core/Deferred';
-import MathUtils from 'core/MathUtils';
+import Deferred from '../../Deferred';
+import MathUtils from '../../MathUtils';
 import AbstractState from './AbstractState';
 import StateContainerInterface from './StateContainerInterface';
 

@@ -12,17 +12,13 @@
     "type": "git",
     "url": "https://github.com/aws-samples/amazon-sumerian-hosts.git"
   },
-  "main": "./dist/host.three.js",
+  "main": "./src/three.js/index.js",
   "scripts": {
-    "test": "node ../../node_modules/karma/bin/karma start",
-    "build": "webpack --config webpack.common.js",
-    "build-test": "npm run build; npm run test",
-    "start": "webpack-dev-server --open --config webpack.dev.js",
-    "build-start": "npm run build; npm run start",
-    "release": "npm run build"
   },
-  "devDependencies": {
-    "@amazon-sumerian-hosts/core": "^2.0.0",
+  "dependencies": {
+    "@amazon-sumerian-hosts/core": "^2.0.0"
+  },
+  "peerDependencies": {
     "three": "=0.127.0"
   }
 }

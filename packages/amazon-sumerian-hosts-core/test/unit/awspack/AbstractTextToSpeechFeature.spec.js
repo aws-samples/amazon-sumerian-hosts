@@ -4,10 +4,7 @@
 /* eslint-disable no-undef */
 /* eslint-disable jasmine/prefer-toHaveBeenCalledWith */
 /* eslint-disable no-underscore-dangle */
-import Messenger from 'core/Messenger';
-import AbstractTextToSpeechFeature from 'core/awspack/AbstractTextToSpeechFeature';
-import AbstractSpeech from 'core/awspack/AbstractSpeech';
-import Deferred from 'core/Deferred';
+import {Messenger, AbstractTextToSpeechFeature, AbstractSpeech, Deferred} from '@amazon-sumerian-hosts/core';
 import describeEnvironment from '../EnvironmentHarness';
 
 describeEnvironment('AbstractTextToSpeechFeature', () => {
@@ -977,7 +974,7 @@ describeEnvironment('AbstractTextToSpeechFeature', () => {
     });
   });
 
-  describe('play', async () => {
+  describe('play', () => {
     it('should return a promise', () => {
       const tts = new AbstractTextToSpeechFeature(mockHost);
       const result = tts.play('test');
@@ -1003,7 +1000,7 @@ describeEnvironment('AbstractTextToSpeechFeature', () => {
       await expectAsync(tts.play()).toBeRejected();
     });
 
-    it('should execute play once on the new current speech', async done => {
+    it('should execute play once on the new current speech', async () => {
       await AbstractTextToSpeechFeature.initializeService(
         mockPolly,
         mockPresigner,
@@ -1018,10 +1015,9 @@ describeEnvironment('AbstractTextToSpeechFeature', () => {
         config: tts._getConfig(),
       };
       tts.play('test');
-      setTimeout(() => {
-        expect(mockSpeech.play).toHaveBeenCalledTimes(1);
-        done();
-      }, 100);
+      await new Promise(resolve => setTimeout(resolve, 100))
+
+      expect(mockSpeech.play).toHaveBeenCalledTimes(1);
     });
 
     it('should set current speech to null once the play promise is no longer pending', async () => {
@@ -1050,7 +1046,7 @@ describeEnvironment('AbstractTextToSpeechFeature', () => {
       expect(tts.currentSpeech).toBeNull();
     });
 
-    it('should be the text of a speech while it is playing', async done => {
+    it('should be the text of a speech while it is playing', async () => {
       await AbstractTextToSpeechFeature.initializeService(
         mockPolly,
         mockPresigner,
@@ -1058,10 +1054,9 @@ describeEnvironment('AbstractTextToSpeechFeature', () => {
       );
       const tts = new AbstractTextToSpeechFeature(mockHost);
       tts.play('test');
-      setTimeout(() => {
-        expect(tts.currentSpeech).toEqual('<speak>test</speak>');
-        done();
-      }, 100);
+      await new Promise(resolve => setTimeout(resolve, 100))
+
+      expect(tts.currentSpeech).toEqual('<speak>test</speak>');
     });
   });
 
@@ -1120,7 +1115,7 @@ describeEnvironment('AbstractTextToSpeechFeature', () => {
       await expectAsync(tts.resume()).toBeRejected();
     });
 
-    it('should execute cancel once on the current speech if a current speech is defined and playing', async done => {
+    it('should execute cancel once on the current speech if a current speech is defined and playing', async ()=> {
       await AbstractTextToSpeechFeature.initializeService(
         mockPolly,
         mockPresigner,
@@ -1133,13 +1128,12 @@ describeEnvironment('AbstractTextToSpeechFeature', () => {
       });
       tts._currentSpeech = mockSpeech;
       tts.resume('test');
-      setTimeout(() => {
-        expect(mockSpeech.cancel).toHaveBeenCalledTimes(1);
-        done();
-      }, 100);
+      await new Promise(resolve => setTimeout(resolve, 100))
+
+      expect(mockSpeech.cancel).toHaveBeenCalledTimes(1);
     });
 
-    it('should execute resume once on the new current speech', async done => {
+    it('should execute resume once on the new current speech', async () => {
       await AbstractTextToSpeechFeature.initializeService(
         mockPolly,
         mockPresigner,
@@ -1154,13 +1148,12 @@ describeEnvironment('AbstractTextToSpeechFeature', () => {
         config: tts._getConfig(),
       };
       tts.resume('test');
-      setTimeout(() => {
-        expect(mockSpeech.resume).toHaveBeenCalledTimes(1);
-        done();
-      }, 100);
+      await new Promise(resolve => setTimeout(resolve, 100));
+
+      expect(mockSpeech.resume).toHaveBeenCalledTimes(1);
     });
 
-    it('should execute resume on the current speech if no input is given', async done => {
+    it('should execute resume on the current speech if no input is given', async () => {
       await AbstractTextToSpeechFeature.initializeService(
         mockPolly,
         mockPresigner,
@@ -1180,10 +1173,9 @@ describeEnvironment('AbstractTextToSpeechFeature', () => {
         config: tts._getConfig(),
       };
       tts.resume();
-      setTimeout(() => {
-        expect(mockSpeech.resume).toHaveBeenCalledTimes(1);
-        done();
-      }, 100);
+      await new Promise(resolve => setTimeout(resolve, 100));
+
+      expect(mockSpeech.resume).toHaveBeenCalledTimes(1);
     });
 
     it('should set current speech to null once the resume promise is no longer pending', async () => {
