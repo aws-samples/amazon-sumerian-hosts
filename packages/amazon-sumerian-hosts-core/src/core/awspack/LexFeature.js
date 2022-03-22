@@ -65,6 +65,7 @@ class LexFeature extends Messenger {
     this._userId = options.userId ? options.userId : Utils.createId();
 
     //Microphone related fields
+    this._micReady = false;
     this._recording = false;
     this._recLength = 0;
     this._recBuffer = [];
@@ -163,28 +164,25 @@ class LexFeature extends Messenger {
    * This function will throw error if microphone access is blocked by user
    */
   async enableMicInput() {
-    try {
-      const stream = await navigator.mediaDevices.getUserMedia({ audio: true, video: false });
-      const source = this._audioContext.createMediaStreamSource(stream);
-      //TODO: createScriptProcessor is deprecated which should be replaced
-      const node = this._audioContext.createScriptProcessor(4096, 1, 1);
+    const stream = await navigator.mediaDevices.getUserMedia({ audio: true, video: false });
+    const source = this._audioContext.createMediaStreamSource(stream);
+    //TODO: createScriptProcessor is deprecated which should be replaced
+    const node = this._audioContext.createScriptProcessor(4096, 1, 1);
 
-      node.onaudioprocess = (e) => {
-        if (!this._recording)
-          return;
+    node.onaudioprocess = (e) => {
+      if (!this._recording)
+        return;
 
-        const buffer = e.inputBuffer.getChannelData(0);
-        this._recBuffer.push(new Float32Array(buffer));
-        this._recLength += buffer.length;
-      };
+      const buffer = e.inputBuffer.getChannelData(0);
+      this._recBuffer.push(new Float32Array(buffer));
+      this._recLength += buffer.length;
+    };
 
-      source.connect(node);
-      node.connect(this._audioContext.destination);
+    source.connect(node);
+    node.connect(this._audioContext.destination);
 
-      this.emit(this.constructor.EVENTS.micReady);
-    } catch (err) {
-      throw Error(`Cannot setup microphone: ${err.message}`);
-    }
+    this.emit(this.constructor.EVENTS.micReady);
+    this._micReady = true;
   }
 
   /**
@@ -192,6 +190,10 @@ class LexFeature extends Messenger {
    * it's suggested to call this function after a user interaction
    */
   beginVoiceRecording() {
+    if (!this._micReady) {
+      return;
+    }
+
     if(this._audioContext.state === 'suspended' || this._audioContext.state === 'interrupted') {
       this._audioContext.resume();
     }
@@ -209,6 +211,10 @@ class LexFeature extends Messenger {
    * For details on the structure of that response object see: https://docs.aws.amazon.com/AWSJavaScriptSDK/latest/AWS/LexRuntime.html#postContent-property
    */
   endVoiceRecording() {
+    if (!this._recording) {
+      return Promise.resolve();
+    }
+
     this._recording = false;
 
     const result = new Float32Array(this._recLength);
