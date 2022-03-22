@@ -2,9 +2,24 @@
 // SPDX-License-Identifier: MIT-0
 const path = require('path');
 const webpack = require('webpack');
-const CopyPlugin = require('copy-webpack-plugin');
+
+// By default, devServer will open slash
+// but we have build scripts for core and each engine
+let webpackOpenUrls = ["/"];
+
+if (process.env.ENGINE === "core") {
+  webpackOpenUrls = ['/packages/amazon-sumerian-hosts-core/test/integration_test/core/'];
+}
+else if (process.env.ENGINE === "three") {
+  webpackOpenUrls = ['/packages/amazon-sumerian-hosts-three/examples/three.html', '/packages/amazon-sumerian-hosts-three/test/integration_test/three.js/'];
+}
+else if (process.env.ENGINE === "babylon") {
+  webpackOpenUrls = ['/packages/demos-babylon/src/', '/packages/amazon-sumerian-hosts-babylon/test/integration_test/Babylon.js/'];
+}
 
 module.exports = {
+  // Turn on source maps if we aren't doing a production build, so tests and `start` for the examples.
+  devtool: process.env.NODE_ENV === "development" ? "source-map" : undefined,
   entry: {
     'host.core': {
       import: ['babel-polyfill', './packages/amazon-sumerian-hosts-core/src/core/index.js'],
@@ -20,12 +35,15 @@ module.exports = {
     },
     helloWorldDemo: {
       import: './packages/demos-babylon/src/helloWorldDemo.js',
+      filename: "./packages/demos-babylon/dist/[name].js",
     },
     gesturesDemo: {
       import: './packages/demos-babylon/src/gesturesDemo.js',
+      filename: "./packages/demos-babylon/dist/[name].js",
     },
     customCharacterDemo: {
       import: './packages/demos-babylon/src/customCharacterDemo.js',
+      filename: "./packages/demos-babylon/dist/[name].js",
     }
   },
   output: {
@@ -42,18 +60,10 @@ module.exports = {
     new webpack.BannerPlugin({
       banner: `Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.\nSPDX-License-Identifier: MIT-0`,
       entryOnly: true,
-    }),
-    new CopyPlugin({
-      patterns: [
-        {
-          from: 'packages/demos-babylon/**/*.*',
-          globOptions: { ignore: ['**/*.js' ]}
-        }
-      ]
-    }),
+    })
   ],
   devServer: {
-    open: ['/packages/demos-babylon/src/'],
+    open: webpackOpenUrls,
     liveReload: true,
     hot: true,
     static: {
