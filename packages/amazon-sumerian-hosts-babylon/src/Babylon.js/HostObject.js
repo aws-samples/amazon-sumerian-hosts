@@ -153,7 +153,7 @@ class HostObject extends CoreHostObject {
     },
   ) {
     // Load character model
-    const characterAsset = await BABYLON.SceneLoader.LoadAssetContainerAsync(modelUrl);
+    const characterAsset = await BABYLON.SceneLoader.LoadAssetContainerAsync(modelUrl, undefined, scene);
     const characterMesh = characterAsset.meshes[0];
 
     // rename mesh to something human-readable instead of the default '__root__'
@@ -220,7 +220,7 @@ class HostObject extends CoreHostObject {
  ````
    */
   static async loadAnimation(scene, childMeshes, url, clipGroupId) {
-    const container = await BABYLON.SceneLoader.LoadAssetContainerAsync(url)
+    const container = await BABYLON.SceneLoader.LoadAssetContainerAsync(url, undefined, scene);
 
     const startingIndex = scene.animatables.length;
     const firstIndex = scene.animationGroups.length;
