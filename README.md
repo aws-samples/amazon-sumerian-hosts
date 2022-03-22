@@ -77,7 +77,7 @@ Each package with integration tests has their own instructions for running:
 ### Examples Folder
 Each of the implementation packages have their own examples attached to them. Each of these files contain enough code to stand up and verify the code is working properly. To verify, open up a local server for the package you are modifying:
 ```
-npm run start-{engine-name} start
+npm run start-{engine-name}
 ```
 Substitute `engine-name` with 'core', 'babylon' or 'three', depending on which you are testing.
 
