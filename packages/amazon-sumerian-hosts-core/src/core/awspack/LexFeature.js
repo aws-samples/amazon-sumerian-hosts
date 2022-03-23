@@ -161,7 +161,14 @@ class LexFeature extends Messenger {
 
   /**
    * Async function to setup microphone recorder which will get user permission for accessing microphone
-   * This function will throw error if microphone access is blocked by user
+   * This method must be called before attempting to record voice input with the
+   * beginVoiceRecording() method. Expect an error to be thrown if the user has
+   * chosen to block microphone access.
+   *
+   * @throws {DOMException} See the documentation for
+   * [MediaDevices.getUserMedia()](https://developer.mozilla.org/en-US/docs/Web/API/MediaDevices/getUserMedia).
+   * The most likely error to expect will be the "NotAllowed" error indicating
+   * the user has denied access to the microphone.
    */
   async enableMicInput() {
     const stream = await navigator.mediaDevices.getUserMedia({ audio: true, video: false });
