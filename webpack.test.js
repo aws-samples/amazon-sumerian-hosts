@@ -8,7 +8,7 @@ const baseConfig = require("./webpack.config");
 // Removing the output will stop webpack from outputing chunks for the integration test code
 delete baseConfig.output;
 
-const testConfig = {
+module.exports = {
   ...baseConfig,
   plugins: [
     ...baseConfig.plugins,
@@ -22,5 +22,3 @@ const testConfig = {
     }),
   ]
 };
-
-module.exports = testConfig;

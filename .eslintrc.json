@@ -14,9 +14,7 @@
     "docs/"
   ],
   "parserOptions": {
-    "ecmaFeatures": {
-      "experimentalObjectResetSpread": true
-    }
+    "ecmaVersion": 2020
   },
   "globals": {
     "atob": true,
@@ -79,6 +77,5 @@
     "browser": true,
     "node": true,
     "jasmine": true
-  },
-  "ecmaVersion": "2020"
+  }
 }

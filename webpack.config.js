@@ -1,15 +1,14 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: MIT-0
 
-import path from 'path';
-// import { fileURLToPath } from 'url';
-import webpack from 'webpack';
-import CopyPlugin from 'copy-webpack-plugin';
-import cognitoIdentityPoolId from './demo-credentials.js';
+const path = require('path');
+const webpack = require('webpack');
 
+const cognitoIdentityPoolId = require('./demo-credentials');
 
-// This is how we get the equivalent of Node's __dirname in an ES6 module
-const __dirname = new URL('.', import.meta.url).pathname;
+// If we are running an interactive devserver
+const isDevServer = process.env.ENGINE || process.env.NODE_ENV === "development";
+
 
 // By default, devServer will open slash
 // but we have build scripts for core and each engine
@@ -22,24 +21,30 @@ else if (process.env.ENGINE === "three") {
   webpackOpenUrls = ['/packages/amazon-sumerian-hosts-three/examples/three.html', '/packages/amazon-sumerian-hosts-three/test/integration_test/three.js/'];
 }
 else if (process.env.ENGINE === "babylon") {
-  webpackOpenUrls = ['/packages/demos-babylon/dist/', '/packages/amazon-sumerian-hosts-babylon/test/integration_test/Babylon.js/'];
+  webpackOpenUrls = ['/packages/demos-babylon/src/', '/packages/amazon-sumerian-hosts-babylon/test/integration_test/Babylon.js/'];
 }
 
+let devServerOnlyEntryPoints = {}
 
-class WatchRunPlugin {
-  apply(compiler) {
-      compiler.hooks.watchRun.tap('WatchRun', (comp) => {
-          if (comp.modifiedFiles) {
-              const changedFiles = Array.from(comp.modifiedFiles, (file) => `\n  ${file}`).join('');
-              console.log('===============================');
-              console.log('FILES CHANGED:', changedFiles);
-              console.log('===============================');
-          }
-      });
+if(isDevServer) {
+// Only build the demos if we are running in the dev server
+  devServerOnlyEntryPoints = {
+    helloWorldDemo: {
+      import: './packages/demos-babylon/src/helloWorldDemo.js',
+      filename: "./packages/demos-babylon/dist/[name].js",
+    },
+    gesturesDemo: {
+      import: './packages/demos-babylon/src/gesturesDemo.js',
+      filename: "./packages/demos-babylon/dist/[name].js",
+    },
+    customCharacterDemo: {
+      import: './packages/demos-babylon/src/customCharacterDemo.js',
+      filename: "./packages/demos-babylon/dist/[name].js",
+    }
   }
 }
 
-export default {
+module.exports = {
   // Turn on source maps if we aren't doing a production build, so tests and `start` for the examples.
   devtool: process.env.NODE_ENV === "development" ? "source-map" : undefined,
   entry: {
@@ -55,18 +60,7 @@ export default {
       import: './packages/amazon-sumerian-hosts-three/src/three.js/index.js',
       filename: "./packages/amazon-sumerian-hosts-three/dist/[name].js",
     },
-    helloWorldDemo: {
-      import: './packages/demos-babylon/src/helloWorldDemo.js',
-      filename: "./packages/demos-babylon/dist/[name].js",
-    },
-    gesturesDemo: {
-      import: './packages/demos-babylon/src/gesturesDemo.js',
-      filename: "./packages/demos-babylon/dist/[name].js",
-    },
-    customCharacterDemo: {
-      import: './packages/demos-babylon/src/customCharacterDemo.js',
-      filename: "./packages/demos-babylon/dist/[name].js",
-    }
+    ...devServerOnlyEntryPoints
   },
   output: {
     filename: '[name].js',
@@ -83,30 +77,6 @@ export default {
       banner: `Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.\nSPDX-License-Identifier: MIT-0`,
       entryOnly: true,
     }),
-    // Copy the demo/test static assets to the dist directories
-    // The integration test HTML files get the cognito Id substituted during the copy
-    new CopyPlugin({
-      patterns: [
-        {
-          from: "*.html",
-          to: 'dist/',
-          context: 'packages/demos-babylon'
-        },
-        {
-          from: '*',
-          to: "./packages/amazon-sumerian-hosts-core/dist/integration_tests/",
-          context: "packages/amazon-sumerian-hosts-core/test/integration_test/core",
-          transform(content) {
-            return content
-              .toString()
-              .replace('$COGNITO_POOL_ID', cognitoIdentityPoolId);
-          },
-        }
-      ]
-    }),
-    new webpack.WatchIgnorePlugin({paths:["packages/demos-babylon/dist/*"]}),
-    new WatchRunPlugin(),
-
   ],
   devServer: {
     devMiddleware: {
@@ -117,18 +87,18 @@ export default {
     open: webpackOpenUrls,
     liveReload: true,
     hot: true,
-    // watchOptions: {
-    //   ignored: ["packages/demos-babylon"]
-    // },
-  
     static: {
       directory: path.join(__dirname),
       watch: true,
     },
-    onBeforeSetupMiddleware: (devServer) => {
-      devServer.app.get('/devConfig.json', (req, res) => {
+    setupMiddlewares: (middlewares, devServer) => {
+      // Let's create a fake file to serve up config to be used by the tests
+      // At some point we may move all the tests to be Webpack entry points and this could be easier
+      // But this makes things straight forward to use from our raw HTML files
+      devServer.app.get('/devConfig.json', (_, res) => {
         res.json({ cognitoIdentityPoolId });
       });
+      return middlewares;
     }
   }
 }
