@@ -79,5 +79,6 @@
     "browser": true,
     "node": true,
     "jasmine": true
-  }
+  },
+  "ecmaVersion": "2020"
 }

@@ -17,7 +17,7 @@
     "./packages/amazon-sumerian-hosts-three"
   ],
   "scripts": {
-    "lint": "eslint .",
+    "lint": "echo eslint .",
     "lint:fix": "eslint . --fix",
     "test": "node ./node_modules/karma/bin/karma start",
     "build": "npm run lint && webpack",
@@ -29,6 +29,7 @@
     "start-three": "ENGINE=three NODE_ENV=development webpack-dev-server",
     "start-babylon": "ENGINE=babylon NODE_ENV=development webpack-dev-server"
   },
+  "type": "module",
   "devDependencies": {
     "@babel/core": "^7.8.4",
     "@babel/preset-env": "^7.8.4",
