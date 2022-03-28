@@ -40,6 +40,10 @@ if(isDevServer) {
     customCharacterDemo: {
       import: './packages/demos-babylon/src/customCharacterDemo.js',
       filename: "./packages/demos-babylon/dist/[name].js",
+    },
+    chatbotDemo: {
+      import: './packages/demos-babylon/src/chatbotDemo.js',
+      filename: "./packages/demos-babylon/dist/[name].js",
     }
   }
 }
