@@ -1,6 +1,6 @@
 import { HostObject } from '@amazon-sumerian-hosts/babylon';
 import DemoUtils from './common/demo-utils';
-import cognitoIdentityPoolId from './common/demo-credentials';
+import cognitoIdentityPoolId from '../../../demo-credentials';
 
 let host;
 let scene;

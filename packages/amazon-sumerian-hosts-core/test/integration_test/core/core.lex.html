@@ -21,7 +21,7 @@
     ></script>
     <script type="text/javascript" src="../../../dist/host.core.js"></script>
     <script>
-      function main() {
+      async function main() {
         const startBtn = document.getElementById('startButton');
         const stopBtn = document.getElementById('stopButton');
         const textBtn = document.getElementById('textInputButton');
@@ -31,10 +31,17 @@
         startBtn.setAttribute('disabled','disabled');
         stopBtn.setAttribute('disabled','disabled');
 
+        // This is served by webpack-dev-server and comes from demo-credentials.js in the repo root
+        // If you copy this example, you will substitute in your own cognito Pool ID
+        const config = await(await fetch("/devConfig.json")).json();
+        // Parse the region out of the cognito Id
+        const region = config.cognitoIdentityPoolId.split(":")[0];
+
+
         // Initialize AWS and create Polly service objects
-        window.AWS.config.region = 'us-west-2';
+        window.AWS.config.region = region;
         window.AWS.config.credentials = new AWS.CognitoIdentityCredentials({
-          IdentityPoolId: '<Enter Cognito Identity Pool ID here>',
+          IdentityPoolId: config.cognitoIdentityPoolId
         });
         const lexRuntime = new AWS.LexRuntime();
 

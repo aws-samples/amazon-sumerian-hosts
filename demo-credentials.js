@@ -5,4 +5,4 @@
 //   - AmazonPollyReadOnlyAccess
 //   - AmazonLexRunBotsOnly
 const cognitoIdentityPoolId = 'us-west-2:xxxx-xxxx-xxxx-xxxx';
-export default cognitoIdentityPoolId;
+module.exports = cognitoIdentityPoolId;

@@ -19,12 +19,15 @@
   "scripts": {
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
-    "test": "node ./node_modules/karma/bin/karma start",
+    "test": "node ./node_modules/karma/bin/karma start karma.conf.js",
     "build": "npm run lint && webpack",
     "build-test": "npm run build build && npm run test",
     "release": "NODE_ENV=production npm run build",
     "docs": "jsdoc -c jsdoc.conf.json",
-    "start": "NODE_ENV=development webpack-dev-server"
+    "start": "NODE_ENV=development webpack-dev-server",
+    "start-core": "ENGINE=core NODE_ENV=development webpack-dev-server",
+    "start-three": "ENGINE=three NODE_ENV=development webpack-dev-server",
+    "start-babylon": "ENGINE=babylon NODE_ENV=development webpack-dev-server"
   },
   "devDependencies": {
     "@babel/core": "^7.8.4",

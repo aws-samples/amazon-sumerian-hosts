@@ -51,11 +51,6 @@ npm run build
 ```
 This will simultaenously build all of the packages in the repository. You will now have new build files in the `dist` directory for each package. 
 
-To build only a certain package:
-```
-npm run workspaces=./packages/amazon-sumerian-hosts-{package} build
-```
-
 If you'd like to extend hosts to support another Javascript rendering engine, create a new folder inside `packages` with the name of the engine you're adding support for. 
 Extend any host modules that need to use resources specific to your rendering engine. See the [`Amazon-Sumerian-Hosts-Three`](packages/amazon-sumerian-hosts-three/src/three.js/) and [`Amazon-Sumerian-Hosts-Babylon`](packages/amazon-sumerian-hosts-babylon/src/Babylon.js/) package folders for examples of files you'll likely need to include. Generally you will need to extend `Messenger` if your engine has an event/messaging system, `HostObject` if your engine keeps track of time and delta time, `AnimationFeature` and `SingleState` if your engine has an animation system, and `TextToSpeechFeature` and `Speech` if your engine has an audio system. Update `webpack.common.js` to add a new config for the engine you're adding support for.
 
@@ -67,16 +62,6 @@ To verify unit tests are passing, you will need to run the unit test runner. To 
 ```
 npm run test
 ```
-* Note if running this command for all of the packages, a failure in one will not stop the test runner. 
-
-To run for a specific package only, inside of the directory you can use the command
-```
-npm run test
-```
-or within the root directory, you can run
-```
-npm run --workspaces=./packages/amazon-sumerian-hosts-{package} test
-```
 
 This command can also run alongside a build first:
 ```
@@ -85,13 +70,16 @@ npm run build-test
 
 ### Integration Tests
 Each package with integration tests has their own instructions for running:
+- [Core](packages/amazon-sumerian-hosts-core/test/integration_test/README.md)
 - [Babylon.js](packages/amazon-sumerian-hosts-babylon/test/integration_test/README.md)
 - [Three.js](packages/amazon-sumerian-hosts-three/test/integration_test/README.md)
 
 ### Examples Folder
 Each of the implementation packages have their own examples attached to them. Each of these files contain enough code to stand up and verify the code is working properly. To verify, open up a local server for the package you are modifying:
 ```
-npm run --workspaces=./packages/amazon-sumerian-hosts-{package} start
+npm run start-{engine-name}
 ```
+Substitute `engine-name` with 'core', 'babylon' or 'three', depending on which you are testing.
+
 
 Then open the browser location for the server, and then the example file. Open up the developer console for the browser, and verify that the scene properly loads without errors. 
