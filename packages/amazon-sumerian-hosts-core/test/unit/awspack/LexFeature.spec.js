@@ -127,19 +127,33 @@ describeEnvironment('LexFeature', () => {
   describe('beginVoiceRecording', () => {
     beforeEach(() => {
       spyOn(AudioContext.prototype, 'resume');
+      lexFeature = new LexFeature(mockLexRuntime, {botName: 'Bot', botAlias: 'Alias'});
+      spyOn(lexFeature, 'enableMicInput').and.callFake(() => { lexFeature._micReady = true; })
     });
 
     it('should resume audiocontext if its suspended', () => {
-      lexFeature = new LexFeature(mockLexRuntime, {botName: 'Bot', botAlias: 'Alias'});
       lexFeature._audioContext.suspend();
+
+      lexFeature.enableMicInput();
+
       lexFeature.beginVoiceRecording();
 
       expect(AudioContext.prototype.resume).toHaveBeenCalled();
     });
 
-    it('should emit begin recording message through messenger if messenger is set', async () => {
-      lexFeature = new LexFeature(mockLexRuntime, {botName: 'Bot', botAlias: 'Alias'});
+    it('should not emi begin recording message if the mic is not setup', () => {
       spyOn(lexFeature, "emit");
+
+      lexFeature.beginVoiceRecording();
+
+      expect(lexFeature.emit).not.toHaveBeenCalled();
+    });
+
+    it('should emit begin recording message through messenger if messenger is set', async () => {
+      spyOn(lexFeature, "emit");
+
+      lexFeature.enableMicInput();
+
       lexFeature.beginVoiceRecording();
 
       expect(lexFeature.emit).toHaveBeenCalledWith(LexFeature.EVENTS.recordBegin);
@@ -151,15 +165,18 @@ describeEnvironment('LexFeature', () => {
       lexFeature = new LexFeature(mockLexRuntime, {botName: 'Bot', botAlias: 'Alias'});
       spyOn(lexFeature, '_processWithAudio');
       spyOn(lexFeature, "emit");
+      spyOn(lexFeature, 'beginVoiceRecording').and.callFake(() => { lexFeature._recording = true; })
     });
 
     it('should emit end recording message through messenger if messenger is set', async () => {
+      lexFeature.beginVoiceRecording();
       lexFeature.endVoiceRecording();
 
       expect(lexFeature.emit).toHaveBeenCalledWith(LexFeature.EVENTS.recordEnd);
     });
 
     it('should call _processWithAudio function', () => {
+      lexFeature.beginVoiceRecording();
       lexFeature.endVoiceRecording();
 
       expect(lexFeature._processWithAudio).toHaveBeenCalled();
