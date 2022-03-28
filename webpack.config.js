@@ -71,6 +71,8 @@ module.exports = {
       umdNamedDefine: true,
     },
     globalObject: '(typeof self !== "undefined" ? self : typeof global !== "undefined" ? global : this)',
+    hotUpdateChunkFilename: '.hot-reload/[id].[fullhash].hot-update.js',
+    hotUpdateMainFilename: '.hot-reload/[runtime].[fullhash].hot-update.json',
   },
   plugins: [
     new webpack.BannerPlugin({
