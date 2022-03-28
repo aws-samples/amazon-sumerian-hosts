@@ -13,3 +13,4 @@ build/
 docs/
 demo-credentials.js
 **/dist/
+.hot-reload/
