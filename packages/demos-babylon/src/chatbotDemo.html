@@ -74,10 +74,18 @@
             </div>
             <button id="talkButton">Push To Talk</button>
           </div>
-          <div id="transcript" class="noChildPointerEvents hide">
-            <div class="textOverlay">
-              <div class="label">The chatbot thinks you said...</div>
-              <div id="transcriptText">I'd like to rent a car</div>
+
+          <div id="userMessageContainer" class="noChildPointerEvents hide">
+            <div class="messageBox">
+              <div id="transcriptDisplay" class="message">
+                <div class="label">The chatbot thinks you said...</div>
+                <p id="transcriptText">
+                  I'd like to rent a car
+                </p>
+              </div>
+              <div id="processingMessage" class="message">
+                <p><span class="spinner"></span>processing...</p>
+              </div>
             </div>
           </div>
         </div>

@@ -63,9 +63,6 @@ async function createScene() {
 }
 
 function initUi() {
-  const talkButton = document.getElementById('talkButton');
-  conversationController.setTalkButton(talkButton);
-
   const startButton = document.getElementById('startButton');
   startButton.onclick = () => startMainExperience();
 }
@@ -84,26 +81,53 @@ class ConversationController {
     this.host = host;
     this.lex = lexFeature;
 
-    const { lexResponseReady } = awsFeatures.LexFeature.EVENTS;
-
-    this.lex.listenTo(lexResponseReady, (response) => this._handleLexResponse(response));
-  }
-
-  setTalkButton(talkButton) {
+    // Use talk button events to start and stop recording.
+    const talkButton = document.getElementById('talkButton');
     talkButton.onmousedown = () => this.lex.beginVoiceRecording();
     talkButton.onmouseup = () => this.lex.endVoiceRecording();
+
+    // Use events dispatched by the LexFeature to present helpful user messages.
+    const { EVENTS } = awsFeatures.LexFeature;
+    this.lex.listenTo(EVENTS.lexResponseReady, (response) => this._handleLexResponse(response));
+    this.lex.listenTo(EVENTS.recordBegin, () => this._hideUserMessages());
+    this.lex.listenTo(EVENTS.recordEnd, () => this._displayProcessingMessage());
   }
 
   _handleLexResponse(response) {
     const { inputTranscript, message } = response;
-    console.log(response);
+
+    // Have the host speak the response from Lex.
     this.host.TextToSpeechFeature.play(message);
+
+    // Display the user's speech input transcript.
     this._displayTranscript(inputTranscript);
   }
 
   _displayTranscript(text) {
     document.getElementById('transcriptText').innerText = `“${text}”`;
-    document.getElementById('transcript').classList.remove('hide');
+    this._showUserMessageElement('transcriptDisplay');
+  }
+
+  _displayProcessingMessage() {
+    this._showUserMessageElement('processingMessage');
+  }
+
+  _hideUserMessages() {
+    document.getElementById('userMessageContainer').classList.add('hide');
+  }
+
+  _showUserMessageElement(id) {
+    // Display only the message element whose ID matches. Hide the rest.
+    document.querySelectorAll('#userMessageContainer .message').forEach((element) => {
+      if (element.id === id) {
+        element.classList.remove('hide');
+      } else {
+        element.classList.add('hide');
+      }
+    });
+
+    // Ensure the message container is not hidden.
+    document.getElementById('userMessageContainer').classList.remove('hide');
   }
 
 }

@@ -84,7 +84,7 @@ canvas#renderCanvas {
   touch-action: none;
 }
 
-.panel, .dialog, .textOverlay {
+.panel, .dialog, .messageBox {
   display: inline-block;
   border: 1px solid transparent;
   border-radius: 5px;
@@ -92,6 +92,14 @@ canvas#renderCanvas {
   padding: 16px;
   background-color: #20202044;
   backdrop-filter: blur(12px) saturate(130%);
+}
+
+.messageBox {
+  min-height: 6.5ex;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
 }
 
 .dialog {
@@ -148,4 +156,26 @@ span.label {
 
 .noChildPointerEvents, .noChildPointerEvents * {
   pointer-events: none;
+}
+
+span.spinner {
+  display: inline-block;
+  width: 14px;
+  height: 14px;
+  background-image: url('spinner-1.png');
+  background-size: contain;
+  animation: spinner-1 0.7s infinite linear;
+  position: relative;
+  top: 1px;
+  margin: 0 0.3em;
+}
+
+@keyframes spinner-1 {
+  from {
+    transform: rotate(0deg);
+  }
+
+  to {
+    transform: rotate(359deg);
+  }
 }
