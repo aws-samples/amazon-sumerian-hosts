@@ -52,30 +52,76 @@ async function createScene() {
   conversationController = new ConversationController(host, lex);
 
   initUi();
-
-  lex.enableMicInput()
-    .catch((e) => {
-      console.log('mic check failed');
-      console.log(e);
-    });
+  acquireMicrophoneAccess();
 
   return scene;
 }
 
+function acquireMicrophoneAccess() {
+  showUiScreen('micInitScreen');
+
+  lex.enableMicInput()
+    .then(() => {
+      // Microphone access is complete. Display the start screen.
+      showUiScreen('startScreen');
+    })
+    .catch((e) => {
+      // The user or browser denied mic access. Display appropriate messaging
+      // to the user.
+      switch (e.message) {
+        case 'Permission dismissed':
+          showUiScreen('micPermissionDismissedScreen');
+          break;
+        default:
+          showUiScreen('micDisabledScreen');
+          break;
+      }
+    });
+}
+
 function initUi() {
-  const startButton = document.getElementById('startButton');
-  startButton.onclick = () => startMainExperience();
+  // Set up interactions for UI buttons.
+  document.getElementById('startButton').onclick = () => startMainExperience();
+  document.getElementById('enableMicButton').onclick = () => acquireMicrophoneAccess();
 }
 
 function startMainExperience() {
-  document.getElementById('startScreen').classList.add('hide');
-  document.getElementById('chatbotUiScreen').classList.remove('hide');
+  showUiScreen('chatbotUiScreen');
 
+  // Speak a greeting to the user.
   host.TextToSpeechFeature.play(
     `Hello. How can I help?  You can say things like, "I'd like to rent a car," or, "Help me book a hotel".`
   );
 }
 
+/**
+ * Makes the specified UI screen visible and hides all other UI screens.
+ * @param {string} id HTMLElement id of the screen to display.
+ */
+function showUiScreen(id) {
+  document.querySelectorAll('#uiScreens .screen').forEach((element) => {
+    const show = element.id === id;
+    setElementVisibility(element.id, show);
+  });
+}
+
+/**
+ * Shows or hides an HTML element.
+ * @param {string} id HTMLElement id
+ * @param {boolean} visible `true` shows the element. `false` hides it.
+ */
+function setElementVisibility(id, visible) {
+  const element = document.getElementById(id);
+  if (visible) {
+    element.classList.remove('hide');
+  } else {
+    element.classList.add('hide');
+  }
+}
+
+/**
+ * The ConversationController manages user interactions with the chatbot.
+ */
 class ConversationController {
   constructor(host, lexFeature) {
     this.host = host;
@@ -91,45 +137,35 @@ class ConversationController {
     this.lex.listenTo(EVENTS.lexResponseReady, (response) => this._handleLexResponse(response));
     this.lex.listenTo(EVENTS.recordBegin, () => this._hideUserMessages());
     this.lex.listenTo(EVENTS.recordEnd, () => this._displayProcessingMessage());
+
+    // Create convenience references to DOM elements.
+    this.messageContainerEl = document.getElementById('userMessageContainer');
+    this.transcriptTextEl = document.getElementById('transcriptText');
   }
 
   _handleLexResponse(response) {
-    const { inputTranscript, message } = response;
-
-    // Have the host speak the response from Lex.
-    this.host.TextToSpeechFeature.play(message);
+    // Remove "processing" CSS class from message container.
+    this.messageContainerEl.classList.remove('processing');
 
     // Display the user's speech input transcript.
-    this._displayTranscript(inputTranscript);
+    this._displayTranscript(response.inputTranscript);
+
+    // Have the host speak the response from Lex.
+    this.host.TextToSpeechFeature.play(response.message);
   }
 
   _displayTranscript(text) {
     document.getElementById('transcriptText').innerText = `“${text}”`;
-    this._showUserMessageElement('transcriptDisplay');
+    this.messageContainerEl.classList.add('showingMessage');
   }
 
   _displayProcessingMessage() {
-    this._showUserMessageElement('processingMessage');
+    this.messageContainerEl.classList.add('processing');
   }
 
   _hideUserMessages() {
-    document.getElementById('userMessageContainer').classList.add('hide');
+    this.messageContainerEl.classList.remove('showingMessage');
   }
-
-  _showUserMessageElement(id) {
-    // Display only the message element whose ID matches. Hide the rest.
-    document.querySelectorAll('#userMessageContainer .message').forEach((element) => {
-      if (element.id === id) {
-        element.classList.remove('hide');
-      } else {
-        element.classList.add('hide');
-      }
-    });
-
-    // Ensure the message container is not hidden.
-    document.getElementById('userMessageContainer').classList.remove('hide');
-  }
-
 }
 
 DemoUtils.loadDemo(createScene);

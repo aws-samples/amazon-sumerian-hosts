@@ -127,7 +127,7 @@ canvas#renderCanvas {
   padding: 0;
 }
 
-.panel>*:first-child {
+.panel>*:first-child, .dialog>*:first-child {
   margin-top: 0;
 }
 

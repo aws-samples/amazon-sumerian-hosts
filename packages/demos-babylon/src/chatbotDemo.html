@@ -26,11 +26,8 @@
       <canvas id="renderCanvas"></canvas>
 
       <div id="uiScreens">
-        <!-- Screen displayed while microphone is being initialized. -->
-        <!-- <div id="micInitScreen" class="modalScreen hide"></div> -->
-
-        <!-- Screen displayed after loading completes. -->
-        <div id="startScreen" class="modalScreen">
+        <!-- Screen displayed when user interaction can begin. -->
+        <div id="startScreen" class="screen modal hide">
           <div id="startDialog" class="dialog">
             <h2>Welcome to the Chatbot Demo</h2>
             <button id="startButton">Start</button>
@@ -45,37 +42,42 @@
           </div>
         </div>
 
+        <!-- Screen displayed while microphone is being initialized. -->
+        <div id="micInitScreen" class="screen modal hide"></div>
+
         <!-- Screen displayed if the user has blocked microphone access. -->
-        <!-- <div id="micDisabledScreen" class="modalScreen hide">
+        <div id="micDisabledScreen" class="screen modal hide">
           <div class="dialog">
             <p>
-              You have disabled microphone access for this website. Please
-              update your browser preferences to allow microphone access, then
-              reload this page.
+              The browser has disabled microphone access for this website.
+              Please update your browser preferences to allow microphone access.
+              Then, reload this page.
             </p>
           </div>
-        </div> -->
+        </div>
 
         <!-- Screen displayed if the user has dismissed the microphone access dialog. -->
-        <!-- <div id="micDialogDismissedScreen" class="modalScreen hide">
+        <div id="micPermissionDismissedScreen" class="screen modal hide">
           <div class="dialog">
             <p>
               Microphone access is required for this demo.
             </p>
             <button id="enableMicButton">Allow microphone</button>
           </div>
-        </div> -->
+        </div>
 
         <!-- Screen displayed during chatbot interaction. -->
-        <div id="chatbotUiScreen" class="hide">
+        <div id="chatbotUiScreen" class="screen hide">
+          <!-- Upper left UI panel -->
           <div id="uiPanel" class="panel">
-            <div class="instructions">
-              <p>Press and hold the button below to speak to the host.</p>
-            </div>
+            <p class="instructions">
+              Press and hold the button below to speak to the host.
+            </p>
             <button id="talkButton">Push To Talk</button>
           </div>
 
-          <div id="userMessageContainer" class="noChildPointerEvents hide">
+          <!-- Message area at bottom of screen. -->
+          <div id="userMessageContainer" class="noChildPointerEvents">
             <div class="messageBox">
               <div id="transcriptDisplay" class="message">
                 <div class="label">The chatbot thinks you said...</div>

@@ -1,6 +1,6 @@
 @import url('common/demo-common.css');
 
-.modalScreen {
+.modal.screen {
   position: absolute;
   width: 100vw;
   height: 100vh;
@@ -20,10 +20,26 @@
   bottom: 10vh;
   left: 0;
   right: 0;
-  display: flex;
+  display: none; /* Default to non-visible */
   flex-direction: column;
   align-items: center;
   text-align: center;
+}
+
+#userMessageContainer.processing, #userMessageContainer.showingMessage {
+  display: flex;
+}
+
+#userMessageContainer.processing .message {
+  display: none;
+}
+
+#userMessageContainer.processing #processingMessage {
+  display: block;
+}
+
+#userMessageContainer #processingMessage {
+  display: none;
 }
 
 #userMessageContainer .label {
