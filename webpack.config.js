@@ -49,7 +49,7 @@ module.exports = {
   devtool: process.env.NODE_ENV === "development" ? "source-map" : undefined,
   entry: {
     'host.core': {
-      import: ['babel-polyfill', './packages/amazon-sumerian-hosts-core/src/core/index.js'],
+      import: './packages/amazon-sumerian-hosts-core/src/core/index.js',
       filename: "./packages/amazon-sumerian-hosts-core/dist/[name].js",
     },
     'host.babylon': {

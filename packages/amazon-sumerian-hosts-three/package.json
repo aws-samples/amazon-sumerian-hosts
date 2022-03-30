@@ -13,6 +13,10 @@
     "url": "https://github.com/aws-samples/amazon-sumerian-hosts.git"
   },
   "main": "./src/three.js/index.js",
+  "exports": {
+    "import": "./src/three.js/index.js",
+    "require": "./dist/host.three.js"
+  },
   "scripts": {
   },
   "dependencies": {
