@@ -26,7 +26,9 @@ Click the **Create Pool** button at the bottom of the page.
 
 You will be presented with a page informing you that some IAM roles will be created on your behalf. If you expand the "View Details" section you'll see that two IAM roles will be created for you—one representing logged-in (authenticated) users of your app and one representing anonymous (unauthenticated) users. Click the **"Allow"** button at the bottom of the page.
 
-You will be presented with a "Sample code" page. While you don't need most of the sample code presented, you ***must*** ✏️ copy the Identity pool ID value shown in the code, and save it for use later in these instructions. The value will look similar to `"us-east-1:1ab23f45-6789-8cde-7654-f1g0549h0cce"`
+You will be presented with a "Sample code" page. While you don't need most of the sample code presented, you will need the Identity pool ID value.
+
+> ✏️ **Important:** Copy the Identity pool ID value shown in the code, and save it for use later in these instructions. The value will look similar to `"us-east-1:1ab23f45-6789-8cde-7654-f1g0549h0cce"`
 
 Use the AWS console search bar to navigate to the IAM service.
 
@@ -84,7 +86,7 @@ In a terminal on your local machine, navigate to the repository root directory a
 npm install
 ```
 
-In the folder `/packages/demos-babylon/src/common/`, open the `demo-credentials.js` file for editing.
+Open the `demo-credentials.js` file in the root of the repository for editing.
 
 Set the `cognitoIdentityPoolId` value to the Cognito Identity Pool you created above. 
 
