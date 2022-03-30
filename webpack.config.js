@@ -21,7 +21,7 @@ else if (process.env.ENGINE === "three") {
   webpackOpenUrls = ['/packages/amazon-sumerian-hosts-three/examples/three.html', '/packages/amazon-sumerian-hosts-three/test/integration_test/three.js/'];
 }
 else if (process.env.ENGINE === "babylon") {
-  webpackOpenUrls = ['/packages/demos-babylon/src/', '/packages/amazon-sumerian-hosts-babylon/test/integration_test/Babylon.js/'];
+  webpackOpenUrls = ['/packages/amazon-sumerian-hosts-babylon/test/integration_test/Babylon.js/', '/packages/demos-babylon/src/'];
 }
 
 let devServerOnlyEntryPoints = {}
