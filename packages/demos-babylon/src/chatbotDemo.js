@@ -157,8 +157,8 @@ async function acquireMicrophoneAccess() {
  */
 function showUiScreen(id) {
   document.querySelectorAll('#uiScreens .screen').forEach((element) => {
-    const show = element.id === id;
-    setElementVisibility(element.id, show);
+    const isTargetScreen = element.id === id;
+    setElementVisibility(element.id, isTargetScreen);
   });
 }
 
