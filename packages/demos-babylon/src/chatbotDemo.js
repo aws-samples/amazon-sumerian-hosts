@@ -129,27 +129,24 @@ function hideUserMessages() {
 /**
  * Attempts to enable microphone access for Lex, triggering a browser permissions
  * prompt if necessary.
+ * @returns {Promise} A Promise which resolves once mic access is allowed or
+ * denied by the user or browser.
  */
-function acquireMicrophoneAccess() {
+async function acquireMicrophoneAccess() {
   showUiScreen('micInitScreen');
 
-  lex.enableMicInput()
-    .then(() => {
-      // Microphone access is complete. Display the start screen.
-      showUiScreen('startScreen');
-    })
-    .catch((e) => {
-      // The user or browser denied mic access. Display appropriate messaging
-      // to the user.
-      switch (e.message) {
-        case 'Permission dismissed':
-          showUiScreen('micPermissionDismissedScreen');
-          break;
-        default:
-          showUiScreen('micDisabledScreen');
-          break;
-      }
-    });
+  try {
+    await lex.enableMicInput();
+    showUiScreen('startScreen');
+  } catch (e) {
+    // The user or browser denied mic access. Display appropriate messaging
+    // to the user.
+    if (e.message === 'Permission dismissed') {
+      showUiScreen('micPermissionDismissedScreen');
+    } else {
+      showUiScreen('micDisabledScreen');
+    }
+  }
 }
 
 // ===== Utility functions =====
