@@ -1,12 +1,19 @@
 # Sumerian Host Babylon JS Demos
 
-This directory contains a number of demonstrations, each focused on a different feature of the Sumerian Hosts API.
+This directory contains a number of demonstrations, each focused on a different feature of the Sumerian Hosts API. In order to run these demos you will need to perform some initial setup including:
 
-### AWS Setup
+- AWS infrastructure setup
+  - App credentials setup
+  - Lex chatbot setup
+- Local environment setup
+
+Each is detailed below.
+
+## AWS Infrastructure Setup
 
 In order for the demos to be runnable you will need to set up a few things in your AWS account. The steps below will guide you through creating a **Cognito Identity Pool** that allows the demo applications to talk to two AWS services—Amazon Polly and Amazon Lex. You'll also create the actual **Amazon Lex chatbot** that powers one of the demos.
 
-#### App Credentials Setup
+### App Credentials Setup
 
 In order to allow our front-end application to make API calls to Amazon Lex and Amazon Polly we must create authorization credentials that it can use.
 
@@ -50,7 +57,7 @@ In the resulting screen, confirm that both polices have been added to the list o
 
 Your app credentials setup is now complete! 🎉
 
-#### Lex Bot Setup
+### Lex Bot Setup
 
 From the AWS console, navigate to the Amazon Lex service.
 
@@ -78,7 +85,7 @@ In the dialog that appears, choose the **Dev** bot alias and click **Publish**.
 
 Your Lex bot setup is now complete! 🎉
 
-## Local setup
+## Local Environment Setup
 
 In a terminal on your local machine, navigate to the repository root directory and run (if you haven't already)...
 
