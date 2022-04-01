@@ -13,15 +13,17 @@
     "url": "https://github.com/aws-samples/amazon-sumerian-hosts.git"
   },
   "main": "./src/Babylon.js/index.js",
+  "exports": {
+    "import": "./src/Babylon.js/index.js",
+    "require": "./dist/host.babylon.js"
+  },
   "scripts": {
   },
   "dependencies": {
-    "@amazon-sumerian-hosts/core": "^2.0.0"
+    "@amazon-sumerian-hosts/core": "^2.0.0",
+    "aws-sdk": "^2.1094.0"
   },
   "peerDependencies": {
     "babylonjs": "=4.2.1"
-  },
-  "dependencies": {
-    "aws-sdk": "^2.1094.0"
   }
 }
