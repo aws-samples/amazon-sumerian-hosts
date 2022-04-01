@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Chatbot Demo</title>
+
+    <link rel="stylesheet" href="chatbotDemo.css" />
+
+    <!-- Babylon.js dependencies -->
+    <script src="https://cdn.jsdelivr.net/npm/babylonjs@4.2.1/babylon.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/babylonjs-loaders@4.2.1/babylonjs.loaders.min.js"></script>
+
+    <!-- Sumerian Host dependencies -->
+    <script
+      type="text/javascript"
+      src="https://sdk.amazonaws.com/js/aws-sdk-2.645.0.min.js"
+    ></script>
+
+    <!-- Demo logic -->
+    <script type="module" src="../dist/chatbotDemo.js"></script>
+  </head>
+  <body>
+    <div id="mainScreen" class="screen loading">
+      <canvas id="renderCanvas"></canvas>
+
+      <div id="uiScreens">
+        <!-- Screen displayed when user interaction can begin. -->
+        <div id="startScreen" class="screen modal hide">
+          <div id="startDialog" class="dialog">
+            <h2>Welcome to the Chatbot Demo</h2>
+            <button id="startButton">Start</button>
+            <p class="developerNote">
+              <span class="label">Developer note:</span> We present the user
+              with a start button for an important reason. Web browsers often
+              prevent audio from playing unless the initial playback is
+              triggered by a direct user action. By requiring the user to click
+              the "Start" button, we ensure that our Host's audio introduction
+              which follows will play successfully.
+            </p>
+          </div>
+        </div>
+
+        <!-- Screen displayed while microphone is being initialized. -->
+        <div id="micInitScreen" class="screen modal hide"></div>
+
+        <!-- Screen displayed if the user has blocked microphone access. -->
+        <div id="micDisabledScreen" class="screen modal hide">
+          <div class="dialog">
+            <p>
+              The browser has disabled microphone access for this website.
+              Please update your browser preferences to allow microphone access.
+              Then, reload this page.
+            </p>
+          </div>
+        </div>
+
+        <!-- Screen displayed if the user has dismissed the microphone access dialog. -->
+        <div id="micPermissionDismissedScreen" class="screen modal hide">
+          <div class="dialog">
+            <p>
+              Microphone access is required for this demo.
+            </p>
+            <button id="enableMicButton">Allow microphone</button>
+          </div>
+        </div>
+
+        <!-- Screen displayed during chatbot interaction. -->
+        <div id="chatbotUiScreen" class="screen hide">
+          <!-- Upper left UI panel -->
+          <div id="uiPanel" class="panel">
+            <p class="instructions">
+              Press and hold the button below to speak to the host.
+            </p>
+            <button id="talkButton">Push To Talk</button>
+          </div>
+
+          <!-- Message area at bottom of screen. -->
+          <div id="userMessageContainer" class="noChildPointerEvents">
+            <div class="messageBox">
+              <div id="transcriptDisplay" class="message">
+                <div class="label">The chatbot thinks you said...</div>
+                <p id="transcriptText">
+                  I'd like to rent a car
+                </p>
+              </div>
+              <div id="processingMessage" class="message">
+                <p><span class="spinner"></span>processing...</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div id="loadingScreen" class="screen">
+      <p>Loading...</p>
+    </div>
+  </body>
+</html>
