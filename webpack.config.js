@@ -3,6 +3,7 @@
 
 const path = require('path');
 const webpack = require('webpack');
+const TerserPlugin = require('terser-webpack-plugin');
 
 const cognitoIdentityPoolId = require('./demo-credentials');
 
@@ -50,7 +51,7 @@ if(isDevServer) {
 
 module.exports = {
   // Turn on source maps if we aren't doing a production build, so tests and `start` for the examples.
-  devtool: process.env.NODE_ENV === "development" ? "source-map" : undefined,
+  devtool: "source-map",
   entry: {
     'host.core': {
       import: './packages/amazon-sumerian-hosts-core/src/core/index.js',
@@ -106,5 +107,15 @@ module.exports = {
       });
       return middlewares;
     }
-  }
+  },
+  optimization: {
+    minimize: true,
+    minimizer: [
+      new TerserPlugin({
+        terserOptions: {
+          keep_classnames: true
+        }
+      }),
+    ],
+  },
 }
