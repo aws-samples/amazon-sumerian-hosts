@@ -141,32 +141,79 @@ class HostObject extends CoreHostObject {
     scene,
     {
       modelUrl,
-      animStandIdleUrl,
-      animLipSyncUrl,
-      animGestureUrl,
-      animEmoteUrl,
-      animFaceIdleUrl,
-      animBlinkUrl,
-      animPointOfInterestUrl,
+      animUrls,
       gestureConfigUrl,
       pointOfInterestConfigUrl,
     },
   ) {
-    // Load character model
-    const characterAsset = await BABYLON.SceneLoader.LoadAssetContainerAsync(modelUrl, undefined, scene);
+    const characterAsset = await this.loadCharacterMesh(scene, modelUrl);
     const characterMesh = characterAsset.meshes[0];
-
-    // rename mesh to something human-readable instead of the default '__root__'
-    characterMesh.name = modelUrl.slice(modelUrl.lastIndexOf('/') + 1, modelUrl.lastIndexOf('.'));
-
     const bindPoseOffset = characterAsset.animationGroups[0];
 
+    const animClips = await this.loadCharacterAnimations(scene, characterMesh, bindPoseOffset, animUrls);
+
+    // Load the gesture config file. This file contains options for splitting up
+    // each animation in gestures.glb into 3 sub-animations and initializing them
+    // as a QueueState animation.
+    const gestureConfig = await this.loadJson(gestureConfigUrl);
+
+    // Read the point of interest config file. This file contains options for
+    // creating Blend2dStates from look pose clips and initializing look layers
+    // on the PointOfInterestFeature.
+    const poiConfig = await this.loadJson(pointOfInterestConfigUrl);
+
+    return { characterMesh, animClips, bindPoseOffset, gestureConfig, poiConfig };
+  }
+
+  /**
+   * Loads the gltf file that comprises a character model,
+   * and adds it to the scene to be rendered.
+   *
+   * @param {Babylon.Scene} scene
+   * @param {string} modelUrl The absolute path to the gltf file that contains the model
+   * @return {Babylon.AssetContainer} A BabylonJS asset container that contains the loaded meshes
+  */
+  static async loadCharacterMesh(scene, modelUrl) {
+    // Load character model
+    const characterAsset = await BABYLON.SceneLoader.LoadAssetContainerAsync(modelUrl, undefined, scene);
+    characterAsset.addAllToScene();
+
+    return characterAsset;
+  }
+
+  /**
+   * Loads the animations speci
+   *
+   * @param {Babylon.Scene} scene
+   * @param {Babylon.Mesh} characterMesh The root mesh of the character model
+   * @param {Babylon.AnimationGroup} bindPoseOffset
+   * @param {Object} animClipUrls See the loadAssets() function docs above.
+   * @return {Object} An object containing the loaded animations organized as follows:
+   ```
+   {
+    idleClips: BABYLON.AnimationGroup[],
+    lipSyncClips: BABYLON.AnimationGroup[],
+    gestureClips: BABYLON.AnimationGroup[],
+    emoteClips: BABYLON.AnimationGroup[],
+    faceClips: BABYLON.AnimationGroup[],
+    blinkClips: BABYLON.AnimationGroup[],
+    poiClips: BABYLON.AnimationGroup[],
+  }
+  ```
+  */
+  static async loadCharacterAnimations(scene, characterMesh, bindPoseOffset, {
+    animStandIdleUrl,
+    animLipSyncUrl,
+    animGestureUrl,
+    animEmoteUrl,
+    animFaceIdleUrl,
+    animBlinkUrl,
+    animPointOfInterestUrl
+  }) {
     // Make the offset pose additive
     if (bindPoseOffset) {
       BABYLON.AnimationGroup.MakeAnimationAdditive(bindPoseOffset);
     }
-
-    characterAsset.addAllToScene();
 
     const childMeshes = characterMesh.getDescendants(false);
 
@@ -187,17 +234,7 @@ class HostObject extends CoreHostObject {
       animClips[result.clipGroupId] = result.clips;
     });
 
-    // Load the gesture config file. This file contains options for splitting up
-    // each animation in gestures.glb into 3 sub-animations and initializing them
-    // as a QueueState animation.
-    const gestureConfig = await this.loadJson(gestureConfigUrl);
-
-    // Read the point of interest config file. This file contains options for
-    // creating Blend2dStates from look pose clips and initializing look layers
-    // on the PointOfInterestFeature.
-    const poiConfig = await this.loadJson(pointOfInterestConfigUrl);
-
-    return { characterMesh, animClips, bindPoseOffset, gestureConfig, poiConfig };
+    return animClips;
   }
 
   /**
@@ -555,13 +592,15 @@ class HostObject extends CoreHostObject {
   modelUrl: String,
   gestureConfigUrl: String,
   pointOfInterestConfigUrl: String,
-  animStandIdleUrl: String,
-  animLipSyncUrl: String,
-  animGestureUrl: String,
-  animEmoteUrl: String,
-  animFaceIdleUrl: String,
-  animBlinkUrl: String,
-  animPointOfInterestUrl: String,
+  animUrls: {
+    animStandIdleUrl: String,
+    animLipSyncUrl: String,
+    animGestureUrl: String,
+    animEmoteUrl: String,
+    animFaceIdleUrl: String,
+    animBlinkUrl: String,
+    animPointOfInterestUrl: String,
+  }
 }
  ```
    * @param {string} assetsPath A relative path from the HTML page to the directory containing the
@@ -583,13 +622,15 @@ class HostObject extends CoreHostObject {
         modelUrl: `${assetsPath}/characters/${characterType}/${characterIdLower}/${characterIdLower}.gltf`,
         gestureConfigUrl: `${assetsPath}/animations/${characterType}/gesture.json`,
         pointOfInterestConfigUrl: `${assetsPath}/animations/${characterType}/poi.json`,
-        animStandIdleUrl: `${assetsPath}/animations/${characterType}/stand_idle.glb`,
-        animLipSyncUrl: `${assetsPath}/animations/${characterType}/lipsync.glb`,
-        animGestureUrl: `${assetsPath}/animations/${characterType}/gesture.glb`,
-        animEmoteUrl: `${assetsPath}/animations/${characterType}/emote.glb`,
-        animFaceIdleUrl: `${assetsPath}/animations/${characterType}/face_idle.glb`,
-        animBlinkUrl: `${assetsPath}/animations/${characterType}/blink.glb`,
-        animPointOfInterestUrl: `${assetsPath}/animations/${characterType}/poi.glb`,
+        animUrls: {
+          animStandIdleUrl: `${assetsPath}/animations/${characterType}/stand_idle.glb`,
+          animLipSyncUrl: `${assetsPath}/animations/${characterType}/lipsync.glb`,
+          animGestureUrl: `${assetsPath}/animations/${characterType}/gesture.glb`,
+          animEmoteUrl: `${assetsPath}/animations/${characterType}/emote.glb`,
+          animFaceIdleUrl: `${assetsPath}/animations/${characterType}/face_idle.glb`,
+          animBlinkUrl: `${assetsPath}/animations/${characterType}/blink.glb`,
+          animPointOfInterestUrl: `${assetsPath}/animations/${characterType}/poi.glb`,
+        },
         lookJoint: 'char:jx_c_look',
       };
 
@@ -649,6 +690,14 @@ const host = await HOST.HostUtils.createHost(scene, characterConfig, pollyConfig
     this.addPointOfInterestTracking(host, scene, assets.poiConfig, characterConfig.lookJoint);
 
     return host;
+  }
+
+  /**
+ *
+ * @returns {string[]} An array of identifies that can be used with getCharacterConfiguration
+ */
+  static getAvailableCharacters() {
+    return [...characterTypeMap.keys()];
   }
 }
 
