@@ -51,7 +51,7 @@ if(isDevServer) {
 
 module.exports = {
   // Turn on source maps if we aren't doing a production build, so tests and `start` for the examples.
-  devtool: "source-map",
+  devtool: process.env.NODE_ENV === "development" ? "source-map" : undefined,
   entry: {
     'host.core': {
       import: './packages/amazon-sumerian-hosts-core/src/core/index.js',
