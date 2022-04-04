@@ -35,13 +35,15 @@ async function createScene() {
     modelUrl: './character-assets/characters/alien/alien.gltf',
     gestureConfigUrl: './character-assets/animations/alien/gesture.json',
     pointOfInterestConfigUrl: './character-assets/animations/alien/poi.json',
-    animStandIdleUrl: './character-assets/animations/alien/stand_idle.glb',
-    animLipSyncUrl: './character-assets/animations/alien/lipsync.glb',
-    animGestureUrl: './character-assets/animations/alien/gesture.glb',
-    animEmoteUrl: './character-assets/animations/alien/emote.glb',
-    animFaceIdleUrl: './character-assets/animations/alien/face_idle.glb',
-    animBlinkUrl: './character-assets/animations/alien/blink.glb',
-    animPointOfInterestUrl: './character-assets/animations/alien/poi.glb',
+    animUrls: {
+      animStandIdleUrl: './character-assets/animations/alien/stand_idle.glb',
+      animLipSyncUrl: './character-assets/animations/alien/lipsync.glb',
+      animGestureUrl: './character-assets/animations/alien/gesture.glb',
+      animEmoteUrl: './character-assets/animations/alien/emote.glb',
+      animFaceIdleUrl: './character-assets/animations/alien/face_idle.glb',
+      animBlinkUrl: './character-assets/animations/alien/blink.glb',
+      animPointOfInterestUrl: './character-assets/animations/alien/poi.glb',
+    },
     lookJoint: 'char:gaze',
   }
 

@@ -166,31 +166,31 @@ describeEnvironment('HostObject', (options = {}) => {
     });
 
     it('has correct animStandIdleUrl property', () => {
-      expect(config.animStandIdleUrl).toEqual(`${animAssetsBase}stand_idle.glb`);
+      expect(config.animUrls.animStandIdleUrl).toEqual(`${animAssetsBase}stand_idle.glb`);
     });
 
     it('has correct animLipSyncUrl property', () => {
-      expect(config.animLipSyncUrl).toEqual(`${animAssetsBase}lipsync.glb`);
+      expect(config.animUrls.animLipSyncUrl).toEqual(`${animAssetsBase}lipsync.glb`);
     });
 
     it('has correct animGestureUrl property', () => {
-      expect(config.animGestureUrl).toEqual(`${animAssetsBase}gesture.glb`);
+      expect(config.animUrls.animGestureUrl).toEqual(`${animAssetsBase}gesture.glb`);
     });
 
     it('has correct animEmoteUrl property', () => {
-      expect(config.animEmoteUrl).toEqual(`${animAssetsBase}emote.glb`);
+      expect(config.animUrls.animEmoteUrl).toEqual(`${animAssetsBase}emote.glb`);
     });
 
     it('has correct animFaceIdleUrl property', () => {
-      expect(config.animFaceIdleUrl).toEqual(`${animAssetsBase}face_idle.glb`);
+      expect(config.animUrls.animFaceIdleUrl).toEqual(`${animAssetsBase}face_idle.glb`);
     });
 
     it('has correct animBlinkUrl property', () => {
-      expect(config.animBlinkUrl).toEqual(`${animAssetsBase}blink.glb`);
+      expect(config.animUrls.animBlinkUrl).toEqual(`${animAssetsBase}blink.glb`);
     });
 
     it('has correct animPointOfInterestUrl property', () => {
-      expect(config.animPointOfInterestUrl).toEqual(`${animAssetsBase}poi.glb`);
+      expect(config.animUrls.animPointOfInterestUrl).toEqual(`${animAssetsBase}poi.glb`);
     });
   });
 
@@ -198,5 +198,18 @@ describeEnvironment('HostObject', (options = {}) => {
     expect(() => {
       HostObject.getCharacterConfig('assets', 'Batman');
     }).toThrowError(Error, '"Batman" is not a supported character ID.');
+  });
+
+  describe('getAvailableCharacters()', () => {
+    const hosts = HostObject.getAvailableCharacters();
+
+    it('contains characters we expect', () => {
+      expect(hosts).toContain('Cristine');
+      expect(hosts).toContain('Wes');
+    });
+
+    it('does not contain characters we do not expect', () => {
+      expect(hosts).not.toContain('Batman');
+    });
   });
 });
