@@ -108,6 +108,8 @@ module.exports = {
       return middlewares;
     }
   },
+  // We need to override some of the defaults for the minimization step --
+  // There are issues with mangling otherwise, as logic relies on class names being preserved
   optimization: {
     minimize: true,
     minimizer: [
