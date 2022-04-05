@@ -3,7 +3,7 @@
 /* eslint-disable jasmine/no-spec-dupes */
 /* eslint-disable no-undef */
 /* eslint-disable no-underscore-dangle */
-import { anim } from '@amazon-sumerian-hosts/three'
+import {anim} from '@amazon-sumerian-hosts/three';
 import {LayerBlendModes, Deferred} from '@amazon-sumerian-hosts/core';
 import describeEnvironment from '../../EnvironmentHarness';
 
@@ -11,7 +11,6 @@ describeEnvironment('SingleState', () => {
   let state;
 
   beforeEach(() => {
-
     const mockThreeMixer = new THREE.EventDispatcher();
     const mockThreeAction = {
       clampWhenFinished: false,

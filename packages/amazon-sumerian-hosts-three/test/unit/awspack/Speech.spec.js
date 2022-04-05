@@ -5,7 +5,7 @@
 /* eslint-disable jasmine/prefer-toHaveBeenCalledWith */
 /* eslint-disable no-underscore-dangle */
 import {Messenger} from '@amazon-sumerian-hosts/core';
-import { aws } from '@amazon-sumerian-hosts/three';
+import {aws} from '@amazon-sumerian-hosts/three';
 import describeEnvironment from '../EnvironmentHarness';
 
 describeEnvironment('Speech', (_options, env) => {

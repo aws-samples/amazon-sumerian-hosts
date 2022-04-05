@@ -1,6 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: MIT-0
-import { HostObject } from '@amazon-sumerian-hosts/three';
+import {HostObject} from '@amazon-sumerian-hosts/three';
 import describeEnvironment from './EnvironmentHarness';
 
 describeEnvironment('HostObject', (options = {}) => {
@@ -36,13 +36,9 @@ describeEnvironment('HostObject', (options = {}) => {
     it('does not throw an error if the message is not a string', () => {
       const listener = () => {};
 
-      expect(
-        host.listenTo.bind(host, 5, listener)
-      ).not.toThrowError();
+      expect(host.listenTo.bind(host, 5, listener)).not.toThrowError();
 
-      expect(
-        host.listenTo.bind(host, HostObject, listener)
-      ).not.toThrowError();
+      expect(host.listenTo.bind(host, HostObject, listener)).not.toThrowError();
     });
   });
 
@@ -75,15 +71,11 @@ describeEnvironment('HostObject', (options = {}) => {
     });
 
     it('fails gracefully if the message is not a string', () => {
-      expect(
-        host.stopListening.bind(host, host)
-      ).not.toThrowError();
+      expect(host.stopListening.bind(host, host)).not.toThrowError();
     });
 
     it('fails gracefully if the callback is not a function', () => {
-      expect(
-        host.stopListening.bind(host, 'test', null)
-      ).not.toThrowError();
+      expect(host.stopListening.bind(host, 'test', null)).not.toThrowError();
     });
   });
 
@@ -133,9 +125,7 @@ describeEnvironment('HostObject', (options = {}) => {
     });
 
     it('does not throw errors if there are no listeners for a message', () => {
-      expect(
-        host.emit.bind(host, 'messageWithNoListeners')
-      ).not.toThrowError();
+      expect(host.emit.bind(host, 'messageWithNoListeners')).not.toThrowError();
     });
 
     it('does not throw errors if a non-string is supplied for the message argument', () => {

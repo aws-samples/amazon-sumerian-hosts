@@ -1,4 +1,4 @@
-import { HostObject } from '@amazon-sumerian-hosts/babylon';
+import {HostObject} from '@amazon-sumerian-hosts/babylon';
 import DemoUtils from './common/demo-utils';
 import cognitoIdentityPoolId from '../../../demo-credentials';
 
@@ -11,7 +11,7 @@ async function createScene() {
   scene = new BABYLON.Scene();
   scene.useRightHandedSystem = true; // IMPORTANT for Sumerian Hosts!
 
-  const { shadowGenerator } = DemoUtils.setupSceneEnvironment(scene);
+  const {shadowGenerator} = DemoUtils.setupSceneEnvironment(scene);
 
   // Adjust the camera's target.
   scene.activeCamera.setTarget(new BABYLON.Vector3(0, 0.5, 0));
@@ -21,13 +21,13 @@ async function createScene() {
   // ===== Configure the AWS SDK =====
 
   AWS.config.region = cognitoIdentityPoolId.split(':')[0];
-  AWS.config.credentials = new AWS.CognitoIdentityCredentials(
-    { IdentityPoolId: cognitoIdentityPoolId },
-  );
+  AWS.config.credentials = new AWS.CognitoIdentityCredentials({
+    IdentityPoolId: cognitoIdentityPoolId,
+  });
 
   // ===== Instantiate the Sumerian Host =====
 
-  const pollyConfig = { pollyVoice: 'Ivy', pollyEngine: 'neural' };
+  const pollyConfig = {pollyVoice: 'Ivy', pollyEngine: 'neural'};
 
   // Create a characterConfig object describing the custom character and its
   // assets.
@@ -45,7 +45,7 @@ async function createScene() {
       animPointOfInterestUrl: './character-assets/animations/alien/poi.glb',
     },
     lookJoint: 'char:gaze',
-  }
+  };
 
   host = await HostObject.createHost(scene, characterConfig, pollyConfig);
 

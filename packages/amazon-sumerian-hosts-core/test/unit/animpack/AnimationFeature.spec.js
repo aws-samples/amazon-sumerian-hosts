@@ -4,7 +4,11 @@
 /* eslint-disable jasmine/no-spec-dupes */
 /* eslint-disable jasmine/prefer-toHaveBeenCalledWith */
 /* eslint-disable no-underscore-dangle */
-import {AnimationFeature, Deferred, LayerBlendModes} from '@amazon-sumerian-hosts/core';
+import {
+  AnimationFeature,
+  Deferred,
+  LayerBlendModes,
+} from '@amazon-sumerian-hosts/core';
 import describeEnvironment from '../EnvironmentHarness';
 
 describeEnvironment('AnimationFeature', (options = {}) => {

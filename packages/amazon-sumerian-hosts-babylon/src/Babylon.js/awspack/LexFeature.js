@@ -7,7 +7,6 @@ import {LexFeature as CoreLexFeature} from '@amazon-sumerian-hosts/core';
  * @alias babylonjs/LexFeature
  */
 class LexFeature extends CoreLexFeature {
-
   /**
    * Setup audio context
    * @override

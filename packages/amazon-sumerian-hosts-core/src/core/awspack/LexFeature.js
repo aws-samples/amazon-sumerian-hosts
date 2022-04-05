@@ -33,20 +33,20 @@ class LexFeature extends Messenger {
    * @constructor
    *
    * @param {external:LexRuntime} lexRuntime - The LexRuntime service that is used
- * to interact with lex bot. Will be undefined until [initializeService]{@link LexFeature.initializeService}
- * has been successfully executed
+   * to interact with lex bot. Will be undefined until [initializeService]{@link LexFeature.initializeService}
+   * has been successfully executed
    * @param {Object=} options - Options that will be used to interact with lex bot.
    * @param {string=} options.botName - The name of the lex bot.
    * @param {string=} options.botAlias - The alias of the lex bot.
    * @param {string=} options.userId - The userId used to keep track of the session with lex bot.
-  */
+   */
   constructor(
     lexRuntime,
     options = {
       botName: undefined,
       botAlias: undefined,
       userId: undefined,
-    },
+    }
   ) {
     super();
 
@@ -120,7 +120,7 @@ class LexFeature extends Messenger {
       botAlias: settings.botAlias,
       contentType,
       inputStream,
-      userId: settings.userId
+      userId: settings.userId,
     };
     return new Promise((resolve, reject) => {
       this._lexRuntime.postContent(lexSettings, (error, data) => {
@@ -153,8 +153,15 @@ class LexFeature extends Messenger {
   }
 
   _prepareAudio(audioBuffer, sourceSampleRate) {
-    const downsampledAudio = LexUtils.downsampleAudio(audioBuffer, sourceSampleRate, this.constructor.LEX_DEFAULTS.SampleRate);
-    const encodedAudio = LexUtils.encodeWAV(downsampledAudio, this.constructor.LEX_DEFAULTS.SampleRate);
+    const downsampledAudio = LexUtils.downsampleAudio(
+      audioBuffer,
+      sourceSampleRate,
+      this.constructor.LEX_DEFAULTS.SampleRate
+    );
+    const encodedAudio = LexUtils.encodeWAV(
+      downsampledAudio,
+      this.constructor.LEX_DEFAULTS.SampleRate
+    );
 
     return new Blob([encodedAudio], {type: 'application/octet-stream'});
   }
@@ -171,14 +178,16 @@ class LexFeature extends Messenger {
    * the user has denied access to the microphone.
    */
   async enableMicInput() {
-    const stream = await navigator.mediaDevices.getUserMedia({ audio: true, video: false });
+    const stream = await navigator.mediaDevices.getUserMedia({
+      audio: true,
+      video: false,
+    });
     const source = this._audioContext.createMediaStreamSource(stream);
     //TODO: createScriptProcessor is deprecated which should be replaced
     const node = this._audioContext.createScriptProcessor(4096, 1, 1);
 
-    node.onaudioprocess = (e) => {
-      if (!this._recording)
-        return;
+    node.onaudioprocess = e => {
+      if (!this._recording) return;
 
       const buffer = e.inputBuffer.getChannelData(0);
       this._recBuffer.push(new Float32Array(buffer));
@@ -201,7 +210,10 @@ class LexFeature extends Messenger {
       return;
     }
 
-    if(this._audioContext.state === 'suspended' || this._audioContext.state === 'interrupted') {
+    if (
+      this._audioContext.state === 'suspended' ||
+      this._audioContext.state === 'interrupted'
+    ) {
       this._audioContext.resume();
     }
     this._recLength = 0;
@@ -233,10 +245,7 @@ class LexFeature extends Messenger {
 
     this.emit(this.constructor.EVENTS.recordEnd);
 
-    return this._processWithAudio(
-      result,
-      this._audioContext.sampleRate
-    );
+    return this._processWithAudio(result, this._audioContext.sampleRate);
   }
 }
 

@@ -30,7 +30,9 @@ class LexUtils {
     }
 
     if (sourceSampleRate < targetSampleRate) {
-      throw Error(`Input Sample rate ${sourceSampleRate} is less than target sample rate ${targetSampleRate}.`);
+      throw Error(
+        `Input Sample rate ${sourceSampleRate} is less than target sample rate ${targetSampleRate}.`
+      );
     }
 
     const bufferLength = buffer.length;
@@ -46,7 +48,11 @@ class LexUtils {
 
       let accumulator = 0;
       let count = 0;
-      for (let i = bufferOffset; i < nextBufferOffset && i < bufferLength; i++) {
+      for (
+        let i = bufferOffset;
+        i < nextBufferOffset && i < bufferLength;
+        i++
+      ) {
         accumulator += buffer[i];
         count++;
       }
@@ -104,7 +110,7 @@ class LexUtils {
     view.setUint16(34, 16, true);
     _writeString(view, 36, 'data');
     view.setUint32(40, buffer.length * 2, true);
-    _floatTo16BitPCM(view, 44, buffer)
+    _floatTo16BitPCM(view, 44, buffer);
 
     return view;
   }

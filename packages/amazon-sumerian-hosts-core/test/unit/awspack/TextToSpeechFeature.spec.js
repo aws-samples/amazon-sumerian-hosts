@@ -2,7 +2,11 @@
 // SPDX-License-Identifier: MIT-0
 /* eslint-disable jasmine/no-spec-dupes */
 /* eslint-disable no-underscore-dangle */
-import {Messenger, TextToSpeechFeature, Speech} from '@amazon-sumerian-hosts/core';
+import {
+  Messenger,
+  TextToSpeechFeature,
+  Speech,
+} from '@amazon-sumerian-hosts/core';
 import describeEnvironment from '../EnvironmentHarness';
 
 describeEnvironment('TextToSpeechFeature', () => {
@@ -15,36 +19,34 @@ describeEnvironment('TextToSpeechFeature', () => {
     // mock AWS.Polly
     const mockPolly = jasmine.createSpyObj('Polly', ['describeVoices']);
     mockPolly.describeVoices.and.returnValue({
-      promise: jasmine.createSpy().and.resolveTo(
-        {
-          Voices: [
-            {
-              Gender: 'Female',
-              Id: 'Emma',
-              LanguageCode: 'en-US',
-              LanguageName: 'US English',
-              Name: 'Emma',
-              SupportedEngines: ['standard'],
-            },
-            {
-              Gender: 'Male',
-              Id: 'Brian',
-              LanguageCode: 'en-GB',
-              LanguageName: 'British English',
-              Name: 'Brian',
-              SupportedEngines: ['standard', 'neural'],
-            },
-            {
-              Gender: 'Female',
-              Id: 'Amy',
-              LanguageCode: 'en-GB',
-              LanguageName: 'British English',
-              Name: 'Amy',
-              SupportedEngines: ['standard'],
-            },
-          ],
-        }
-      ),
+      promise: jasmine.createSpy().and.resolveTo({
+        Voices: [
+          {
+            Gender: 'Female',
+            Id: 'Emma',
+            LanguageCode: 'en-US',
+            LanguageName: 'US English',
+            Name: 'Emma',
+            SupportedEngines: ['standard'],
+          },
+          {
+            Gender: 'Male',
+            Id: 'Brian',
+            LanguageCode: 'en-GB',
+            LanguageName: 'British English',
+            Name: 'Brian',
+            SupportedEngines: ['standard', 'neural'],
+          },
+          {
+            Gender: 'Female',
+            Id: 'Amy',
+            LanguageCode: 'en-GB',
+            LanguageName: 'British English',
+            Name: 'Amy',
+            SupportedEngines: ['standard'],
+          },
+        ],
+      }),
     });
 
     // mock AWS.Polly.Presigner
@@ -52,7 +54,10 @@ describeEnvironment('TextToSpeechFeature', () => {
       'getSynthesizeSpeechUrl',
     ]);
     mockPresigner.getSynthesizeSpeechUrl.and.callFake((_params, fn) => {
-      fn(undefined, '/base/packages/amazon-sumerian-hosts-core/test/assets/audio.mp3');
+      fn(
+        undefined,
+        '/base/packages/amazon-sumerian-hosts-core/test/assets/audio.mp3'
+      );
     });
 
     await TextToSpeechFeature.initializeService(

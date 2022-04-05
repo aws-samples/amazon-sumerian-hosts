@@ -1,6 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: MIT-0
-import { HostObject } from '@amazon-sumerian-hosts/babylon';
+import {HostObject} from '@amazon-sumerian-hosts/babylon';
 import describeEnvironment from './EnvironmentHarness';
 
 describeEnvironment('HostObject', (options = {}) => {
@@ -36,13 +36,9 @@ describeEnvironment('HostObject', (options = {}) => {
     it('does not throw an error if the message is not a string', () => {
       const listener = () => {};
 
-      expect(
-        host.listenTo.bind(host, 5, listener)
-      ).not.toThrowError();
+      expect(host.listenTo.bind(host, 5, listener)).not.toThrowError();
 
-      expect(
-        host.listenTo.bind(host, HostObject, listener)
-      ).not.toThrowError();
+      expect(host.listenTo.bind(host, HostObject, listener)).not.toThrowError();
     });
   });
 
@@ -75,15 +71,11 @@ describeEnvironment('HostObject', (options = {}) => {
     });
 
     it('fails gracefully if the message is not a string', () => {
-      expect(
-        host.stopListening.bind(host, host)
-      ).not.toThrowError();
+      expect(host.stopListening.bind(host, host)).not.toThrowError();
     });
 
     it('fails gracefully if the callback is not a function', () => {
-      expect(
-        host.stopListening.bind(host, 'test', null)
-      ).not.toThrowError();
+      expect(host.stopListening.bind(host, 'test', null)).not.toThrowError();
     });
   });
 
@@ -133,9 +125,7 @@ describeEnvironment('HostObject', (options = {}) => {
     });
 
     it('does not throw errors if there are no listeners for a message', () => {
-      expect(
-        host.emit.bind(host, 'messageWithNoListeners')
-      ).not.toThrowError();
+      expect(host.emit.bind(host, 'messageWithNoListeners')).not.toThrowError();
     });
 
     it('does not throw errors if a non-string is supplied for the message argument', () => {
@@ -154,7 +144,9 @@ describeEnvironment('HostObject', (options = {}) => {
     const animAssetsBase = 'assets/animations/adult_female/';
 
     it('has correct modelUrl property', () => {
-      expect(config.modelUrl).toEqual('assets/characters/adult_female/grace/grace.gltf');
+      expect(config.modelUrl).toEqual(
+        'assets/characters/adult_female/grace/grace.gltf'
+      );
     });
 
     it('has correct gestureConfigUrl property', () => {
@@ -162,35 +154,51 @@ describeEnvironment('HostObject', (options = {}) => {
     });
 
     it('has correct pointOfInterestConfigUrl property', () => {
-      expect(config.pointOfInterestConfigUrl).toEqual(`${animAssetsBase}poi.json`);
+      expect(config.pointOfInterestConfigUrl).toEqual(
+        `${animAssetsBase}poi.json`
+      );
     });
 
     it('has correct animStandIdleUrl property', () => {
-      expect(config.animUrls.animStandIdleUrl).toEqual(`${animAssetsBase}stand_idle.glb`);
+      expect(config.animUrls.animStandIdleUrl).toEqual(
+        `${animAssetsBase}stand_idle.glb`
+      );
     });
 
     it('has correct animLipSyncUrl property', () => {
-      expect(config.animUrls.animLipSyncUrl).toEqual(`${animAssetsBase}lipsync.glb`);
+      expect(config.animUrls.animLipSyncUrl).toEqual(
+        `${animAssetsBase}lipsync.glb`
+      );
     });
 
     it('has correct animGestureUrl property', () => {
-      expect(config.animUrls.animGestureUrl).toEqual(`${animAssetsBase}gesture.glb`);
+      expect(config.animUrls.animGestureUrl).toEqual(
+        `${animAssetsBase}gesture.glb`
+      );
     });
 
     it('has correct animEmoteUrl property', () => {
-      expect(config.animUrls.animEmoteUrl).toEqual(`${animAssetsBase}emote.glb`);
+      expect(config.animUrls.animEmoteUrl).toEqual(
+        `${animAssetsBase}emote.glb`
+      );
     });
 
     it('has correct animFaceIdleUrl property', () => {
-      expect(config.animUrls.animFaceIdleUrl).toEqual(`${animAssetsBase}face_idle.glb`);
+      expect(config.animUrls.animFaceIdleUrl).toEqual(
+        `${animAssetsBase}face_idle.glb`
+      );
     });
 
     it('has correct animBlinkUrl property', () => {
-      expect(config.animUrls.animBlinkUrl).toEqual(`${animAssetsBase}blink.glb`);
+      expect(config.animUrls.animBlinkUrl).toEqual(
+        `${animAssetsBase}blink.glb`
+      );
     });
 
     it('has correct animPointOfInterestUrl property', () => {
-      expect(config.animUrls.animPointOfInterestUrl).toEqual(`${animAssetsBase}poi.glb`);
+      expect(config.animUrls.animPointOfInterestUrl).toEqual(
+        `${animAssetsBase}poi.glb`
+      );
     });
   });
 

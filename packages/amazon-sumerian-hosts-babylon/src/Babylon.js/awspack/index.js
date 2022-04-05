@@ -29,5 +29,5 @@ export default {
   /**
    * @see module:core/LexUtils
    */
-  LexUtils
+  LexUtils,
 };

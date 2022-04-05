@@ -1,6 +1,9 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: MIT-0
-import {SingleState as CoreSingleState, MathUtils} from '@amazon-sumerian-hosts/core';
+import {
+  SingleState as CoreSingleState,
+  MathUtils,
+} from '@amazon-sumerian-hosts/core';
 
 /**
  * Threejs AnimationAction object

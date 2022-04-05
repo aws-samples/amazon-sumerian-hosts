@@ -12,7 +12,6 @@ describeEnvironment('SingleState', (options = {}) => {
   let beginAnimationSpy;
 
   beforeEach(() => {
-
     const mockBabylonGroup = {
       from: 0,
       to: 2,

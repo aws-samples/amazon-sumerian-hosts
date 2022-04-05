@@ -2,7 +2,11 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: MIT-0
 /* eslint-disable no-undef */
-import { HostObject, AbstractHostFeature, Deferred} from '@amazon-sumerian-hosts/core';
+import {
+  HostObject,
+  AbstractHostFeature,
+  Deferred,
+} from '@amazon-sumerian-hosts/core';
 import describeEnvironment from './EnvironmentHarness';
 
 describeEnvironment('HostObject', (options = {}) => {

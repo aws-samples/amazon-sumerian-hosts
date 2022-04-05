@@ -1,11 +1,14 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: MIT-0
-import { HostObject as CoreHostObject, LipsyncFeature, GestureFeature } from '@amazon-sumerian-hosts/core';
+import {
+  HostObject as CoreHostObject,
+  LipsyncFeature,
+  GestureFeature,
+} from '@amazon-sumerian-hosts/core';
 import AWS from 'aws-sdk';
 import anim from './animpack';
 import aws from './awspack';
 import PointOfInterestFeature from './PointOfInterestFeature';
-
 
 /**
  * @extends core/HostObject
@@ -108,7 +111,11 @@ class HostObject extends CoreHostObject {
       presigner = new AWS.Polly.Presigner();
     }
 
-    await aws.TextToSpeechFeature.initializeService(polly, presigner, AWS.VERSION);
+    await aws.TextToSpeechFeature.initializeService(
+      polly,
+      presigner,
+      AWS.VERSION
+    );
   }
 
   /**
@@ -139,18 +146,18 @@ class HostObject extends CoreHostObject {
    */
   static async loadAssets(
     scene,
-    {
-      modelUrl,
-      animUrls,
-      gestureConfigUrl,
-      pointOfInterestConfigUrl,
-    },
+    {modelUrl, animUrls, gestureConfigUrl, pointOfInterestConfigUrl}
   ) {
     const characterAsset = await this.loadCharacterMesh(scene, modelUrl);
     const characterMesh = characterAsset.meshes[0];
     const bindPoseOffset = characterAsset.animationGroups[0];
 
-    const animClips = await this.loadCharacterAnimations(scene, characterMesh, bindPoseOffset, animUrls);
+    const animClips = await this.loadCharacterAnimations(
+      scene,
+      characterMesh,
+      bindPoseOffset,
+      animUrls
+    );
 
     // Load the gesture config file. This file contains options for splitting up
     // each animation in gestures.glb into 3 sub-animations and initializing them
@@ -162,7 +169,7 @@ class HostObject extends CoreHostObject {
     // on the PointOfInterestFeature.
     const poiConfig = await this.loadJson(pointOfInterestConfigUrl);
 
-    return { characterMesh, animClips, bindPoseOffset, gestureConfig, poiConfig };
+    return {characterMesh, animClips, bindPoseOffset, gestureConfig, poiConfig};
   }
 
   /**
@@ -172,10 +179,14 @@ class HostObject extends CoreHostObject {
    * @param {Babylon.Scene} scene
    * @param {string} modelUrl The absolute path to the gltf file that contains the model
    * @return {Babylon.AssetContainer} A BabylonJS asset container that contains the loaded meshes
-  */
+   */
   static async loadCharacterMesh(scene, modelUrl) {
     // Load character model
-    const characterAsset = await BABYLON.SceneLoader.LoadAssetContainerAsync(modelUrl, undefined, scene);
+    const characterAsset = await BABYLON.SceneLoader.LoadAssetContainerAsync(
+      modelUrl,
+      undefined,
+      scene
+    );
     characterAsset.addAllToScene();
 
     return characterAsset;
@@ -201,15 +212,20 @@ class HostObject extends CoreHostObject {
   }
   ```
   */
-  static async loadCharacterAnimations(scene, characterMesh, bindPoseOffset, {
-    animStandIdleUrl,
-    animLipSyncUrl,
-    animGestureUrl,
-    animEmoteUrl,
-    animFaceIdleUrl,
-    animBlinkUrl,
-    animPointOfInterestUrl
-  }) {
+  static async loadCharacterAnimations(
+    scene,
+    characterMesh,
+    bindPoseOffset,
+    {
+      animStandIdleUrl,
+      animLipSyncUrl,
+      animGestureUrl,
+      animEmoteUrl,
+      animFaceIdleUrl,
+      animBlinkUrl,
+      animPointOfInterestUrl,
+    }
+  ) {
     // Make the offset pose additive
     if (bindPoseOffset) {
       BABYLON.AnimationGroup.MakeAnimationAdditive(bindPoseOffset);
@@ -224,13 +240,18 @@ class HostObject extends CoreHostObject {
       this.loadAnimation(scene, childMeshes, animEmoteUrl, 'emoteClips'),
       this.loadAnimation(scene, childMeshes, animFaceIdleUrl, 'faceClips'),
       this.loadAnimation(scene, childMeshes, animBlinkUrl, 'blinkClips'),
-      this.loadAnimation(scene, childMeshes, animPointOfInterestUrl, 'poiClips'),
+      this.loadAnimation(
+        scene,
+        childMeshes,
+        animPointOfInterestUrl,
+        'poiClips'
+      ),
     ];
 
     const animLoadingResults = await Promise.all(animationLoadingPromises);
 
     const animClips = {};
-    animLoadingResults.forEach((result) => {
+    animLoadingResults.forEach(result => {
       animClips[result.clipGroupId] = result.clips;
     });
 
@@ -257,7 +278,11 @@ class HostObject extends CoreHostObject {
  ````
    */
   static async loadAnimation(scene, childMeshes, url, clipGroupId) {
-    const container = await BABYLON.SceneLoader.LoadAssetContainerAsync(url, undefined, scene);
+    const container = await BABYLON.SceneLoader.LoadAssetContainerAsync(
+      url,
+      undefined,
+      scene
+    );
 
     const startingIndex = scene.animatables.length;
     const firstIndex = scene.animationGroups.length;
@@ -266,7 +291,7 @@ class HostObject extends CoreHostObject {
     container.mergeAnimationsTo(
       scene,
       scene.animatables.slice(startingIndex),
-      (target) => childMeshes.find((mesh) => mesh.name === target.name) || null,
+      target => childMeshes.find(mesh => mesh.name === target.name) || null
     );
 
     // Find the new animations and destroy the container
@@ -274,7 +299,7 @@ class HostObject extends CoreHostObject {
     container.dispose();
     scene.onAnimationFileImportedObservable.notifyObservers(scene);
 
-    return { clipGroupId, clips };
+    return {clipGroupId, clips};
   }
 
   /**
@@ -284,7 +309,7 @@ class HostObject extends CoreHostObject {
     const {characterMesh} = assets;
 
     // Add the host to the render loop
-    const host = new HostObject({ owner: assets.characterMesh });
+    const host = new HostObject({owner: assets.characterMesh});
     scene.onBeforeAnimationsObservable.add(() => {
       host.update();
     });
@@ -309,13 +334,15 @@ class HostObject extends CoreHostObject {
       'Base',
       idleClip.name,
       anim.AnimationTypes.single,
-      { clip: idleClip },
+      {clip: idleClip}
     );
     host.AnimationFeature.playAnimation('Base', idleClip.name);
 
     // Face idle
     const faceIdleClip = faceClips[0];
-    host.AnimationFeature.addLayer('Face', { blendMode: anim.LayerBlendModes.Additive });
+    host.AnimationFeature.addLayer('Face', {
+      blendMode: anim.LayerBlendModes.Additive,
+    });
     BABYLON.AnimationGroup.MakeAnimationAdditive(faceIdleClip);
     host.AnimationFeature.addAnimation(
       'Face',
@@ -325,7 +352,7 @@ class HostObject extends CoreHostObject {
         clip: faceIdleClip,
         from: 1 / 30,
         to: faceIdleClip.to,
-      },
+      }
     );
     host.AnimationFeature.playAnimation('Face', faceIdleClip.name);
 
@@ -334,7 +361,7 @@ class HostObject extends CoreHostObject {
       blendMode: anim.LayerBlendModes.Additive,
       transitionTime: 0.075,
     });
-    blinkClips.forEach((clip) => {
+    blinkClips.forEach(clip => {
       BABYLON.AnimationGroup.MakeAnimationAdditive(clip);
     });
     host.AnimationFeature.addAnimation(
@@ -343,12 +370,12 @@ class HostObject extends CoreHostObject {
       anim.AnimationTypes.randomAnimation,
       {
         playInterval: 3,
-        subStateOptions: blinkClips.map((clip) => ({
+        subStateOptions: blinkClips.map(clip => ({
           name: clip.name,
           loopCount: 1,
           clip,
         })),
-      },
+      }
     );
     host.AnimationFeature.playAnimation('Blink', 'blink');
 
@@ -358,14 +385,14 @@ class HostObject extends CoreHostObject {
       blendMode: anim.LayerBlendModes.Additive,
     });
     host.AnimationFeature.setLayerWeight('Talk', 0);
-    const talkClip = lipSyncClips.find((c) => c.name === 'stand_talk');
+    const talkClip = lipSyncClips.find(c => c.name === 'stand_talk');
     BABYLON.AnimationGroup.MakeAnimationAdditive(talkClip);
     lipSyncClips.splice(lipSyncClips.indexOf(talkClip), 1);
     host.AnimationFeature.addAnimation(
       'Talk',
       talkClip.name,
       anim.AnimationTypes.single,
-      { clip: talkClip },
+      {clip: talkClip}
     );
     host.AnimationFeature.playAnimation('Talk', talkClip.name);
 
@@ -375,14 +402,14 @@ class HostObject extends CoreHostObject {
       blendMode: anim.LayerBlendModes.Additive,
     });
 
-    gestureClips.forEach((clip) => {
-      const { name } = clip;
+    gestureClips.forEach(clip => {
+      const {name} = clip;
       const config = assets.gestureConfig[name];
       BABYLON.AnimationGroup.MakeAnimationAdditive(clip);
 
       if (config !== undefined) {
         // Add the clip to each queueOption so it can be split up
-        config.queueOptions.forEach((option) => {
+        config.queueOptions.forEach(option => {
           option.clip = clip;
           option.to /= 30.0;
           option.from /= 30.0;
@@ -391,7 +418,7 @@ class HostObject extends CoreHostObject {
           'Gesture',
           name,
           anim.AnimationTypes.queue,
-          config,
+          config
         );
       } else {
         host.AnimationFeature.addAnimation(
@@ -399,16 +426,16 @@ class HostObject extends CoreHostObject {
           name,
           anim.AnimationTypes.single,
 
-          { clip },
+          {clip}
         );
       }
     });
 
     // Emote animations
-    host.AnimationFeature.addLayer('Emote', { transitionTime: 0.5 });
+    host.AnimationFeature.addLayer('Emote', {transitionTime: 0.5});
 
-    emoteClips.forEach((clip) => {
-      const { name } = clip;
+    emoteClips.forEach(clip => {
+      const {name} = clip;
       host.AnimationFeature.addAnimation(
         'Emote',
         name,
@@ -417,7 +444,7 @@ class HostObject extends CoreHostObject {
         {
           clip,
           loopCount: 1,
-        },
+        }
       );
     });
 
@@ -427,7 +454,7 @@ class HostObject extends CoreHostObject {
       blendMode: anim.LayerBlendModes.Additive,
     });
     host.AnimationFeature.setLayerWeight('Viseme', 0);
-    const blendStateOptions = lipSyncClips.map((clip) => {
+    const blendStateOptions = lipSyncClips.map(clip => {
       BABYLON.AnimationGroup.MakeAnimationAdditive(clip);
       return {
         name: clip.name,
@@ -442,18 +469,20 @@ class HostObject extends CoreHostObject {
       'visemes',
       anim.AnimationTypes.freeBlend,
 
-      { blendStateOptions },
+      {blendStateOptions}
     );
     host.AnimationFeature.playAnimation('Viseme', 'visemes');
 
     // POI poses
     const children = characterMesh.getDescendants(false);
-    assets.poiConfig.forEach((config) => {
-      host.AnimationFeature.addLayer(config.name, { blendMode: anim.LayerBlendModes.Additive });
+    assets.poiConfig.forEach(config => {
+      host.AnimationFeature.addLayer(config.name, {
+        blendMode: anim.LayerBlendModes.Additive,
+      });
 
       // Find each pose clip and make it additive
-      config.blendStateOptions.forEach((clipConfig) => {
-        const clip = poiClips.find((poiClip) => poiClip.name === clipConfig.clip);
+      config.blendStateOptions.forEach(clipConfig => {
+        const clip = poiClips.find(poiClip => poiClip.name === clipConfig.clip);
         BABYLON.AnimationGroup.MakeAnimationAdditive(clip);
         clipConfig.clip = clip;
         clipConfig.from = 1 / 30;
@@ -465,21 +494,23 @@ class HostObject extends CoreHostObject {
         config.animation,
         anim.AnimationTypes.blend2d,
 
-        { ...config },
+        {...config}
       );
 
       host.AnimationFeature.playAnimation(config.name, config.animation);
 
       // Find and store the reference object
       config.reference = children.find(
-        (child) => child.name === config.reference,
+        child => child.name === config.reference
       );
     });
 
     // Apply bindPoseOffset clip if it exists
-    const { bindPoseOffset } = assets;
+    const {bindPoseOffset} = assets;
     if (bindPoseOffset !== undefined) {
-      host.AnimationFeature.addLayer('BindPoseOffset', { blendMode: anim.LayerBlendModes.Additive });
+      host.AnimationFeature.addLayer('BindPoseOffset', {
+        blendMode: anim.LayerBlendModes.Additive,
+      });
       host.AnimationFeature.addAnimation(
         'BindPoseOffset',
         bindPoseOffset.name,
@@ -489,40 +520,39 @@ class HostObject extends CoreHostObject {
           clip: bindPoseOffset,
           from: 1 / 30,
           to: 2 / 30,
-        },
+        }
       );
       host.AnimationFeature.playAnimation(
         'BindPoseOffset',
-        bindPoseOffset.name,
+        bindPoseOffset.name
       );
     }
 
     // Set up Lipsync
     const visemeOptions = {
-      layers: [{
-        name: 'Viseme',
-        animation: 'visemes',
-      }],
+      layers: [
+        {
+          name: 'Viseme',
+          animation: 'visemes',
+        },
+      ],
     };
     const talkingOptions = {
-      layers: [{
-        name: 'Talk',
-        animation: 'stand_talk',
-        blendTime: 0.75,
-        easingFn: anim.Easing.Quadratic.InOut,
-      }],
+      layers: [
+        {
+          name: 'Talk',
+          animation: 'stand_talk',
+          blendTime: 0.75,
+          easingFn: anim.Easing.Quadratic.InOut,
+        },
+      ],
     };
-    host.addFeature(
-      LipsyncFeature,
-      false,
-      visemeOptions,
-      talkingOptions,
-    );
+    host.addFeature(LipsyncFeature, false, visemeOptions, talkingOptions);
 
     // Set up Gestures
     host.addFeature(GestureFeature, false, {
       layers: {
-        Gesture: { minimumInterval: 3 },
+        Gesture: {minimumInterval: 3},
         Emote: {
           blendTime: 0.5,
           easingFn: anim.Easing.Quadratic.InOut,
@@ -536,30 +566,42 @@ class HostObject extends CoreHostObject {
   /**
    * @private
    */
-  static addTextToSpeech(host, scene, voice, engine, audioJointName = 'char:def_c_neckB') {
+  static addTextToSpeech(
+    host,
+    scene,
+    voice,
+    engine,
+    audioJointName = 'char:def_c_neckB'
+  ) {
     const joints = host.owner.getDescendants(false);
-    const audioJoint = joints.find((joint) => joint.name === audioJointName);
+    const audioJoint = joints.find(joint => joint.name === audioJointName);
 
-    host.addFeature(
-      aws.TextToSpeechFeature,
-      false,
-      { scene, attachTo: audioJoint, voice, engine },
-    );
+    host.addFeature(aws.TextToSpeechFeature, false, {
+      scene,
+      attachTo: audioJoint,
+      voice,
+      engine,
+    });
   }
 
   /**
    * @private
    */
-  static addPointOfInterestTracking(host, scene, poiConfig, lookJointName = 'char:jx_c_look') {
+  static addPointOfInterestTracking(
+    host,
+    scene,
+    poiConfig,
+    lookJointName = 'char:jx_c_look'
+  ) {
     const joints = host.owner.getDescendants(false);
-    const lookJoint = joints.find((joint) => joint.name === lookJointName);
+    const lookJoint = joints.find(joint => joint.name === lookJointName);
 
     host.addFeature(
       PointOfInterestFeature,
       false,
-      { lookTracker: lookJoint, scene },
-      { layers: poiConfig },
-      { layers: [{ name: 'Blink' }] },
+      {lookTracker: lookJoint, scene},
+      {layers: poiConfig},
+      {layers: [{name: 'Blink'}]}
     );
   }
 
@@ -608,7 +650,6 @@ class HostObject extends CoreHostObject {
    * @param {string} characterId The ID of the character to be used.
    */
   static getCharacterConfig(assetsPath, characterId) {
-
     if (characterTypeMap.get(characterId) === undefined) {
       throw new Error(`"${characterId}" is not a supported character ID.`);
     }
@@ -683,19 +724,32 @@ const host = await HOST.HostUtils.createHost(scene, characterConfig, pollyConfig
    * @returns {babylonjs/HostObject} A functioning Sumerian Host
    */
   static async createHost(scene, characterConfig, pollyConfig) {
-    await this.initTextToSpeech(pollyConfig.pollyClient, pollyConfig.pollyPresigner);
+    await this.initTextToSpeech(
+      pollyConfig.pollyClient,
+      pollyConfig.pollyPresigner
+    );
     const assets = await this.loadAssets(scene, characterConfig);
     const host = this.assembleHost(assets, scene);
-    this.addTextToSpeech(host, scene, pollyConfig.pollyVoice, pollyConfig.pollyEngine);
-    this.addPointOfInterestTracking(host, scene, assets.poiConfig, characterConfig.lookJoint);
+    this.addTextToSpeech(
+      host,
+      scene,
+      pollyConfig.pollyVoice,
+      pollyConfig.pollyEngine
+    );
+    this.addPointOfInterestTracking(
+      host,
+      scene,
+      assets.poiConfig,
+      characterConfig.lookJoint
+    );
 
     return host;
   }
 
   /**
- *
- * @returns {string[]} An array of characterId's that can be used with getCharacterConfig
- */
+   *
+   * @returns {string[]} An array of characterId's that can be used with getCharacterConfig
+   */
   static getAvailableCharacters() {
     return [...characterTypeMap.keys()];
   }
