@@ -2,9 +2,8 @@
 // SPDX-License-Identifier: MIT-0
 /* eslint-disable no-underscore-dangle */
 import {Deferred} from '@amazon-sumerian-hosts/core';
-import AbstractBlendState from '../../../../src/core/animpack/state/AbstractBlendState'
+import AbstractBlendState from '../../../../src/core/animpack/state/AbstractBlendState';
 import describeHostEnvironment from '../../EnvironmentHarness';
-
 
 describeHostEnvironment('AbstractBlendState', () => {
   let blend;

@@ -99,7 +99,6 @@ export {
    * @see AxisMap
    */
   AxisMap,
-
   // Animpack
   /**
    * @see module:core/animpack.Easing
@@ -157,7 +156,6 @@ export {
    * @see module:core/animpack.AnimationTypes
    */
   AnimationTypes,
-
   // AWS Pack
   /**
    * @see module:core/awspack.LexFeature

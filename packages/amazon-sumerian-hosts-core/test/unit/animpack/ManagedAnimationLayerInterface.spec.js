@@ -6,7 +6,7 @@
 /* eslint-disable jasmine/prefer-toHaveBeenCalledWith */
 /* eslint-disable no-underscore-dangle */
 import {AbstractHostFeature, HostObject} from '@amazon-sumerian-hosts/core';
-import ManagedAnimationLayerInterface  from '../../../src/core/animpack/ManagedAnimationLayerInterface';
+import ManagedAnimationLayerInterface from '../../../src/core/animpack/ManagedAnimationLayerInterface';
 import describeEnvironment from '../EnvironmentHarness';
 
 describeEnvironment('ManagedAnimationLayerInterface', () => {

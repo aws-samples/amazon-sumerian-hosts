@@ -1,4 +1,4 @@
-import { HostObject } from '@amazon-sumerian-hosts/babylon';
+import {HostObject} from '@amazon-sumerian-hosts/babylon';
 import DemoUtils from './common/demo-utils';
 import cognitoIdentityPoolId from '../../../demo-credentials';
 
@@ -11,15 +11,15 @@ async function createScene() {
   scene = new BABYLON.Scene();
   scene.useRightHandedSystem = true; // IMPORTANT for Sumerian Hosts!
 
-  const { shadowGenerator } = DemoUtils.setupSceneEnvironment(scene);
+  const {shadowGenerator} = DemoUtils.setupSceneEnvironment(scene);
   initUi();
 
   // ===== Configure the AWS SDK =====
 
   AWS.config.region = cognitoIdentityPoolId.split(':')[0];
-  AWS.config.credentials = new AWS.CognitoIdentityCredentials(
-    { IdentityPoolId: cognitoIdentityPoolId },
-  );
+  AWS.config.credentials = new AWS.CognitoIdentityCredentials({
+    IdentityPoolId: cognitoIdentityPoolId,
+  });
 
   // ===== Instantiate the Sumerian Host =====
 
@@ -27,8 +27,11 @@ async function createScene() {
   // the other pre-built host characters. Available character IDs are:
   // "Cristine", "Fiona", "Grace", "Maya", "Jay", "Luke", "Preston", "Wes"
   const characterId = 'Maya';
-  const characterConfig = HostObject.getCharacterConfig('./character-assets', characterId);
-  const pollyConfig = { pollyVoice: 'Joanna', pollyEngine: 'neural' };
+  const characterConfig = HostObject.getCharacterConfig(
+    './character-assets',
+    characterId
+  );
+  const pollyConfig = {pollyVoice: 'Joanna', pollyEngine: 'neural'};
   host = await HostObject.createHost(scene, characterConfig, pollyConfig);
 
   // Tell the host to always look at the camera.
@@ -45,11 +48,13 @@ async function createScene() {
 function initUi() {
   // Register Gesture menu handlers.
   const gestureSelect = document.getElementById('gestureSelect');
-  gestureSelect.addEventListener('change', (evt) => playGesture(evt.target.value));
+  gestureSelect.addEventListener('change', evt =>
+    playGesture(evt.target.value)
+  );
 
   // Register Emote menu handlers.
   const emoteSelect = document.getElementById('emoteSelect');
-  emoteSelect.addEventListener('change', (evt) => playEmote(evt.target.value));
+  emoteSelect.addEventListener('change', evt => playEmote(evt.target.value));
 
   // Reveal the UI.
   document.getElementById('uiPanel').classList.remove('hide');
@@ -61,7 +66,7 @@ function playGesture(name) {
   // This options object is optional. It's included here to demonstrate the available options.
   const gestureOptions = {
     holdTime: 1.5, // how long the gesture should last
-    minimumInterval: 0 // how soon another gesture can be triggered
+    minimumInterval: 0, // how soon another gesture can be triggered
   };
   host.GestureFeature.playGesture('Gesture', name, gestureOptions);
 }

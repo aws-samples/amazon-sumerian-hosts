@@ -1,4 +1,4 @@
-import { HostObject, aws as AwsFeatures } from '@amazon-sumerian-hosts/babylon';
+import {HostObject, aws as AwsFeatures} from '@amazon-sumerian-hosts/babylon';
 import DemoUtils from './common/demo-utils';
 import cognitoIdentityPoolId from '../../../demo-credentials';
 
@@ -11,14 +11,14 @@ async function createScene() {
   scene = new BABYLON.Scene();
   scene.useRightHandedSystem = true; // IMPORTANT for Sumerian Hosts!
 
-  const { shadowGenerator } = DemoUtils.setupSceneEnvironment(scene);
+  const {shadowGenerator} = DemoUtils.setupSceneEnvironment(scene);
 
   // ===== Configure the AWS SDK =====
 
   AWS.config.region = cognitoIdentityPoolId.split(':')[0];
-  AWS.config.credentials = new AWS.CognitoIdentityCredentials(
-    { IdentityPoolId: cognitoIdentityPoolId },
-  );
+  AWS.config.credentials = new AWS.CognitoIdentityCredentials({
+    IdentityPoolId: cognitoIdentityPoolId,
+  });
 
   // ===== Instantiate the Sumerian Host =====
 
@@ -26,8 +26,11 @@ async function createScene() {
   // the other pre-built host characters. Available character IDs are:
   // "Cristine", "Fiona", "Grace", "Maya", "Jay", "Luke", "Preston", "Wes"
   const characterId = 'Luke';
-  const pollyConfig = { pollyVoice: 'Matthew', pollyEngine: 'neural' };
-  const characterConfig = HostObject.getCharacterConfig('./character-assets', characterId);
+  const pollyConfig = {pollyVoice: 'Matthew', pollyEngine: 'neural'};
+  const characterConfig = HostObject.getCharacterConfig(
+    './character-assets',
+    characterId
+  );
   host = await HostObject.createHost(scene, characterConfig, pollyConfig);
 
   // Tell the host to always look at the camera.
@@ -43,8 +46,8 @@ async function createScene() {
   const lexClient = new AWS.LexRuntime();
   const botConfig = {
     botName: 'BookTrip',
-    botAlias: 'Dev'
-  }
+    botAlias: 'Dev',
+  };
   lex = new AwsFeatures.LexFeature(lexClient, botConfig);
 
   initUi();
@@ -57,7 +60,8 @@ async function createScene() {
 function initUi() {
   // Set up interactions for UI buttons.
   document.getElementById('startButton').onclick = () => startMainExperience();
-  document.getElementById('enableMicButton').onclick = () => acquireMicrophoneAccess();
+  document.getElementById('enableMicButton').onclick = () =>
+    acquireMicrophoneAccess();
 }
 
 /**
@@ -85,8 +89,10 @@ function initConversationManagement() {
   talkButton.onmouseup = () => lex.endVoiceRecording();
 
   // Use events dispatched by the LexFeature to present helpful user messages.
-  const { EVENTS } = AwsFeatures.LexFeature;
-  lex.listenTo(EVENTS.lexResponseReady, (response) => handleLexResponse(response));
+  const {EVENTS} = AwsFeatures.LexFeature;
+  lex.listenTo(EVENTS.lexResponseReady, response =>
+    handleLexResponse(response)
+  );
   lex.listenTo(EVENTS.recordBegin, () => hideUserMessages());
   lex.listenTo(EVENTS.recordEnd, () => displayProcessingMessage());
 
@@ -156,7 +162,7 @@ async function acquireMicrophoneAccess() {
  * @param {string} id HTMLElement id of the screen to display.
  */
 function showUiScreen(id) {
-  document.querySelectorAll('#uiScreens .screen').forEach((element) => {
+  document.querySelectorAll('#uiScreens .screen').forEach(element => {
     const isTargetScreen = element.id === id;
     setElementVisibility(element.id, isTargetScreen);
   });

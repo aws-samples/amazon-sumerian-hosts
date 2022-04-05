@@ -3,7 +3,11 @@
 /* eslint-disable jasmine/no-spec-dupes */
 /* eslint-disable no-undef */
 /* eslint-disable no-underscore-dangle */
-import {Deferred, LayerBlendModes, SingleState} from '@amazon-sumerian-hosts/core';
+import {
+  Deferred,
+  LayerBlendModes,
+  SingleState,
+} from '@amazon-sumerian-hosts/core';
 import describeEnvironment from '../../EnvironmentHarness';
 
 describeEnvironment('SingleState', () => {

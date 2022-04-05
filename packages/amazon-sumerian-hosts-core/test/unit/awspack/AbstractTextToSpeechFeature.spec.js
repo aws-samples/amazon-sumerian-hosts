@@ -4,7 +4,12 @@
 /* eslint-disable no-undef */
 /* eslint-disable jasmine/prefer-toHaveBeenCalledWith */
 /* eslint-disable no-underscore-dangle */
-import {Messenger, AbstractTextToSpeechFeature, AbstractSpeech, Deferred} from '@amazon-sumerian-hosts/core';
+import {
+  Messenger,
+  AbstractTextToSpeechFeature,
+  AbstractSpeech,
+  Deferred,
+} from '@amazon-sumerian-hosts/core';
 import describeEnvironment from '../EnvironmentHarness';
 
 describeEnvironment('AbstractTextToSpeechFeature', () => {
@@ -33,41 +38,37 @@ describeEnvironment('AbstractTextToSpeechFeature', () => {
       'describeVoices',
     ]);
     mockPolly.synthesizeSpeech.and.returnValue({
-      promise: jasmine
-        .createSpy()
-        .and.resolveTo(mockSpeechMarkResult),
+      promise: jasmine.createSpy().and.resolveTo(mockSpeechMarkResult),
     });
     mockPolly.describeVoices.and.returnValue({
-      promise: jasmine.createSpy().and.resolveTo(
-        {
-          Voices: [
-            {
-              Gender: 'Female',
-              Id: 'Emma',
-              LanguageCode: 'en-US',
-              LanguageName: 'US English',
-              Name: 'Emma',
-              SupportedEngines: ['standard'],
-            },
-            {
-              Gender: 'Male',
-              Id: 'Brian',
-              LanguageCode: 'en-GB',
-              LanguageName: 'British English',
-              Name: 'Brian',
-              SupportedEngines: ['standard', 'neural'],
-            },
-            {
-              Gender: 'Female',
-              Id: 'Amy',
-              LanguageCode: 'en-GB',
-              LanguageName: 'British English',
-              Name: 'Amy',
-              SupportedEngines: ['standard'],
-            },
-          ],
-        }
-      ),
+      promise: jasmine.createSpy().and.resolveTo({
+        Voices: [
+          {
+            Gender: 'Female',
+            Id: 'Emma',
+            LanguageCode: 'en-US',
+            LanguageName: 'US English',
+            Name: 'Emma',
+            SupportedEngines: ['standard'],
+          },
+          {
+            Gender: 'Male',
+            Id: 'Brian',
+            LanguageCode: 'en-GB',
+            LanguageName: 'British English',
+            Name: 'Brian',
+            SupportedEngines: ['standard', 'neural'],
+          },
+          {
+            Gender: 'Female',
+            Id: 'Amy',
+            LanguageCode: 'en-GB',
+            LanguageName: 'British English',
+            Name: 'Amy',
+            SupportedEngines: ['standard'],
+          },
+        ],
+      }),
     });
 
     // mock AWS.Polly.Presigner
@@ -1015,7 +1016,7 @@ describeEnvironment('AbstractTextToSpeechFeature', () => {
         config: tts._getConfig(),
       };
       tts.play('test');
-      await new Promise(resolve => setTimeout(resolve, 100))
+      await new Promise(resolve => setTimeout(resolve, 100));
 
       expect(mockSpeech.play).toHaveBeenCalledTimes(1);
     });
@@ -1054,7 +1055,7 @@ describeEnvironment('AbstractTextToSpeechFeature', () => {
       );
       const tts = new AbstractTextToSpeechFeature(mockHost);
       tts.play('test');
-      await new Promise(resolve => setTimeout(resolve, 100))
+      await new Promise(resolve => setTimeout(resolve, 100));
 
       expect(tts.currentSpeech).toEqual('<speak>test</speak>');
     });
@@ -1115,7 +1116,7 @@ describeEnvironment('AbstractTextToSpeechFeature', () => {
       await expectAsync(tts.resume()).toBeRejected();
     });
 
-    it('should execute cancel once on the current speech if a current speech is defined and playing', async ()=> {
+    it('should execute cancel once on the current speech if a current speech is defined and playing', async () => {
       await AbstractTextToSpeechFeature.initializeService(
         mockPolly,
         mockPresigner,
@@ -1128,7 +1129,7 @@ describeEnvironment('AbstractTextToSpeechFeature', () => {
       });
       tts._currentSpeech = mockSpeech;
       tts.resume('test');
-      await new Promise(resolve => setTimeout(resolve, 100))
+      await new Promise(resolve => setTimeout(resolve, 100));
 
       expect(mockSpeech.cancel).toHaveBeenCalledTimes(1);
     });

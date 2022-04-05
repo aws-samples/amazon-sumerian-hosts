@@ -216,9 +216,11 @@ describe('QueueState', () => {
         return onFinished();
       });
       queueState._promises.finish = new Deferred();
-      spyOn(Object.getPrototypeOf(queueState._queue), 'next').and.callFake(() => {
-        return {value: undefined, done: true};
-      });
+      spyOn(Object.getPrototypeOf(queueState._queue), 'next').and.callFake(
+        () => {
+          return {value: undefined, done: true};
+        }
+      );
       const result = queueState.play();
 
       expect(result).toEqual(queueState._promises.finish);

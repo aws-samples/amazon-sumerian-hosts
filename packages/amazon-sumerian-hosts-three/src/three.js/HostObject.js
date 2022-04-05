@@ -8,7 +8,10 @@
  * @see https://threejs.org/docs/#api/en/core/Clock
  */
 
-import {HostObject as CoreHostObject, Messenger} from '@amazon-sumerian-hosts/core';
+import {
+  HostObject as CoreHostObject,
+  Messenger,
+} from '@amazon-sumerian-hosts/core';
 
 /**
  * @extends core/HostObject

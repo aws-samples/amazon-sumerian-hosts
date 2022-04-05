@@ -1,4 +1,4 @@
-import { HostObject } from '@amazon-sumerian-hosts/babylon';
+import {HostObject} from '@amazon-sumerian-hosts/babylon';
 import DemoUtils from './common/demo-utils';
 import cognitoIdentityPoolId from '../../../demo-credentials';
 
@@ -11,15 +11,15 @@ async function createScene() {
   scene = new BABYLON.Scene();
   scene.useRightHandedSystem = true; // IMPORTANT for Sumerian Hosts!
 
-  const { shadowGenerator } = DemoUtils.setupSceneEnvironment(scene);
+  const {shadowGenerator} = DemoUtils.setupSceneEnvironment(scene);
   initUi();
 
   // ===== Configure the AWS SDK =====
 
   AWS.config.region = cognitoIdentityPoolId.split(':')[0];
-  AWS.config.credentials = new AWS.CognitoIdentityCredentials(
-    { IdentityPoolId: cognitoIdentityPoolId },
-  );
+  AWS.config.credentials = new AWS.CognitoIdentityCredentials({
+    IdentityPoolId: cognitoIdentityPoolId,
+  });
 
   // ===== Instantiate the Sumerian Host =====
 
@@ -27,8 +27,11 @@ async function createScene() {
   // the other pre-built host characters. Available character IDs are:
   // "Cristine", "Fiona", "Grace", "Maya", "Jay", "Luke", "Preston", "Wes"
   const characterId = 'Cristine';
-  const pollyConfig = { pollyVoice: 'Joanna', pollyEngine: 'neural' };
-  const characterConfig = HostObject.getCharacterConfig('./character-assets', characterId);
+  const pollyConfig = {pollyVoice: 'Joanna', pollyEngine: 'neural'};
+  const characterConfig = HostObject.getCharacterConfig(
+    './character-assets',
+    characterId
+  );
   host = await HostObject.createHost(scene, characterConfig, pollyConfig);
 
   // Tell the host to always look at the camera.

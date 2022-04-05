@@ -12,7 +12,7 @@ describeEnvironment('LexFeature', () => {
   beforeEach(() => {
     mockLexRuntime = jasmine.createSpyObj('LexRuntime', ['postContent']);
     mockLexRuntime.postContent.and.callFake(function(param, callback) {
-      callback(undefined, {message: "TestResponse"});
+      callback(undefined, {message: 'TestResponse'});
     });
   });
 
@@ -23,7 +23,7 @@ describeEnvironment('LexFeature', () => {
 
     it('should set the LexRuntime service customUserAgent to the sumerian designated value if the user has not set it', () => {
       mockLexRuntime.config = {
-        customUserAgent: null
+        customUserAgent: null,
       };
       const sumerianUserAgent = 'request-source/SumerianHosts';
 
@@ -34,20 +34,29 @@ describeEnvironment('LexFeature', () => {
 
     it('should append sumerian designated value to user defined LexRuntime service customUserAgent', () => {
       mockLexRuntime.config = {
-        customUserAgent: 'UserDefined'
+        customUserAgent: 'UserDefined',
       };
       const sumerianUserAgent = 'request-source/SumerianHosts';
 
       lexFeature = new LexFeature(mockLexRuntime);
 
-      expect(mockLexRuntime.config.customUserAgent).toEqual(`UserDefined ${sumerianUserAgent}`);
+      expect(mockLexRuntime.config.customUserAgent).toEqual(
+        `UserDefined ${sumerianUserAgent}`
+      );
     });
   });
 
   describe('_validateConfig', () => {
     it('should use config override', () => {
-      lexFeature = new LexFeature(mockLexRuntime, {botName: 'Bot', botAlias: 'Alias'});
-      const expected = {botName: 'TestBot', botAlias: 'TestAlias', userId: 'UserId'};
+      lexFeature = new LexFeature(mockLexRuntime, {
+        botName: 'Bot',
+        botAlias: 'Alias',
+      });
+      const expected = {
+        botName: 'TestBot',
+        botAlias: 'TestAlias',
+        userId: 'UserId',
+      };
       const actual = lexFeature._validateConfig(expected);
 
       expect(actual.botName).toEqual(expected.botName);
@@ -58,13 +67,19 @@ describeEnvironment('LexFeature', () => {
     it('should throw error if any of the required field is undefined', () => {
       lexFeature = new LexFeature(mockLexRuntime);
 
-      expect(() => {lexFeature._validateConfig({})}).toThrowError();
+      expect(() => {
+        lexFeature._validateConfig({});
+      }).toThrowError();
     });
   });
 
   describe('_process', () => {
     it('should execute LexRuntime.postContent', async () => {
-      lexFeature = new LexFeature(mockLexRuntime, {botName: 'Bot', botAlias: 'Alias', userId: 'UserId'});
+      lexFeature = new LexFeature(mockLexRuntime, {
+        botName: 'Bot',
+        botAlias: 'Alias',
+        userId: 'UserId',
+      });
       await lexFeature._process('TestType', 'TestInput', {});
 
       const expectArg = {
@@ -72,15 +87,21 @@ describeEnvironment('LexFeature', () => {
         botAlias: 'Alias',
         contentType: 'TestType',
         inputStream: 'TestInput',
-        userId: 'UserId'
+        userId: 'UserId',
       };
 
-      expect(mockLexRuntime.postContent).toHaveBeenCalledWith(expectArg, jasmine.anything());
+      expect(mockLexRuntime.postContent).toHaveBeenCalledWith(
+        expectArg,
+        jasmine.anything()
+      );
     });
 
     it('should return a promise that resolves to a response object containing message', async () => {
-      lexFeature = new LexFeature(mockLexRuntime, {botName: 'Bot', botAlias: 'Alias'});
-      const result = await lexFeature._process("TestType", "TestInput", {});
+      lexFeature = new LexFeature(mockLexRuntime, {
+        botName: 'Bot',
+        botAlias: 'Alias',
+      });
+      const result = await lexFeature._process('TestType', 'TestInput', {});
 
       expect(result).toBeInstanceOf(Object);
       expect(result.message).toBeDefined();
@@ -92,11 +113,17 @@ describeEnvironment('LexFeature', () => {
     });
 
     it('should emit lex response ready message through messenger if messenger is set', async () => {
-      lexFeature = new LexFeature(mockLexRuntime, {botName: 'Bot', botAlias: 'Alias'});
-      spyOn(lexFeature, "emit");
-      await lexFeature._process("TestType", "TestInput", {});
+      lexFeature = new LexFeature(mockLexRuntime, {
+        botName: 'Bot',
+        botAlias: 'Alias',
+      });
+      spyOn(lexFeature, 'emit');
+      await lexFeature._process('TestType', 'TestInput', {});
 
-      expect(lexFeature.emit).toHaveBeenCalledWith(LexFeature.EVENTS.lexResponseReady, {message: "TestResponse"});
+      expect(lexFeature.emit).toHaveBeenCalledWith(
+        LexFeature.EVENTS.lexResponseReady,
+        {message: 'TestResponse'}
+      );
     });
   });
 
@@ -104,20 +131,33 @@ describeEnvironment('LexFeature', () => {
     beforeEach(() => {
       spyOn(navigator.mediaDevices, 'getUserMedia').and.resolveTo();
 
-      spyOn(AudioContext.prototype, 'createMediaStreamSource').and.returnValue({connect: () => {}});
-      spyOn(AudioContext.prototype, 'createScriptProcessor').and.returnValue({connect: () => {}});
+      spyOn(AudioContext.prototype, 'createMediaStreamSource').and.returnValue({
+        connect: () => {},
+      });
+      spyOn(AudioContext.prototype, 'createScriptProcessor').and.returnValue({
+        connect: () => {},
+      });
     });
 
     it('should execute getUserMedia with appropriate arguments', async () => {
-      lexFeature = new LexFeature(mockLexRuntime, {botName: 'Bot', botAlias: 'Alias'});
+      lexFeature = new LexFeature(mockLexRuntime, {
+        botName: 'Bot',
+        botAlias: 'Alias',
+      });
       await lexFeature.enableMicInput();
 
-      expect(navigator.mediaDevices.getUserMedia).toHaveBeenCalledWith({audio: true, video: false});
+      expect(navigator.mediaDevices.getUserMedia).toHaveBeenCalledWith({
+        audio: true,
+        video: false,
+      });
     });
 
     it('should emit microphone ready message through messenger if messenger is set', async () => {
-      lexFeature = new LexFeature(mockLexRuntime, {botName: 'Bot', botAlias: 'Alias'});
-      spyOn(lexFeature, "emit");
+      lexFeature = new LexFeature(mockLexRuntime, {
+        botName: 'Bot',
+        botAlias: 'Alias',
+      });
+      spyOn(lexFeature, 'emit');
       await lexFeature.enableMicInput();
 
       expect(lexFeature.emit).toHaveBeenCalledWith(LexFeature.EVENTS.micReady);
@@ -127,8 +167,13 @@ describeEnvironment('LexFeature', () => {
   describe('beginVoiceRecording', () => {
     beforeEach(() => {
       spyOn(AudioContext.prototype, 'resume');
-      lexFeature = new LexFeature(mockLexRuntime, {botName: 'Bot', botAlias: 'Alias'});
-      spyOn(lexFeature, 'enableMicInput').and.callFake(() => { lexFeature._micReady = true; })
+      lexFeature = new LexFeature(mockLexRuntime, {
+        botName: 'Bot',
+        botAlias: 'Alias',
+      });
+      spyOn(lexFeature, 'enableMicInput').and.callFake(() => {
+        lexFeature._micReady = true;
+      });
     });
 
     it('should resume audiocontext if its suspended', () => {
@@ -142,7 +187,7 @@ describeEnvironment('LexFeature', () => {
     });
 
     it('should not emi begin recording message if the mic is not setup', () => {
-      spyOn(lexFeature, "emit");
+      spyOn(lexFeature, 'emit');
 
       lexFeature.beginVoiceRecording();
 
@@ -150,22 +195,29 @@ describeEnvironment('LexFeature', () => {
     });
 
     it('should emit begin recording message through messenger if messenger is set', async () => {
-      spyOn(lexFeature, "emit");
+      spyOn(lexFeature, 'emit');
 
       lexFeature.enableMicInput();
 
       lexFeature.beginVoiceRecording();
 
-      expect(lexFeature.emit).toHaveBeenCalledWith(LexFeature.EVENTS.recordBegin);
+      expect(lexFeature.emit).toHaveBeenCalledWith(
+        LexFeature.EVENTS.recordBegin
+      );
     });
   });
 
   describe('endVoiceRecording', () => {
     beforeEach(() => {
-      lexFeature = new LexFeature(mockLexRuntime, {botName: 'Bot', botAlias: 'Alias'});
+      lexFeature = new LexFeature(mockLexRuntime, {
+        botName: 'Bot',
+        botAlias: 'Alias',
+      });
       spyOn(lexFeature, '_processWithAudio');
-      spyOn(lexFeature, "emit");
-      spyOn(lexFeature, 'beginVoiceRecording').and.callFake(() => { lexFeature._recording = true; })
+      spyOn(lexFeature, 'emit');
+      spyOn(lexFeature, 'beginVoiceRecording').and.callFake(() => {
+        lexFeature._recording = true;
+      });
     });
 
     it('should emit end recording message through messenger if messenger is set', async () => {
