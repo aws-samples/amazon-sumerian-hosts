@@ -182,7 +182,7 @@ class HostObject extends CoreHostObject {
   }
 
   /**
-   * Loads the animations speci
+   * Loads the animations for a host character
    *
    * @param {Babylon.Scene} scene
    * @param {Babylon.Mesh} characterMesh The root mesh of the character model
@@ -694,7 +694,7 @@ const host = await HOST.HostUtils.createHost(scene, characterConfig, pollyConfig
 
   /**
  *
- * @returns {string[]} An array of identifies that can be used with getCharacterConfiguration
+ * @returns {string[]} An array of characterId's that can be used with getCharacterConfig
  */
   static getAvailableCharacters() {
     return [...characterTypeMap.keys()];
