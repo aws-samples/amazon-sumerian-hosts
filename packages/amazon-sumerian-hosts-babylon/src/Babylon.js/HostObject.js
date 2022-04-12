@@ -6,6 +6,7 @@ import {
   GestureFeature,
 } from '@amazon-sumerian-hosts/core';
 import AWS from 'aws-sdk';
+import * as BABYLON from 'babylonjs';
 import anim from './animpack';
 import aws from './awspack';
 import PointOfInterestFeature from './PointOfInterestFeature';
