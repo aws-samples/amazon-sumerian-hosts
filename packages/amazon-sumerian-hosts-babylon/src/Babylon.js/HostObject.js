@@ -571,6 +571,7 @@ class HostObject extends CoreHostObject {
     scene,
     voice,
     engine,
+    language = 'en-US',
     audioJointName = 'char:def_c_neckB'
   ) {
     const joints = host.owner.getDescendants(false);
@@ -581,6 +582,7 @@ class HostObject extends CoreHostObject {
       attachTo: audioJoint,
       voice,
       engine,
+      language,
     });
   }
 
