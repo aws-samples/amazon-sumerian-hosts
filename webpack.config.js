@@ -28,7 +28,7 @@ else if (process.env.ENGINE === "babylon") {
 let devServerOnlyEntryPoints = {}
 
 if(isDevServer) {
-// Only build the demos if we are running in the dev server
+// Only build the demos & tests if we are running in the dev server
   devServerOnlyEntryPoints = {
     helloWorldDemo: {
       import: './packages/demos-babylon/src/helloWorldDemo.js',
@@ -45,6 +45,14 @@ if(isDevServer) {
     chatbotDemo: {
       import: './packages/demos-babylon/src/chatbotDemo.js',
       filename: "./packages/demos-babylon/dist/[name].js",
+    },
+    textToSpeechTest: {
+      import: './packages/amazon-sumerian-hosts-babylon/test/integration_test/Babylon.js/babylon.texttospeech.js',
+      filename: './packages/amazon-sumerian-hosts-babylon/test/integration_test/Babylon.js/dist/[name].js',
+    },
+    animationTest: {
+      import: './packages/amazon-sumerian-hosts-babylon/test/integration_test/Babylon.js/babylon.animation.js',
+      filename: './packages/amazon-sumerian-hosts-babylon/test/integration_test/Babylon.js/dist/[name].js',
     }
   }
 }

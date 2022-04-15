@@ -4,6 +4,10 @@ import {
   AbstractTextToSpeechFeature,
   TextToSpeechFeature as CoreTextToSpeechFeature,
 } from '@amazon-sumerian-hosts/core';
+import {Sound} from '@babylonjs/core/Audio/sound';
+import {Engine} from '@babylonjs/core/Engines/engine';
+import '@babylonjs/core/Audio/audioSceneComponent';
+import '@babylonjs/core/Audio/audioEngine';
 import Speech from './Speech';
 
 /**
@@ -50,7 +54,7 @@ class TextToSpeechFeature extends CoreTextToSpeechFeature {
   }
 
   _setAudioContext() {
-    this._audioContext = BABYLON.Engine.audioEngine.audioContext;
+    this._audioContext = Engine.audioEngine.audioContext;
   }
 
   _observeAudioContext() {
@@ -61,7 +65,7 @@ class TextToSpeechFeature extends CoreTextToSpeechFeature {
         onstatechange();
 
         if (this._enabled) {
-          BABYLON.Engine.audioEngine.unlock();
+          Engine.audioEngine.unlock();
         }
       };
     }
@@ -77,7 +81,7 @@ class TextToSpeechFeature extends CoreTextToSpeechFeature {
         return new Promise(resolve => {
           const {url} = result;
           const name = params.Text;
-          result.audio = new BABYLON.Sound(
+          result.audio = new Sound(
             name,
             url,
             this._scene,

@@ -4,6 +4,8 @@
 /* eslint-disable no-underscore-dangle */
 import {Messenger} from '@amazon-sumerian-hosts/core';
 import {aws} from '@amazon-sumerian-hosts/babylon';
+import {Sound} from '@babylonjs/core/Audio/sound';
+import {TransformNode} from '@babylonjs/core/Meshes/transformNode';
 import describeEnvironment from '../EnvironmentHarness';
 
 describeEnvironment('TextToSpeechFeature', options => {
@@ -89,7 +91,7 @@ describeEnvironment('TextToSpeechFeature', options => {
 
         expect(result).toBeInstanceOf(Object);
         expect(result.audio).toBeDefined();
-        expect(result.audio).toBeInstanceOf(BABYLON.Sound);
+        expect(result.audio).toBeInstanceOf(Sound);
       });
 
       it("should define the result audio's spatialSound property to be false if attachTo is not defined in the constructor options", async () => {
@@ -104,7 +106,7 @@ describeEnvironment('TextToSpeechFeature', options => {
 
       it("should define the result audio's spatialSound property to be true if attachTo is defined in the constructor options", async () => {
         const {scene} = options;
-        const attachTo = new BABYLON.TransformNode('attach', scene);
+        const attachTo = new TransformNode('attach', scene);
         const tts = new aws.TextToSpeechFeature(mockHost, {scene, attachTo});
         const promise = tts._synthesizeAudio({});
 

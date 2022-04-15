@@ -1,4 +1,5 @@
 import {HostObject} from '@amazon-sumerian-hosts/babylon';
+import {Scene} from '@babylonjs/core/scene';
 import DemoUtils from './common/demo-utils';
 import cognitoIdentityPoolId from '../../../demo-credentials';
 
@@ -8,7 +9,7 @@ let scene;
 async function createScene() {
   // Create an empty scene. IMPORTANT: Sumerian Hosts require use of the
   // right-hand coordinate system!
-  scene = new BABYLON.Scene();
+  scene = new Scene();
   scene.useRightHandedSystem = true; // IMPORTANT for Sumerian Hosts!
 
   const {shadowGenerator} = DemoUtils.setupSceneEnvironment(scene);

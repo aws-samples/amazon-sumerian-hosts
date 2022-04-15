@@ -12,11 +12,8 @@ module.exports = {
   ...baseConfig,
   plugins: [
     ...baseConfig.plugins,
-    // Babylon/three are peerDependencies and are expected to be loaded on the page
+    // three is a peerDependency and is expected to be loaded on the page
     // We emulate that with ProvidePlugin like this
-    new webpack.ProvidePlugin({
-      BABYLON: 'babylonjs',
-    }),
     new webpack.ProvidePlugin({
       THREE: 'three',
     }),

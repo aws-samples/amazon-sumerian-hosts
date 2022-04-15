@@ -1,3 +1,9 @@
+import {Scene} from '@babylonjs/core/scene';
+import {Engine} from '@babylonjs/core/Engines/engine';
+import {Mesh} from '@babylonjs/core/Meshes/mesh';
+// Side-effects only imports allowing Mesh to create default shapes
+import '@babylonjs/core/Meshes/Builders/sphereBuilder';
+
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: MIT-0
 export default function describeBabylonHost(description, fn) {
@@ -10,10 +16,10 @@ export default function describeBabylonHost(description, fn) {
     canvas.style.height = '100%';
     canvas.style['touch-action'] = 'none';
 
-    const engine = new BABYLON.Engine(canvas, true);
-    const scene = new BABYLON.Scene(engine);
+    const engine = new Engine(canvas, true);
+    const scene = new Scene(engine);
 
-    const owner = BABYLON.MeshBuilder.CreateSphere(
+    const owner = Mesh.CreateSphere(
       'sphere',
       {diameter: 2, segments: 4},
       scene
