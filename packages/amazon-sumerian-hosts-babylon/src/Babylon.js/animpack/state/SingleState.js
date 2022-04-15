@@ -4,6 +4,7 @@ import {
   SingleState as CoreSingleState,
   MathUtils,
 } from '@amazon-sumerian-hosts/core';
+import '@babylonjs/core/Animations/animatable';
 
 /**
  * Babylonjs AnimationGroup object
