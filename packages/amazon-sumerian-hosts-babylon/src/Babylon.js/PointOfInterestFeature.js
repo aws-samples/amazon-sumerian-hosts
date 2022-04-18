@@ -18,6 +18,15 @@ class PointOfInterestFeature extends CorePointOfInterestFeature {
     return [...obj.getWorldMatrix().m];
   }
 
+  static _sphericalToBlendValue(...args) {
+    let {h, v} = super._sphericalToBlendValue(...args);
+
+    //Revert theta blend value if not using right hand coordinate system
+    h = this.useRightHandCoordinateSystem ? h : h * -1;
+
+    return {h, v};
+  }
+
   _validateTransformObject(obj) {
     return obj instanceof BABYLON.TransformNode;
   }
