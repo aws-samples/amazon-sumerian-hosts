@@ -1,0 +1,20 @@
+{
+    "extends": "../../tsconfig.json",
+    "compilerOptions": {
+        "outDir": "./dist",
+        "composite": true,
+        "target": "ES6", 
+        "paths": {
+            "@amazon-sumerian-hosts/core": [
+                "../amazon-sumerian-hosts-core/src/core"
+            ]
+        },
+    },
+    "include": [
+        "src/**/*"
+    ],
+    "exclude": [
+        "test/**/*",
+        "dist/**/*"
+    ]
+}

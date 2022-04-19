@@ -11,18 +11,6 @@ import '@babylonjs/core/Audio/audioEngine';
 import Speech from './Speech';
 
 /**
- * Babylonjs Scene object
- * @external "BABYLON.Scene"
- * @see https://doc.babylonjs.com/api/classes/babylon.scene
- */
-
-/**
- * Babylonjs Mesh object
- * @external "BABYLON.Mesh"
- * @see https://doc.babylonjs.com/api/classes/babylon.mesh
- */
-
-/**
  * @extends core/TextToSpeechFeature
  * @alias babylonjs/TextToSpeechFeature
  */
@@ -32,8 +20,8 @@ class TextToSpeechFeature extends CoreTextToSpeechFeature {
    *
    * @param {babylonjs/HostObject} host - Host object managing the feature.
    * @param {Object=} options - Options that will be sent to Polly for each speech.
-   * @param {external:"BABYLON.Scene"} options.scene - Babylon scene containing the host owner.
-   * @param {external:"BABYLON.Mesh"=} options.attachTo - Optional mesh to attach the speech
+   * @param {Scene} options.scene - Babylon scene containing the host owner.
+   * @param {Mesh=} options.attachTo - Optional mesh to attach the speech
    * audio to.
    */
   constructor(

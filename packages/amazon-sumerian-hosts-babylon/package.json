@@ -17,6 +17,7 @@
     "import": "./src/Babylon.js/index.js",
     "require": "./dist/host.babylon.js"
   },
+  "types": "./dist/src/Babylon.js/index.d.ts",
   "scripts": {
   },
   "dependencies": {
