@@ -5,6 +5,11 @@ import {
   LipsyncFeature,
   GestureFeature,
 } from '@amazon-sumerian-hosts/core';
+import {SceneLoader} from '@babylonjs/core/Loading/sceneLoader';
+import {PrecisionDate} from '@babylonjs/core/Misc/precisionDate';
+import {Observable} from '@babylonjs/core/Misc/observable';
+import {AnimationGroup} from '@babylonjs/core/Animations/animationGroup';
+import '@babylonjs/loaders';
 import AWS from 'aws-sdk';
 import anim from './animpack';
 import aws from './awspack';
@@ -35,7 +40,7 @@ class HostObject extends CoreHostObject {
   }
 
   get now() {
-    return BABYLON.PrecisionDate.Now;
+    return PrecisionDate.Now;
   }
 
   _createListener(callback) {
@@ -54,7 +59,7 @@ class HostObject extends CoreHostObject {
 
   listenTo(message, callback) {
     if (this._events[message] === undefined) {
-      this._events[message] = new BABYLON.Observable();
+      this._events[message] = new Observable();
     }
 
     try {
@@ -182,7 +187,7 @@ class HostObject extends CoreHostObject {
    */
   static async loadCharacterMesh(scene, modelUrl) {
     // Load character model
-    const characterAsset = await BABYLON.SceneLoader.LoadAssetContainerAsync(
+    const characterAsset = await SceneLoader.LoadAssetContainerAsync(
       modelUrl,
       undefined,
       scene
@@ -228,7 +233,7 @@ class HostObject extends CoreHostObject {
   ) {
     // Make the offset pose additive
     if (bindPoseOffset) {
-      BABYLON.AnimationGroup.MakeAnimationAdditive(bindPoseOffset);
+      AnimationGroup.MakeAnimationAdditive(bindPoseOffset);
     }
 
     const childMeshes = characterMesh.getDescendants(false);
@@ -278,7 +283,7 @@ class HostObject extends CoreHostObject {
  ````
    */
   static async loadAnimation(scene, childMeshes, url, clipGroupId) {
-    const container = await BABYLON.SceneLoader.LoadAssetContainerAsync(
+    const container = await SceneLoader.LoadAssetContainerAsync(
       url,
       undefined,
       scene
@@ -343,7 +348,7 @@ class HostObject extends CoreHostObject {
     host.AnimationFeature.addLayer('Face', {
       blendMode: anim.LayerBlendModes.Additive,
     });
-    BABYLON.AnimationGroup.MakeAnimationAdditive(faceIdleClip);
+    AnimationGroup.MakeAnimationAdditive(faceIdleClip);
     host.AnimationFeature.addAnimation(
       'Face',
       faceIdleClip.name,
@@ -362,7 +367,7 @@ class HostObject extends CoreHostObject {
       transitionTime: 0.075,
     });
     blinkClips.forEach(clip => {
-      BABYLON.AnimationGroup.MakeAnimationAdditive(clip);
+      AnimationGroup.MakeAnimationAdditive(clip);
     });
     host.AnimationFeature.addAnimation(
       'Blink',
@@ -386,7 +391,7 @@ class HostObject extends CoreHostObject {
     });
     host.AnimationFeature.setLayerWeight('Talk', 0);
     const talkClip = lipSyncClips.find(c => c.name === 'stand_talk');
-    BABYLON.AnimationGroup.MakeAnimationAdditive(talkClip);
+    AnimationGroup.MakeAnimationAdditive(talkClip);
     lipSyncClips.splice(lipSyncClips.indexOf(talkClip), 1);
     host.AnimationFeature.addAnimation(
       'Talk',
@@ -405,7 +410,7 @@ class HostObject extends CoreHostObject {
     gestureClips.forEach(clip => {
       const {name} = clip;
       const config = assets.gestureConfig[name];
-      BABYLON.AnimationGroup.MakeAnimationAdditive(clip);
+      AnimationGroup.MakeAnimationAdditive(clip);
 
       if (config !== undefined) {
         // Add the clip to each queueOption so it can be split up
@@ -455,7 +460,7 @@ class HostObject extends CoreHostObject {
     });
     host.AnimationFeature.setLayerWeight('Viseme', 0);
     const blendStateOptions = lipSyncClips.map(clip => {
-      BABYLON.AnimationGroup.MakeAnimationAdditive(clip);
+      AnimationGroup.MakeAnimationAdditive(clip);
       return {
         name: clip.name,
         clip,
@@ -483,7 +488,7 @@ class HostObject extends CoreHostObject {
       // Find each pose clip and make it additive
       config.blendStateOptions.forEach(clipConfig => {
         const clip = poiClips.find(poiClip => poiClip.name === clipConfig.clip);
-        BABYLON.AnimationGroup.MakeAnimationAdditive(clip);
+        AnimationGroup.MakeAnimationAdditive(clip);
         clipConfig.clip = clip;
         clipConfig.from = 1 / 30;
         clipConfig.to = 2 / 30;
@@ -571,6 +576,7 @@ class HostObject extends CoreHostObject {
     scene,
     voice,
     engine,
+    language = 'en-US',
     audioJointName = 'char:def_c_neckB'
   ) {
     const joints = host.owner.getDescendants(false);
@@ -581,6 +587,7 @@ class HostObject extends CoreHostObject {
       attachTo: audioJoint,
       voice,
       engine,
+      language,
     });
   }
 

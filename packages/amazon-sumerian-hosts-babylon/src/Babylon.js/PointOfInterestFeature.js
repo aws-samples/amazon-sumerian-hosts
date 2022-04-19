@@ -4,6 +4,7 @@ import {
   PointOfInterestFeature as CorePointOfInterestFeature,
   AxisMap,
 } from '@amazon-sumerian-hosts/core';
+import {TransformNode} from '@babylonjs/core/Meshes/transformNode';
 
 /**
  * @extends core/PointOfInterestFeature
@@ -28,7 +29,7 @@ class PointOfInterestFeature extends CorePointOfInterestFeature {
   }
 
   _validateTransformObject(obj) {
-    return obj instanceof BABYLON.TransformNode;
+    return obj instanceof TransformNode;
   }
 
   setTargetByName(name) {
