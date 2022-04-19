@@ -6,8 +6,8 @@ let host;
 let scene;
 
 async function createScene() {
-  // Create an empty scene. IMPORTANT: Sumerian Hosts require use of the
-  // right-hand coordinate system!
+  // Create an empty scene. Note: Sumerian Hosts work with both
+  // right-hand or left-hand coordinate system for babylon scene
   scene = new BABYLON.Scene();
 
   const {shadowGenerator} = DemoUtils.setupSceneEnvironment(scene);
