@@ -6,12 +6,6 @@ import {
 } from '@amazon-sumerian-hosts/core';
 import '@babylonjs/core/Animations/animatable';
 
-/**
- * Babylonjs AnimationGroup object
- * @external "BABYLON.AnimationGroup"
- * @see https://doc.babylonjs.com/api/classes/babylon.animationgroup
- */
-
 const babylonBlendModes = {
   Override: false,
   Additive: true,
@@ -26,9 +20,9 @@ class SingleState extends CoreSingleState {
    * @constructor
    *
    * @param {Object=} options - Options for the animation state.
-   * @param {external:"BABYLON.AnimationGroup"} babylonGroup - The animation group that controls
+   * @param {AnimationGroup} babylonGroup - The animation group that controls
    * playback of the animation.
-   * @param {external:"BABYLON.Scene"} babylonScene - The scene containing the babylonGroup.
+   * @param {Scene} babylonScene - The scene containing the babylonGroup.
    **/
   constructor(options = {}, babylonGroup, babylonScene) {
     super(options);
