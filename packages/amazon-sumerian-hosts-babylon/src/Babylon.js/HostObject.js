@@ -99,7 +99,7 @@ class HostObject extends CoreHostObject {
   }
 
   /**
-   * @private
+   *
    * @param {AWS.Polly=} polly An AWS Polly service client, assumed to have the proper
    *     credentials and configuration.
    * @param {AWS.Polly.presigner=} presigner The presigner used for Polly calls
@@ -124,30 +124,70 @@ class HostObject extends CoreHostObject {
   }
 
   /**
+   * @typedef {Object} SumerianLoadedAnimations
+   * @property {AnimationGroup[]} idleClips
+   * @property {AnimationGroup[]} lipSyncClips
+   * @property {AnimationGroup[]} gestureClips
+   * @property {AnimationGroup[]} emoteClips
+   * @property {AnimationGroup[]} faceClips
+   * @property {AnimationGroup[]} blinkClips
+   * @property {AnimationGroup[]} poiClips
+   */
+
+  /**
+   * @typedef {Object} SumerianHostLoadedAssets
+   * @property {Mesh} characterMesh - The loaded character mesh
+   * @property {SumerianLoadedAnimations} animClips - The loaded animations
+   * @property {AnimationGroup} bindPoseOffset
+   * @property {Object} gestureConfig - see "3d-assets/animations/adult_female/gesture.json" for reference
+   * @property {Object} poiConfig - see "3d-assets/animations/adult_female/poi.json" for reference
+   */
+
+  /**
+   * @typedef {Object} SumerianAnimationsConfig
+   * @property {string} animStandIdleUrl
+   * @property {string} animLipSyncUrl
+   * @property {string} animGestureUrl
+   * @property {string} animEmoteUrl
+   * @property {string} animFaceIdleUrl
+   * @property {string} animBlinkUrl
+   * @property {string} animPointOfInterestUrl
+   */
+
+  /**
+   * @typedef {Object} SumerianCharacterConfig
+   * @property {string} modelUrl - The path to the .gltf file
+   * @property {string} gestureConfigUrl
+   * @property {string} pointOfInterestConfigUrl
+   * @property {SumerianAnimationsConfig} animUrls
+   */
+
+  /**
+   * @typedef {Object} SumerianPollyConfig
+   * @property {AWS.Polly=} pollyClient - The reference to the Polly service client to use.
+   * @property {AWS.Polly.presigner=} pollyPresigner - The reference to the Polly presigner to use.
+   * @property {string} pollyVoice - The Polly voice to use. See
+   *   {@link https://docs.aws.amazon.com/polly/latest/dg/voicelist.html}
+   * @property {string} pollyEngine - The Polly engine you would like to
+   *   use. Either "standard" or "neural". Note that the neural engine incurs a
+   *   higher cost and is not compatible with all voices or regions. See
+   *   {@link https://docs.aws.amazon.com/polly/latest/dg/NTTS-main.html}
+   */
+
+  /**
+   * @typedef {Object} SumerianLoadedAnimation
+   * @property {string} clipGroupId
+   * @property {AnimationGroup[]} clips
+   */
+
+  /**
    * Loads the assets that comprise a host character.
    *
    * @private
    *
-   * @param {*} scene
-   * @param {*} characterConfig See the createHost() function docs above.
-   * @return {Object} An object containing the loaded assets organized as follows:
- ```
-{
-  characterMesh: BABYLON.Mesh,
-  animClips: {
-    idleClips: BABYLON.AnimationGroup[],
-    lipSyncClips: BABYLON.AnimationGroup[],
-    gestureClips: BABYLON.AnimationGroup[],
-    emoteClips: BABYLON.AnimationGroup[],
-    faceClips: BABYLON.AnimationGroup[],
-    blinkClips: BABYLON.AnimationGroup[],
-    poiClips: BABYLON.AnimationGroup[],
-  }
-  bindPoseOffset: BABYLON.AnimationGroup,
-  gestureConfig: Object,  // see "3d-assets/animations/adult_female/gesture.json" for reference
-  poiConfig: Object  // see "3d-assets/animations/adult_female/poi.json" for reference
-}
- ```
+   * @param {Scene} scene
+   * @param {SumerianCharacterConfig} characterConfig
+   * @return {SumerianHostLoadedAssets}
    */
   static async loadAssets(
     scene,
@@ -181,9 +221,9 @@ class HostObject extends CoreHostObject {
    * Loads the gltf file that comprises a character model,
    * and adds it to the scene to be rendered.
    *
-   * @param {Babylon.Scene} scene
+   * @param {Scene} scene
    * @param {string} modelUrl The absolute path to the gltf file that contains the model
-   * @return {Babylon.AssetContainer} A BabylonJS asset container that contains the loaded meshes
+   * @return {AssetContainer} A BabylonJS asset container that contains the loaded meshes
    */
   static async loadCharacterMesh(scene, modelUrl) {
     // Load character model
@@ -200,23 +240,12 @@ class HostObject extends CoreHostObject {
   /**
    * Loads the animations for a host character
    *
-   * @param {Babylon.Scene} scene
-   * @param {Babylon.Mesh} characterMesh The root mesh of the character model
-   * @param {Babylon.AnimationGroup} bindPoseOffset
-   * @param {Object} animClipUrls See the loadAssets() function docs above.
-   * @return {Object} An object containing the loaded animations organized as follows:
-   ```
-   {
-    idleClips: BABYLON.AnimationGroup[],
-    lipSyncClips: BABYLON.AnimationGroup[],
-    gestureClips: BABYLON.AnimationGroup[],
-    emoteClips: BABYLON.AnimationGroup[],
-    faceClips: BABYLON.AnimationGroup[],
-    blinkClips: BABYLON.AnimationGroup[],
-    poiClips: BABYLON.AnimationGroup[],
-  }
-  ```
-  */
+   * @param {Scene} scene
+   * @param {Mesh} characterMesh The root mesh of the character model
+   * @param {AnimationGroup} bindPoseOffset
+   * @param {SumerianAnimationsConfig} animClipUrls
+   * @return {SumerianLoadedAnimations}
+   */
   static async loadCharacterAnimations(
     scene,
     characterMesh,
@@ -266,21 +295,13 @@ class HostObject extends CoreHostObject {
   /**
    * Loads animations into the provided scene.
    *
-   * @private
-   * @param {BABYLON.Scene} scene
-   * @param {BABYLON.Mesh[]} childMeshes
+   * @param {Scene} scene
+   * @param {Mesh[]} childMeshes
    * @param {string} url
    *   URL of a 3D file containing animations (.gltf or .glb)
    * @param {string} clipGroupId
    *   An ID of your choosing for labeling the group.
-   * @returns {Promise}
-   *   A promise that resolves to an object with this shape:
- ```
-{
-   clipGroupId: string,
-   clips: BABYLON.AnimationGroup[]
-}
- ````
+   * @returns {Promise<SumerianLoadedAnimation>}
    */
   static async loadAnimation(scene, childMeshes, url, clipGroupId) {
     const container = await SceneLoader.LoadAssetContainerAsync(
@@ -308,7 +329,9 @@ class HostObject extends CoreHostObject {
   }
 
   /**
-   * @private
+   * Set up animations on a host - gestures, lipsync, etc - and start rendering them in the scene
+   * @param {SumerianHostLoadedAssets} assets
+   * @param {Scene} scene
    */
   static assembleHost(assets, scene) {
     const {characterMesh} = assets;
@@ -569,7 +592,13 @@ class HostObject extends CoreHostObject {
   }
 
   /**
-   * @private
+   *
+   * @param {HostObject} host
+   * @param {Scene} scene
+   * @param {string} voice
+   * @param {string} engine
+   * @param {string='en-US'} language
+   * @param {string='char:def_c_neckB'} audioJointName The identifier of the joint to attach the audio to
    */
   static addTextToSpeech(
     host,
@@ -592,7 +621,11 @@ class HostObject extends CoreHostObject {
   }
 
   /**
-   * @private
+   * Enable point of interest tracking on the host
+   * @param {HostObject} host
+   * @param {Scene} scene
+   * @param {Object} poiConfig
+   * @param {string='char:jx_c_look'} lookJointName
    */
   static addPointOfInterestTracking(
     host,
@@ -614,7 +647,9 @@ class HostObject extends CoreHostObject {
   }
 
   /**
-   * @private
+   * Reads JSON file
+   * @param {string} url
+   * @returns
    */
   static async loadJson(url) {
     const response = await fetch(url);
@@ -635,27 +670,10 @@ class HostObject extends CoreHostObject {
    * - "Luke"
    * - "Preston"
    * - "Wes"
-   *
-   * The shape of the returned config object is:
- ```
-{
-  modelUrl: String,
-  gestureConfigUrl: String,
-  pointOfInterestConfigUrl: String,
-  animUrls: {
-    animStandIdleUrl: String,
-    animLipSyncUrl: String,
-    animGestureUrl: String,
-    animEmoteUrl: String,
-    animFaceIdleUrl: String,
-    animBlinkUrl: String,
-    animPointOfInterestUrl: String,
-  }
-}
- ```
    * @param {string} assetsPath A relative path from the HTML page to the directory containing the
    * "characters" and "animations" folders for the built-in host characters.
    * @param {string} characterId The ID of the character to be used.
+   * @returns {SumerianCharacterConfig}
    */
   static getCharacterConfig(assetsPath, characterId) {
     if (characterTypeMap.get(characterId) === undefined) {
@@ -694,7 +712,7 @@ class HostObject extends CoreHostObject {
    * parameter. This can be used to create one of the built-in hosts or your own
    * custom host.
    *
-   * When creating a custom host, use H`OST.HostObject.getCharacterConfig()` to
+   * When creating a custom host, use `HOST.HostObject.getCharacterConfig()` to
    * retrieve the appropriate config for that character. (See example below.)
    *
    * **Example**:
@@ -705,31 +723,15 @@ const pollyConfig = { pollyVoice: 'Joanna', pollyEngine: 'neural' };
 const host = await HOST.HostUtils.createHost(scene, characterConfig, pollyConfig);
 ```
    *
-   * @param {BABYLON.Scene} scene The scene to add the host to.
-   * @param {Object} characterConfig
-   * @param {String} characterConfig.modelUrl
-   * @param {String} characterConfig.animStandIdleUrl
-   * @param {String} characterConfig.animLipSyncUrl
-   * @param {String} characterConfig.animGestureUrl
-   * @param {String} characterConfig.animEmoteUrl
-   * @param {String} characterConfig.animFaceIdleUrl
-   * @param {String} characterConfig.animBlinkUrl
-   * @param {String} characterConfig.animPointOfInterestUrl
-   * @param {Object} pollyConfig
-   * @param {AWS.Polly=} pollyConfig.pollyClient The reference to the Polly service client to use.
-   * @param {AWS.Polly.presigner=} pollyConfig.pollyPresigner The reference to the Polly presigner to use.
-   * @param {string} pollyConfig.pollyVoice The Polly voice to use. See
-   *   {@link https://docs.aws.amazon.com/polly/latest/dg/voicelist.html}
-   * @param {string} pollyConfig.pollyEngine The Polly engine you would like to
-   *   use. Either "standard" or "neural". Note that the neural engine incurs a
-   *   higher cost and is not compatible with all voices or regions. See
-   *   {@link https://docs.aws.amazon.com/polly/latest/dg/NTTS-main.html}
+   * @param {Scene} scene The scene to add the host to.
+   * @param {SumerianCharacterConfig} characterConfig
+   * @param {SumerianPollyConfig} pollyConfig
    * @param {string} lookJoint The name of the joint to use for point-of-interest
    * tracking. Defaults to 'char:jx_c_look' which is the appropriate value for
    * the built-in host characters. Custom characters may need to specify a
    * different joint name.
    *
-   * @returns {babylonjs/HostObject} A functioning Sumerian Host
+   * @returns {HostObject} A functioning Sumerian Host
    */
   static async createHost(scene, characterConfig, pollyConfig) {
     await this.initTextToSpeech(

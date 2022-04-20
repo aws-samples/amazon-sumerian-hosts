@@ -1,0 +1,28 @@
+{
+    // This is to prevent double compilation, as otherwise this file
+    // would lead the compiler to attempt to build everything in this root
+    // directory  -- we want the submodules themselves to specify what to build
+    "files": [],
+    "references": [
+        {
+            "path": "./packages/amazon-sumerian-hosts-babylon"
+        }
+    ],
+    "compilerOptions": {
+        // Tells TypeScript to read JS files, as
+        // normally they are ignored as source files
+        "allowJs": true,
+        // Generate d.ts files
+        "declaration": true,
+        // This compiler run should
+        // only output d.ts files
+        "emitDeclarationOnly": true,
+        // Go to js file when using IDE functions like
+        // "Go to Definition" in VSCode
+        "declarationMap": true,
+        // Don't compile anything found in node_modules
+        "skipLibCheck": true,
+        // Disable automatic inclusion of @types packages
+        "types": []
+    }
+}

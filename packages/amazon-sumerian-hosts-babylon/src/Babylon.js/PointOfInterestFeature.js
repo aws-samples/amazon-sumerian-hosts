@@ -32,6 +32,10 @@ class PointOfInterestFeature extends CorePointOfInterestFeature {
     return obj instanceof TransformNode;
   }
 
+  /**
+   *
+   * @param {string} name
+   */
   setTargetByName(name) {
     super.setTargetByName(name);
     if (!name) {
@@ -41,6 +45,10 @@ class PointOfInterestFeature extends CorePointOfInterestFeature {
     this.target = this._scene.getTransformNodeByName(name);
   }
 
+  /**
+   *
+   * @param {string} id
+   */
   setTargetById(id) {
     super.setTargetByName(id);
     if (!id) {
