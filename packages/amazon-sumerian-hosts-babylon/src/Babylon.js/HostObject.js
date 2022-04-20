@@ -636,6 +636,7 @@ class HostObject extends CoreHostObject {
     const joints = host.owner.getDescendants(false);
     const lookJoint = joints.find(joint => joint.name === lookJointName);
 
+    PointOfInterestFeature.useRightHandCoordinateSystem = scene.useRightHandedSystem;
     host.addFeature(
       PointOfInterestFeature,
       false,
