@@ -1,16 +1,16 @@
-# This workflow is necessary to support publishing to GitHub pages after renaming master to mainline since GitHub pages currently only support setting source from master branch
+# This workflow is necessary to support publishing to GitHub pages as it will push the docs folder to gh-pages.
 
-name: Push mainline changes into master branch
+name: Push mainline changes into gh-pages branch
 
 # Controls when the action will run. Triggers the workflow on push or pull request
-# events but only for the master branch
+# events but only for the gh-pages branch
 on:
   push:
     branches: [mainline]
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
-  push_to_master_branch:
+  push_to_gh-pages_branch:
     # The type of runner that the job will run on
     runs-on: ubuntu-latest
 
@@ -18,9 +18,17 @@ jobs:
     steps:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v2
+      - uses: actions/setup-node@v1
+        with:
+          node-version: '16.x'
+          registry-url: 'https://registry.npmjs.org'
+      - name: Build Documents
+        run: |
+          npm install
+          npm run docs
       - name: Push changes
-        uses: ad-m/github-push-action@master
+        uses: peaceiris/actions-gh-pages@v3
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          branch: master
-          force: true
+          publish_dir: ./docs 
+          publish_branch: gh-pages

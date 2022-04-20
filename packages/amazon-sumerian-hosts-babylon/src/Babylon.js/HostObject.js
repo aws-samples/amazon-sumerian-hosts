@@ -597,8 +597,8 @@ class HostObject extends CoreHostObject {
    * @param {Scene} scene
    * @param {string} voice
    * @param {string} engine
-   * @param {string='en-US'} language
-   * @param {string='char:def_c_neckB'} audioJointName The identifier of the joint to attach the audio to
+   * @param {string} language Default: 'en-US'
+   * @param {string} audioJointName The identifier of the joint to attach the audio to. Default: 'char:def_c_neckB'
    */
   static addTextToSpeech(
     host,
@@ -625,7 +625,7 @@ class HostObject extends CoreHostObject {
    * @param {HostObject} host
    * @param {Scene} scene
    * @param {Object} poiConfig
-   * @param {string='char:jx_c_look'} lookJointName
+   * @param {string} lookJointName Default: 'char:jx_c_look'
    */
   static addPointOfInterestTracking(
     host,
@@ -636,7 +636,8 @@ class HostObject extends CoreHostObject {
     const joints = host.owner.getDescendants(false);
     const lookJoint = joints.find(joint => joint.name === lookJointName);
 
-    PointOfInterestFeature.useRightHandCoordinateSystem = scene.useRightHandedSystem;
+    PointOfInterestFeature.useRightHandCoordinateSystem =
+      scene.useRightHandedSystem;
     host.addFeature(
       PointOfInterestFeature,
       false,
@@ -649,7 +650,7 @@ class HostObject extends CoreHostObject {
   /**
    * Reads JSON file
    * @param {string} url
-   * @returns
+   * @returns JSON from file
    */
   static async loadJson(url) {
     const response = await fetch(url);
