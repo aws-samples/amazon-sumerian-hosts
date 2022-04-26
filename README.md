@@ -1,7 +1,7 @@
 # Amazon Sumerian Hosts
 
-Amazon Sumerian Hosts is an experimental open source project that aims to make it easy to create interactive animated 3D characters that can be rendered on the Web and leverage AWS Services such as [Amazon Polly](https://aws.amazon.com/polly/). 
-It defines a Javascript API for managing animations, synthesizing and playing speech with Amazon Polly, and generating lipsync animation at runtime in sync with Polly generated audio. Amazon Sumerian Hosts is divided up into three packages:
+Amazon Sumerian Hosts is an experimental open source project that aims to make it easy to create interactive animated 3D characters that can be rendered on the Web and leverage AWS Services such as [Amazon Polly](https://aws.amazon.com/polly/) and [Amazon Lex](https://aws.amazon.com/lex/). 
+It defines a Javascript API for managing animations, synthesizing and playing speech with Amazon Polly, generating lipsync animation at runtime in sync with Polly generated audio and interacting with Amazon Lex bot. Amazon Sumerian Hosts is divided up into three packages:
 * [Amazon-Sumerian-Hosts-Core](packages/amazon-sumerian-hosts-core) is the core API that can be extended to support the Web rendering engine of your choice
 * [Amazon-Sumerian-Hosts-Three](packages/amazon-sumerian-hosts-three) is an integration of the core library with [three.js](https://threejs.org/)
 * [Amazon-Sumerian-Hosts-Babylon](packages/amazon-sumerian-hosts-babylon) is an integration of the core library with [Babylon.js](https://www.babylonjs.com/)
@@ -14,12 +14,9 @@ This library is licensed under the MIT-0 License. See the [LICENSE](LICENSE) fil
 
 # Usage
 
-## Getting started using the sample project
+There are a number of ways to use Amazon Sumerian Hosts in your own projects.
 
-There are a number of ways to use Amazon Sumerian Hosts in your own projects
-
-The easiest way to get started using the hosts is by starting with our sample project which integration amazon-sumerian-hosts-babylon with the Babylon.js editor and publishing to the web using AWS Amplify *TODO*
-
+The easiest way to get started using the hosts is by using babylon.js editor with open-source-host plugin for importing amazon sumerian hosts into babylon.js project and aws-amplify-publisher plugin for publishing to the web. More details can be found in [aws-tools-for-babylonjs-editor](https://github.com/aws-samples/aws-tools-for-babylonjs-editor/blob/main/README.md) repo.
 
 ## Integrating into a three.js or babylon.js project
 
@@ -29,12 +26,11 @@ If you do not wish to use the Babylon.js editor, you may install the integration
 
 `npm install --save @amazon-sumerian-hosts/babylon` for babylon.js
 
+Alternatively, with these integrations each using package.json exports to publish both ESM modules and a bundled CommonJS module for broad compatibility, you can directly include build files in the `dist` directory for each package in your project. See [Building the Repository](#Building-the-Repository) for prerequisites and instructions on how to do that.
+
 The integration test and demos in this repository will get you started in using these libraries.
 
-These integrations each use package.json exports to publish both ESM modules and a bundled CommonJS module for broad compatibility
-
 See the Getting Started guide in either [three.js](packages/amazon-sumerian-hosts-three/README.md#getting-started) or [Babylon.js](packages/amazon-sumerian-hosts-babylon/README.md#getting-started) packages for a walkthrough using this method and the [API Documentation](https://aws-samples.github.io/amazon-sumerian-hosts/) for more detailed information on the classes and methods available. 
-
 
 ## Integrating into your own web 3d engine.
 
@@ -106,12 +102,12 @@ Each package with integration tests has their own instructions for running:
 - [Babylon.js](packages/amazon-sumerian-hosts-babylon/test/integration_test/README.md)
 - [Three.js](packages/amazon-sumerian-hosts-three/test/integration_test/README.md)
 
-### Examples Folder
-Each of the implementation packages have their own examples attached to them. Each of these files contain enough code to stand up and verify the code is working properly. To verify, open up a local server for the package you are modifying:
+### Examples and Demos
+Each of the integration packages have their own examples or demos attached to them. Each of these files contain enough code to stand up and verify the code is working properly. To verify, open up a local server for the package you are modifying:
 ```
 npm run start-{engine-name}
 ```
-Substitute `engine-name` with 'core', 'babylon' or 'three', depending on which you are testing.
+Substitute `engine-name` with 'babylon' or 'three', depending on which you are testing.
 
 
 Then open the browser location for the server, and then the example file. Open up the developer console for the browser, and verify that the scene properly loads without errors. 
