@@ -128,4 +128,10 @@ module.exports = {
       }),
     ],
   },
+  resolve: {
+    modules: ['node_modules'],
+    alias: {
+      '@babylonjs/core': path.resolve('./node_modules/@babylonjs/core')
+    }
+  },
 }

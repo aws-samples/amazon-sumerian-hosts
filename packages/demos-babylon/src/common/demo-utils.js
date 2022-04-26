@@ -1,4 +1,5 @@
 import {Engine} from '@babylonjs/core/Engines/engine';
+import '@babylonjs/core/Audio/audioEngine';
 import {Color3, Vector3, Angle} from '@babylonjs/core/Maths/math';
 import {DirectionalLight} from '@babylonjs/core/Lights/directionalLight';
 import {ArcRotateCamera} from '@babylonjs/core/Cameras/arcRotateCamera';

@@ -9,6 +9,7 @@ import {SceneLoader} from '@babylonjs/core/Loading/sceneLoader';
 import {PrecisionDate} from '@babylonjs/core/Misc/precisionDate';
 import {Observable} from '@babylonjs/core/Misc/observable';
 import {AnimationGroup} from '@babylonjs/core/Animations/animationGroup';
+import {RawTexture} from '@babylonjs/core/Materials/Textures/rawTexture';
 import '@babylonjs/loaders';
 import AWS from 'aws-sdk';
 import anim from './animpack';
