@@ -9,7 +9,7 @@ It defines a Javascript API for managing animations, synthesizing and playing sp
 
 # License
 
-This library is licensed under the MIT-0 License. See the [LICENSE](LICENSE) file. The assets within examples folders are licensed under the CC-BY-4.0 License. See the [LICENSE](packages/amazon-sumerian-hosts-babylon/examples/assets/LICENSE) file.
+This library is licensed under the MIT-0 License. See the [LICENSE](LICENSE) file. The assets within examples folders are licensed under the CC-BY-4.0 License. See the [LICENSE](packages/demo-babylon/src/character-assets/LICENSE) file.
 <br/><br/>
 
 # Usage
