@@ -13,9 +13,9 @@ This library is licensed under the MIT-0 License. See the [LICENSE](LICENSE) fil
 
 # [Getting Started](#Getting-Started)
 
-The easiest way to get started using the hosts is by using babylon.js editor with open-source-host plugin for importing amazon sumerian hosts into babylon.js project and aws-amplify-publisher plugin for publishing to the web. More details can be found in [aws-tools-for-babylonjs-editor](https://github.com/aws-samples/aws-tools-for-babylonjs-editor/blob/main/README.md) repo.
+The easiest way to get started using the hosts is by using Babylon.JS Editor with open-source-host plugin for importing Amazon Sumerian Hosts into Babylon.js project and aws-amplify-publisher plugin for publishing to the web. More details can be found in [aws-tools-for-babylonjs-editor](https://github.com/aws-samples/aws-tools-for-babylonjs-editor/blob/main/README.md) repo.
 
-If you do not wish to use the Babylon.js editor, the following guide steps you through minimum code required to use hosts in Babylon.js.
+If you do not wish to use the Babylon.JS Editor, the following guide steps you through minimum code required to use hosts in Babylon.js.
 
 More details can be found in [demos-babylon](https://github.com/aws-samples/amazon-sumerian-hosts/tree/mainline/packages/demos-babylon), an example package demonstrating the features, such as animation and speaking user-entered text, of the Sumerian Host characters running in Babylon.js.
 
@@ -72,7 +72,7 @@ And then you can instantite a Sumerian Host using helper functions:
   const pollyConfig = {pollyVoice: 'Joanna', pollyEngine: 'neural'};
   host = await HostObject.createHost(scene, characterConfig, pollyConfig);  
   ```
-  This first retrieves the appropriate character config using `getCharacterConfig` and then create one of the built-in hosts or your own custom host in the BabylonJS scene with the character and polly config passed in. See [createHost](https://aws-samples.github.io/amazon-sumerian-hosts/babylonjs_HostObject.html#.createHost) and [getCharacterConfig](https://aws-samples.github.io/amazon-sumerian-hosts/babylonjs_HostObject.html#.getCharacterConfig) for more details about host asset paths and custom hosts.
+  This first retrieves the appropriate character config using `getCharacterConfig` and then create one of the built-in hosts or your own custom host in the Babylon.js scene with the character and polly config passed in. See [createHost](https://aws-samples.github.io/amazon-sumerian-hosts/babylonjs_HostObject.html#.createHost) and [getCharacterConfig](https://aws-samples.github.io/amazon-sumerian-hosts/babylonjs_HostObject.html#.getCharacterConfig) for more details about host asset paths and custom hosts.
 
 ### Interacting with the Host
 
@@ -81,7 +81,7 @@ PointOfInterest controls the gaze direction of the host. You can set a target fo
 - ```javascript
   host.PointOfInterestFeature.setTarget(scene.activeCamera);
   ```
-  This will make host look at the current active camera in your babylonjs scene. See [PointOfInterest](https://aws-samples.github.io/amazon-sumerian-hosts/core_PointOfInterestFeature.html) for more details.
+  This will make host look at the current active camera in your Babylon.js scene. See [PointOfInterest](https://aws-samples.github.io/amazon-sumerian-hosts/core_PointOfInterestFeature.html) for more details.
 
 Host can turn text input into playable audio and speak out. One way to achieve this interactively is to create html text input and speak button elements:
 

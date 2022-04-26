@@ -1,10 +1,11 @@
 # Amazon Sumerian Hosts
 
 Amazon Sumerian Hosts is an experimental open source project that aims to make it easy to create interactive animated 3D characters that can be rendered on the Web and leverage AWS Services such as [Amazon Polly](https://aws.amazon.com/polly/) and [Amazon Lex](https://aws.amazon.com/lex/). 
-It defines a Javascript API for managing animations, synthesizing and playing speech with Amazon Polly, generating lipsync animation at runtime in sync with Polly generated audio and interacting with Amazon Lex bot. Amazon Sumerian Hosts is divided up into three packages:
+It defines a Javascript API for managing animations, synthesizing and playing speech with Amazon Polly, generating lipsync animation at runtime in sync with Polly generated audio and interacting with Amazon Lex bot. Amazon Sumerian Hosts is divided up into four packages:
 * [Amazon-Sumerian-Hosts-Core](packages/amazon-sumerian-hosts-core) is the core API that can be extended to support the Web rendering engine of your choice
 * [Amazon-Sumerian-Hosts-Three](packages/amazon-sumerian-hosts-three) is an integration of the core library with [three.js](https://threejs.org/)
 * [Amazon-Sumerian-Hosts-Babylon](packages/amazon-sumerian-hosts-babylon) is an integration of the core library with [Babylon.js](https://www.babylonjs.com/)
+* [Demos-Babylon](packages/demos-babylon) contains a number of demonstrations with [Babylon.js](https://www.babylonjs.com/), each focused on a different feature of the Sumerian Hosts API 
 
 
 # License
@@ -16,15 +17,15 @@ This library is licensed under the MIT-0 License. See the [LICENSE](LICENSE) fil
 
 There are a number of ways to use Amazon Sumerian Hosts in your own projects.
 
-The easiest way to get started using the hosts is by using babylon.js editor with open-source-host plugin for importing amazon sumerian hosts into babylon.js project and aws-amplify-publisher plugin for publishing to the web. More details can be found in [aws-tools-for-babylonjs-editor](https://github.com/aws-samples/aws-tools-for-babylonjs-editor/blob/main/README.md) repo.
+The easiest way to get started using the hosts is by using Babylon.JS Editor with open-source-host plugin for importing Amazon Sumerian Hosts into Babylon.js project and aws-amplify-publisher plugin for publishing to the web. More details can be found in [aws-tools-for-babylonjs-editor](https://github.com/aws-samples/aws-tools-for-babylonjs-editor/blob/main/README.md) repo.
 
-## Integrating into a three.js or babylon.js project
+## Integrating into a three.js or Babylon.js project
 
-If you do not wish to use the Babylon.js editor, you may install the integration for three.js or babylon.js using one of the following commands:
+If you do not wish to use the Babylon.JS Editor, you may install the integration for three.js or Babylon.js using one of the following commands:
 
 `npm install --save @amazon-sumerian-hosts/three` for three.js
 
-`npm install --save @amazon-sumerian-hosts/babylon` for babylon.js
+`npm install --save @amazon-sumerian-hosts/babylon` for Babylon.js
 
 Alternatively, with these integrations each using package.json exports to publish both ESM modules and a bundled CommonJS module for broad compatibility, you can directly include build files in the `dist` directory for each package in your project. See [Building the Repository](#Building-the-Repository) for prerequisites and instructions on how to do that.
 
@@ -37,12 +38,13 @@ See the Getting Started guide in either [three.js](packages/amazon-sumerian-host
 The @amazon-sumerian-hosts/core package provides the core host functionality that can be integrated into any engine.
 
 If you'd like to extend hosts to support another Javascript rendering engine, create a new folder inside `packages` with the name of the engine you're adding support for. 
-Extend any host modules that need to use resources specific to your rendering engine. See the [`Amazon-Sumerian-Hosts-Three`](packages/amazon-sumerian-hosts-three/src/three.js/) and [`Amazon-Sumerian-Hosts-Babylon`](packages/amazon-sumerian-hosts-babylon/src/Babylon.js/) package folders for examples of files you'll likely need to include. Generally you will need to extend `Messenger` if your engine has an event/messaging system, `HostObject` if your engine keeps track of time and delta time, `AnimationFeature` and `SingleState` if your engine has an animation system, and `TextToSpeechFeature` and `Speech` if your engine has an audio system. Update `webpack.config.js` to add a new config for the engine you're adding support for.
+Extend any host modules that need to use resources specific to your rendering engine. See the [`Amazon-Sumerian-Hosts-Three`](packages/amazon-sumerian-hosts-three) and [`Amazon-Sumerian-Hosts-Babylon`](packages/amazon-sumerian-hosts-babylon) package folders for examples of files you'll likely need to include. Generally you will need to extend `Messenger` if your engine has an event/messaging system, `HostObject` if your engine keeps track of time and delta time, `AnimationFeature` and `SingleState` if your engine has an animation system, and `TextToSpeechFeature` and `Speech` if your engine has an audio system. Update `webpack.config.js` to add a new config for the engine you're adding support for.
 
-# Graphical Assets
+# Demos and Graphical Assets
 
-You can clone the repository to obtain glTF character animation assets (located in the [examples](packages/amazon-sumerian-hosts-babylon/examples/assets/glTF/)) tailored to work well with the Host API. You can use them as-is, modify them in DCC software such as [Blender](https://www.blender.org/) or use them as a guide to develop your own 3D assets.
+[Demos-Babylon](packages/demos-babylon) contains a number of demonstrations with [Babylon.js](https://www.babylonjs.com/), each focused on a different feature of the Sumerian Hosts API. See [READEME](packages/demos-babylon/README.md) for more details.
 
+You can clone the repository to obtain glTF character and animation assets (located in the [character-assets](/packages/demos-babylon/src/character-assets/) within Demos-Babylon package) tailored to work well with Demos and the Host API. You can use them as-is, modify them in DCC software such as [Blender](https://www.blender.org/) or use them as a guide to develop your own 3D assets.
 
 If you'd like to pull the gitub repository and create your own build, see [Building the Repository](#Building-the-Repository) for prerequisites and instructions on how to do that.
 
