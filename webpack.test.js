@@ -8,6 +8,9 @@ const baseConfig = require("./webpack.config");
 // Removing the output will stop webpack from outputing chunks for the integration test code
 delete baseConfig.output;
 
+// We need external dependencies to be packaged with the tests so that they may run
+delete baseConfig.externals;
+
 module.exports = {
   ...baseConfig,
   plugins: [
