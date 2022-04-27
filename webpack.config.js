@@ -26,6 +26,7 @@ else if (process.env.ENGINE === "babylon") {
 }
 
 let devServerOnlyEntryPoints = {}
+let prodOnlyExternals = [];
 
 if(isDevServer) {
 // Only build the demos & tests if we are running in the dev server
@@ -55,6 +56,31 @@ if(isDevServer) {
       filename: './packages/amazon-sumerian-hosts-babylon/test/integration_test/Babylon.js/dist/[name].js',
     }
   }
+}
+
+if (!isDevServer) {
+  // do not bundle peer dependencies, unless we're running demos
+  prodOnlyExternals =     [
+    function ({context, request}, callback) {
+      if (/^@babylonjs\/core.*$/.test(request)) {
+        return callback(null, {
+          root: "BABYLON",
+          commonjs: "@babylonjs/core",
+          commonjs2: "@babylonjs/core",
+          amd: "@babylonjs/core"
+        });
+      }
+      else if (/^@babylonjs\/loaders.*$/i.test(request)) {
+        return callback(null, {
+          root: "BABYLON",
+          commonjs: "@babylonjs/loaders",
+          commonjs2: "@babylonjs/loaders",
+          amd: "@babylonjs/loaders"
+        });
+      }
+      callback();
+    },
+  ]
 }
 
 module.exports = {
@@ -130,8 +156,12 @@ module.exports = {
   },
   resolve: {
     modules: ['node_modules'],
+    // don't import @babylonjs/core from the submodule's dependencies,
+    // but from the project dependencies
     alias: {
       '@babylonjs/core': path.resolve('./node_modules/@babylonjs/core')
     }
   },
+  externals:
+    [...prodOnlyExternals]
 }
