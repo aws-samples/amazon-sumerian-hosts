@@ -61,6 +61,7 @@ if(isDevServer) {
 if (!isDevServer) {
   // do not bundle peer dependencies, unless we're running demos
   prodOnlyExternals =     [
+    // eslint-disable-next-line no-unused-vars
     function ({context, request}, callback) {
       if (/^@babylonjs\/core.*$/.test(request)) {
         return callback(null, {
