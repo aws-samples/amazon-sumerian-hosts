@@ -6,7 +6,6 @@ import {
 } from '@amazon-sumerian-hosts/core';
 import {Sound} from '@babylonjs/core/Audio/sound';
 import {Engine} from '@babylonjs/core/Engines/engine';
-import '@babylonjs/core/Audio/audioSceneComponent';
 import '@babylonjs/core/Audio/audioEngine';
 import Speech from './Speech';
 
