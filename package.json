@@ -20,7 +20,7 @@
     "compile-ts": "tsc --build --verbose",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
-    "format": "prettier packages/**/*.js --write",
+    "format": "prettier *.js packages/**/*.js --write",
     "test": "node ./node_modules/karma/bin/karma start karma.conf.js",
     "build": "npm run format && npm run lint:fix && npm run compile-ts && webpack",
     "build-test": "npm run build && npm run test",
@@ -36,6 +36,7 @@
     "eslint-config-airbnb": "^18.0.1",
     "eslint-config-prettier": "^6.10.0",
     "eslint-import-resolver-webpack": "^0.12.1",
+    "eslint-plugin-compat": "^4.0.2",
     "eslint-plugin-import": "^2.18.2",
     "eslint-plugin-jasmine": "^4.1.0",
     "eslint-plugin-node": "^11.0.0",
@@ -51,11 +52,19 @@
     "karma-webpack": "^5.0.0",
     "prettier": "^1.19.1",
     "regenerator-runtime": "^0.13.5",
-    "typescript": "^4.6.3",
     "terser-webpack-plugin": "^5.3.1",
+    "typescript": "^4.6.3",
     "webpack": "^5.67.0",
     "webpack-cli": "^4.9.1",
     "webpack-dev-server": "^4.7.3",
     "webpack-merge": "^5.8.0"
-  }
+  },
+  "browserslist": [
+    "last 2 Chrome versions",
+    "last 2 Firefox versions",
+    "last 2 Safari versions",
+    "last 2 ChromeAndroid versions",
+    "last 2 FirefoxAndroid versions",
+    "last 2 iOS versions"
+  ]
 }
