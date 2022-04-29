@@ -20,7 +20,7 @@
     "compile-ts": "tsc --build --verbose",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
-    "format": "prettier packages/**/*.js --write",
+    "format": "prettier *.js packages/**/*.js --write",
     "test": "node ./node_modules/karma/bin/karma start karma.conf.js",
     "build": "npm run format && npm run lint:fix && npm run compile-ts && webpack",
     "build-test": "npm run build && npm run test",
