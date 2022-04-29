@@ -1,17 +1,17 @@
 # Amazon Sumerian Hosts
 
 Amazon Sumerian Hosts is an experimental open source project that aims to make it easy to create interactive animated 3D characters that can be rendered on the Web and leverage AWS Services such as [Amazon Polly](https://aws.amazon.com/polly/) and [Amazon Lex](https://aws.amazon.com/lex/). 
+
 It defines a Javascript API for managing animations, synthesizing and playing speech with Amazon Polly, generating lipsync animation at runtime in sync with Polly generated audio and interacting with Amazon Lex bot. Amazon Sumerian Hosts is divided up into four packages:
-* [Amazon-Sumerian-Hosts-Core](packages/amazon-sumerian-hosts-core) is the core API that can be extended to support the Web rendering engine of your choice
-* [Amazon-Sumerian-Hosts-Three](packages/amazon-sumerian-hosts-three) is an integration of the core library with [three.js](https://threejs.org/)
-* [Amazon-Sumerian-Hosts-Babylon](packages/amazon-sumerian-hosts-babylon) is an integration of the core library with [Babylon.js](https://www.babylonjs.com/)
+* [@amazon-sumerian-hosts/core](packages/amazon-sumerian-hosts-core) is the core API that can be extended to support the Web rendering engine of your choice
+* [@amazon-sumerian-hosts/three](packages/amazon-sumerian-hosts-three) is an integration of the core library with [three.js](https://threejs.org/)
+* [@amazon-sumerian-hosts/babylon](packages/amazon-sumerian-hosts-babylon) is an integration of the core library with [Babylon.js](https://www.babylonjs.com/)
 * [Demos-Babylon](packages/demos-babylon) contains a number of demonstrations with [Babylon.js](https://www.babylonjs.com/), each focused on a different feature of the Sumerian Hosts API 
 
 
 # License
 
 This library is licensed under the MIT-0 License. See the [LICENSE](LICENSE) file. The assets within examples folders are licensed under the CC-BY-4.0 License. See the [LICENSE](packages/demo-babylon/src/character-assets/LICENSE) file.
-<br/><br/>
 
 # Usage
 
@@ -38,7 +38,7 @@ See the Getting Started guide in either [three.js](packages/amazon-sumerian-host
 The @amazon-sumerian-hosts/core package provides the core host functionality that can be integrated into any engine.
 
 If you'd like to extend hosts to support another Javascript rendering engine, create a new folder inside `packages` with the name of the engine you're adding support for. 
-Extend any host modules that need to use resources specific to your rendering engine. See the [`Amazon-Sumerian-Hosts-Three`](packages/amazon-sumerian-hosts-three) and [`Amazon-Sumerian-Hosts-Babylon`](packages/amazon-sumerian-hosts-babylon) package folders for examples of files you'll likely need to include. Generally you will need to extend `Messenger` if your engine has an event/messaging system, `HostObject` if your engine keeps track of time and delta time, `AnimationFeature` and `SingleState` if your engine has an animation system, and `TextToSpeechFeature` and `Speech` if your engine has an audio system. Update `webpack.config.js` to add a new config for the engine you're adding support for.
+Extend any host modules that need to use resources specific to your rendering engine. See the [@amazon-sumerian-hosts/three](packages/amazon-sumerian-hosts-three) and [@amazon-sumerian-hosts/babylon](packages/amazon-sumerian-hosts-babylon) package folders for examples of files you'll likely need to include. Generally you will need to extend `Messenger` if your engine has an event/messaging system, `HostObject` if your engine keeps track of time and delta time, `AnimationFeature` and `SingleState` if your engine has an animation system, and `TextToSpeechFeature` and `Speech` if your engine has an audio system. Update `webpack.config.js` to add a new config for the engine you're adding support for.
 
 # Demos and Graphical Assets
 
@@ -105,11 +105,4 @@ Each package with integration tests has their own instructions for running:
 - [Three.js](packages/amazon-sumerian-hosts-three/test/integration_test/README.md)
 
 ### Examples and Demos
-Each of the integration packages have their own examples or demos attached to them. Each of these files contain enough code to stand up and verify the code is working properly. To verify, open up a local server for the package you are modifying:
-```
-npm run start-{engine-name}
-```
-Substitute `engine-name` with 'babylon' or 'three', depending on which you are testing.
-
-
-Then open the browser location for the server, and then the example file. Open up the developer console for the browser, and verify that the scene properly loads without errors. 
+Each of the integration packages have their own examples or demos attached to them. Each of these files contain enough code to stand up and verify the code is working properly. See [Babylon.js Demos](packages/demos-babylon/README.md) [Three.js Demos](packages/amazon-sumerian-hosts-three/README.md) for more details about how to run examples and demos.

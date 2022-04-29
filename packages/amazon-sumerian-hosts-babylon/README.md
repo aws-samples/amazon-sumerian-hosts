@@ -9,7 +9,6 @@ See the [Getting Started](#Getting-Started) guide for the usage instructions and
 ## License
 
 This library is licensed under the MIT-0 License. See the [LICENSE](LICENSE) file.
-<br/><br/>
 
 # [Getting Started](#Getting-Started)
 
@@ -46,7 +45,7 @@ We recommend using a module bundler such as [Webpack](https://webpack.js.org/) t
 
 ### Step 1. Adding Script Dependencies
 
-One way to configure AWS SDK is to include depednency script:
+One way to configure AWS SDK is to include dependency script:
 
 - ```html
   <!--Text to speech dependency-->
