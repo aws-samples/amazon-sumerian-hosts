@@ -166,6 +166,18 @@ class Utils {
     return Math.floor(Math.random() * (max - min)) + min;
   }
 
+  static addStringOnlyOnce(stringToManipulate, stringToAdd) {
+    if (stringToManipulate == null) {
+      return stringToAdd;
+    }
+
+    if (stringToManipulate.indexOf(stringToAdd) !== -1) {
+      return stringToManipulate;
+    }
+
+    return stringToManipulate.concat(' ', stringToAdd);
+  }
+
   /**
    * Appends the Sumerian Hosts custom user-agent to a string if it is not
    * already present.
@@ -176,18 +188,16 @@ class Utils {
    *
    * @returns {string}
    */
-  static withCustomUserAgent(currentUserAgent) {
-    const sumerianHostsUserAgent = 'request-source/SumerianHosts';
+  static addCoreUserAgentComponent(currentUserAgent) {
+    const sumerianHostsUserAgent = `SumerianHosts-${Utils.getVersion()}`;
+    return Utils.addStringOnlyOnce(currentUserAgent, sumerianHostsUserAgent);
+  }
 
-    if (currentUserAgent == null) {
-      return sumerianHostsUserAgent;
-    }
-
-    if (currentUserAgent.indexOf(sumerianHostsUserAgent) !== -1) {
-      return currentUserAgent;
-    }
-
-    return currentUserAgent.concat(' ', sumerianHostsUserAgent);
+  static getVersion() {
+    // HOSTS_VERSION  is defined by Webpack, to the version of the library
+    // Either a git commit or a release version
+    // eslint-disable-next-line no-undef
+    return HOSTS_VERSION;
   }
 }
 

@@ -225,13 +225,23 @@ class AbstractTextToSpeechFeature extends AbstractHostFeature {
 
     // Add sumerian hosts user-agent
     if (polly.config) {
-      polly.config.customUserAgent = Utils.withCustomUserAgent(
+      polly.config.customUserAgent = Utils.addCoreUserAgentComponent(
         polly.config.customUserAgent
+      );
+
+      polly.config.customUserAgent = Utils.addStringOnlyOnce(
+        polly.config.customUserAgent,
+        this.prototype.getEngineUserAgentString()
       );
     }
     if (presigner.service && presigner.service.config) {
-      presigner.service.config.customUserAgent = Utils.withCustomUserAgent(
+      presigner.service.config.customUserAgent = Utils.addCoreUserAgentComponent(
         presigner.service.config.customUserAgent
+      );
+
+      presigner.service.config.customUserAgent = Utils.addStringOnlyOnce(
+        presigner.service.config.customUserAgent,
+        this.prototype.getEngineUserAgentString()
       );
     }
 
@@ -1135,6 +1145,14 @@ class AbstractTextToSpeechFeature extends AbstractHostFeature {
     delete this._speechCache;
 
     super.discard();
+  }
+
+  /**
+   *
+   * @returns The useragent string for the engine you are using, e.g. 'babylonjs/5.1.0'
+   */
+  getEngineUserAgentString() {
+    return 'UnknownEngine';
   }
 }
 

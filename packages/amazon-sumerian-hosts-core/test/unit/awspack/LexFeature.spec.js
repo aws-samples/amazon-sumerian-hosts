@@ -2,7 +2,7 @@
 /* eslint-disable no-underscore-dangle */
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: MIT-0
-import {LexFeature} from '@amazon-sumerian-hosts/core';
+import {LexFeature, Version} from '@amazon-sumerian-hosts/core';
 import describeEnvironment from '../EnvironmentHarness';
 
 describeEnvironment('LexFeature', () => {
@@ -25,7 +25,7 @@ describeEnvironment('LexFeature', () => {
       mockLexRuntime.config = {
         customUserAgent: null,
       };
-      const sumerianUserAgent = 'request-source/SumerianHosts';
+      const sumerianUserAgent = `SumerianHosts-${Version}`;
 
       lexFeature = new LexFeature(mockLexRuntime);
 
@@ -36,7 +36,7 @@ describeEnvironment('LexFeature', () => {
       mockLexRuntime.config = {
         customUserAgent: 'UserDefined',
       };
-      const sumerianUserAgent = 'request-source/SumerianHosts';
+      const sumerianUserAgent = `SumerianHosts-${Version}`;
 
       lexFeature = new LexFeature(mockLexRuntime);
 

@@ -54,7 +54,7 @@ class LexFeature extends Messenger {
       throw Error('Cannot initialize Lex feature. LexRuntime must be defined');
     }
     if (lexRuntime.config) {
-      lexRuntime.config.customUserAgent = Utils.withCustomUserAgent(
+      lexRuntime.config.customUserAgent = Utils.addCoreUserAgentComponent(
         lexRuntime.config.customUserAgent
       );
     }
