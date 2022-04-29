@@ -20,12 +20,12 @@ class PointOfInterestFeature extends CorePointOfInterestFeature {
   }
 
   static _sphericalToBlendValue(...args) {
-    let {h, v} = super._sphericalToBlendValue(...args);
+    const blendValue = super._sphericalToBlendValue(...args);
 
     //Revert theta blend value if not using right hand coordinate system
-    h = this.useRightHandCoordinateSystem ? h : h * -1;
+    blendValue.h = this.useRightHandCoordinateSystem ? blendValue.h : blendValue.h * -1;
 
-    return {h, v};
+    return blendValue;
   }
 
   _validateTransformObject(obj) {
