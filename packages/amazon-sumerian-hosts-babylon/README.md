@@ -28,6 +28,23 @@ More details can be found in [demos-babylon](https://github.com/aws-samples/amaz
 ## [Getting started in Babylon.js](#Getting-started-in-Babylon.js) 
 
 ### Configurating the AWS SDK
+## Configuring Webpack
+
+We recommend using a module bundler such as [Webpack](https://webpack.js.org/) to package and distribute your code. As BabylonJS relies on static singletons for certain features, it may be necessary to configure Webpack so that all modules and submodules use the same instance of BabylonJS. Add the following to `module.exports.resolve`:
+
+```
+		resolve: {
+			...
+			modules: ['node_modules'],
+			alias: {
+			    // configure all modules to point at the same instance of BabylonJS
+			    '@babylonjs/core': path.resolve('./node_modules/@babylonjs/core')
+			}
+		},
+
+```
+
+### Step 1. Adding Script Dependencies
 
 One way to configure AWS SDK is to include depednency script:
 
