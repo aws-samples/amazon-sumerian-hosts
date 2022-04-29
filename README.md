@@ -42,7 +42,8 @@ Extend any host modules that need to use resources specific to your rendering en
 
 # Demos and Graphical Assets
 
-[Demos-Babylon](packages/demos-babylon) contains a number of demonstrations with [Babylon.js](https://www.babylonjs.com/), each focused on a different feature of the Sumerian Hosts API. See [READEME](packages/demos-babylon/README.md) for more details.
+[Demos-Babylon](packages/demos-babylon) contains a number of demonstrations with [Babylon.js](https://www.babylonjs.com/), each focused on a different feature of the Sumerian Hosts API. See [README](packages/demos-babylon/README.md) for more details.
+
 
 You can clone the repository to obtain glTF character and animation assets (located in the [character-assets](/packages/demos-babylon/src/character-assets/) within Demos-Babylon package) tailored to work well with Demos and the Host API. You can use them as-is, modify them in DCC software such as [Blender](https://www.blender.org/) or use them as a guide to develop your own 3D assets.
 
