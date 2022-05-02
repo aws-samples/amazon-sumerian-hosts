@@ -6,7 +6,7 @@ name: Push mainline changes into gh-pages branch
 # events but only for the gh-pages branch
 on:
   push:
-    branches: [mainline]
+    branches: [mainline2.0]
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:

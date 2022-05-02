@@ -4,7 +4,7 @@ This directory contains a number of demonstrations, each focused on a different 
 
 ## Prerequisites
 
-Before you can run the demos, you will need to set up a few thing in your AWS account. For step-by-step instructions on setting up this required infrastructure, see [AWS-Infrastructure-Setup.md](https://github.com/aws-samples/amazon-sumerian-hosts/tree/mainline/AWS-Infrastructure-Setup.md) in the root of this repository.
+Before you can run the demos, you will need to set up a few thing in your AWS account. For step-by-step instructions on setting up this required infrastructure, see [AWS-Infrastructure-Setup.md](https://github.com/aws-samples/amazon-sumerian-hosts/tree/mainline2.0/AWS-Infrastructure-Setup.md) in the root of this repository.
 
 ## Local Environment Setup
 

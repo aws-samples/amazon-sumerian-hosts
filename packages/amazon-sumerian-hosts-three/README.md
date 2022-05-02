@@ -4,7 +4,7 @@ For a general introduction to Amazon Sumerian Hosts as well as other example imp
 
 Amazon Sumerian Hosts is an experimental open source project that aims to make it easy to create interactive animated 3D characters that can be rendered on the Web and leverage AWS Services such as [Amazon Polly](https://aws.amazon.com/polly/). This example package includes everything you need to get started with Amazon Sumerian Hosts utilizing [three.js](https://threejs.org/). 
 
-See the [Getting Started](#Getting-Started) guide for a walkthrough using this method and the [API Documentation](https://aws-samples.github.io/amazon-sumerian-hosts/) for more detailed information on the classes and methods available. Amazon Sumerian Hosts is a published [npm](https://www.npmjs.com/) package, so alternatively you can install in an existing Node.js project by running `npm install --save-dev @amazon-sumerian-hosts/three`. If you'd like to pull the gitub repository and create your own build, see [Building the Repository](https://github.com/aws-samples/amazon-sumerian-hosts/blob/mainline/README.md#building-the-repository) for prerequisites and instructions on how to do that.
+See the [Getting Started](#Getting-Started) guide for a walkthrough using this method and the [API Documentation](https://aws-samples.github.io/amazon-sumerian-hosts/) for more detailed information on the classes and methods available. Amazon Sumerian Hosts is a published [npm](https://www.npmjs.com/) package, so alternatively you can install in an existing Node.js project by running `npm install --save-dev @amazon-sumerian-hosts/three`. If you'd like to pull the gitub repository and create your own build, see [Building the Repository](https://github.com/aws-samples/amazon-sumerian-hosts/blob/mainline2.0/README.md#building-the-repository) for prerequisites and instructions on how to do that.
 
 ## License
 
@@ -16,7 +16,7 @@ This guide steps you through the code of the [examples/three.html](examples/thre
 
 ## [Prerequisites](#Prerequisites)
 
-Before you can run the example, you will need to set up a few thing in your AWS account. For step-by-step instructions on setting up this required infrastructure, see [AWS-Infrastructure-Setup.md](https://github.com/aws-samples/amazon-sumerian-hosts/tree/mainline/AWS-Infrastructure-Setup.md) in the root of this repository.
+Before you can run the example, you will need to set up a few thing in your AWS account. For step-by-step instructions on setting up this required infrastructure, see [AWS-Infrastructure-Setup.md](https://github.com/aws-samples/amazon-sumerian-hosts/tree/mainline2.0/AWS-Infrastructure-Setup.md) in the root of this repository.
 
 ## [Getting started in three.js](#Getting-started-in-three.js)
 
