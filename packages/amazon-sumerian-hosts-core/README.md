@@ -9,4 +9,3 @@ Refer to the [API Documentation](https://aws-samples.github.io/amazon-sumerian-h
 ## License
 
 This library is licensed under the MIT-0 License. See the [LICENSE](LICENSE) file. 
-<br/><br/>
