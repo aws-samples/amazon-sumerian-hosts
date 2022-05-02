@@ -20,6 +20,8 @@ import animpack from './animpack';
 
 import aws from './awspack';
 
+const Version = Utils.getVersion();
+
 const {
   Easing,
   AnimationFeature,
@@ -185,4 +187,8 @@ export {
    * @see module:core/awspack.Speech
    */
   Speech,
+  /**
+   * The Version of the Sumerian Hosts library
+   */
+  Version,
 };

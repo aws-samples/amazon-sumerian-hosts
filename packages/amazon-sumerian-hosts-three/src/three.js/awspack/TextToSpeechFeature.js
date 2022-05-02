@@ -16,6 +16,13 @@ import Speech from './Speech';
  */
 
 /**
+ * Threejs REVISION object
+ *
+ * @external "THREE.REVISION"
+ * @see https://threejs.org/docs/#api/en/constants/Core
+ */
+
+/**
  * @extends core/TextToSpeechFeature
  * @alias threejs/TextToSpeechFeature
  */
@@ -86,6 +93,10 @@ class TextToSpeechFeature extends CoreTextToSpeechFeature {
 
   _createSpeech(text, speechmarks, audioConfig) {
     return new Speech(this, text, speechmarks, audioConfig);
+  }
+
+  getEngineUserAgentString() {
+    return `Three.js-${THREE.REVISION}`;
   }
 }
 

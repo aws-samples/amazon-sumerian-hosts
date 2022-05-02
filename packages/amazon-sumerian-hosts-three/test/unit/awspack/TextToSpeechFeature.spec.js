@@ -15,6 +15,7 @@ describeEnvironment('TextToSpeechFeature', () => {
 
     // mock AWS.Polly
     const mockPolly = jasmine.createSpyObj('Polly', ['describeVoices']);
+    mockPolly.config = {customUserAgent: 'abc'};
     mockPolly.describeVoices.and.returnValue({
       promise: jasmine.createSpy().and.resolveTo({
         Voices: [
@@ -62,6 +63,20 @@ describeEnvironment('TextToSpeechFeature', () => {
       mockPresigner,
       mockNeuralVersion
     );
+  });
+
+  describe('Custom User Agent', () => {
+    it('should set the three revision as the user agent', async () => {
+      // Shows the original user agent from the mock is still here
+      expect(
+        aws.TextToSpeechFeature.SERVICES.polly.config.customUserAgent
+      ).toContain('abc');
+
+      // Shows the three version is in there
+      expect(
+        aws.TextToSpeechFeature.SERVICES.polly.config.customUserAgent
+      ).toContain(`Three.js-${THREE.REVISION}`);
+    });
   });
 
   describe('_createSpeech', () => {

@@ -2,7 +2,7 @@
 /* eslint-disable no-underscore-dangle */
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: MIT-0
-import {LexFeature} from '@amazon-sumerian-hosts/core';
+import {LexFeature, Version} from '@amazon-sumerian-hosts/core';
 import describeEnvironment from '../EnvironmentHarness';
 
 describeEnvironment('LexFeature', () => {
@@ -25,22 +25,26 @@ describeEnvironment('LexFeature', () => {
       mockLexRuntime.config = {
         customUserAgent: null,
       };
-      const sumerianUserAgent = 'request-source/SumerianHosts';
+      const sumerianUserAgent = `SumerianHosts-${Version}`;
 
       lexFeature = new LexFeature(mockLexRuntime);
 
-      expect(mockLexRuntime.config.customUserAgent).toEqual(sumerianUserAgent);
+      expect(mockLexRuntime.config.customUserAgent).toContain(
+        sumerianUserAgent
+      );
+
+      expect(mockLexRuntime.config.customUserAgent).toContain('UnknownEngine');
     });
 
     it('should append sumerian designated value to user defined LexRuntime service customUserAgent', () => {
       mockLexRuntime.config = {
         customUserAgent: 'UserDefined',
       };
-      const sumerianUserAgent = 'request-source/SumerianHosts';
+      const sumerianUserAgent = `SumerianHosts-${Version}`;
 
       lexFeature = new LexFeature(mockLexRuntime);
 
-      expect(mockLexRuntime.config.customUserAgent).toEqual(
+      expect(mockLexRuntime.config.customUserAgent).toContain(
         `UserDefined ${sumerianUserAgent}`
       );
     });
