@@ -88,6 +88,11 @@ class TextToSpeechFeature extends CoreTextToSpeechFeature {
   _createSpeech(text, speechmarks, audioConfig) {
     return new Speech(this, text, speechmarks, audioConfig);
   }
+
+  getEngineUserAgentString() {
+    // looks like babylonjs@4.2.2
+    return Engine.NpmPackage;
+  }
 }
 
 export default TextToSpeechFeature;

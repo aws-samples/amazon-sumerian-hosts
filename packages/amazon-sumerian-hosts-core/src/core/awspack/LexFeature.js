@@ -54,8 +54,12 @@ class LexFeature extends Messenger {
       throw Error('Cannot initialize Lex feature. LexRuntime must be defined');
     }
     if (lexRuntime.config) {
-      lexRuntime.config.customUserAgent = Utils.withCustomUserAgent(
+      lexRuntime.config.customUserAgent = Utils.addCoreUserAgentComponent(
         lexRuntime.config.customUserAgent
+      );
+      lexRuntime.config.customUserAgent = Utils.addStringOnlyOnce(
+        lexRuntime.config.customUserAgent,
+        this.getEngineUserAgentString()
       );
     }
     this._lexRuntime = lexRuntime;
@@ -246,6 +250,14 @@ class LexFeature extends Messenger {
     this.emit(this.constructor.EVENTS.recordEnd);
 
     return this._processWithAudio(result, this._audioContext.sampleRate);
+  }
+
+  /**
+   *
+   * @returns The useragent string for the engine you are using, e.g. 'babylonjs/5.1.0'
+   */
+  getEngineUserAgentString() {
+    return 'UnknownEngine';
   }
 }
 

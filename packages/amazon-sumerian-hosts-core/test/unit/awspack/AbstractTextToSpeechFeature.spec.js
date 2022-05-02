@@ -9,6 +9,7 @@ import {
   AbstractTextToSpeechFeature,
   AbstractSpeech,
   Deferred,
+  Version,
 } from '@amazon-sumerian-hosts/core';
 import describeEnvironment from '../EnvironmentHarness';
 
@@ -209,7 +210,7 @@ describeEnvironment('AbstractTextToSpeechFeature', () => {
       mockPolly.config = {
         customUserAgent: null,
       };
-      const sumerianUserAgent = 'request-source/SumerianHosts';
+      const sumerianUserAgent = `SumerianHosts-${Version} UnknownEngine`;
 
       expect(mockPolly.config.customUserAgent).not.toEqual(sumerianUserAgent);
 
@@ -227,7 +228,7 @@ describeEnvironment('AbstractTextToSpeechFeature', () => {
       mockPolly.config = {
         customUserAgent: customerUserAgent,
       };
-      const sumerianUserAgent = 'request-source/SumerianHosts';
+      const sumerianUserAgent = `SumerianHosts-${Version} UnknownEngine`;
 
       expect(mockPolly.config.customUserAgent).toEqual(customerUserAgent);
 
@@ -242,11 +243,11 @@ describeEnvironment('AbstractTextToSpeechFeature', () => {
       );
     });
 
-    it('should not append to the Polly service customeUserAgent the sumeriand designated value more than once', async () => {
+    it('should not append to the Polly service customUserAgent the sumerian designated value more than once', async () => {
       mockPolly.config = {
         customUserAgent: null,
       };
-      const sumerianUserAgent = 'request-source/SumerianHosts';
+      const sumerianUserAgent = `SumerianHosts-${Version} UnknownEngine`;
 
       expect(mockPolly.config.customUserAgent).not.toEqual(sumerianUserAgent);
 
@@ -272,7 +273,7 @@ describeEnvironment('AbstractTextToSpeechFeature', () => {
       mockPresigner.service.config = {
         customUserAgent: null,
       };
-      const sumerianUserAgent = 'request-source/SumerianHosts';
+      const sumerianUserAgent = `SumerianHosts-${Version} UnknownEngine`;
 
       expect(mockPresigner.service.config.customUserAgent).not.toEqual(
         sumerianUserAgent
@@ -295,7 +296,7 @@ describeEnvironment('AbstractTextToSpeechFeature', () => {
       mockPresigner.service.config = {
         customUserAgent: customerUserAgent,
       };
-      const sumerianUserAgent = 'request-source/SumerianHosts';
+      const sumerianUserAgent = `SumerianHosts-${Version} UnknownEngine`;
 
       expect(mockPresigner.service.config.customUserAgent).toEqual(
         customerUserAgent
@@ -317,7 +318,7 @@ describeEnvironment('AbstractTextToSpeechFeature', () => {
       mockPresigner.service.config = {
         customUserAgent: null,
       };
-      const sumerianUserAgent = 'request-source/SumerianHosts';
+      const sumerianUserAgent = `SumerianHosts-${Version} UnknownEngine`;
 
       expect(mockPresigner.service.config.customUserAgent).not.toEqual(
         sumerianUserAgent

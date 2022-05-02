@@ -6,6 +6,7 @@ import {Messenger} from '@amazon-sumerian-hosts/core';
 import {aws} from '@amazon-sumerian-hosts/babylon';
 import {Sound} from '@babylonjs/core/Audio/sound';
 import {TransformNode} from '@babylonjs/core/Meshes/transformNode';
+import {Engine} from '@babylonjs/core/Engines/engine';
 import describeEnvironment from '../EnvironmentHarness';
 
 describeEnvironment('TextToSpeechFeature', options => {
@@ -17,6 +18,7 @@ describeEnvironment('TextToSpeechFeature', options => {
 
     // mock AWS.Polly
     const mockPolly = jasmine.createSpyObj('Polly', ['describeVoices']);
+    mockPolly.config = {customUserAgent: 'abc'};
     mockPolly.describeVoices.and.returnValue({
       promise: jasmine.createSpy().and.resolveTo({
         Voices: [
@@ -64,6 +66,20 @@ describeEnvironment('TextToSpeechFeature', options => {
       mockPresigner,
       mockNeuralVersion
     );
+  });
+
+  describe('Custom User Agent', () => {
+    it('should set the babylon version in the user agent', async () => {
+      // Shows the original user agent from the mock is still here
+      expect(
+        aws.TextToSpeechFeature.SERVICES.polly.config.customUserAgent
+      ).toContain('abc');
+
+      // Shows the babylonjs version is in there
+      expect(
+        aws.TextToSpeechFeature.SERVICES.polly.config.customUserAgent
+      ).toContain(Engine.NpmPackage);
+    });
   });
 
   describe('_createSpeech', () => {
