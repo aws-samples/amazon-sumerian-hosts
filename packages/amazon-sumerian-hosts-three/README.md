@@ -9,7 +9,6 @@ See the [Getting Started](#Getting-Started) guide for a walkthrough using this m
 ## License
 
 This library is licensed under the MIT-0 License. See the [LICENSE](LICENSE) file. The assets within examples are licensed under the CC-BY-4.0 License. See the [LICENSE](examples/assets/LICENSE) file.
-<br/><br/>
 
 # [Getting Started](#Getting-Started)
 
@@ -17,11 +16,13 @@ This guide steps you through the code of the [examples/three.html](examples/thre
 
 ## [Prerequisites](#Prerequisites)
 
-- Complete steps 1 & 2 of the [AWS SDK for Javascript Getting Started in a Browser Script](https://docs.aws.amazon.com/sdk-for-javascript/v2/developer-guide/getting-started-browser.html) tutorial to generate an Amazon Cognito Identity Pool with an Amazon Polly policy to enable browser script access to Amazon Polly.
-- Be familiar with how to create a scene in either [three.js](https://threejs.org/) Web rendering engine. 
-  - [Creating a scene in three.js](https://threejs.org/docs/index.html#manual/en/introduction/Creating-a-scene)
+Before you can run the example, you will need to set up a few thing in your AWS account. For step-by-step instructions on setting up this required infrastructure, see [AWS-Infrastructure-Setup.md](https://github.com/aws-samples/amazon-sumerian-hosts/tree/mainline/AWS-Infrastructure-Setup.md) in the root of this repository.
 
 ## [Getting started in three.js](#Getting-started-in-three.js)
+
+Note, most of steps below have already been completed for you. They are provided here in order to explain the code in detail.
+
+⚠️ **Important:** There is one edit you will need to make before running the example. You will need to update the code as described in [Step 5. Configuring the AWS SDK](#step5) so that it reflects the Cognito Identity Pool ID you created during your AWS infrastructure set up (above).
 
 ### Step 1. Adding Script Dependencies
 
@@ -96,7 +97,7 @@ Our example is going to load several glTF assets so there will be a short time w
     animation: spin 2s linear infinite;
     position: fixed;
   }
-
+  
   @-webkit-keyframes spin {
     0% {
       -webkit-transform: rotate(0deg);
@@ -105,7 +106,7 @@ Our example is going to load several glTF assets so there will be a short time w
       -webkit-transform: rotate(360deg);
     }
   }
-
+  
   @keyframes spin {
     0% {
       transform: rotate(0deg);
@@ -183,7 +184,7 @@ const speakers = new Map([
 ]);
 ```
 
-### Step 5. Configuring the AWS SDK
+### [Step 5. Configuring the AWS SDK](#step5)
 
 Our host will be using the [TextToSpeechFeature](https://aws-samples.github.io/amazon-sumerian-hosts/three.js_TextToSpeechFeature.html), so before we can make the host speak we need to configure the AWS SDK with our region and credentials.
 
@@ -273,14 +274,14 @@ Now we'll start setting up the visuals.
   function render() {
     requestAnimationFrame(render);
     controls.update();
-
+  
     renderFn.forEach(fn => {
       fn();
     });
-
+  
     renderer.render(scene, camera);
   }
-
+  
   render();
   ```
 
@@ -554,7 +555,7 @@ Here we pass all of our assets and variables to the `createHost` function. This 
     const {name} = clip;
     const config = gestureConfig[name];
     THREE.AnimationUtils.makeClipAdditive(clip);
-
+  
     if (config !== undefined) {
       config.queueOptions.forEach((option, index) => {
         // Create a subclip for each range in queueOptions
@@ -590,7 +591,7 @@ Next we create the animations that will allow the host to perform gestures in ti
   host.AnimationFeature.addLayer('Emote', {
     transitionTime: 0.5,
   });
-
+  
   emoteClips.forEach(clip => {
     const {name} = clip;
     host.AnimationFeature.addAnimation(
@@ -611,7 +612,7 @@ Next we create the animations that can be used as full body and face reactions. 
     blendMode: HOST.anim.LayerBlendModes.Additive,
   });
   host.AnimationFeature.setLayerWeight('Viseme', 0);
-
+  
   // Slice off the reference frame
   const blendStateOptions = lipsyncClips.map(clip => {
     THREE.AnimationUtils.makeClipAdditive(clip);
@@ -642,7 +643,7 @@ We're also using `THREE.AnimationUtils.subclip` to remove frame 0 from the clips
     host.AnimationFeature.addLayer(config.name, {
       blendMode: HOST.anim.LayerBlendModes.Additive,
     });
-
+  
     // Find each pose clip and make it additive
     config.blendStateOptions.forEach(clipConfig => {
       const clip = poiClips.find(clip => clip.name === clipConfig.clip);
@@ -655,16 +656,16 @@ We're also using `THREE.AnimationUtils.subclip` to remove frame 0 from the clips
         30
       );
     });
-
+  
     host.AnimationFeature.addAnimation(
       config.name,
       config.animation,
       HOST.anim.AnimationTypes.blend2d,
       {...config}
     );
-
+  
     host.AnimationFeature.playAnimation(config.name, config.animation);
-
+  
     // Find and store reference objects
     config.reference = character.getObjectByName(
       config.reference.replace(':', '')
