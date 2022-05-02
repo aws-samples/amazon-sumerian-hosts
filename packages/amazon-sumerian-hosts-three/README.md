@@ -6,7 +6,9 @@ Amazon Sumerian Hosts is an experimental open source project that aims to make i
 
 See the [Getting Started](#Getting-Started) guide for a walkthrough using this method and the [API Documentation](https://aws-samples.github.io/amazon-sumerian-hosts/) for more detailed information on the classes and methods available. Amazon Sumerian Hosts is a published [npm](https://www.npmjs.com/) package, so alternatively you can install in an existing Node.js project by running `npm install --save-dev @amazon-sumerian-hosts/three`. If you'd like to pull the gitub repository and create your own build, see [Building the Repository](https://github.com/aws-samples/amazon-sumerian-hosts/blob/mainline/README.md#building-the-repository) for prerequisites and instructions on how to do that.
 
+## License
 
+This library is licensed under the MIT-0 License. See the [LICENSE](LICENSE) file. The assets within examples are licensed under the CC-BY-4.0 License. See the [LICENSE](examples/assets/LICENSE) file.
 
 # [Getting Started](#Getting-Started)
 
