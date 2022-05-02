@@ -1,0 +1,806 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>JSDoc: Class: TextToSpeechUtils</title>
+
+    <script src="scripts/prettify/prettify.js"></script>
+    <script src="scripts/prettify/lang-css.js"></script>
+    <link
+      type="text/css"
+      rel="stylesheet"
+      href="styles/prettify-tomorrow.css"
+    />
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css" />
+
+    <style>
+      /** Caret/arrow for toggling nested lists */
+      .toggle:before {
+        display: inline-block;
+        width: 8px;
+        margin-right: 8px;
+        color: #99a7c2;
+        font-size: 50%;
+        vertical-align: middle;
+        margin-bottom: 0.5em;
+      }
+
+      .toggle {
+        cursor: pointer;
+      }
+
+      .toggle.opened:before {
+        content: '\25BC';
+      }
+
+      .toggle.closed:before {
+        content: '\25B6';
+      }
+
+      .toggle-reset:before {
+        content: '\2B6E';
+        color: #99a7c2;
+      }
+
+      /* Hide the nested list */
+      .nested {
+        display: none;
+      }
+
+      /* Show the nested list when the user clicks on the caret/arrow (with JavaScript) */
+      .active {
+        display: block;
+      }
+
+      #main {
+        float: right;
+      }
+
+      nav {
+        float: left;
+        border-right: 1px solid #ccc;
+        padding-right: 16px;
+        border-left: 0px;
+      }
+
+      .content .node {
+        padding-top: 8px;
+        padding-bottom: 8px;
+        padding-right: 4px;
+        padding-left: 16px;
+      }
+    </style>
+  </head>
+
+  <body>
+    <nav>
+      <h2><a href="index.html">Home</a></h2><h2><span class="toggle opened"></span></h2><div class="content active"><ul><li><ul><li class="node"><h3>Modules</h3><ul><li><a href="module-babylonjs_animpack.html">babylonjs/animpack</a></li><li><a href="module-babylonjs_awspack.html">babylonjs/awspack</a></li><li><a href="module-babylonjs_HOST.html">babylonjs/HOST</a></li><li><a href="module-core_animpack.html">core/animpack</a></li><li><a href="module-core_awspack.html">core/awspack</a></li><li><a href="module-core_HOST.html">core/HOST</a></li><li><a href="module-threejs_animpack.html">threejs/animpack</a></li><li><a href="module-threejs_awspack.html">threejs/awspack</a></li><li><a href="module-threejs_HOST.html">threejs/HOST</a></li></ul></li></ul></li><li><ul><li class="node"><h3>Externals</h3><ul><li><a href="external-_THREE.AnimationAction_.html">THREE.AnimationAction</a></li><li><a href="external-_THREE.AnimationMixer_.html">THREE.AnimationMixer</a></li><li><a href="external-_THREE.Audio_.html">THREE.Audio</a></li><li><a href="external-_THREE.AudioListener_.html">THREE.AudioListener</a></li><li><a href="external-_THREE.Clock_.html">THREE.Clock</a></li><li><a href="external-_THREE.Object3D_.html">THREE.Object3D</a></li><li><a href="external-_THREE.PositionalAudio_.html">THREE.PositionalAudio</a></li><li><a href="external-_THREE.REVISION_.html">THREE.REVISION</a></li><li><a href="external-Audio.html">Audio</a></li><li><a href="external-LexRuntime.html">LexRuntime</a></li><li><a href="external-Polly.html">Polly</a></li><li><a href="external-Presigner.html">Presigner</a></li><li><a href="external-Promise.html">Promise</a></li></ul></li></ul></li><li><ul><li class="node"><h3>Namespaces</h3><ul><li><a href="AnimationFeature.html">AnimationFeature</a></li><li><a href="GestureFeature.html">GestureFeature</a></li><li><a href="LipsyncFeature.html">LipsyncFeature</a></li><li><a href="module-core_animpack-Easing.html">Easing</a></li><li><a href="PointOfInterestFeature.html">PointOfInterestFeature</a></li><li><a href="TextToSpeechFeature.html">TextToSpeechFeature</a></li></ul></li></ul></li><li><ul><li class="node"><h3>Classes</h3><ul><li><a href="AbstractBlendState.html">AbstractBlendState</a></li><li><a href="AbstractHostFeature.html">AbstractHostFeature</a></li><li><a href="AbstractSpeech.html">AbstractSpeech</a></li><li><a href="AbstractState.html">AbstractState</a></li><li><a href="AbstractTextToSpeechFeature.html">AbstractTextToSpeechFeature</a></li><li><a href="AnimationLayer.html">AnimationLayer</a></li><li><a href="AnimationUtils.html">AnimationUtils</a></li><li><a href="babylonjs_AnimationFeature.html">babylonjs/AnimationFeature</a></li><li><a href="babylonjs_HostObject.html">babylonjs/HostObject</a></li><li><a href="babylonjs_LexFeature.html">babylonjs/LexFeature</a></li><li><a href="babylonjs_PointOfInterestFeature.html">babylonjs/PointOfInterestFeature</a></li><li><a href="babylonjs_SingleState.html">babylonjs/SingleState</a></li><li><a href="babylonjs_Speech.html">babylonjs/Speech</a></li><li><a href="babylonjs_TextToSpeechFeature.html">babylonjs/TextToSpeechFeature</a></li><li><a href="Blend1dState.html">Blend1dState</a></li><li><a href="Blend2dState.html">Blend2dState</a></li><li><a href="core_AnimationFeature.html">core/AnimationFeature</a></li><li><a href="core_GestureFeature.html">core/GestureFeature</a></li><li><a href="core_HostObject.html">core/HostObject</a></li><li><a href="core_LexFeature.html">core/LexFeature</a></li><li><a href="core_LipsyncFeature.html">core/LipsyncFeature</a></li><li><a href="core_Messenger.html">core/Messenger</a></li><li><a href="core_PointOfInterestFeature.html">core/PointOfInterestFeature</a></li><li><a href="core_SingleState.html">core/SingleState</a></li><li><a href="core_Speech.html">core/Speech</a></li><li><a href="core_TextToSpeechFeature.html">core/TextToSpeechFeature</a></li><li><a href="Deferred.html">Deferred</a></li><li><a href="FreeBlendState.html">FreeBlendState</a></li><li><a href="LexUtils.html">LexUtils</a></li><li><a href="MathUtils.html">MathUtils</a></li><li><a href="QueueState.html">QueueState</a></li><li><a href="RandomAnimationState.html">RandomAnimationState</a></li><li><a href="TextToSpeechUtils.html">TextToSpeechUtils</a></li><li><a href="threejs_AnimationFeature.html">threejs/AnimationFeature</a></li><li><a href="threejs_HostObject.html">threejs/HostObject</a></li><li><a href="threejs_LexFeature.html">threejs/LexFeature</a></li><li><a href="threejs_PointOfInterestFeature.html">threejs/PointOfInterestFeature</a></li><li><a href="threejs_SingleState.html">threejs/SingleState</a></li><li><a href="threejs_Speech.html">threejs/Speech</a></li><li><a href="threejs_TextToSpeechFeature.html">threejs/TextToSpeechFeature</a></li><li><a href="TransitionState.html">TransitionState</a></li><li><a href="Utils.html">Utils</a></li></ul></li></ul></li><li><ul><li class="node"><h3>Interfaces</h3><ul><li><a href="AnimationFeatureDependentInterface.html">AnimationFeatureDependentInterface</a></li><li><a href="AnimationPlayerInterface.html">AnimationPlayerInterface</a></li><li><a href="FeatureDependentInterface.html">FeatureDependentInterface</a></li><li><a href="ManagedAnimationLayerInterface.html">ManagedAnimationLayerInterface</a></li><li><a href="SSMLSpeechmarkInterface.html">SSMLSpeechmarkInterface</a></li><li><a href="StateContainerInterface.html">StateContainerInterface</a></li><li><a href="TextToSpeechFeatureDependentInterface.html">TextToSpeechFeatureDependentInterface</a></li></ul></li></ul></li><h3>Global</h3><ul><li><a href="global.html#AnimationTypes">AnimationTypes</a></li><li><a href="global.html#AxisMap">AxisMap</a></li><li><a href="global.html#Back">Back</a></li><li><a href="global.html#Bounce">Bounce</a></li><li><a href="global.html#Circular">Circular</a></li><li><a href="global.html#Cubic">Cubic</a></li><li><a href="global.html#DefaultGestureWords">DefaultGestureWords</a></li><li><a href="global.html#DefaultLayerBlendMode">DefaultLayerBlendMode</a></li><li><a href="global.html#DefaultVisemeMap">DefaultVisemeMap</a></li><li><a href="global.html#Elastic">Elastic</a></li><li><a href="global.html#env">env</a></li><li><a href="global.html#Exponential">Exponential</a></li><li><a href="global.html#LayerBlendModes">LayerBlendModes</a></li><li><a href="global.html#Linear">Linear</a></li><li><a href="global.html#Quadratic">Quadratic</a></li><li><a href="global.html#Quartic">Quartic</a></li><li><a href="global.html#Quintic">Quintic</a></li><li><a href="global.html#Sinusoidal">Sinusoidal</a></li><li><a href="global.html#validateBlendMode">validateBlendMode</a></li></ul></ul></div>
+    </nav>
+
+    <div id="main">
+      <h1 class="page-title">Class: TextToSpeechUtils</h1>
+
+      
+
+
+
+
+<section>
+
+<header>
+    
+        <h2><span class="attribs"><span class="type-signature"></span></span>TextToSpeechUtils</h2>
+        
+            <div class="class-description"><p>A collection of useful text-to-speech functions.</p></div>
+        
+    
+</header>
+
+<article>
+    <div class="container-overview">
+    
+        
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    
+    </div>
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+        <h3 class="subsection-title">Methods</h3>
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id=".addMarksToUnmarkedSentences"><span class="type-signature">(static) </span>addMarksToUnmarkedSentences<span class="signature">(text, marks)</span><span class="type-signature"> &rarr; {string}</span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    <p>Returns a new string with a random SSML mark inserted at each sentence that<br>
+does not already contain an SSML mark.</p>
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>text</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>Input string.</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>marks</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Array.&lt;string></span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>Any array of random SSML marks to choose from<br>
+when modifying the text.</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">string</span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id=".autoGenerateSSMLMarks"><span class="type-signature">(static) </span>autoGenerateSSMLMarks<span class="signature">(text, map, randomMarks<span class="signature-attributes">opt</span>)</span><span class="type-signature"> &rarr; {string}</span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    <p>Returns a new string with SSML marks inserted based on<br>
+matches between the input string and the input map. The<br>
+word matches are case-insensitive. Words within existing<br>
+SSML tags will not be affected. Input text will be surrounded<br>
+by <speak></speak> tags if needed.</p>
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+        <th>Attributes</th>
+        
+
+        
+        <th>Default</th>
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>text</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+
+                
+
+                
+                </td>
+            
+
+            
+                <td class="default">
+                
+                </td>
+            
+
+            <td class="description last"><p>Input string.</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>map</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">object</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+
+                
+
+                
+                </td>
+            
+
+            
+                <td class="default">
+                
+                </td>
+            
+
+            <td class="description last"><p>Input object that maps mark keys<br>
+to arrays of words. Example:</p>
+<p>{<br>
+'mark:sad' : ['sad', 'blue', 'down'],<br>
+'mark:happy' : ['joy', 'glad', 'great'],<br>
+'mark:no' : ['no', 'nah', 'nay', 'sure']<br>
+}</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>randomMarks</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Array.&lt;string></span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+                <td class="default">
+                
+                    []
+                
+                </td>
+            
+
+            <td class="description last"><p>If there are sentences that don't<br>
+match any words from the map object, marks from this array will be randomly<br>
+chosen and inserted.</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    <ul>
+<li>Updated input string.</li>
+</ul>
+</div>
+
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">string</span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id=".validateText"><span class="type-signature">(static) </span>validateText<span class="signature">(text)</span><span class="type-signature"> &rarr; {string}</span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    <p>Generate a version of given text that is enclosed by Polly ssml speak tags.</p>
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>text</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>The text to validate.</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    <ul>
+<li>Updated input string.</li>
+</ul>
+</div>
+
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">string</span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+
+
+        
+    
+
+    
+
+    
+</article>
+
+</section>
+
+
+
+
+    </div>
+
+    <br class="clear" />
+
+    <footer></footer>
+
+    <script>
+      prettyPrint();
+    </script>
+    <script src="scripts/linenumber.js"></script>
+    <script src="scripts/toggle.js"></script>
+  </body>
+</html>

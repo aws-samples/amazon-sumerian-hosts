@@ -1,0 +1,4924 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>JSDoc: Class: AbstractTextToSpeechFeature</title>
+
+    <script src="scripts/prettify/prettify.js"></script>
+    <script src="scripts/prettify/lang-css.js"></script>
+    <link
+      type="text/css"
+      rel="stylesheet"
+      href="styles/prettify-tomorrow.css"
+    />
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css" />
+
+    <style>
+      /** Caret/arrow for toggling nested lists */
+      .toggle:before {
+        display: inline-block;
+        width: 8px;
+        margin-right: 8px;
+        color: #99a7c2;
+        font-size: 50%;
+        vertical-align: middle;
+        margin-bottom: 0.5em;
+      }
+
+      .toggle {
+        cursor: pointer;
+      }
+
+      .toggle.opened:before {
+        content: '\25BC';
+      }
+
+      .toggle.closed:before {
+        content: '\25B6';
+      }
+
+      .toggle-reset:before {
+        content: '\2B6E';
+        color: #99a7c2;
+      }
+
+      /* Hide the nested list */
+      .nested {
+        display: none;
+      }
+
+      /* Show the nested list when the user clicks on the caret/arrow (with JavaScript) */
+      .active {
+        display: block;
+      }
+
+      #main {
+        float: right;
+      }
+
+      nav {
+        float: left;
+        border-right: 1px solid #ccc;
+        padding-right: 16px;
+        border-left: 0px;
+      }
+
+      .content .node {
+        padding-top: 8px;
+        padding-bottom: 8px;
+        padding-right: 4px;
+        padding-left: 16px;
+      }
+    </style>
+  </head>
+
+  <body>
+    <nav>
+      <h2><a href="index.html">Home</a></h2><h2><span class="toggle opened"></span></h2><div class="content active"><ul><li><ul><li class="node"><h3>Modules</h3><ul><li><a href="module-babylonjs_animpack.html">babylonjs/animpack</a></li><li><a href="module-babylonjs_awspack.html">babylonjs/awspack</a></li><li><a href="module-babylonjs_HOST.html">babylonjs/HOST</a></li><li><a href="module-core_animpack.html">core/animpack</a></li><li><a href="module-core_awspack.html">core/awspack</a></li><li><a href="module-core_HOST.html">core/HOST</a></li><li><a href="module-threejs_animpack.html">threejs/animpack</a></li><li><a href="module-threejs_awspack.html">threejs/awspack</a></li><li><a href="module-threejs_HOST.html">threejs/HOST</a></li></ul></li></ul></li><li><ul><li class="node"><h3>Externals</h3><ul><li><a href="external-_THREE.AnimationAction_.html">THREE.AnimationAction</a></li><li><a href="external-_THREE.AnimationMixer_.html">THREE.AnimationMixer</a></li><li><a href="external-_THREE.Audio_.html">THREE.Audio</a></li><li><a href="external-_THREE.AudioListener_.html">THREE.AudioListener</a></li><li><a href="external-_THREE.Clock_.html">THREE.Clock</a></li><li><a href="external-_THREE.Object3D_.html">THREE.Object3D</a></li><li><a href="external-_THREE.PositionalAudio_.html">THREE.PositionalAudio</a></li><li><a href="external-_THREE.REVISION_.html">THREE.REVISION</a></li><li><a href="external-Audio.html">Audio</a></li><li><a href="external-LexRuntime.html">LexRuntime</a></li><li><a href="external-Polly.html">Polly</a></li><li><a href="external-Presigner.html">Presigner</a></li><li><a href="external-Promise.html">Promise</a></li></ul></li></ul></li><li><ul><li class="node"><h3>Namespaces</h3><ul><li><a href="AnimationFeature.html">AnimationFeature</a></li><li><a href="GestureFeature.html">GestureFeature</a></li><li><a href="LipsyncFeature.html">LipsyncFeature</a></li><li><a href="module-core_animpack-Easing.html">Easing</a></li><li><a href="PointOfInterestFeature.html">PointOfInterestFeature</a></li><li><a href="TextToSpeechFeature.html">TextToSpeechFeature</a></li></ul></li></ul></li><li><ul><li class="node"><h3>Classes</h3><ul><li><a href="AbstractBlendState.html">AbstractBlendState</a></li><li><a href="AbstractHostFeature.html">AbstractHostFeature</a></li><li><a href="AbstractSpeech.html">AbstractSpeech</a></li><li><a href="AbstractState.html">AbstractState</a></li><li><a href="AbstractTextToSpeechFeature.html">AbstractTextToSpeechFeature</a></li><li><a href="AnimationLayer.html">AnimationLayer</a></li><li><a href="AnimationUtils.html">AnimationUtils</a></li><li><a href="babylonjs_AnimationFeature.html">babylonjs/AnimationFeature</a></li><li><a href="babylonjs_HostObject.html">babylonjs/HostObject</a></li><li><a href="babylonjs_LexFeature.html">babylonjs/LexFeature</a></li><li><a href="babylonjs_PointOfInterestFeature.html">babylonjs/PointOfInterestFeature</a></li><li><a href="babylonjs_SingleState.html">babylonjs/SingleState</a></li><li><a href="babylonjs_Speech.html">babylonjs/Speech</a></li><li><a href="babylonjs_TextToSpeechFeature.html">babylonjs/TextToSpeechFeature</a></li><li><a href="Blend1dState.html">Blend1dState</a></li><li><a href="Blend2dState.html">Blend2dState</a></li><li><a href="core_AnimationFeature.html">core/AnimationFeature</a></li><li><a href="core_GestureFeature.html">core/GestureFeature</a></li><li><a href="core_HostObject.html">core/HostObject</a></li><li><a href="core_LexFeature.html">core/LexFeature</a></li><li><a href="core_LipsyncFeature.html">core/LipsyncFeature</a></li><li><a href="core_Messenger.html">core/Messenger</a></li><li><a href="core_PointOfInterestFeature.html">core/PointOfInterestFeature</a></li><li><a href="core_SingleState.html">core/SingleState</a></li><li><a href="core_Speech.html">core/Speech</a></li><li><a href="core_TextToSpeechFeature.html">core/TextToSpeechFeature</a></li><li><a href="Deferred.html">Deferred</a></li><li><a href="FreeBlendState.html">FreeBlendState</a></li><li><a href="LexUtils.html">LexUtils</a></li><li><a href="MathUtils.html">MathUtils</a></li><li><a href="QueueState.html">QueueState</a></li><li><a href="RandomAnimationState.html">RandomAnimationState</a></li><li><a href="TextToSpeechUtils.html">TextToSpeechUtils</a></li><li><a href="threejs_AnimationFeature.html">threejs/AnimationFeature</a></li><li><a href="threejs_HostObject.html">threejs/HostObject</a></li><li><a href="threejs_LexFeature.html">threejs/LexFeature</a></li><li><a href="threejs_PointOfInterestFeature.html">threejs/PointOfInterestFeature</a></li><li><a href="threejs_SingleState.html">threejs/SingleState</a></li><li><a href="threejs_Speech.html">threejs/Speech</a></li><li><a href="threejs_TextToSpeechFeature.html">threejs/TextToSpeechFeature</a></li><li><a href="TransitionState.html">TransitionState</a></li><li><a href="Utils.html">Utils</a></li></ul></li></ul></li><li><ul><li class="node"><h3>Interfaces</h3><ul><li><a href="AnimationFeatureDependentInterface.html">AnimationFeatureDependentInterface</a></li><li><a href="AnimationPlayerInterface.html">AnimationPlayerInterface</a></li><li><a href="FeatureDependentInterface.html">FeatureDependentInterface</a></li><li><a href="ManagedAnimationLayerInterface.html">ManagedAnimationLayerInterface</a></li><li><a href="SSMLSpeechmarkInterface.html">SSMLSpeechmarkInterface</a></li><li><a href="StateContainerInterface.html">StateContainerInterface</a></li><li><a href="TextToSpeechFeatureDependentInterface.html">TextToSpeechFeatureDependentInterface</a></li></ul></li></ul></li><h3>Global</h3><ul><li><a href="global.html#AnimationTypes">AnimationTypes</a></li><li><a href="global.html#AxisMap">AxisMap</a></li><li><a href="global.html#Back">Back</a></li><li><a href="global.html#Bounce">Bounce</a></li><li><a href="global.html#Circular">Circular</a></li><li><a href="global.html#Cubic">Cubic</a></li><li><a href="global.html#DefaultGestureWords">DefaultGestureWords</a></li><li><a href="global.html#DefaultLayerBlendMode">DefaultLayerBlendMode</a></li><li><a href="global.html#DefaultVisemeMap">DefaultVisemeMap</a></li><li><a href="global.html#Elastic">Elastic</a></li><li><a href="global.html#env">env</a></li><li><a href="global.html#Exponential">Exponential</a></li><li><a href="global.html#LayerBlendModes">LayerBlendModes</a></li><li><a href="global.html#Linear">Linear</a></li><li><a href="global.html#Quadratic">Quadratic</a></li><li><a href="global.html#Quartic">Quartic</a></li><li><a href="global.html#Quintic">Quintic</a></li><li><a href="global.html#Sinusoidal">Sinusoidal</a></li><li><a href="global.html#validateBlendMode">validateBlendMode</a></li></ul></ul></div>
+    </nav>
+
+    <div id="main">
+      <h1 class="page-title">Class: AbstractTextToSpeechFeature</h1>
+
+      
+
+
+
+
+<section>
+
+<header>
+    
+        <h2><span class="attribs"><span class="type-signature">(abstract) </span></span>AbstractTextToSpeechFeature<span class="signature">(host, options<span class="signature-attributes">opt</span>)</span><span class="type-signature"></span></h2>
+        
+            <div class="class-description"><p>Base class for turning text input into playable audio. There should be one instance<br>
+per speaker, each instance can play only one piece of text at a time.</p></div>
+        
+    
+</header>
+
+<article>
+    <div class="container-overview">
+    
+        
+
+    
+    <h2>Constructor</h2>
+    
+
+    
+    <h4 class="name" id="AbstractTextToSpeechFeature"><span class="type-signature">(abstract) </span>new AbstractTextToSpeechFeature<span class="signature">(host, options<span class="signature-attributes">opt</span>)</span><span class="type-signature"></span></h4>
+    
+
+    
+
+
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+        <th>Attributes</th>
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>host</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><a href="core_HostObject.html">core/HostObject</a></span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>Host object managing the feature.</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>options</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Object</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>Options that will be sent to Polly for each speech.</p>
+                <h6>Properties</h6>
+                
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+        <th>Attributes</th>
+        
+
+        
+        <th>Default</th>
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>voice</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+                <td class="default">
+                
+                </td>
+            
+
+            <td class="description last"><p>The name of the Polly voice to use for all speech.</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>engine</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+                <td class="default">
+                
+                </td>
+            
+
+            <td class="description last"><p>The name of the Polly engine to use for all speech.</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>language</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+                <td class="default">
+                
+                </td>
+            
+
+            <td class="description last"><p>The name of the language to use for all speech.</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>audioFormat</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">audioFormat</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+                <td class="default">
+                
+                    'mp3'
+                
+                </td>
+            
+
+            <td class="description last"><p>The format to use for generated<br>
+audio for all speeches.</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>sampleRate</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+                <td class="default">
+                
+                </td>
+            
+
+            <td class="description last"><p>The sample rate for audio files for all<br>
+speeches.</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>speechmarkOffset</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+                <td class="default">
+                
+                    0
+                
+                </td>
+            
+
+            <td class="description last"><p>Amount of time in seconds to<br>
+offset speechmark event emission from the audio.</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>minEndMarkDuration</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+                <td class="default">
+                
+                    .05
+                
+                </td>
+            
+
+            <td class="description last"><p>The minimum amount of time<br>
+in seconds that the last speechmark of each type in a speech can have its<br>
+duration property set to.</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>volume</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+                <td class="default">
+                
+                    1
+                
+                </td>
+            
+
+            <td class="description last"><p>The default volume to play speech audio<br>
+with.</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>isGlobal</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">boolean</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+                <td class="default">
+                
+                    false
+                
+                </td>
+            
+
+            <td class="description last"><p>Whether the audio source should default<br>
+to global regardless of whether or not it is attached to an object.</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+            </td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+    <h5 class="subsection-title">Properties:</h5>
+
+    
+
+<table class="props">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+        <th>Attributes</th>
+        
+
+        
+        <th>Default</th>
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>AWS_VERSION</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+|
+
+<span class="param-type">undefined</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+
+                
+                </td>
+            
+
+            
+                <td class="default">
+                
+                </td>
+            
+
+            <td class="description last"><p>Gets the version of AWS SDK being<br>
+used. Will be undefined until <a href="AbstractTextToSpeechFeature.html#.initializeService">initializeService</a><br>
+has been successfully executed.</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>POLLY_MIN_NEURAL_VERSION</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+                </td>
+            
+
+            
+                <td class="default">
+                
+                    '2.503'
+                
+                </td>
+            
+
+            <td class="description last"><p>Gets the minimum version<br>
+of the AWS SDK that is necessary to use neural voices with AWS Polly.</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>POLLY_DEFAULTS</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Object</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+
+                
+                </td>
+            
+
+            
+                <td class="default">
+                
+                </td>
+            
+
+            <td class="description last"><p>Default values to use with calls to <a href="external-Polly.html">external:Polly</a>.</p>
+                <h6>Properties</h6>
+
+<table class="props">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+        <th>Attributes</th>
+        
+
+        
+        <th>Default</th>
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>Engine</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+                </td>
+            
+
+            
+                <td class="default">
+                
+                    'standard'
+                
+                </td>
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>LexiconNames</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Array.&lt;string></span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+                </td>
+            
+
+            
+                <td class="default">
+                
+                    []
+                
+                </td>
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>OutputFormat</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+                </td>
+            
+
+            
+                <td class="default">
+                
+                    'mp3'
+                
+                </td>
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>SampleRate</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+                </td>
+            
+
+            
+                <td class="default">
+                
+                    '22050'
+                
+                </td>
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>Text</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+                </td>
+            
+
+            
+                <td class="default">
+                
+                    ''
+                
+                </td>
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>TextType</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+                </td>
+            
+
+            
+                <td class="default">
+                
+                    'ssml'
+                
+                </td>
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>VoiceId</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+                </td>
+            
+
+            
+                <td class="default">
+                
+                    'Amy'
+                
+                </td>
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>LanguageCode</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+                </td>
+            
+
+            
+                <td class="default">
+                
+                    'en-GB'
+                
+                </td>
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>LanguageName</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+                </td>
+            
+
+            
+                <td class="default">
+                
+                    'British English'
+                
+                </td>
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+            </td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>POLLY_VOICES</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Array.&lt;string></span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+                </td>
+            
+
+            
+                <td class="default">
+                
+                    []
+                
+                </td>
+            
+
+            <td class="description last"><p>An array of voices available in<br>
+Polly. Will be empty until <a href="AbstractTextToSpeechFeature.html#.initializeService">initializeService</a><br>
+has been successfully executed. See <a href="https://docs.aws.amazon.com/polly/latest/dg/voicelist.html">Polly Documentation</a><br>
+for a full list of available voices.</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>POLLY_LANGUAGES</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Object</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+                </td>
+            
+
+            
+                <td class="default">
+                
+                    {}
+                
+                </td>
+            
+
+            <td class="description last"><p>An object that maps language names<br>
+to language codes that are available in Polly. Will be empty until<br>
+<a href="AbstractTextToSpeechFeature.html#.initializeService">initializeService</a><br>
+has been successfully executed. See <a href="https://docs.aws.amazon.com/polly/latest/dg/SupportedLanguage.html">Polly Documentation</a><br>
+for a full list of available languages and corresponding codes.</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>POLLY_LANGUAGE_CODES</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Object</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+                </td>
+            
+
+            
+                <td class="default">
+                
+                    {}
+                
+                </td>
+            
+
+            <td class="description last"><p>An object that maps language codes<br>
+to language names that are available in Polly. Will be empty until<br>
+<a href="AbstractTextToSpeechFeature.html#.initializeService">initializeService</a><br>
+has been successfully executed. See <a href="https://docs.aws.amazon.com/polly/latest/dg/SupportedLanguage.html">Polly Documentation</a><br>
+for a full list of available languages and corresponding codes.</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>EVENTS</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Object</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+
+                
+                </td>
+            
+
+            
+                <td class="default">
+                
+                </td>
+            
+
+            <td class="description last"><p>Built-in messages that the feature emits. When the<br>
+feature is added to a <a href="core_HostObject.html">core/HostObject</a>, event names will be prefixed by the<br>
+name of the feature class + '.'.</p>
+                <h6>Properties</h6>
+
+<table class="props">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+        <th>Attributes</th>
+        
+
+        
+        <th>Default</th>
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>ready</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+                </td>
+            
+
+            
+                <td class="default">
+                
+                    onReadyEvent
+                
+                </td>
+            
+
+            <td class="description last"><p>Message that is emitted after<br>
+<a href="AbstractTextToSpeechFeature.html#.initializeService">initializeService</a> has been<br>
+successfully executed.</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>play</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+                </td>
+            
+
+            
+                <td class="default">
+                
+                    onPlayEvent
+                
+                </td>
+            
+
+            <td class="description last"><p>Message that is emitted after<br>
+each call to <a href="AbstractTextToSpeechFeature.html#play">play</a>. The speech that was played<br>
+is supplied as an argument to listener functions.</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>pause</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+                </td>
+            
+
+            
+                <td class="default">
+                
+                    onPauseEvent
+                
+                </td>
+            
+
+            <td class="description last"><p>Message that is emitted after<br>
+each call to <a href="AbstractTextToSpeechFeature.html#pause">pause</a>. The speech that was paused<br>
+is supplied as an argument to listener functions.</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>resume</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+                </td>
+            
+
+            
+                <td class="default">
+                
+                    onResumeEvent
+                
+                </td>
+            
+
+            <td class="description last"><p>Message that is emitted after<br>
+each call to <a href="AbstractTextToSpeechFeature.html#resume">resume</a>. The speech that was<br>
+resumed is supplied as an argument to listener functions.</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>interrupt</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+                </td>
+            
+
+            
+                <td class="default">
+                
+                    onInterruptEvent
+                
+                </td>
+            
+
+            <td class="description last"><p>Message that is emitted<br>
+if there is a current speech in progress and <a href="AbstractTextToSpeechFeature.html#play">play</a><br>
+or <a href="AbstractTextToSpeechFeature.html#resume">resume</a> are executed for a new speech.<br>
+The speech that was interrupted is supplied as an argument to listener functions.</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>stop</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+                </td>
+            
+
+            
+                <td class="default">
+                
+                    onStopEvent
+                
+                </td>
+            
+
+            <td class="description last"><p>Message that is emitted after<br>
+each call to <a href="AbstractTextToSpeechFeature.html#stop">stop</a> and when a speech reaches<br>
+the end of playback. The speech that was stopped is supplied as an argument<br>
+to listener functions.</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>sentence</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+                </td>
+            
+
+            
+                <td class="default">
+                
+                    onSentenceEvent
+                
+                </td>
+            
+
+            <td class="description last"><p>Message that is emitted<br>
+each time a sentence speechmark is encountered whose timestamp matches up with<br>
+the speech audio's current time. The sentence speechmark object is supplied as<br>
+an argument to listener functions.</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>word</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+                </td>
+            
+
+            
+                <td class="default">
+                
+                    onWordEvent
+                
+                </td>
+            
+
+            <td class="description last"><p>Message that is emitted<br>
+each time a word speechmark is encountered whose timestamp matches up with<br>
+the speech audio's current time. The word speechmark object is supplied as<br>
+an argument to listener functions.</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>viseme</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+                </td>
+            
+
+            
+                <td class="default">
+                
+                    onVisemeEvent
+                
+                </td>
+            
+
+            <td class="description last"><p>Message that is emitted<br>
+each time a viseme speechmark is encountered whose timestamp matches up with<br>
+the speech audio's current time. The viseme speechmark object is supplied as<br>
+an argument to listener functions.</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>ssml</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+                </td>
+            
+
+            
+                <td class="default">
+                
+                    onSsmlEvent
+                
+                </td>
+            
+
+            <td class="description last"><p>Message that is emitted<br>
+each time a ssml speechmark is encountered whose timestamp matches up with<br>
+the speech audio's current time. The ssml speechmark object is supplied as<br>
+an argument to listener functions.</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+            </td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>SERVICES</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Object</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+
+                
+                </td>
+            
+
+            
+                <td class="default">
+                
+                </td>
+            
+
+            <td class="description last"><p>AWS services that are necessary for the feature<br>
+to function.</p>
+                <h6>Properties</h6>
+
+<table class="props">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>polly</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><a href="external-Polly.html">external:Polly</a></span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>The Polly service that is used<br>
+to synthesize speechmarks. Will be undefined until <a href="AbstractTextToSpeechFeature.html#.initializeService">initializeService</a><br>
+has been successfully executed</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>presigner</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><a href="external-Presigner.html">external:Presigner</a></span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>The Polly Presigner<br>
+object that is used to synthesize speech audio. Will be undefined until<br>
+<a href="AbstractTextToSpeechFeature.html#.initializeService">initializeService</a><br>
+has been successfully executed.</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+            </td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    
+    </div>
+
+    
+        <h3 class="subsection-title">Extends</h3>
+
+        
+
+
+    <ul>
+        <li><a href="AbstractHostFeature.html">AbstractHostFeature</a></li>
+    </ul>
+
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+        <h3 class="subsection-title">Members</h3>
+
+        
+            
+<h4 class="name" id=".isReady"><span class="type-signature">(static, readonly) </span>isReady<span class="type-signature"> :boolean</span></h4>
+
+
+
+
+<div class="description">
+    <p>Indicates whether or not the class is capable of generating speech audio. Polly,<br>
+Presigner and AWS SDK version number must have been defined using<br>
+<a href="AbstractTextToSpeechFeature.html#.initializeService">initializeService</a>.</p>
+</div>
+
+
+
+    <h5>Type:</h5>
+    <ul>
+        <li>
+            
+<span class="param-type">boolean</span>
+
+
+        </li>
+    </ul>
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+        
+            
+<h4 class="name" id="currentSpeech"><span class="type-signature">(readonly) </span>currentSpeech<span class="type-signature"> :string</span></h4>
+
+
+
+
+<div class="description">
+    <p>Gets the text of the currently playing speech.</p>
+</div>
+
+
+
+    <h5>Type:</h5>
+    <ul>
+        <li>
+            
+<span class="param-type">string</span>
+
+
+        </li>
+    </ul>
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+        
+            
+<h4 class="name" id="host"><span class="type-signature">(readonly) </span>host<span class="type-signature"></span></h4>
+
+
+
+
+<div class="description">
+    <p>Gets the host that manages the feature.</p>
+</div>
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-overrides">Overrides:</dt>
+    <dd class="tag-overrides"><ul class="dummy"><li>
+        <a href="AbstractHostFeature.html#host">AbstractHostFeature#host</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+        
+            
+<h4 class="name" id="minEndMarkDuration"><span class="type-signature"></span>minEndMarkDuration<span class="type-signature"> :number</span></h4>
+
+
+
+
+<div class="description">
+    <p>Gets and sets the The minimum amount of time in seconds that the last<br>
+speechmark of each type in a speech can have its duration property set to.</p>
+</div>
+
+
+
+    <h5>Type:</h5>
+    <ul>
+        <li>
+            
+<span class="param-type">number</span>
+
+
+        </li>
+    </ul>
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+        
+            
+<h4 class="name" id="owner"><span class="type-signature">(readonly) </span>owner<span class="type-signature"></span></h4>
+
+
+
+
+<div class="description">
+    <p>Gets the engine owner object of the host.</p>
+</div>
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-overrides">Overrides:</dt>
+    <dd class="tag-overrides"><ul class="dummy"><li>
+        <a href="AbstractHostFeature.html#owner">AbstractHostFeature#owner</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+        
+            
+<h4 class="name" id="speechmarkOffset"><span class="type-signature"></span>speechmarkOffset<span class="type-signature"> :number</span></h4>
+
+
+
+
+<div class="description">
+    <p>Gets and sets the number of seconds to offset speechmark emission.</p>
+</div>
+
+
+
+    <h5>Type:</h5>
+    <ul>
+        <li>
+            
+<span class="param-type">number</span>
+
+
+        </li>
+    </ul>
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+        
+            
+<h4 class="name" id="volume"><span class="type-signature"></span>volume<span class="type-signature"> :number</span></h4>
+
+
+
+
+<div class="description">
+    <p>Gets and sets the volume used for all audio clips played by the speaker.</p>
+</div>
+
+
+
+    <h5>Type:</h5>
+    <ul>
+        <li>
+            
+<span class="param-type">number</span>
+
+
+        </li>
+    </ul>
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+        
+            
+<h4 class="name" id="volumePending"><span class="type-signature">(readonly) </span>volumePending<span class="type-signature"> :boolean</span></h4>
+
+
+
+
+<div class="description">
+    <p>Gets whether or not the speaker's volume value is currently being tweened.</p>
+</div>
+
+
+
+    <h5>Type:</h5>
+    <ul>
+        <li>
+            
+<span class="param-type">boolean</span>
+
+
+        </li>
+    </ul>
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+        
+    
+
+    
+        <h3 class="subsection-title">Methods</h3>
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id=".initializeService"><span class="type-signature">(static) </span>initializeService<span class="signature">(polly, presigner, version)</span><span class="type-signature"></span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    <p>Store Polly, Presigner and AWS SDK Version for use across all instances.</p>
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>polly</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><a href="external-Polly.html">external:Polly</a></span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>Polly instance to use to generate speechmarks.</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>presigner</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><a href="external-Presigner.html">external:Presigner</a></span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>Presigner instance to use to generate<br>
+audio URLs.</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>version</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>Version of the AWS SDK to use to validate voice options.</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id="discard"><span class="type-signature"></span>discard<span class="signature">()</span><span class="type-signature"></span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    <p>Clean up once the feature is no longer in use. Remove the feature namespace<br>
+from the host and remove reference to the host.</p>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-overrides">Overrides:</dt>
+    <dd class="tag-overrides"><ul class="dummy"><li>
+        <a href="AbstractHostFeature.html#discard">AbstractHostFeature#discard</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id="emit"><span class="type-signature"></span>emit<span class="signature">(message, value<span class="signature-attributes">opt</span>)</span><span class="type-signature"></span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    <p>Emit feature messages from the host. Feature messages will be prefixed with<br>
+the class name of the feature.</p>
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+        <th>Attributes</th>
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>message</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>The message to emit.</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>value</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">any</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>Optional parameter to pass to listener callbacks.</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-overrides">Overrides:</dt>
+    <dd class="tag-overrides"><ul class="dummy"><li>
+        <a href="AbstractHostFeature.html#emit">AbstractHostFeature#emit</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id="getEngineUserAgentString"><span class="type-signature"></span>getEngineUserAgentString<span class="signature">()</span><span class="type-signature"></span></h4>
+    
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    <p>The useragent string for the engine you are using, e.g. 'babylonjs/5.1.0'</p>
+</div>
+
+
+
+    
+
+
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id="getVolume"><span class="type-signature"></span>getVolume<span class="signature">()</span><span class="type-signature"> &rarr; {number}</span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    <p>Gets the volume used for all audio clips played by the speaker.</p>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">number</span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id="installApi"><span class="type-signature"></span>installApi<span class="signature">()</span><span class="type-signature"></span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    <p>Adds a namespace to the host with the name of the feature to contain properties<br>
+and methods from the feature that users of the host need access to.</p>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-overrides">Overrides:</dt>
+    <dd class="tag-overrides"><ul class="dummy"><li>
+        <a href="AbstractHostFeature.html#installApi">AbstractHostFeature#installApi</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-see">See:</dt>
+    <dd class="tag-see">
+        <ul>
+            <li><a href="TextToSpeechFeature.html">TextToSpeechFeature</a></li>
+        </ul>
+    </dd>
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id="listenTo"><span class="type-signature"></span>listenTo<span class="signature">(message, callback)</span><span class="type-signature"></span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    <p>Listen to a feature message from the host object.</p>
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>message</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>Message to listen for.</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>callback</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">function</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>The callback to execute when the message is received.</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-overrides">Overrides:</dt>
+    <dd class="tag-overrides"><ul class="dummy"><li>
+        <a href="AbstractHostFeature.html#listenTo">AbstractHostFeature#listenTo</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id="pause"><span class="type-signature"></span>pause<span class="signature">()</span><span class="type-signature"></span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    <p>If a speech is currently playing, pause it at the current time.</p>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id="pauseVolume"><span class="type-signature"></span>pauseVolume<span class="signature">()</span><span class="type-signature"> &rarr; {boolean}</span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    <p>Pause interpolation happening on the speaker's volume property.</p>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">boolean</span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id="play"><span class="type-signature"></span>play<span class="signature">(text, config<span class="signature-attributes">opt</span>)</span><span class="type-signature"> &rarr; {<a href="Deferred.html">Deferred</a>}</span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    <p>Stop any speeches currently playing and play a new speech from the beginning.</p>
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+        <th>Attributes</th>
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>text</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>The text of the new speech to play.</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>config</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Object</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>Optional parameters for the speech.</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type"><a href="Deferred.html">Deferred</a></span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id="resume"><span class="type-signature"></span>resume<span class="signature">(text<span class="signature-attributes">opt</span>, config<span class="signature-attributes">opt</span>)</span><span class="type-signature"> &rarr; {<a href="Deferred.html">Deferred</a>}</span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    <p>Stop any speeches currently playing and resume a new speech from the current<br>
+time.</p>
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+        <th>Attributes</th>
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>text</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>The text of the new speech to play. If undefined and<br>
+there is a current speech that is paused, the current speech will be resumed.</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>config</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Object</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>Optional parameters for the speech.</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type"><a href="Deferred.html">Deferred</a></span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id="resumeVolume"><span class="type-signature"></span>resumeVolume<span class="signature">()</span><span class="type-signature"> &rarr; {boolean}</span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    <p>Resume any interpolation happening on the speaker's volume property.</p>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">boolean</span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id="setVolume"><span class="type-signature"></span>setVolume<span class="signature">(volume, seconds<span class="signature-attributes">opt</span>, easingFn<span class="signature-attributes">opt</span>)</span><span class="type-signature"> &rarr; {<a href="Deferred.html">Deferred</a>}</span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    <p>Updates the volume used for all audio clips played by the speaker over time.</p>
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+        <th>Attributes</th>
+        
+
+        
+        <th>Default</th>
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>volume</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+
+                
+
+                
+                </td>
+            
+
+            
+                <td class="default">
+                
+                </td>
+            
+
+            <td class="description last"><p>Target volume value.</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>seconds</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+                <td class="default">
+                
+                    0
+                
+                </td>
+            
+
+            <td class="description last"><p>Amount of time it will take to reach the target<br>
+volume.</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>easingFn</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">function</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+                <td class="default">
+                
+                </td>
+            
+
+            <td class="description last"><p>Easing function used for interpolation.</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type"><a href="Deferred.html">Deferred</a></span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id="stop"><span class="type-signature"></span>stop<span class="signature">()</span><span class="type-signature"></span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    <p>If a speech is currently playing, stop playback and reset time.</p>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id="stopListening"><span class="type-signature"></span>stopListening<span class="signature">(message, callback<span class="signature-attributes">opt</span>)</span><span class="type-signature"></span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    <p>Stop listening to a message from the host object.</p>
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+        <th>Attributes</th>
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>message</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>Message to stop listening for.</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>callback</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">function</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>Optional callback to remove. If none is defined,<br>
+remove all callbacks for the message.</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-overrides">Overrides:</dt>
+    <dd class="tag-overrides"><ul class="dummy"><li>
+        <a href="AbstractHostFeature.html#stopListening">AbstractHostFeature#stopListening</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id="stopListeningByRegexp"><span class="type-signature"></span>stopListeningByRegexp<span class="signature">(regexp, callback<span class="signature-attributes">opt</span>)</span><span class="type-signature"></span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    <p>Stop listening to a message matching the given regular expression from the<br>
+host object.</p>
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+        <th>Attributes</th>
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>regexp</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Regexp</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>The regular expression to stop listening for.</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>callback</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">function</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>Optional callback to remove. If none is defined,<br>
+remove all callbacks for the message.</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-overrides">Overrides:</dt>
+    <dd class="tag-overrides"><ul class="dummy"><li>
+        <a href="AbstractHostFeature.html#stopListeningByRegexp">AbstractHostFeature#stopListeningByRegexp</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id="stopListeningToAll"><span class="type-signature"></span>stopListeningToAll<span class="signature">()</span><span class="type-signature"></span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    <p>Stop listening to all messages.</p>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-overrides">Overrides:</dt>
+    <dd class="tag-overrides"><ul class="dummy"><li>
+        <a href="AbstractHostFeature.html#stopListeningToAll">AbstractHostFeature#stopListeningToAll</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id="update"><span class="type-signature"></span>update<span class="signature">(deltaTime)</span><span class="type-signature"></span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    <p>Update the currently playing speech.</p>
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>deltaTime</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>Time since the last update.</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-overrides">Overrides:</dt>
+    <dd class="tag-overrides"><ul class="dummy"><li>
+        <a href="AbstractHostFeature.html#update">AbstractHostFeature#update</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+    
+
+    
+
+    
+</article>
+
+</section>
+
+
+
+
+    </div>
+
+    <br class="clear" />
+
+    <footer></footer>
+
+    <script>
+      prettyPrint();
+    </script>
+    <script src="scripts/linenumber.js"></script>
+    <script src="scripts/toggle.js"></script>
+  </body>
+</html>

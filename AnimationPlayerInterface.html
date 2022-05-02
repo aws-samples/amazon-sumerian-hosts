@@ -1,0 +1,1985 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>JSDoc: Interface: AnimationPlayerInterface</title>
+
+    <script src="scripts/prettify/prettify.js"></script>
+    <script src="scripts/prettify/lang-css.js"></script>
+    <link
+      type="text/css"
+      rel="stylesheet"
+      href="styles/prettify-tomorrow.css"
+    />
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css" />
+
+    <style>
+      /** Caret/arrow for toggling nested lists */
+      .toggle:before {
+        display: inline-block;
+        width: 8px;
+        margin-right: 8px;
+        color: #99a7c2;
+        font-size: 50%;
+        vertical-align: middle;
+        margin-bottom: 0.5em;
+      }
+
+      .toggle {
+        cursor: pointer;
+      }
+
+      .toggle.opened:before {
+        content: '\25BC';
+      }
+
+      .toggle.closed:before {
+        content: '\25B6';
+      }
+
+      .toggle-reset:before {
+        content: '\2B6E';
+        color: #99a7c2;
+      }
+
+      /* Hide the nested list */
+      .nested {
+        display: none;
+      }
+
+      /* Show the nested list when the user clicks on the caret/arrow (with JavaScript) */
+      .active {
+        display: block;
+      }
+
+      #main {
+        float: right;
+      }
+
+      nav {
+        float: left;
+        border-right: 1px solid #ccc;
+        padding-right: 16px;
+        border-left: 0px;
+      }
+
+      .content .node {
+        padding-top: 8px;
+        padding-bottom: 8px;
+        padding-right: 4px;
+        padding-left: 16px;
+      }
+    </style>
+  </head>
+
+  <body>
+    <nav>
+      <h2><a href="index.html">Home</a></h2><h2><span class="toggle opened"></span></h2><div class="content active"><ul><li><ul><li class="node"><h3>Modules</h3><ul><li><a href="module-babylonjs_animpack.html">babylonjs/animpack</a></li><li><a href="module-babylonjs_awspack.html">babylonjs/awspack</a></li><li><a href="module-babylonjs_HOST.html">babylonjs/HOST</a></li><li><a href="module-core_animpack.html">core/animpack</a></li><li><a href="module-core_awspack.html">core/awspack</a></li><li><a href="module-core_HOST.html">core/HOST</a></li><li><a href="module-threejs_animpack.html">threejs/animpack</a></li><li><a href="module-threejs_awspack.html">threejs/awspack</a></li><li><a href="module-threejs_HOST.html">threejs/HOST</a></li></ul></li></ul></li><li><ul><li class="node"><h3>Externals</h3><ul><li><a href="external-_THREE.AnimationAction_.html">THREE.AnimationAction</a></li><li><a href="external-_THREE.AnimationMixer_.html">THREE.AnimationMixer</a></li><li><a href="external-_THREE.Audio_.html">THREE.Audio</a></li><li><a href="external-_THREE.AudioListener_.html">THREE.AudioListener</a></li><li><a href="external-_THREE.Clock_.html">THREE.Clock</a></li><li><a href="external-_THREE.Object3D_.html">THREE.Object3D</a></li><li><a href="external-_THREE.PositionalAudio_.html">THREE.PositionalAudio</a></li><li><a href="external-_THREE.REVISION_.html">THREE.REVISION</a></li><li><a href="external-Audio.html">Audio</a></li><li><a href="external-LexRuntime.html">LexRuntime</a></li><li><a href="external-Polly.html">Polly</a></li><li><a href="external-Presigner.html">Presigner</a></li><li><a href="external-Promise.html">Promise</a></li></ul></li></ul></li><li><ul><li class="node"><h3>Namespaces</h3><ul><li><a href="AnimationFeature.html">AnimationFeature</a></li><li><a href="GestureFeature.html">GestureFeature</a></li><li><a href="LipsyncFeature.html">LipsyncFeature</a></li><li><a href="module-core_animpack-Easing.html">Easing</a></li><li><a href="PointOfInterestFeature.html">PointOfInterestFeature</a></li><li><a href="TextToSpeechFeature.html">TextToSpeechFeature</a></li></ul></li></ul></li><li><ul><li class="node"><h3>Classes</h3><ul><li><a href="AbstractBlendState.html">AbstractBlendState</a></li><li><a href="AbstractHostFeature.html">AbstractHostFeature</a></li><li><a href="AbstractSpeech.html">AbstractSpeech</a></li><li><a href="AbstractState.html">AbstractState</a></li><li><a href="AbstractTextToSpeechFeature.html">AbstractTextToSpeechFeature</a></li><li><a href="AnimationLayer.html">AnimationLayer</a></li><li><a href="AnimationUtils.html">AnimationUtils</a></li><li><a href="babylonjs_AnimationFeature.html">babylonjs/AnimationFeature</a></li><li><a href="babylonjs_HostObject.html">babylonjs/HostObject</a></li><li><a href="babylonjs_LexFeature.html">babylonjs/LexFeature</a></li><li><a href="babylonjs_PointOfInterestFeature.html">babylonjs/PointOfInterestFeature</a></li><li><a href="babylonjs_SingleState.html">babylonjs/SingleState</a></li><li><a href="babylonjs_Speech.html">babylonjs/Speech</a></li><li><a href="babylonjs_TextToSpeechFeature.html">babylonjs/TextToSpeechFeature</a></li><li><a href="Blend1dState.html">Blend1dState</a></li><li><a href="Blend2dState.html">Blend2dState</a></li><li><a href="core_AnimationFeature.html">core/AnimationFeature</a></li><li><a href="core_GestureFeature.html">core/GestureFeature</a></li><li><a href="core_HostObject.html">core/HostObject</a></li><li><a href="core_LexFeature.html">core/LexFeature</a></li><li><a href="core_LipsyncFeature.html">core/LipsyncFeature</a></li><li><a href="core_Messenger.html">core/Messenger</a></li><li><a href="core_PointOfInterestFeature.html">core/PointOfInterestFeature</a></li><li><a href="core_SingleState.html">core/SingleState</a></li><li><a href="core_Speech.html">core/Speech</a></li><li><a href="core_TextToSpeechFeature.html">core/TextToSpeechFeature</a></li><li><a href="Deferred.html">Deferred</a></li><li><a href="FreeBlendState.html">FreeBlendState</a></li><li><a href="LexUtils.html">LexUtils</a></li><li><a href="MathUtils.html">MathUtils</a></li><li><a href="QueueState.html">QueueState</a></li><li><a href="RandomAnimationState.html">RandomAnimationState</a></li><li><a href="TextToSpeechUtils.html">TextToSpeechUtils</a></li><li><a href="threejs_AnimationFeature.html">threejs/AnimationFeature</a></li><li><a href="threejs_HostObject.html">threejs/HostObject</a></li><li><a href="threejs_LexFeature.html">threejs/LexFeature</a></li><li><a href="threejs_PointOfInterestFeature.html">threejs/PointOfInterestFeature</a></li><li><a href="threejs_SingleState.html">threejs/SingleState</a></li><li><a href="threejs_Speech.html">threejs/Speech</a></li><li><a href="threejs_TextToSpeechFeature.html">threejs/TextToSpeechFeature</a></li><li><a href="TransitionState.html">TransitionState</a></li><li><a href="Utils.html">Utils</a></li></ul></li></ul></li><li><ul><li class="node"><h3>Interfaces</h3><ul><li><a href="AnimationFeatureDependentInterface.html">AnimationFeatureDependentInterface</a></li><li><a href="AnimationPlayerInterface.html">AnimationPlayerInterface</a></li><li><a href="FeatureDependentInterface.html">FeatureDependentInterface</a></li><li><a href="ManagedAnimationLayerInterface.html">ManagedAnimationLayerInterface</a></li><li><a href="SSMLSpeechmarkInterface.html">SSMLSpeechmarkInterface</a></li><li><a href="StateContainerInterface.html">StateContainerInterface</a></li><li><a href="TextToSpeechFeatureDependentInterface.html">TextToSpeechFeatureDependentInterface</a></li></ul></li></ul></li><h3>Global</h3><ul><li><a href="global.html#AnimationTypes">AnimationTypes</a></li><li><a href="global.html#AxisMap">AxisMap</a></li><li><a href="global.html#Back">Back</a></li><li><a href="global.html#Bounce">Bounce</a></li><li><a href="global.html#Circular">Circular</a></li><li><a href="global.html#Cubic">Cubic</a></li><li><a href="global.html#DefaultGestureWords">DefaultGestureWords</a></li><li><a href="global.html#DefaultLayerBlendMode">DefaultLayerBlendMode</a></li><li><a href="global.html#DefaultVisemeMap">DefaultVisemeMap</a></li><li><a href="global.html#Elastic">Elastic</a></li><li><a href="global.html#env">env</a></li><li><a href="global.html#Exponential">Exponential</a></li><li><a href="global.html#LayerBlendModes">LayerBlendModes</a></li><li><a href="global.html#Linear">Linear</a></li><li><a href="global.html#Quadratic">Quadratic</a></li><li><a href="global.html#Quartic">Quartic</a></li><li><a href="global.html#Quintic">Quintic</a></li><li><a href="global.html#Sinusoidal">Sinusoidal</a></li><li><a href="global.html#validateBlendMode">validateBlendMode</a></li></ul></ul></div>
+    </nav>
+
+    <div id="main">
+      <h1 class="page-title">Interface: AnimationPlayerInterface</h1>
+
+      
+
+
+
+
+<section>
+
+<header>
+    
+        <h2>AnimationPlayerInterface</h2>
+        
+            <div class="class-description"><p>Class factory interface for controlling playback of a collection of animations.<br>
+One animation can be played at any given time, crossfading between animations<br>
+will result in playing a <a href="TransitionState.html">TransitionState</a>.</p></div>
+        
+    
+</header>
+
+<article>
+    <div class="container-overview">
+    
+        
+
+        
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+        
+    
+    </div>
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+        <h3 class="subsection-title">Members</h3>
+
+        
+            
+<h4 class="name" id="currentAnimation"><span class="type-signature">(readonly) </span>currentAnimation<span class="type-signature"> :string</span></h4>
+
+
+
+
+<div class="description">
+    <p>Gets the name of the state the layer is currently in control of.</p>
+</div>
+
+
+
+    <h5>Type:</h5>
+    <ul>
+        <li>
+            
+<span class="param-type">string</span>
+
+
+        </li>
+    </ul>
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+        
+            
+<h4 class="name" id="currentState"><span class="type-signature">(readonly) </span>currentState<span class="type-signature"> :<a href="AbstractState.html">AbstractState</a></span></h4>
+
+
+
+
+<div class="description">
+    <p>Gets the state the layer is currently in control of.</p>
+</div>
+
+
+
+    <h5>Type:</h5>
+    <ul>
+        <li>
+            
+<span class="param-type"><a href="AbstractState.html">AbstractState</a></span>
+
+
+        </li>
+    </ul>
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+        
+            
+<h4 class="name" id="easingFn"><span class="type-signature"></span>easingFn<span class="type-signature"> :function</span></h4>
+
+
+
+
+<div class="description">
+    <p>Gets and sets the default easing function to use when transitioning and<br>
+setting weights.</p>
+</div>
+
+
+
+    <h5>Type:</h5>
+    <ul>
+        <li>
+            
+<span class="param-type">function</span>
+
+
+        </li>
+    </ul>
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+        
+            
+<h4 class="name" id="isTransitioning"><span class="type-signature">(readonly) </span>isTransitioning<span class="type-signature"> :boolean</span></h4>
+
+
+
+
+<div class="description">
+    <p>Gets whether or not the layer is currently transitioning to a new animation.</p>
+</div>
+
+
+
+    <h5>Type:</h5>
+    <ul>
+        <li>
+            
+<span class="param-type">boolean</span>
+
+
+        </li>
+    </ul>
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+        
+            
+<h4 class="name" id="paused"><span class="type-signature">(readonly) </span>paused<span class="type-signature"> :boolean</span></h4>
+
+
+
+
+<div class="description">
+    <p>Gets whether or not the player is updating states.</p>
+</div>
+
+
+
+    <h5>Type:</h5>
+    <ul>
+        <li>
+            
+<span class="param-type">boolean</span>
+
+
+        </li>
+    </ul>
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+        
+            
+<h4 class="name" id="transitionTime"><span class="type-signature"></span>transitionTime<span class="type-signature"> :number</span></h4>
+
+
+
+
+<div class="description">
+    <p>Gets and sets the default number of seconds it takes to transition to a new<br>
+animation.</p>
+</div>
+
+
+
+    <h5>Type:</h5>
+    <ul>
+        <li>
+            
+<span class="param-type">number</span>
+
+
+        </li>
+    </ul>
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+        
+    
+
+    
+        <h3 class="subsection-title">Methods</h3>
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id=".Mixin"><span class="type-signature">(static) </span>Mixin<span class="signature">(BaseClass<span class="signature-attributes">opt</span>)</span><span class="type-signature"> &rarr; {Class}</span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    <p>Creates a class that implements <a href="AnimationPlayerInterface.html">AnimationPlayerInterface</a> and extends<br>
+a specified base class.</p>
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+        <th>Attributes</th>
+        
+
+        
+        <th>Default</th>
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>BaseClass</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Class</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+                <td class="default">
+                
+                    class{}
+                
+                </td>
+            
+
+            <td class="description last"><p>The class to extend.</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    <p>A class that extends <code>BaseClass</code> and implements <a href="AnimationPlayerInterface.html">AnimationPlayerInterface</a>.</p>
+</div>
+
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">Class</span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id="cancelAnimation"><span class="type-signature"></span>cancelAnimation<span class="signature">()</span><span class="type-signature"> &rarr; {boolean}</span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    <p>Cancel playback of the current animation.</p>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">boolean</span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id="discard"><span class="type-signature"></span>discard<span class="signature">()</span><span class="type-signature"></span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    <p>Discard the transition state.</p>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id="pauseAnimation"><span class="type-signature"></span>pauseAnimation<span class="signature">()</span><span class="type-signature"> &rarr; {boolean}</span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    <p>Pause playback of the current animation.</p>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">boolean</span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id="playAnimation"><span class="type-signature"></span>playAnimation<span class="signature">(name, transitionTime<span class="signature-attributes">opt</span>, easingFn<span class="signature-attributes">opt</span>, onFinish<span class="signature-attributes">opt</span>, onError<span class="signature-attributes">opt</span>, onCancel<span class="signature-attributes">opt</span>, onNext<span class="signature-attributes">opt</span>)</span><span class="type-signature"> &rarr; {<a href="Deferred.html">Deferred</a>}</span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    <p>Start playback an animation from the beginning.</p>
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+        <th>Attributes</th>
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>name</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>Name of the animation to play.</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>transitionTime</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>Amount of time it will take before the<br>
+new state has full influence for the layer.</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>easingFn</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">function</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>Easing function to use for blending if transitionTime<br>
+is greater than zero.</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>onFinish</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">function</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>Function to execute when the animation finishes.</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>onError</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">function</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>Function to execute if the animation encounters<br>
+an error during playback.</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>onCancel</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">function</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>Function to execute if playback is canceled.</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>onNext</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">function</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>Function to execute if an animation queue is<br>
+played and it advances to the next animation.</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type"><a href="Deferred.html">Deferred</a></span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id="resumeAnimation"><span class="type-signature"></span>resumeAnimation<span class="signature">(name<span class="signature-attributes">opt</span>, transitionTime<span class="signature-attributes">opt</span>, onFinish<span class="signature-attributes">opt</span>, onError<span class="signature-attributes">opt</span>, onCancel<span class="signature-attributes">opt</span>, onNext<span class="signature-attributes">opt</span>)</span><span class="type-signature"> &rarr; {<a href="Deferred.html">Deferred</a>}</span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    <p>Resume playback of an animation.</p>
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+        <th>Attributes</th>
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>name</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>Name of the animation to resume playback for. Default<br>
+is the layer's current animation name.</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>transitionTime</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>Amount of time it will take before the<br>
+new state has full influence for the layer.</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>onFinish</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">function</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>Function to execute when the state finishes.</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>onError</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">function</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>Function to execute if the state encounters<br>
+an error during playback.</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>onCancel</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">function</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>Function to execute if playback is canceled.</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>onNext</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">function</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>Function to execute if an animation queue is<br>
+played and it advances to the next animation.</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type"><a href="Deferred.html">Deferred</a></span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id="stopAnimation"><span class="type-signature"></span>stopAnimation<span class="signature">()</span><span class="type-signature"> &rarr; {boolean}</span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    <p>Stop playback of the current animation.</p>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">boolean</span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id="update"><span class="type-signature"></span>update<span class="signature">(deltaTime)</span><span class="type-signature"></span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    <p>Update the current animation.</p>
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>deltaTime</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>Time in milliseconds since the last update.</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+    
+
+    
+
+    
+</article>
+
+</section>
+
+
+
+
+    </div>
+
+    <br class="clear" />
+
+    <footer></footer>
+
+    <script>
+      prettyPrint();
+    </script>
+    <script src="scripts/linenumber.js"></script>
+    <script src="scripts/toggle.js"></script>
+  </body>
+</html>
