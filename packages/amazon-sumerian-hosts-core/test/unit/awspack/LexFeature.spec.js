@@ -29,7 +29,11 @@ describeEnvironment('LexFeature', () => {
 
       lexFeature = new LexFeature(mockLexRuntime);
 
-      expect(mockLexRuntime.config.customUserAgent).toEqual(sumerianUserAgent);
+      expect(mockLexRuntime.config.customUserAgent).toContain(
+        sumerianUserAgent
+      );
+
+      expect(mockLexRuntime.config.customUserAgent).toContain('UnknownEngine');
     });
 
     it('should append sumerian designated value to user defined LexRuntime service customUserAgent', () => {
@@ -40,7 +44,7 @@ describeEnvironment('LexFeature', () => {
 
       lexFeature = new LexFeature(mockLexRuntime);
 
-      expect(mockLexRuntime.config.customUserAgent).toEqual(
+      expect(mockLexRuntime.config.customUserAgent).toContain(
         `UserDefined ${sumerianUserAgent}`
       );
     });
