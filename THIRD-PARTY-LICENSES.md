@@ -211,6 +211,7 @@
 ------
 
 ** @babylonjs/core; version 4.2.1 -- https://github.com/BabylonJS/Babylon.js
+** @babylonjs/core; version ^5.0.0 -- https://github.com/BabylonJS/Babylon.js
 ** @babylonjs/loaders; version 4.2.1 -- https://github.com/BabylonJS/Babylon.js
  
 Apache License 2.0 (Apache)
