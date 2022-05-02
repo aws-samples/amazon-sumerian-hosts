@@ -4,7 +4,7 @@ Each integration test contains an end to end example focusing on a single Host f
 
 ## Prerequisites
 
-In order for the integration tests to be runnable you will need to set up a few things in your AWS account. For step-by-step instructions on setting up this required infrastructure, see [AWS-Infrastructure-Setup.md](https://github.com/aws-samples/amazon-sumerian-hosts/tree/mainline/AWS-Infrastructure-Setup.md) in the root of this repository.
+In order for the integration tests to be runnable you will need to set up a few things in your AWS account. For step-by-step instructions on setting up this required infrastructure, see [AWS-Infrastructure-Setup.md](https://github.com/aws-samples/amazon-sumerian-hosts/tree/mainline2.0/AWS-Infrastructure-Setup.md) in the root of this repository.
 
 ## Local Environment Setup
 

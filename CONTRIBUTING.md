@@ -105,7 +105,7 @@ See the README within `packages/amazon-sumerian-hosts-three/` for instructions o
 
 Contributions via pull requests are much appreciated. Before sending us a pull request, please ensure that:
 
-1. You are working against the latest source on the *mainline* branch.
+1. You are working against the latest source on the *mainline2.0* branch.
 2. You check existing open and recently merged pull requests to make sure someone else hasn't addressed the problem already.
 3. You open an issue to discuss any significant work - we would hate for your time to be wasted.
 
@@ -131,7 +131,7 @@ The `@amazon-sumerian-hosts/core`, `@amazon-sumerian-hosts/babylon`, and `@amazo
 1. Update the package.json for each package with new version number using [semantic versioning](https://semver.org/). All packages should always share the same version number.
 2. Create a new release using the GitHub.com console. See [previous releases](https://github.com/aws-samples/amazon-sumerian-hosts/releases) for reference.
 	1. In the release creation form, create a new repository tag labeling it using the package version number prefixed with "v". *Example: "v2.1.3"*
-	2. Set the target of the release to the `mainline` branch.
+	2. Set the target of the release to the `mainline2.0` branch.
 	3. Set the title of the release to match the tag name. *Example: "v2.1.3"*
 	4. In the release description field, add a heading in the form **"Host Release *{version number}* - *{Reason for Release}*"**. Example: *"Host Release 1.3.1 - Bug Fixes"*
 	5. Append all significant changes as bullet points.

@@ -4,7 +4,7 @@ For a general introduction to Amazon Sumerian Hosts as well as other example imp
 
 Amazon Sumerian Hosts (Hosts) is an experimental open source project that aims to make it easy to create interactive animated 3D characters that can be rendered on the Web and leverage AWS Services such as [Amazon Polly](https://aws.amazon.com/polly/) and [Amazon Lex](https://aws.amazon.com/lex/). This integration of the core library with [Babylon.js](https://www.babylonjs.com/) includes everything you need to get started with Hosts utilizing Babylon.js. 
 
-See the [Getting Started](#Getting-Started) guide for the usage instructions and the [API Documentation](https://aws-samples.github.io/amazon-sumerian-hosts/) for more detailed information on the classes and methods available. Amazon Sumerian Hosts is a published [npm](https://www.npmjs.com/) package, so alternatively you can install in an existing Node.js project by running `npm install --save-dev @amazon-sumerian-hosts/babylon`. If you'd like to pull the gitub repository and create your own build, see [Building the Repository](https://github.com/aws-samples/amazon-sumerian-hosts/blob/mainline/README.md#building-the-repository) for prerequisites and instructions on how to do that.
+See the [Getting Started](#Getting-Started) guide for the usage instructions and the [API Documentation](https://aws-samples.github.io/amazon-sumerian-hosts/) for more detailed information on the classes and methods available. Amazon Sumerian Hosts is a published [npm](https://www.npmjs.com/) package, so alternatively you can install in an existing Node.js project by running `npm install --save-dev @amazon-sumerian-hosts/babylon`. If you'd like to pull the gitub repository and create your own build, see [Building the Repository](https://github.com/aws-samples/amazon-sumerian-hosts/blob/mainline2.0/README.md#building-the-repository) for prerequisites and instructions on how to do that.
 
 ## License
 
@@ -16,11 +16,11 @@ The easiest way to get started using the hosts is by using Babylon.JS Editor wit
 
 If you do not wish to use the Babylon.JS Editor, the following guide steps you through minimum code required to use hosts in Babylon.js.
 
-More details can be found in [demos-babylon](https://github.com/aws-samples/amazon-sumerian-hosts/tree/mainline/packages/demos-babylon), an example package demonstrating the features, such as animation and speaking user-entered text, of the Sumerian Host characters running in Babylon.js.
+More details can be found in [demos-babylon](https://github.com/aws-samples/amazon-sumerian-hosts/tree/mainline2.0/packages/demos-babylon), an example package demonstrating the features, such as animation and speaking user-entered text, of the Sumerian Host characters running in Babylon.js.
 
 ## Prerequisites
 
-Before you use Hosts in your applications, you will need to set up a few thing in your AWS account. For step-by-step instructions on setting up this required infrastructure, see [AWS-Infrastructure-Setup.md](https://github.com/aws-samples/amazon-sumerian-hosts/tree/mainline/AWS-Infrastructure-Setup.md) in the root of this repository.
+Before you use Hosts in your applications, you will need to set up a few thing in your AWS account. For step-by-step instructions on setting up this required infrastructure, see [AWS-Infrastructure-Setup.md](https://github.com/aws-samples/amazon-sumerian-hosts/tree/mainline2.0/AWS-Infrastructure-Setup.md) in the root of this repository.
 
 ### Configurating the AWS SDK
 
