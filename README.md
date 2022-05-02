@@ -1,3 +1,7 @@
+# DEPRECATED
+
+This branch deprecated in favor https://github.com/aws-samples/amazon-sumerian-hosts/tree/mainline2.0, please see https://github.com/aws-samples/amazon-sumerian-hosts/tree/mainline2.0#readme for more details.
+
 # Amazon Sumerian Hosts
 
 Amazon Sumerian Hosts is an experimental open source project that aims to make it easy to create interactive animated 3D characters that can be rendered on the Web and leverage AWS Services such as [Amazon Polly](https://aws.amazon.com/polly/). It defines a Javascript API for managing animations, synthesizing and playing speech with Amazon Polly, and generating lipsync animation at runtime in sync with Polly generated audio. The core API can be extended to support the Web rendering engine of your choice. We have included support for both [three.js](https://threejs.org/) and [Babylon.js](https://www.babylonjs.com/) as examples of how to do this.
