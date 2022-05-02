@@ -118,7 +118,7 @@ Our example is going to load several glTF assets so there will be a short time w
   ```
 
 The result should look like this:
-![Load Screen](docs/images/loadscreen.png)
+![Load Screen](https://raw.githubusercontent.com/aws-samples/amazon-sumerian-hosts/mainline2.0/docs_template/static/images/loadscreen.png)
 
 ### Step 3. Create the text to speech controls
 
@@ -168,7 +168,7 @@ Our hosts will need some text input so we can tell them what to say, as well as 
 </div>
 ```
 
-![Controls](docs/images/three_controls.png)
+![Controls](https://raw.githubusercontent.com/aws-samples/amazon-sumerian-hosts/mainline2.0/docs_template/static/images/three_controls.png)
 
 Now we will move onto the contents of the example [script](https://developer.mozilla.org/en-US/docs/Web/API/HTMLScriptElement) tag.
 
@@ -317,9 +317,9 @@ character2.position.set(-0.5, 0, 0);
 character2.rotateY(0.5);
 ```
 
-![Luke](docs/images/luke.png)
+![Luke](https://raw.githubusercontent.com/aws-samples/amazon-sumerian-hosts/mainline2.0/docs_template/static/images/luke.png)
 
-![Alien](docs/images/alien.png)
+![Alien](https://raw.githubusercontent.com/aws-samples/amazon-sumerian-hosts/mainline2.0/docs_template/static/images/alien.png)
 
 Here is where we load the glTF assets we defined in Step 7. `loadCharacter` is an asynchronous function that uses the three.js GLTFLoader to load glTF asset as three.js objects and add them to the scene. See the [three.js documentation](https://threejs.org/docs/#examples/en/loaders/GLTFLoader) for more detailed information on loading glTF assets. Once the assets are loaded, we adjust their positions and rotations so they are standing next to and slightly facing each other.
 
@@ -737,7 +737,7 @@ The last animation layer we'll add is optional, it is not needed for all of the 
   When the LipsyncFeature catches play and resume speech events from the TextToSpeechFeature, it will blend the weight of any viseme or talking layers defined in `visemeOptions` and `talkingOptions` to 1 and play the animation defined for the layer. When it catches pause or stop events it will blend the weights back to 0. The `blendTime` and `easingFn` inputs define how long that transition will take and the type of blending function that will be used.
 
   Here's a look at each of the viseme poses. There is also an additional pose called 'sil', which is just the default neutral pose.
-  ![Visemes](docs/images/luke_visemes.png)
+  ![Visemes](https://raw.githubusercontent.com/aws-samples/amazon-sumerian-hosts/mainline2.0/docs_template/static/images/luke_visemes.png)
 
 - ```javascript
   // Set up Gestures
@@ -782,13 +782,13 @@ The last animation layer we'll add is optional, it is not needed for all of the 
   We pass in our `poiConfig` object to the look layer configuration to tell the feature which layers and animations will be driven by calculated look angles. Although it is optional, we also pass in our blink layer and animation. This allows the `PointOfInterestFeature` to trigger blink animations when the target moves a large amount over a short period of time.
 
   **Head**
-  ![POI Head](docs/images/luke_poi_head.png)
+  ![POI Head](https://raw.githubusercontent.com/aws-samples/amazon-sumerian-hosts/mainline2.0/docs_template/static/images/luke_poi_head.png)
 
   **Eyes**
-  ![POI Eyes](docs/images/luke_poi_eyes.png)
+  ![POI Eyes](https://raw.githubusercontent.com/aws-samples/amazon-sumerian-hosts/mainline2.0/docs_template/static/images/luke_poi_eyes.png)
 
   **Eyebrows**
-  ![POI Eyebrows](docs/images/luke_poi_brows.png)
+  ![POI Eyebrows](https://raw.githubusercontent.com/aws-samples/amazon-sumerian-hosts/mainline2.0/docs_template/static/images/luke_poi_brows.png)
 
 We have now added all of the host features necessary to simulate animated speech with body gestures and object tracking. Next we'll jump back up to the main function to finish finalizing the scene. 
 
@@ -993,7 +993,7 @@ Here we will populate the empty emote selector we created earlier with the names
 
 You've now created everything necessary to load host glTF assets into the three.js rendering engine and animate them along with audio generated in Amazon Polly. The finished script (minus the Cognito Identity Pool ID) can be found in the `amazon-sumerian-hosts/examples/` directory. Run the script on a web server and give it a try. For information on how to run things locally, see the [three.js documentation](https://threejs.org/docs/#manual/en/introduction/How-to-run-things-locally).
 
-![Final](docs/images/three_final.png)
+![Final](https://raw.githubusercontent.com/aws-samples/amazon-sumerian-hosts/mainline2.0/docs_template/static/images/three_final.png)
 
 ### Step 17. Next Steps
 Now that you've demonstrated your hosts running locally, consider publishing them to the web via one of these related tutorials:
