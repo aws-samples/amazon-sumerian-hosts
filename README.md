@@ -2,7 +2,7 @@
 
 Amazon Sumerian Hosts (Hosts) is an experimental open source project that aims to make it easy to create interactive animated 3D characters for Babylon.js, three.js, and other web 3D frameworks. It leverages AWS services including [Amazon Polly](https://aws.amazon.com/polly/) (text-to-speech) and [Amazon Lex](https://aws.amazon.com/lex/) (chatbot).
 
-![Hosts](docs/images/hosts_cover.jpg)
+![Hosts](docs_template/static/images/hosts_cover.jpg)
 
 Hosts provides a Javascript API for managing animations, synthesizing and playing speech with Amazon Polly, generating lipsync animation at runtime, and interacting with an Amazon Lex chatbot. The project is divided into four packages:
 * [@amazon-sumerian-hosts/core](packages/amazon-sumerian-hosts-core) is the core API that can be extended to support the web rendering engine of your choice
