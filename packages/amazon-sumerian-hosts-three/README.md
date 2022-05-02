@@ -16,7 +16,7 @@ This guide steps you through the code of the [examples/three.html](examples/thre
 
 ## [Prerequisites](#Prerequisites)
 
-Before you can run the example, you will need to set up a few thing in your AWS account. For step-by-step instructions on setting up this required infrastructure, see [AWS-Infrastructure-Setup.md](../../AWS-Infrastructure-Setup.md) in the root of this repository.
+Before you can run the example, you will need to set up a few thing in your AWS account. For step-by-step instructions on setting up this required infrastructure, see [AWS-Infrastructure-Setup.md](https://github.com/aws-samples/amazon-sumerian-hosts/tree/mainline/AWS-Infrastructure-Setup.md) in the root of this repository.
 
 ## [Getting started in three.js](#Getting-started-in-three.js)
 

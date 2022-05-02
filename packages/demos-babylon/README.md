@@ -1,10 +1,10 @@
-# Sumerian Host Babylon.js Demos
+# Amazon Sumerian Host Babylon.js Demos
 
-This directory contains a number of demonstrations, each focused on a different feature of the Sumerian Hosts API.
+This directory contains a number of demonstrations, each focused on a different feature of the Hosts API.
 
 ## Prerequisites
 
-Before you can run the demos, you will need to set up a few thing in your AWS account. For step-by-step instructions on setting up this required infrastructure, see [AWS-Infrastructure-Setup.md](../../../../AWS-Infrastructure-Setup.md) in the root of this repository.
+Before you can run the demos, you will need to set up a few thing in your AWS account. For step-by-step instructions on setting up this required infrastructure, see [AWS-Infrastructure-Setup.md](https://github.com/aws-samples/amazon-sumerian-hosts/tree/mainline/AWS-Infrastructure-Setup.md) in the root of this repository.
 
 ## Local Environment Setup
 
@@ -13,13 +13,6 @@ In a terminal on your local machine, navigate to the repository root directory a
 ```
 npm install
 ```
-
-Open the `demo-credentials.js` file in the root of the repository for editing.
-
-Set the `cognitoIdentityPoolId` value to the Cognito Identity Pool you created above. 
-
-Save the edits you made to the `demo-credentials.js` file.
-
 
 ## Running the demos
 

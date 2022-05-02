@@ -101,7 +101,7 @@ See the README within `packages/demos-babylon/` for instructions on how to set u
 
 See the README within `packages/amazon-sumerian-hosts-three/` for instructions on how to set up and run the included Three.js example.
 
-### Contributing via Pull Requests
+### Submitting Pull Requests
 
 Contributions via pull requests are much appreciated. Before sending us a pull request, please ensure that:
 

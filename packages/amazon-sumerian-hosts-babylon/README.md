@@ -2,7 +2,7 @@
 
 For a general introduction to Amazon Sumerian Hosts as well as other example implementations of utilizing the core package, refer to the [primary repository](https://github.com/aws-samples/amazon-sumerian-hosts)
 
-Amazon Sumerian Hosts is an experimental open source project that aims to make it easy to create interactive animated 3D characters that can be rendered on the Web and leverage AWS Services such as [Amazon Polly](https://aws.amazon.com/polly/) and [Amazon Lex](https://aws.amazon.com/lex/). This integration of the core library with [Babylon.js](https://www.babylonjs.com/) includes everything you need to get started with Amazon Sumerian Hosts utilizing Babylon.js. 
+Amazon Sumerian Hosts (Hosts) is an experimental open source project that aims to make it easy to create interactive animated 3D characters that can be rendered on the Web and leverage AWS Services such as [Amazon Polly](https://aws.amazon.com/polly/) and [Amazon Lex](https://aws.amazon.com/lex/). This integration of the core library with [Babylon.js](https://www.babylonjs.com/) includes everything you need to get started with Hosts utilizing Babylon.js. 
 
 See the [Getting Started](#Getting-Started) guide for the usage instructions and the [API Documentation](https://aws-samples.github.io/amazon-sumerian-hosts/) for more detailed information on the classes and methods available. Amazon Sumerian Hosts is a published [npm](https://www.npmjs.com/) package, so alternatively you can install in an existing Node.js project by running `npm install --save-dev @amazon-sumerian-hosts/babylon`. If you'd like to pull the gitub repository and create your own build, see [Building the Repository](https://github.com/aws-samples/amazon-sumerian-hosts/blob/mainline/README.md#building-the-repository) for prerequisites and instructions on how to do that.
 
@@ -18,28 +18,25 @@ If you do not wish to use the Babylon.JS Editor, the following guide steps you t
 
 More details can be found in [demos-babylon](https://github.com/aws-samples/amazon-sumerian-hosts/tree/mainline/packages/demos-babylon), an example package demonstrating the features, such as animation and speaking user-entered text, of the Sumerian Host characters running in Babylon.js.
 
-## [Prerequisites](#Prerequisites)
+## Prerequisites
 
-- Complete steps 1 & 2 of the [AWS SDK for Javascript Getting Started in a Browser Script](https://docs.aws.amazon.com/sdk-for-javascript/v2/developer-guide/getting-started-browser.html) tutorial to generate an Amazon Cognito Identity Pool with an Amazon Polly policy to enable browser script access to Amazon Polly.
-- Be familiar with how to create a scene in [Babylon.js](https://www.babylonjs.com/) Web rendering engine. 
-  - [Creating a scene in Babylon.js](https://doc.babylonjs.com/babylon101/first#your-own-html)
-
-## [Getting started in Babylon.js](#Getting-started-in-Babylon.js) 
+Before you use Hosts in your applications, you will need to set up a few thing in your AWS account. For step-by-step instructions on setting up this required infrastructure, see [AWS-Infrastructure-Setup.md](https://github.com/aws-samples/amazon-sumerian-hosts/tree/mainline/AWS-Infrastructure-Setup.md) in the root of this repository.
 
 ### Configurating the AWS SDK
+
 ## Configuring Webpack
 
 We recommend using a module bundler such as [Webpack](https://webpack.js.org/) to package and distribute your code. As BabylonJS relies on static singletons for certain features, it may be necessary to configure Webpack so that all modules and submodules use the same instance of BabylonJS. Add the following to `module.exports.resolve`:
 
 ```
-		resolve: {
-			...
-			modules: ['node_modules'],
-			alias: {
-			    // configure all modules to point at the same instance of BabylonJS
-			    '@babylonjs/core': path.resolve('./node_modules/@babylonjs/core')
-			}
-		},
+resolve: {
+  ...
+  modules: ['node_modules'],
+  alias: {
+      // configure all modules to point at the same instance of BabylonJS
+      '@babylonjs/core': path.resolve('./node_modules/@babylonjs/core')
+  }
+},
 
 ```
 

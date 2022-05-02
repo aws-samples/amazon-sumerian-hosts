@@ -1,14 +1,14 @@
 # Amazon Sumerian Hosts
 
-Amazon Sumerian Hosts is an experimental open source project that aims to make it easy to create interactive animated 3D characters for Babylon.js, three.js, and other web 3D frameworks. It leverages AWS services including [Amazon Polly](https://aws.amazon.com/polly/) (text-to-speech) and [Amazon Lex](https://aws.amazon.com/lex/) (chatbot).
+Amazon Sumerian Hosts (Hosts) is an experimental open source project that aims to make it easy to create interactive animated 3D characters for Babylon.js, three.js, and other web 3D frameworks. It leverages AWS services including [Amazon Polly](https://aws.amazon.com/polly/) (text-to-speech) and [Amazon Lex](https://aws.amazon.com/lex/) (chatbot).
 
 ![Hosts](docs/images/hosts_cover.jpg)
 
-Sumerian Hosts provides a Javascript API for managing animations, synthesizing and playing speech with Amazon Polly, generating lipsync animation at runtime, and interacting with an Amazon Lex chatbot. The project is divided into four packages:
+Hosts provides a Javascript API for managing animations, synthesizing and playing speech with Amazon Polly, generating lipsync animation at runtime, and interacting with an Amazon Lex chatbot. The project is divided into four packages:
 * [@amazon-sumerian-hosts/core](packages/amazon-sumerian-hosts-core) is the core API that can be extended to support the web rendering engine of your choice
 * [@amazon-sumerian-hosts/babylon](packages/amazon-sumerian-hosts-babylon) is an integration of the core library with [Babylon.js](https://www.babylonjs.com/)
 * [@amazon-sumerian-hosts/three](packages/amazon-sumerian-hosts-three) is an integration of the core library with [three.js](https://threejs.org/)
-* [demos-babylon](packages/demos-babylon) contains a number of demo applications built with Babylon.js, each focused on a different feature of the Sumerian Hosts API
+* [demos-babylon](packages/demos-babylon) contains a number of demo applications built with Babylon.js, each focused on a different feature of the Hosts API
 
 
 ## License
@@ -17,20 +17,20 @@ This library is licensed under the MIT-0 License. See the [LICENSE](LICENSE) fil
 
 ## Usage
 
-There are a number of ways to start using Amazon Sumerian Hosts in your own projects.
+There are a number of ways to start using Hosts in your own projects.
 
-#### Via plugins for the Babylon.js Editor
+#### Using plugins for the Babylon.JS Editor
 
-The easiest way to get started using the hosts is by using plugins we provide for the [Babylon.js Editor](http://editor.babylonjs.com/):
+The easiest way to get started using the hosts is by using plugins we provide for the [Babylon.JS Editor](http://editor.babylonjs.com/):
 
-- "Open Source Hosts plugin" for importing Amazon Sumerian Hosts into Babylon.js Editor projects
+- "Open Source Hosts plugin" for importing Amazon Sumerian Hosts into Babylon.JS Editor projects
 - "AWS Amplify Publisher plugin" for easily publishing to the web directly from the editor. 
 
 Visit the [aws-tools-for-babylonjs-editor](https://github.com/aws-samples/aws-tools-for-babylonjs-editor/blob/main/README.md) repository for more details.
 
-#### Via pre-built NPM modules
+#### Using pre-built NPM modules
 
-If you are creating applications outside of the Babylon.js Editor, you can easily install the relevant Hosts module using NPM.
+If you are creating applications outside of the Babylon.JS Editor, you can easily install the relevant Hosts module using NPM.
 
 For Babylon.js projects use:
 
@@ -48,17 +48,17 @@ For further details on how to integrate Hosts into your own projects, reference 
 
 For full detail on the classes and methods available, see the [API Documentation](https://aws-samples.github.io/amazon-sumerian-hosts/)
 
-#### Via building from source
+#### Building from source
 
 Building from source is considered an advanced option. It is not recommended unless you need to heavily customize the core Hosts functionality. Instructions on how to build from source can be found in the [CONTRIBUTING](CONTRIBUTING.md) document.
 
 ## Demos
 
-The included demos are the easiest way understand the capabilities of Sumerian Hosts and to start learning to build your own Sumerian Hosts applications.
+The included demos are the easiest way understand the capabilities of Hosts and to start learning to build your own Hosts applications.
 
 #### For Babylon.js
 
-The [packages/demos-babylon/](packages/demos-babylon/) folder contains a number of demo applications built with Babylon.js, each focused on a different feature of the Sumerian Hosts API. Instructions for running the demos can be found in the folder's README.
+The [packages/demos-babylon/](packages/demos-babylon/) folder contains a number of demo applications built with Babylon.js, each focused on a different feature of the Hosts API. Instructions for running the demos can be found in the folder's README.
 
 #### For three.js
 

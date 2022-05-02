@@ -1,8 +1,8 @@
 # AWS Infrastructure Setup
 
-In order for the included demos, integration tests, and even your own Sumerian Hosts apps to be runnable you will need to set up a few things in your AWS account. The steps below will guide you through creating a **Cognito Identity Pool** that allows the demo applications to talk to two AWS services—**Amazon Polly** and **Amazon Lex**. You'll also create an **Amazon Lex chatbot** that powers one of the demos.
+In order for the included demos, integration tests, and even your own Hosts apps to be runnable you will need to set up a few things in your AWS account. The steps below will guide you through creating a **Cognito Identity Pool** that allows the demo applications to talk to two AWS services—**Amazon Polly** and **Amazon Lex**. You'll also create an **Amazon Lex chatbot** that powers one of the demos.
 
-### App Credentials Setup
+## App Credentials Setup
 
 In order to allow our front-end application to make API calls to Amazon Lex and Amazon Polly we must create authorization credentials that it can use.
 
@@ -24,7 +24,7 @@ You will be presented with a page informing you that some IAM roles will be crea
 
 You will be presented with a "Sample code" page. While you don't need most of the sample code presented, you will need the Identity pool ID value.
 
-> ✏️ **Important:** Copy the Identity pool ID value shown in the code, and save it for use later in these instructions. The value will look similar to `"us-east-1:1ab23f45-6789-8cde-7654-f1g0549h0cce"`
+> ✏️ **Important:** Copy the Identity pool ID value shown in the code, and save it for use later in these instructions. The value will have a format similar to `"us-east-1:xxxx-xxxx-xxxx-xxxx-xxxx"`
 
 Use the AWS console search bar to navigate to the IAM service.
 
@@ -46,7 +46,7 @@ In the resulting screen, confirm that both polices have been added to the list o
 
 Your app credentials setup is now complete! 🎉
 
-### Lex Bot Setup
+## Lex Bot Setup
 
 From the AWS console, navigate to the Amazon Lex service.
 
@@ -73,3 +73,15 @@ Click the **Publish** button at the top of the screen.
 In the dialog that appears, choose the **Dev** bot alias and click **Publish**.
 
 Your Lex bot setup is now complete! 🎉
+
+## Configuring Sample Code Credentials
+
+In order for the demos and integration tests included in this repository to use the Cognito credentials you created above, do the following...
+
+Open the `demo-credentials.js` file in the root of the repository for editing.
+
+Set the `cognitoIdentityPoolId` value to the Cognito Identity Pool you created above. 
+
+Save the edits you made to the `demo-credentials.js` file.
+
+Your sample code credential setup is now complete! 🎉

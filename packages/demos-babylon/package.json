@@ -1,7 +1,7 @@
 {
   "name": "demos-babylon",
   "version": "2.0.0",
-  "description": "Demos of the Babylon version of the Sumerian Hosts JS library",
+  "description": "Demos of the Babylon version of the Amazon Sumerian Hosts JS library",
   "private": true,
   "scripts": {
     "test": "",

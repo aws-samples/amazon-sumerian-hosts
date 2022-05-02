@@ -1,20 +1,24 @@
-1. # Integration Tests
+# Integration Tests
 
-   Each integration test contains an end to end example focusing on a single Host feature like animation, text-to-speech etc. These tests run in the browser and must be exercised manually.
+Each integration test contains an end to end example focusing on a single Host feature like animation, text-to-speech etc. These tests run in the browser and must be exercised manually.
 
-   ## Prerequisites
+## Prerequisites
 
-   In order for the integration tests to be runnable you will need to set up a few things in your AWS account. For step-by-step instructions on setting up this required infrastructure, see [AWS-Infrastructure-Setup.md](../../../../AWS-Infrastructure-Setup.md) in the root of this repository.
+In order for the integration tests to be runnable you will need to set up a few things in your AWS account. For step-by-step instructions on setting up this required infrastructure, see [AWS-Infrastructure-Setup.md](../../../../AWS-Infrastructure-Setup.md) in the root of this repository.
 
-   ## Setup
+## Local Environment Setup
 
-   Within the included HTML files, replace any reference to ```<Enter Cognito Identity Pool ID here>``` with the Cognito Identity Pool ID you created above.
+In a terminal on your local machine, navigate to the repository root directory and run (if you haven't already)...
 
-   ## Running the Tests
+```
+npm install
+```
 
-   Run ```npm run start-core``` from the repository root. This will start a local web server and open a web browser tab containing a list of available integration tests. From this tab you can access and exercise each test.
+## Running the Tests
 
-   When you're finished runnin the tests, you can quit the local dev server by pressing CTRL-C in the same terminal in which you started the server.
+Run `npm run start-core` from the repository root. This will start a local web server and open a web browser tab containing a list of available integration tests. From this tab you can access and exercise each test.
 
-   
+When you're finished runnin the tests, you can quit the local dev server by pressing CTRL-C in the same terminal in which you started the server.
+
+
 
