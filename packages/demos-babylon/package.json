@@ -17,7 +17,7 @@
   "license": "MIT",
   "devDependencies": {
     "@amazon-sumerian-hosts/babylon": "^2.0.0",
-    "@babylonjs/core": "=4.2.1",
+    "@babylonjs/core": "^5.0.0",
     "copy-webpack-plugin": "^10.2.4"
   }
 }

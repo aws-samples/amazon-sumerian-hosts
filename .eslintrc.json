@@ -2,7 +2,8 @@
   "extends": [
     "airbnb",
     "prettier",
-    "plugin:jasmine/recommended"
+    "plugin:jasmine/recommended",
+    "plugin:compat/recommended"
   ],
   "plugins": [
     "prettier",
