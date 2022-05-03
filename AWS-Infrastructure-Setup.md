@@ -16,7 +16,7 @@ If you've never created an identity pool before you will be taken directly to th
 
 Give the identity pool a meaningful name specific to your application. We'll use the name *"Demo_SumerianHosts"* for these instructions.
 
-Tick the **"Enable access to unauthenticated identites"** checkbox to *ON*. This will allow anonymous web visitors to use our application.
+Tick the **"Enable access to unauthenticated identities"** checkbox to *ON*. This will allow anonymous web visitors to use our application.
 
 Click the **Create Pool** button at the bottom of the page.
 
@@ -60,7 +60,7 @@ From the Bots tab, select **Create**.
 
 Select the **"BookTrip"** sample bot (the default).
 
-Set the **"Language"** property to the launguage you expect your users to speak with interacting with the chatbot.
+Set the **"Language"** property to the language you expect your users to speak with interacting with the chatbot.
 
 Set the **"COPPA"** property to either option.
 
