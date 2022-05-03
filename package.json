@@ -24,14 +24,15 @@
     "test": "node ./node_modules/karma/bin/karma start karma.conf.js",
     "build": "npm run format && npm run lint:fix && npm run compile-ts && webpack",
     "build-test": "npm run build && npm run test",
-    "release": "NODE_ENV=production npm run build",
+    "release": "cross-env NODE_ENV=production npm run build",
     "docs": "jsdoc -c jsdoc.conf.json",
-    "start": "NODE_ENV=development webpack-dev-server",
-    "start-core": "ENGINE=core NODE_ENV=development webpack-dev-server",
-    "start-three": "ENGINE=three NODE_ENV=development webpack-dev-server",
-    "start-babylon": "ENGINE=babylon NODE_ENV=development webpack-dev-server"
+    "start": "cross-env NODE_ENV=development webpack-dev-server",
+    "start-core": "cross-env ENGINE=core NODE_ENV=development webpack-dev-server",
+    "start-three": "cross-env ENGINE=three NODE_ENV=development webpack-dev-server",
+    "start-babylon": "cross-env ENGINE=babylon NODE_ENV=development webpack-dev-server"
   },
   "devDependencies": {
+    "cross-env": "^7.0.3",
     "eslint": "^8.8.0",
     "eslint-config-airbnb": "^18.0.1",
     "eslint-config-prettier": "^6.10.0",
