@@ -250,12 +250,9 @@ class LexFeature extends Messenger {
 
     return this._processWithAudio(result, this._audioContext.sampleRate).catch(
       error => {
-        console.error(
-          `Error happened during voice recording: ${error}. Please check whether your speech is more than 15s.`
-        );
-        throw new Error(
-          `Error happened during voice recording: ${error}. Please check whether your speech is more than 15s.`
-        );
+        let errorMessage = `Error happened during voice recording: ${error}. Please check whether your speech is more than 15s.`;
+        console.error(errorMessage);
+        throw new Error(errorMessage);
       }
     );
   }
