@@ -217,7 +217,6 @@ describeEnvironment('LexFeature', () => {
         botName: 'Bot',
         botAlias: 'Alias',
       });
-      spyOn(lexFeature, '_processWithAudio').and.returnValue(Promise.resolve());
       spyOn(lexFeature, 'emit');
       spyOn(lexFeature, 'beginVoiceRecording').and.callFake(() => {
         lexFeature._recording = true;
@@ -225,6 +224,7 @@ describeEnvironment('LexFeature', () => {
     });
 
     it('should emit end recording message through messenger if messenger is set', async () => {
+      spyOn(lexFeature, '_processWithAudio').and.returnValue(Promise.resolve());
       lexFeature.beginVoiceRecording();
       lexFeature.endVoiceRecording();
 
@@ -232,10 +232,26 @@ describeEnvironment('LexFeature', () => {
     });
 
     it('should call _processWithAudio function', () => {
+      spyOn(lexFeature, '_processWithAudio').and.returnValue(Promise.resolve());
       lexFeature.beginVoiceRecording();
       lexFeature.endVoiceRecording();
 
       expect(lexFeature._processWithAudio).toHaveBeenCalled();
+    });
+
+    it('The error re-thrown from endVoiceRecording should be equal to the customize one.', () => {
+      spyOn(lexFeature, '_processWithAudio').and.returnValue(
+        Promise.reject('mock error')
+      );
+      lexFeature.beginVoiceRecording();
+
+      try {
+        lexFeature.endVoiceRecording();
+      } catch (error) {
+        expect(error).toEqual(
+          'Error happened during voice recording: mock error. Please check whether your speech is more than 15s.'
+        );
+      }
     });
   });
 });
