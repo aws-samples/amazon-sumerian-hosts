@@ -217,7 +217,7 @@ describeEnvironment('LexFeature', () => {
         botName: 'Bot',
         botAlias: 'Alias',
       });
-      spyOn(lexFeature, '_processWithAudio');
+      spyOn(lexFeature, '_processWithAudio').and.returnValue(Promise.resolve());
       spyOn(lexFeature, 'emit');
       spyOn(lexFeature, 'beginVoiceRecording').and.callFake(() => {
         lexFeature._recording = true;
