@@ -72,7 +72,8 @@
     "prefer-const": "warn",
     "consistent-return": "off",
     "arrow-body-style": "off",
-    "no-use-before-define": "off"
+    "no-use-before-define": "off",
+    "default-param-last": "off"
   },
   "env": {
     "browser": true,
