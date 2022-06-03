@@ -4,6 +4,7 @@
 /* eslint-disable no-undef */
 /* eslint-disable jasmine/prefer-toHaveBeenCalledWith */
 /* eslint-disable no-underscore-dangle */
+/* eslint-disable no-promise-executor-return */
 import {
   Messenger,
   AbstractTextToSpeechFeature,
