@@ -139,7 +139,7 @@ class LexFeature extends Messenger {
         return data;
       })
       .catch(error => {
-        let errorMessage = `Error happened during voice recording: ${error}. Please check whether your speech is more than 15s.`;
+        const errorMessage = `Error happened during voice recording: ${error}. Please check whether your speech is more than 15s.`;
         console.error(errorMessage);
         throw new Error(errorMessage);
       });

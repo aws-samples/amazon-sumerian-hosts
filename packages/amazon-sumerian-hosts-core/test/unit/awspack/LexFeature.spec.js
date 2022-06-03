@@ -233,6 +233,7 @@ describeEnvironment('LexFeature', () => {
         botName: 'Bot',
         botAlias: 'Alias',
       });
+      spyOn(lexFeature, '_processWithAudio');
       spyOn(lexFeature, 'emit');
       spyOn(lexFeature, 'beginVoiceRecording').and.callFake(() => {
         lexFeature._recording = true;
@@ -240,7 +241,6 @@ describeEnvironment('LexFeature', () => {
     });
 
     it('should emit end recording message through messenger if messenger is set', async () => {
-      spyOn(lexFeature, '_processWithAudio').and.returnValue(Promise.resolve());
       lexFeature.beginVoiceRecording();
       lexFeature.endVoiceRecording();
 
@@ -248,7 +248,6 @@ describeEnvironment('LexFeature', () => {
     });
 
     it('should call _processWithAudio function', () => {
-      spyOn(lexFeature, '_processWithAudio').and.returnValue(Promise.resolve());
       lexFeature.beginVoiceRecording();
       lexFeature.endVoiceRecording();
 
