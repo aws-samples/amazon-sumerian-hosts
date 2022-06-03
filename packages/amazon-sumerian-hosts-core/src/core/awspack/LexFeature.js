@@ -133,10 +133,16 @@ class LexFeature extends Messenger {
         }
         return resolve(data);
       });
-    }).then(data => {
-      this.emit(this.constructor.EVENTS.lexResponseReady, data);
-      return data;
-    });
+    })
+      .then(data => {
+        this.emit(this.constructor.EVENTS.lexResponseReady, data);
+        return data;
+      })
+      .catch(error => {
+        let errorMessage = `Error happened during voice recording: ${error}. Please check whether your speech is more than 15s.`;
+        console.error(errorMessage);
+        throw new Error(errorMessage);
+      });
   }
 
   _validateConfig(config) {
@@ -247,13 +253,7 @@ class LexFeature extends Messenger {
     }
 
     this.emit(this.constructor.EVENTS.recordEnd);
-    return this._processWithAudio(result, this._audioContext.sampleRate).catch(
-      error => {
-        let errorMessage = `Error happened during voice recording: ${error}. Please check whether your speech is more than 15s.`;
-        console.error(errorMessage);
-        throw new Error(errorMessage);
-      }
-    );
+    return this._processWithAudio(result, this._audioContext.sampleRate);
   }
 
   /**

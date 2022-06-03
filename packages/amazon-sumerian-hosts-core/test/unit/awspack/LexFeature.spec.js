@@ -129,6 +129,22 @@ describeEnvironment('LexFeature', () => {
         {message: 'TestResponse'}
       );
     });
+
+    it('The error re-thrown from _process should be equal to the customize one.', async () => {
+      mockLexRuntime.postContent.and.callFake(function(param, callback) {
+        callback(new Error('mock error'), {message: 'TestResponse'});
+      });
+      lexFeature = new LexFeature(mockLexRuntime, {
+        botName: 'Bot',
+        botAlias: 'Alias',
+      });
+
+      await expectAsync(
+        lexFeature._process('TestType', 'TestInput', {})
+      ).toBeRejectedWithError(
+        'Error happened during voice recording: Error: mock error. Please check whether your speech is more than 15s.'
+      );
+    });
   });
 
   describe('enableMicInput', () => {
@@ -237,21 +253,6 @@ describeEnvironment('LexFeature', () => {
       lexFeature.endVoiceRecording();
 
       expect(lexFeature._processWithAudio).toHaveBeenCalled();
-    });
-
-    it('The error re-thrown from endVoiceRecording should be equal to the customize one.', () => {
-      spyOn(lexFeature, '_processWithAudio').and.returnValue(
-        Promise.reject('mock error')
-      );
-      lexFeature.beginVoiceRecording();
-
-      try {
-        lexFeature.endVoiceRecording();
-      } catch (error) {
-        expect(error).toEqual(
-          'Error happened during voice recording: mock error. Please check whether your speech is more than 15s.'
-        );
-      }
     });
   });
 });
