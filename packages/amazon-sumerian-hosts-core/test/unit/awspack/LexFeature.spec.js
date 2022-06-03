@@ -129,6 +129,22 @@ describeEnvironment('LexFeature', () => {
         {message: 'TestResponse'}
       );
     });
+
+    it('The error re-thrown from _process should be equal to the customize one.', async () => {
+      mockLexRuntime.postContent.and.callFake(function(param, callback) {
+        callback(new Error('mock error'), {message: 'TestResponse'});
+      });
+      lexFeature = new LexFeature(mockLexRuntime, {
+        botName: 'Bot',
+        botAlias: 'Alias',
+      });
+
+      await expectAsync(
+        lexFeature._process('TestType', 'TestInput', {})
+      ).toBeRejectedWithError(
+        'Error happened during voice recording: Error: mock error. Please check whether your speech is more than 15s.'
+      );
+    });
   });
 
   describe('enableMicInput', () => {
