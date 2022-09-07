@@ -2,7 +2,6 @@ name: Run build/tests/lint on pull requests
 
 on:
   pull_request:
-  push:
 
 # By default the karma test runners use the karma 'Chrome' runner
 # This is great when running locally because the browser pops up and you get to see what it does
@@ -20,7 +19,7 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - name: Initialize CodeQL
-        uses: github/codeql-action/init@v1
+        uses: github/codeql-action/init@v2
       - uses: actions/setup-node@v3
         with:
           node-version: '16.x'
@@ -29,4 +28,4 @@ jobs:
       - run: npm run build-test
       - name: Perform CodeQL Analysis
         if: matrix.os == 'ubuntu-latest' # we only need to run this check on one platform
-        uses: github/codeql-action/analyze@v1
+        uses: github/codeql-action/analyze@v2
