@@ -2,6 +2,9 @@
 // SPDX-License-Identifier: MIT-0
 import Deferred from './Deferred';
 
+// This line gets replaced by Github actions to the SHA of the git commit
+const HOSTS_VERSION = "development";
+
 /**
  * A collection of useful generic functions.
  *
@@ -194,9 +197,6 @@ class Utils {
   }
 
   static getVersion() {
-    // HOSTS_VERSION  is defined by Webpack, to the version of the library
-    // Either a git commit or a release version
-    // eslint-disable-next-line no-undef
     return HOSTS_VERSION;
   }
 }
