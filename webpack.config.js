@@ -33,10 +33,6 @@ if (process.env.ENGINE === 'core') {
 
 let devServerOnlyEntryPoints = {};
 
-// During a github build we pull the git commit sha out of the environment
-// for local builds we hardcode 'development', so we can differentiate these(i.e. in dev the commit hash is not really accurate)
-const HOSTS_VERSION = JSON.stringify(process.env.GITHUB_SHA || 'development');
-
 let prodOnlyExternals = [];
 
 if (isDevServer) {
@@ -133,7 +129,6 @@ module.exports = {
       banner: `Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.\nSPDX-License-Identifier: MIT-0`,
       entryOnly: true,
     }),
-    new webpack.DefinePlugin({HOSTS_VERSION}),
   ],
   devServer: {
     devMiddleware: {
