@@ -13,7 +13,6 @@ jobs:
         with:
           node-version: '16.x'
           registry-url: 'https://registry.npmjs.org'
-      - run: npm version ${{ github.event.release.tag_name }}
       - run: npm install
       - name: "Set version number"
         run: |

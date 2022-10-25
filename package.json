@@ -67,5 +67,6 @@
     "last 2 ChromeAndroid versions",
     "last 2 FirefoxAndroid versions",
     "last 2 iOS versions"
-  ]
+  ],
+  "version": "2.0.4"
 }
