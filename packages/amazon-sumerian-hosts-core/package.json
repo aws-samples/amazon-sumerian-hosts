@@ -20,5 +20,8 @@
   "scripts": {
     "lint": "eslint .",
     "docs": "jsdoc -c jsdoc.conf.json"
+  },
+  "dependencies": {
+    "compare-versions": "^6.0.0-rc.1"
   }
 }
