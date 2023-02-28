@@ -371,7 +371,10 @@ class AbstractTextToSpeechFeature extends AbstractHostFeature {
     // Default to the standard engine if neural is not available for this version
     if (
       engine === undefined ||
-      this.constructor.AWS_VERSION < this.constructor.POLLY_MIN_NEURAL_VERSION
+      compareVersions(
+        this.constructor.AWS_VERSION,
+        this.constructor.POLLY_MIN_NEURAL_VERSION
+      ) < 0
     ) {
       engine = this.constructor.POLLY_DEFAULTS.Engine;
     }
