@@ -1,5 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: MIT-0
+import {compareVersions} from 'compare-versions';
 import AbstractHostFeature from '../AbstractHostFeature';
 import AnimationUtils from '../animpack/AnimationUtils';
 import MathUtils from '../MathUtils';
@@ -278,7 +279,7 @@ class AbstractTextToSpeechFeature extends AbstractHostFeature {
         response.Voices.forEach(voice => {
           if (
             voice.SupportedEngines.includes('standard') ||
-            version >= minNeuralSdk
+            compareVersions(version, minNeuralSdk) >= 0
           ) {
             availableVoices.push(voice);
           }
@@ -370,7 +371,10 @@ class AbstractTextToSpeechFeature extends AbstractHostFeature {
     // Default to the standard engine if neural is not available for this version
     if (
       engine === undefined ||
-      this.constructor.AWS_VERSION < this.constructor.POLLY_MIN_NEURAL_VERSION
+      compareVersions(
+        this.constructor.AWS_VERSION,
+        this.constructor.POLLY_MIN_NEURAL_VERSION
+      ) < 0
     ) {
       engine = this.constructor.POLLY_DEFAULTS.Engine;
     }
