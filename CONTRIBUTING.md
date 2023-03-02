@@ -128,7 +128,7 @@ GitHub provides additional documentation on [forking a repository](https://help.
 
 The `@amazon-sumerian-hosts/core`, `@amazon-sumerian-hosts/babylon`, and `@amazon-sumerian-hosts/three` packages are all published and distributed via the [npmjs.com](https://www.npmjs.com/) registry. To publish a new version of the packages to the NPM registry, follow these steps...
 
-1. Update the package.json for each package with new version number using [semantic versioning](https://semver.org/). All packages should always share the same version number.
+1. Update the package.json in the root of the repository, and then for each package with new version number using [semantic versioning](https://semver.org/). All packages should always share the same version number.
 2. Create a new release using the GitHub.com console. See [previous releases](https://github.com/aws-samples/amazon-sumerian-hosts/releases) for reference.
 	1. In the release creation form, create a new repository tag labeling it using the package version number prefixed with "v". *Example: "v2.1.3"*
 	2. Set the target of the release to the `mainline2.0` branch.
