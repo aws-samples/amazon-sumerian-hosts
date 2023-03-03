@@ -128,12 +128,18 @@ GitHub provides additional documentation on [forking a repository](https://help.
 
 The `@amazon-sumerian-hosts/core`, `@amazon-sumerian-hosts/babylon`, and `@amazon-sumerian-hosts/three` packages are all published and distributed via the [npmjs.com](https://www.npmjs.com/) registry. To publish a new version of the packages to the NPM registry, follow these steps...
 
-1. Update the package.json in the root of the repository, and then for each package with new version number using [semantic versioning](https://semver.org/). All packages should always share the same version number.
-2. Create a new release using the GitHub.com console. See [previous releases](https://github.com/aws-samples/amazon-sumerian-hosts/releases) for reference.
+1. Update `package.json` with a new version number using [semantic versioning](https://semver.org/). All of the packages in the repo should always share the same version number, so ensure that updates have been made to the `package.json` files in the following directories:
+	1. The root of the mono repository
+	1. `amazon-sumerian-hosts-babylon`
+	1. `amazon-sumerian-hosts-core`
+	1. `amazon-sumerian-hosts-three`
+	1. `demos-babylon`
+1. Make sure to run `npm install` to regenerate the `package-lock.json` file.
+1. Create a new release using the GitHub.com console. See [previous releases](https://github.com/aws-samples/amazon-sumerian-hosts/releases) for reference.
 	1. In the release creation form, create a new repository tag labeling it using the package version number prefixed with "v". *Example: "v2.1.3"*
 	2. Set the target of the release to the `mainline2.0` branch.
 	3. Set the title of the release to match the tag name. *Example: "v2.1.3"*
 	4. In the release description field, add a heading in the form **"Host Release *{version number}* - *{Reason for Release}*"**. Example: *"Host Release 1.3.1 - Bug Fixes"*
 	5. Append all significant changes as bullet points.
 1. Click "Publish release". This will automatically trigger a GitHub Action that publishes the release to the NPM registry.
-2. Validate the GitHub properly releases to NPM through Actions tab.
+1. Validate the GitHub properly releases to NPM through Actions tab.
