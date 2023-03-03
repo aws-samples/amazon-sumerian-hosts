@@ -135,6 +135,7 @@ The `@amazon-sumerian-hosts/core`, `@amazon-sumerian-hosts/babylon`, and `@amazo
 	1. `amazon-sumerian-hosts-three`
 	1. `demos-babylon`
 1. Make sure to run `npm install` to regenerate the `package-lock.json` file.
+1. If the release fixes a bug in `amazon-sumerian-hosts-core` introduced by a breaking change in one of our dependencies, update the dependency on this subpackage in `babylon`, `three`, and the demos to the new version.
 1. Create a new release using the GitHub.com console. See [previous releases](https://github.com/aws-samples/amazon-sumerian-hosts/releases) for reference.
 	1. In the release creation form, create a new repository tag labeling it using the package version number prefixed with "v". *Example: "v2.1.3"*
 	2. Set the target of the release to the `mainline2.0` branch.

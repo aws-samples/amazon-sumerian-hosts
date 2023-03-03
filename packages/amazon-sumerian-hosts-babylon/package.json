@@ -1,6 +1,6 @@
 {
   "name": "@amazon-sumerian-hosts/babylon",
-  "version": "2.0.6",
+  "version": "2.0.7",
   "description": "",
   "license": "MIT",
   "author": {
@@ -21,7 +21,7 @@
   "scripts": {
   },
   "dependencies": {
-    "@amazon-sumerian-hosts/core": "^2.0.0",
+    "@amazon-sumerian-hosts/core": "^2.0.7",
     "aws-sdk": "^2.1094.0"
   },
   "peerDependencies": {
