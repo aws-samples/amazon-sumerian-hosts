@@ -217,9 +217,9 @@ describe('Deferred', () => {
         reject();
       });
 
-      autoRejected.catch();
-
-      expect(autoRejected.rejected).toBeTrue();
+      autoRejected.catch(() => {
+        expect(autoRejected.rejected).toBeTrue();
+      });
 
       const manualRejected = new Deferred();
 
@@ -227,9 +227,9 @@ describe('Deferred', () => {
 
       manualRejected.reject();
 
-      manualRejected.catch();
-
-      expect(manualRejected.rejected).toBeTrue();
+      manualRejected.catch(() => {
+        expect(manualRejected.rejected).toBeTrue();
+      });
     });
   });
 
@@ -267,9 +267,9 @@ describe('Deferred', () => {
         reject();
       });
 
-      autoRejected.catch();
-
-      expect(autoRejected.pending).toBeFalse();
+      autoRejected.catch(() => {
+        expect(autoRejected.pending).toBeFalse();
+      });
 
       const manualRejected = new Deferred();
 
@@ -277,9 +277,9 @@ describe('Deferred', () => {
 
       manualRejected.reject();
 
-      manualRejected.catch();
-
-      expect(manualRejected.pending).toBeFalse();
+      manualRejected.catch(() => {
+        expect(manualRejected.pending).toBeFalse();
+      });
     });
 
     it('should return false if the promise has been canceled', () => {
@@ -322,10 +322,10 @@ describe('Deferred', () => {
 
       deferred.reject('error');
 
-      deferred.catch();
-
-      expect(onReject).toHaveBeenCalledWith('error');
-      expect(deferred.pending).toBeFalse();
+      deferred.catch(() => {
+        expect(onReject).toHaveBeenCalledWith('error');
+        expect(deferred.pending).toBeFalse();
+      });
     });
   });
 

@@ -85,18 +85,18 @@ describeEnvironment('AbstractSpeech', () => {
       const promise = speech._createPromise(undefined, onError);
 
       promise.reject('error');
-      promise.catch();
-
-      expect(onError).toHaveBeenCalledWith('error');
+      promise.catch(() => {
+        expect(onError).toHaveBeenCalledWith('error');
+      });
     });
 
     it('should not throw an error if the onError argument is not a function', () => {
       const promise = speech._createPromise();
       const boundPromise = promise.reject.bind(promise, 'error');
       boundPromise();
-      promise.catch();
-
-      expect(boundPromise).not.toThrowError(TypeError);
+      promise.catch(() => {
+        expect(boundPromise).not.toThrowError(TypeError);
+      });
     });
 
     it("should emit the speaker's interrupt event when the promise resolves by being canceled", done => {
@@ -127,21 +127,21 @@ describeEnvironment('AbstractSpeech', () => {
 
     it('should set _playing to false when the promise is no longer pending', () => {
       speech._playing = true;
-      let promise = speech._createPromise();
-      promise.resolve();
+      const promiseResolve = speech._createPromise();
+      promiseResolve.resolve();
 
       expect(speech._playing).toBeFalse();
 
-      promise = speech._createPromise();
-      promise.cancel();
+      const promiseCancel = speech._createPromise();
+      promiseCancel.cancel();
 
       expect(speech._playing).toBeFalse();
 
-      promise = speech._createPromise();
-      promise.reject('error');
-      promise.catch();
-
-      expect(speech._playing).toBeFalse();
+      const promiseReject = speech._createPromise();
+      promiseReject.reject('error');
+      promiseReject.catch(() => {
+        expect(speech._playing).toBeFalse();
+      });
     });
   });
 

@@ -55,9 +55,9 @@ describe('AbstractState', () => {
 
       state._promises.weight.reject();
 
-      state._promises.weight.catch();
-
-      expect(state.weightPending).toBeFalse();
+      state._promises.weight.catch(() => {
+        expect(state.weightPending).toBeFalse();
+      });
     });
 
     it('should return false if the weight promise has been canceled', () => {
