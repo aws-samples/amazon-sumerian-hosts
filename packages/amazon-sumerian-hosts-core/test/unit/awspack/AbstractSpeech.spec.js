@@ -137,11 +137,11 @@ describeEnvironment('AbstractSpeech', () => {
 
       expect(speech._playing).toBeFalse();
 
-      // const promiseReject = speech._createPromise();
-      // promiseReject.reject('error');
-      // promiseReject.catch(() => {
-      //   expect(speech._playing).toBeFalse();
-      // });
+      const promiseReject = speech._createPromise();
+      promiseReject.reject('error');
+      promiseReject.catch(() => {
+        expect(speech._playing).toBeFalse();
+      });
     });
   });
 
