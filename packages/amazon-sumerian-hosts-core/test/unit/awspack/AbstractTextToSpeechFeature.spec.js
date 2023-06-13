@@ -857,9 +857,9 @@ describeEnvironment('AbstractTextToSpeechFeature', () => {
 
       tts._promises.volume.reject();
 
-      tts._promises.volume.catch();
-
-      expect(tts.volumePending).toBeFalse();
+      tts._promises.volume.catch(() => {
+        expect(tts.volumePending).toBeFalse();
+      });
     });
 
     it('should return false if the volume promise has been cancelled', () => {
