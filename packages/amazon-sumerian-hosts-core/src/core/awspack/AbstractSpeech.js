@@ -51,7 +51,7 @@ class AbstractSpeech {
   /**
    * Create a new promise that will stop playback and emit messages for this speech.
    *
-   * @param {Function=} onFinish - Funciton to execute once the speech stops.
+   * @param {Function=} onFinish - Function to execute once the speech stops.
    * @param {onError=} onError - Function to execute if the speech encounters an
    * error.
    * @param {Function=} onInterrupt - Function to execute if the speech is canceled.

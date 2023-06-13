@@ -117,9 +117,9 @@ describe('AnimationLayer', () => {
 
       layer._promises.weight.reject();
 
-      layer._promises.weight.catch();
-
-      expect(layer.weightPending).toBeFalse();
+      layer._promises.weight.catch(() => {
+        expect(layer.weightPending).toBeFalse();
+      });
     });
 
     it('should return false if the weight promise has been canceled', () => {
