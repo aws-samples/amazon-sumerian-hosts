@@ -114,7 +114,7 @@ class QueueState extends AnimationPlayerInterface.Mixin(
 
     // Signal the next animation is starting
     if (typeof onNext === 'function') {
-      const lastName = [...this._states.keys()][this._states.size - 1];
+      const lastName = Array.from(this._states.keys())[this._states.size - 1];
       const isQueueEnd = name === lastName;
       onNext({
         name,
@@ -148,7 +148,7 @@ class QueueState extends AnimationPlayerInterface.Mixin(
     } else {
       // Signal the next animation is starting
       if (name !== this.currentAnimation && typeof onNext === 'function') {
-        const lastName = [...this._states.keys()][this._states.size - 1];
+        const lastName = Array.from(this._states.keys())[this._states.size - 1];
         const isQueueEnd = name === lastName;
         onNext({
           name,
