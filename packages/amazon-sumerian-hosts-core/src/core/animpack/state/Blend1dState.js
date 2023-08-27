@@ -55,7 +55,7 @@ class Blend1dState extends AbstractBlendState {
 
     // Initialize the thresholds map
     this._thresholds = [];
-    [...this._states.values()].forEach((state, index) => {
+    Array.from(this._states.values()).forEach((state, index) => {
       this._thresholds.push({
         value: blendThresholds[index],
         name: state.name,

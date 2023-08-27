@@ -63,7 +63,7 @@ class Blend2dState extends AbstractBlendState {
     };
 
     this._thresholds = [];
-    [...this._states.values()].forEach((state, index) => {
+    Array.from(this._states.values()).forEach((state, index) => {
       this._thresholds.push({
         name: state.name,
         phaseMatch: phaseMatches[index] || false,
@@ -179,7 +179,7 @@ class Blend2dState extends AbstractBlendState {
     super.updateInternalWeight(factor);
 
     if (this._phaseLeadState) {
-      [...this._states.values()].forEach((state, index) => {
+      Array.from(this._states.values()).forEach((state, index) => {
         if (state.weight !== 0 && this._thresholds[index].phaseMatch) {
           state.normalizedTime = this._phaseLeadState.normalizedTime;
         }
@@ -198,7 +198,7 @@ class Blend2dState extends AbstractBlendState {
     if (!this._vertices || this._vertices.length === 0) return;
 
     if (this._vertices.length === 1) {
-      [...this._states.values()][0].weight = 1;
+      Array.from(this._states.values())[0].weight = 1;
       return;
     }
 

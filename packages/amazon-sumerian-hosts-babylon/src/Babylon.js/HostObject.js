@@ -764,7 +764,7 @@ const host = await HOST.HostUtils.createHost(scene, characterConfig, pollyConfig
    * @returns {string[]} An array of characterId's that can be used with getCharacterConfig
    */
   static getAvailableCharacters() {
-    return [...characterTypeMap.keys()];
+    return Array.from(characterTypeMap.keys());
   }
 }
 
