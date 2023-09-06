@@ -5,6 +5,7 @@
 /* eslint-disable no-underscore-dangle */
 import {anim} from '@amazon-sumerian-hosts/three';
 import {LayerBlendModes, Deferred} from '@amazon-sumerian-hosts/core';
+import * as THREE from 'three';
 import describeEnvironment from '../../EnvironmentHarness.js';
 
 describeEnvironment('SingleState', () => {
