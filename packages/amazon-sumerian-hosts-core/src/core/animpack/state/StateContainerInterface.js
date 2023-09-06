@@ -5,7 +5,7 @@
 /* eslint-disable no-empty-function */
 /* eslint-disable getter-return */
 
-import Utils from '../../Utils';
+import Utils from '../../Utils.js';
 
 /**
  * Class factory interface for manipulating a collection of {@link AbstractState}.

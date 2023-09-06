@@ -1,8 +1,8 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: MIT-0
-import Messenger from './Messenger';
-import AbstractHostFeature from './AbstractHostFeature';
-import Utils from './Utils';
+import Messenger from './Messenger.js';
+import AbstractHostFeature from './AbstractHostFeature.js';
+import Utils from './Utils.js';
 
 /**
  * Object that manages access to all Host features. Contains a reference to

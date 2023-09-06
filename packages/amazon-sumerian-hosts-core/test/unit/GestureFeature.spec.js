@@ -8,7 +8,7 @@ import {
   Deferred,
   Utils,
 } from '@amazon-sumerian-hosts/core';
-import describeEnvironment from './EnvironmentHarness';
+import describeEnvironment from './EnvironmentHarness.js';
 
 describeEnvironment('GestureFeature', () => {
   let gestureFeature;

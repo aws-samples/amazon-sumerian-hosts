@@ -4,7 +4,7 @@ import {
   PointOfInterestFeature as CorePointOfInterestFeature,
   AxisMap,
 } from '@amazon-sumerian-hosts/core';
-import {TransformNode} from '@babylonjs/core/Meshes/transformNode';
+import {TransformNode} from '@babylonjs/core/Meshes/transformNode.js';
 
 /**
  * @extends core/PointOfInterestFeature

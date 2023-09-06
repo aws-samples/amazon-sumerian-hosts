@@ -58,8 +58,8 @@ And then configure the AWS SDK with our region and credentials:
 
 - ```javascript
   // Initialize AWS and create Polly service objects
-  window.AWS.config.region = 'us-west-2';
-  window.AWS.config.credentials = new AWS.CognitoIdentityCredentials({
+  AWS.config.region = 'us-west-2';
+  AWS.config.credentials = new AWS.CognitoIdentityCredentials({
     IdentityPoolId: '<Enter Cognito Identity Pool ID here>',
   });
   ```

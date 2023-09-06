@@ -6,7 +6,7 @@
 /* eslint-disable jasmine/prefer-toHaveBeenCalledWith */
 /* eslint-disable no-underscore-dangle */
 import {TextToSpeechUtils} from '@amazon-sumerian-hosts/core';
-import describeEnvironment from '../EnvironmentHarness';
+import describeEnvironment from '../EnvironmentHarness.js';
 
 describeEnvironment('TextToSpeechUtils', () => {
   const regexNoMark = /mark:no/g;

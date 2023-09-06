@@ -1,9 +1,9 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: MIT-0
-import Deferred from '../../Deferred';
-import MathUtils from '../../MathUtils';
-import AbstractState from './AbstractState';
-import StateContainerInterface from './StateContainerInterface';
+import Deferred from '../../Deferred.js';
+import MathUtils from '../../MathUtils.js';
+import AbstractState from './AbstractState.js';
+import StateContainerInterface from './StateContainerInterface.js';
 
 /**
  * Base class for a state that blends a collection of {@link AbstractState}.

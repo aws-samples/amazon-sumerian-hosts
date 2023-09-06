@@ -1,10 +1,10 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: MIT-0
 /* eslint-disable no-underscore-dangle */
-import Deferred from '../../Deferred';
-import MathUtils from '../../MathUtils';
-import AbstractBlendState from './AbstractBlendState';
-import AnimationUtils from '../AnimationUtils';
+import Deferred from '../../Deferred.js';
+import MathUtils from '../../MathUtils.js';
+import AbstractBlendState from './AbstractBlendState.js';
+import AnimationUtils from '../AnimationUtils.js';
 
 /**
  * Class for blending N number of blend states based on two

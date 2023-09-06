@@ -8,19 +8,26 @@
     <meta charset="UTF-8" />
     <title>Core Host Test</title>
     <link rel="icon" href="data:;base64,iVBORw0KGgo=" />
+    <script type="importmap">
+      {
+        "imports": {
+          "@amazon-sumerian-hosts/core": "../../../../../node_modules/@amazon-sumerian-hosts/core/src/core/index.js",
+          "compare-versions": "../../../../../node_modules/compare-versions/lib/esm/index.js"
+        }
+      }
+    </script>
   </head>
   <body>
     <button id="startButton">Start Recording</button>
     <button id="stopButton">Stop Recording</button>
-    <input type="text" size="20">
+    <input type="text" size="20" />
     <button id="textInputButton">Send Text Input</button>
     <p>Lex Response:</p>
-    <script
-      type="text/javascript"
-      src="https://sdk.amazonaws.com/js/aws-sdk-2.645.0.min.js"
-    ></script>
-    <script type="text/javascript" src="../../../dist/host.core.js"></script>
-    <script>
+    <script src="https://sdk.amazonaws.com/js/aws-sdk-2.645.0.min.js"></script>
+    <script type="module">
+      import {cognitoIdentityPoolId} from '../../../../../demo-credentials.module.js';
+      import * as HOST from '@amazon-sumerian-hosts/core';
+
       async function main() {
         const startBtn = document.getElementById('startButton');
         const stopBtn = document.getElementById('stopButton');
@@ -28,67 +35,56 @@
         const input = document.querySelector('input');
         const textDisplay = document.querySelector('p');
 
-        startBtn.setAttribute('disabled','disabled');
-        stopBtn.setAttribute('disabled','disabled');
+        startBtn.setAttribute('disabled', 'disabled');
+        stopBtn.setAttribute('disabled', 'disabled');
 
-        // This is served by webpack-dev-server and comes from demo-credentials.js in the repo root
-        // If you copy this example, you will substitute in your own cognito Pool ID
-        const config = await(await fetch("/devConfig.json")).json();
         // Parse the region out of the cognito Id
-        const region = config.cognitoIdentityPoolId.split(":")[0];
-
+        const region = cognitoIdentityPoolId.split(':')[0];
 
         // Initialize AWS and create Polly service objects
-        window.AWS.config.region = region;
-        window.AWS.config.credentials = new AWS.CognitoIdentityCredentials({
-          IdentityPoolId: config.cognitoIdentityPoolId
+        // CONTINUE core lib esm
+        AWS.config.region = region;
+        AWS.config.credentials = new AWS.CognitoIdentityCredentials({
+          IdentityPoolId: cognitoIdentityPoolId,
         });
         const lexRuntime = new AWS.LexRuntime();
 
         const {LexFeature} = HOST;
 
         const lexFeature = new LexFeature(lexRuntime, {
-          botName: "BookTrip",
-          botAlias: "Test",
-        })
+          botName: 'BookTrip',
+          botAlias: 'Test',
+        });
 
         // Listen for lex response events from the host
-        lexFeature.listenTo(
-          LexFeature.EVENTS.lexResponseReady,
-          data => {
-            console.log('lex response', data.message);
-            textDisplay.textContent = 'Lex Reponse: ' + data.message;
-          }
-        );
+        lexFeature.listenTo(LexFeature.EVENTS.lexResponseReady, data => {
+          console.log('lex response', data.message);
+          textDisplay.textContent = 'Lex Reponse: ' + data.message;
+        });
 
-        lexFeature.listenTo(
-          LexFeature.EVENTS.micReady,
-          () => {
-            startBtn.removeAttribute('disabled');
-          }
-        );
+        lexFeature.listenTo(LexFeature.EVENTS.micReady, () => {
+          startBtn.removeAttribute('disabled');
+        });
 
         lexFeature.enableMicInput();
 
         startBtn.onclick = function() {
-          startBtn.setAttribute('disabled','disabled');
+          startBtn.setAttribute('disabled', 'disabled');
           stopBtn.removeAttribute('disabled');
 
           lexFeature.beginVoiceRecording();
-        }
+        };
 
         stopBtn.onclick = function() {
-          stopBtn.setAttribute('disabled','disabled');
+          stopBtn.setAttribute('disabled', 'disabled');
           startBtn.removeAttribute('disabled');
 
           lexFeature.endVoiceRecording();
-        }
+        };
 
         textBtn.onclick = function() {
-          lexFeature.processWithText(
-            input.value
-          );
-        }
+          lexFeature.processWithText(input.value);
+        };
       }
 
       main();

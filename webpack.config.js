@@ -5,7 +5,7 @@ const path = require('path');
 const webpack = require('webpack');
 const TerserPlugin = require('terser-webpack-plugin');
 
-const cognitoIdentityPoolId = require('./demo-credentials');
+const cognitoIdentityPoolId = require('./demo-credentials.js');
 
 // If we are running an interactive devserver
 const isDevServer =

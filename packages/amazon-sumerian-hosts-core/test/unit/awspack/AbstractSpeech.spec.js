@@ -5,7 +5,7 @@
 /* eslint-disable no-underscore-dangle */
 /* eslint-disable jasmine/no-spec-dupes */
 import {AbstractSpeech, Deferred, Messenger} from '@amazon-sumerian-hosts/core';
-import describeEnvironment from '../EnvironmentHarness';
+import describeEnvironment from '../EnvironmentHarness.js';
 
 describeEnvironment('AbstractSpeech', () => {
   let speech;

@@ -1,8 +1,8 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: MIT-0
-import Deferred from '../../Deferred';
-import AbstractBlendState from './AbstractBlendState';
-import AnimationUtils from '../AnimationUtils';
+import Deferred from '../../Deferred.js';
+import AbstractBlendState from './AbstractBlendState.js';
+import AnimationUtils from '../AnimationUtils.js';
 
 /**
  * Class for blending N number of blend states based on a single

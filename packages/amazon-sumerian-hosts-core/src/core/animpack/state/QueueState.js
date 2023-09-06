@@ -1,8 +1,8 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: MIT-0
-import AbstractState from './AbstractState';
-import AnimationPlayerInterface from '../AnimationPlayerInterface';
-import StateContainerInterface from './StateContainerInterface';
+import AbstractState from './AbstractState.js';
+import AnimationPlayerInterface from '../AnimationPlayerInterface.js';
+import StateContainerInterface from './StateContainerInterface.js';
 
 /**
  * Class for playing an ordered array of animation states in sequence.

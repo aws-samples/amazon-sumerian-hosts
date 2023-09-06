@@ -12,29 +12,39 @@
     />
     <title>Three.js Host Test</title>
     <link rel="icon" href="data:;base64,iVBORw0KGgo=" />
+
+    <script type="importmap">
+      {
+        "imports": {
+          "three": "https://cdn.jsdelivr.net/npm/three@0.127.0/build/three.module.js",
+          "three/": "https://cdn.jsdelivr.net/npm/three@0.127.0/",
+          "@amazon-sumerian-hosts/core": "../../../../../node_modules/@amazon-sumerian-hosts/core/src/core/index.js",
+          "@amazon-sumerian-hosts/three": "../../../../../node_modules/@amazon-sumerian-hosts/three/src/three.js/index.js",
+          "compare-versions": "../../../../../node_modules/compare-versions/lib/esm/index.js"
+        }
+      }
+    </script>
   </head>
+
   <body style="margin: 0px; padding: 0px; height: 100%; overflow: hidden;">
-    <script
-      type="text/javascript"
-      src="https://sdk.amazonaws.com/js/aws-sdk-2.645.0.min.js"
-    ></script>
-    <script src="https://cdn.jsdelivr.net/npm/three@0.127.0/build/three.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/three@0.127.0/examples/js/loaders/GLTFLoader.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/three@0.127.0/examples/js/controls/OrbitControls.js"></script>
-    <script type="text/javascript" src="../../../dist/host.three.js"></script>
-    <script>
+    <script src="https://sdk.amazonaws.com/js/aws-sdk-2.645.0.min.js"></script>
+
+    <script type="module">
+      // @ts-check
+      import * as THREE from 'three';
+      import {OrbitControls} from 'three/examples/jsm/controls/OrbitControls.js';
+      import * as HOST from '@amazon-sumerian-hosts/three';
+      import {cognitoIdentityPoolId} from '../../../../../demo-credentials.module.js';
+      import AWS from 'aws-sdk';
+
       async function main() {
-
-        // This is served by webpack-dev-server and comes from demo-credentials.js in the repo root
-        const config = await(await fetch("/devConfig.json")).json();
         // Parse the region out of the cognito Id
-        const region = config.cognitoIdentityPoolId.split(":")[0];
-
+        const region = cognitoIdentityPoolId.split(':')[0];
 
         // Initialize AWS and create Polly service objects
-        window.AWS.config.region = region;
-        window.AWS.config.credentials = new AWS.CognitoIdentityCredentials({
-          IdentityPoolId: config.cognitoIdentityPoolId
+        AWS.config.region = region;
+        AWS.config.credentials = new AWS.CognitoIdentityCredentials({
+          IdentityPoolId: cognitoIdentityPoolId,
         });
         const polly = new AWS.Polly();
         const presigner = new AWS.Polly.Presigner();
@@ -45,7 +55,7 @@
         await TextToSpeechFeature.initializeService(
           polly,
           presigner,
-          window.AWS.VERSION
+          AWS.VERSION
         );
 
         let audioListener;
@@ -64,7 +74,7 @@
           scene.fog = new THREE.Fog(0x808080, 0, 10);
 
           // Renderer
-          renderer = new THREE.WebGLRenderer({antialias: true});
+          const renderer = new THREE.WebGLRenderer({antialias: true});
           renderer.setPixelRatio(window.devicePixelRatio);
           renderer.setSize(window.innerWidth, window.innerHeight);
           renderer.outputEncoding = THREE.sRGBEncoding;
@@ -73,13 +83,13 @@
           document.body.appendChild(renderer.domElement);
 
           // Camera
-          camera = new THREE.PerspectiveCamera(
+          const camera = new THREE.PerspectiveCamera(
             45,
             window.innerWidth / window.innerHeight,
             0.1,
             1000
           );
-          const controls = new THREE.OrbitControls(camera, renderer.domElement);
+          const controls = new OrbitControls(camera, renderer.domElement);
           camera.position.set(0, 1.6, 2.6);
 
           // Render loop

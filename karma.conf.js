@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: MIT-0
 
 // We will use the core Webpack with a few changes for unit testing
-const webpackConfig = require('./webpack.test');
+const webpackConfig = require('./webpack.test.js');
 // Removing the output will stop karma from outputing chunks for the test code
 delete webpackConfig.output;
 

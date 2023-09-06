@@ -1,17 +1,17 @@
-import * as BABYLON from '@babylonjs/core/Legacy/legacy';
+// import * as BABYLON from '@babylonjs/core/Legacy/legacy.js';
+import * as BABYLON from '@babylonjs/core/index.js';
 import {HostObject, aws} from '@amazon-sumerian-hosts/babylon';
+// eslint-disable-next-line
+import {cognitoIdentityPoolId} from '../../../../../demo-credentials.module.js';
 
 async function main() {
-  // This is served by webpack-dev-server and comes from demo-credentials.js in the repo root
-  // If you copy this example, you will substitute in your own cognito Pool ID
-  const config = await (await fetch('/devConfig.json')).json();
   // Parse the region out of the cognito Id
-  const region = config.cognitoIdentityPoolId.split(':')[0];
+  const region = cognitoIdentityPoolId.split(':')[0];
 
   // Initialize AWS and create Polly service objects
-  window.AWS.config.region = region;
-  window.AWS.config.credentials = new AWS.CognitoIdentityCredentials({
-    IdentityPoolId: config.cognitoIdentityPoolId,
+  AWS.config.region = region;
+  AWS.config.credentials = new AWS.CognitoIdentityCredentials({
+    IdentityPoolId: cognitoIdentityPoolId,
   });
   const polly = new AWS.Polly();
   const presigner = new AWS.Polly.Presigner();
@@ -20,7 +20,7 @@ async function main() {
   await aws.TextToSpeechFeature.initializeService(
     polly,
     presigner,
-    window.AWS.VERSION
+    AWS.VERSION
   );
 
   let scene;

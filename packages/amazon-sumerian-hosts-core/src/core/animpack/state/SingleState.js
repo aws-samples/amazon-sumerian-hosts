@@ -1,9 +1,9 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: MIT-0
-import Deferred from '../../Deferred';
-import AbstractState from './AbstractState';
-import {validateBlendMode} from '../AnimationLayer';
-import AnimationUtils from '../AnimationUtils';
+import Deferred from '../../Deferred.js';
+import AbstractState from './AbstractState.js';
+import {validateBlendMode} from '../AnimationLayer.js';
+import AnimationUtils from '../AnimationUtils.js';
 
 /**
  * Class for playing a single animation clip.

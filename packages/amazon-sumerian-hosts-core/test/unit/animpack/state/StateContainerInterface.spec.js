@@ -5,8 +5,8 @@
 /* eslint-disable no-underscore-dangle */
 /* eslint-disable max-classes-per-file */
 
-import describeHostEnvironment from '../../EnvironmentHarness';
-import StateContainerInterface from '../../../../src/core/animpack/state/StateContainerInterface';
+import describeHostEnvironment from '../../EnvironmentHarness.js';
+import StateContainerInterface from '../../../../src/core/animpack/state/StateContainerInterface.js';
 
 describeHostEnvironment('StateContainerMixin', () => {
   let state1;

@@ -3,7 +3,7 @@
 
 // This file extends the base webpack with some stuff so Karma can run the tests
 const webpack = require('webpack');
-const baseConfig = require('./webpack.config');
+const baseConfig = require('./webpack.config.js');
 
 // Removing the output will stop webpack from outputing chunks for the integration test code
 delete baseConfig.output;

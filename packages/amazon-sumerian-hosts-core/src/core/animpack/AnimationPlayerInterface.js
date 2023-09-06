@@ -5,8 +5,8 @@
 /* eslint-disable no-empty-function */
 /* eslint-disable getter-return */
 /* eslint-disable no-useless-constructor */
-import TransitionState from './state/TransitionState';
-import Deferred from '../Deferred';
+import TransitionState from './state/TransitionState.js';
+import Deferred from '../Deferred.js';
 
 /**
  * Class factory interface for controlling playback of a collection of animations.

@@ -25,7 +25,7 @@
     "aws-sdk": "^2.1094.0"
   },
   "peerDependencies": {
-    "@babylonjs/core": "^4.2.1",
-    "@babylonjs/loaders": "^4.2.1"
+    "@babylonjs/core": "^6.0.0",
+    "@babylonjs/loaders": "^6.0.0"
   }
 }

@@ -1,8 +1,8 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: MIT-0
-import Speech from './Speech';
-import Deferred from '../Deferred';
-import AbstractTextToSpeechFeature from './AbstractTextToSpeechFeature';
+import Speech from './Speech.js';
+import Deferred from '../Deferred.js';
+import AbstractTextToSpeechFeature from './AbstractTextToSpeechFeature.js';
 
 /**
  * @extends AbstractTextToSpeechFeature

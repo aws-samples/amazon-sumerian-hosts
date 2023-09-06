@@ -115,15 +115,20 @@
       }
     </style>
 
-    <!--Text to speech dependency-->
-    <script
-      type="text/javascript"
-      src="https://sdk.amazonaws.com/js/aws-sdk-2.645.0.min.js"
-    ></script>
-    <!--Three.js dependencies-->
-    <script src="https://cdn.jsdelivr.net/npm/three@0.127.0/build/three.min.js"></script>
-    <!--Host build file-->
-    <script type="text/javascript" src="../dist/host.three.js"></script>
+    <script src="../../../node_modules/aws-sdk/dist/aws-sdk.min.js"></script>
+
+    <script type="importmap">
+      {
+        "imports": {
+          "three": "https://cdn.jsdelivr.net/npm/three@0.127.0/build/three.module.js",
+          "three/": "https://cdn.jsdelivr.net/npm/three@0.127.0/",
+          "@amazon-sumerian-hosts/core": "../../../node_modules/@amazon-sumerian-hosts/core/src/core/index.js",
+          "@amazon-sumerian-hosts/three": "../../../node_modules/@amazon-sumerian-hosts/three/src/three.js/index.js",
+          "compare-versions": "../../../node_modules/compare-versions/lib/esm/index.js",
+          "aws-sdk": "../../demos-babylon/src/aws-sdk-global.js"
+        }
+      }
+    </script>
   </head>
 
   <body>
@@ -177,8 +182,12 @@
 
     <!--Create the Three.js scene-->
     <script type="module">
-      import { OrbitControls } from 'https://cdn.jsdelivr.net/npm/three@0.127.0/examples/jsm/controls/OrbitControls.js'
-      import { GLTFLoader } from 'https://cdn.jsdelivr.net/npm/three@0.127.0/examples/jsm/loaders/GLTFLoader.js'
+      import * as THREE from 'three';
+      import {OrbitControls} from 'three/examples/jsm/controls/OrbitControls.js';
+      import {GLTFLoader} from 'three/examples/jsm/loaders/GLTFLoader.js';
+      import * as HOST from '@amazon-sumerian-hosts/three';
+      import {cognitoIdentityPoolId} from '../../../demo-credentials.module.js';
+      import AWS from 'aws-sdk';
 
       const renderFn = [];
       const speakers = new Map([
@@ -189,24 +198,20 @@
       main();
 
       async function main() {
-
-        // This is served by webpack-dev-server and comes from demo-credentials.js in the repo root
-        const config = await(await fetch("/devConfig.json")).json();
         // Parse the region out of the cognito Id
-        const region = config.cognitoIdentityPoolId.split(":")[0];
-
+        const region = cognitoIdentityPoolId.split(':')[0];
 
         // Initialize AWS and create Polly service objects
-        window.AWS.config.region = region;
-        window.AWS.config.credentials = new AWS.CognitoIdentityCredentials({
-          IdentityPoolId: config.cognitoIdentityPoolId
+        AWS.config.region = region;
+        AWS.config.credentials = new AWS.CognitoIdentityCredentials({
+          IdentityPoolId: cognitoIdentityPoolId,
         });
         const polly = new AWS.Polly();
         const presigner = new AWS.Polly.Presigner();
         const speechInit = HOST.aws.TextToSpeechFeature.initializeService(
           polly,
           presigner,
-          window.AWS.VERSION
+          AWS.VERSION
         );
 
         // Define the glTF assets that will represent the host
@@ -931,7 +936,9 @@
 
         // Connect tab buttons to hosts
         Array.from(document.getElementsByClassName('tab')).forEach(tab => {
-          tab.onclick = evt => { toggleHost(evt); }
+          tab.onclick = evt => {
+            toggleHost(evt);
+          };
         });
 
         // Play, pause, resume and stop the contents of the text input as speech

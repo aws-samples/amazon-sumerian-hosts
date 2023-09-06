@@ -1,10 +1,10 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: MIT-0
-import {Scene} from '@babylonjs/core/scene';
-import {Engine} from '@babylonjs/core/Engines/engine';
-import {Mesh} from '@babylonjs/core/Meshes/mesh';
+import {Scene} from '@babylonjs/core/scene.js';
+import {Engine} from '@babylonjs/core/Engines/engine.js';
+import {Mesh} from '@babylonjs/core/Meshes/mesh.js';
 // Side-effects only imports allowing Mesh to create default shapes
-import '@babylonjs/core/Meshes/Builders/sphereBuilder';
+import '@babylonjs/core/Meshes/Builders/sphereBuilder.js';
 
 export default function describeBabylonHost(description, fn) {
   describe(`Babylon Host - ${description}`, () => {

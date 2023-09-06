@@ -4,7 +4,7 @@
 /* eslint-disable no-unused-vars */
 /* eslint-disable no-underscore-dangle */
 import {Blend1dState, Deferred} from '@amazon-sumerian-hosts/core';
-import describeHostEnviornment from '../../EnvironmentHarness';
+import describeHostEnviornment from '../../EnvironmentHarness.js';
 
 describeHostEnviornment('Blend1dState', () => {
   let state1;

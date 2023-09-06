@@ -52,6 +52,9 @@
     // been built. We'll rely instead on Webpack to catch any import resolution 
     // problems.
     "import/no-unresolved": "off",
+    // Turn off default requirement for extensionless import specifiers,
+    // because that conflicts with vanilla ES Module compatibility.
+    "import/extensions": ["error", "always"], // TODO
     "no-shadow": "off",
     "no-plusplus": "off",
     "no-underscore-dangle": [

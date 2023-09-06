@@ -1,9 +1,9 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: MIT-0
-import Deferred from '../Deferred';
-import Utils from '../Utils';
-import MathUtils from '../MathUtils';
-import {Linear} from './Easing';
+import Deferred from '../Deferred.js';
+import Utils from '../Utils.js';
+import MathUtils from '../MathUtils.js';
+import {Linear} from './Easing.js';
 
 /**
  * A collection of useful animation functions.

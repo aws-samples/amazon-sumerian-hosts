@@ -1,10 +1,11 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: MIT-0
+import * as THREE from 'three';
 import {
   AnimationFeature as CoreAnimationFeature,
   AnimationTypes,
 } from '@amazon-sumerian-hosts/core';
-import SingleState from './state/SingleState';
+import SingleState from './state/SingleState.js';
 
 /**
  * Threejs AnimationMixer object

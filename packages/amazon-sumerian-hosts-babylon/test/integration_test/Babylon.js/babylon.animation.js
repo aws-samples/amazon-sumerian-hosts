@@ -2,7 +2,9 @@
 /* eslint-disable no-underscore-dangle */
 /* eslint-disable no-inner-declarations */
 
-import * as BABYLON from '@babylonjs/core/Legacy/legacy';
+import * as dat from 'three/examples/jsm/libs/dat.gui.module.js';
+// import * as BABYLON from '@babylonjs/core/Legacy/legacy.js';
+import * as BABYLON from '@babylonjs/core/index.js';
 import * as HOST from '@amazon-sumerian-hosts/babylon';
 
 async function main() {

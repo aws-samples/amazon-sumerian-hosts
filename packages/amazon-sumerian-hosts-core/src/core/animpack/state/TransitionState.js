@@ -1,7 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: MIT-0
-import Deferred from '../../Deferred';
-import AbstractState from './AbstractState';
+import Deferred from '../../Deferred.js';
+import AbstractState from './AbstractState.js';
 
 /**
  * Class for smooth transitioning between states on an animation layer.

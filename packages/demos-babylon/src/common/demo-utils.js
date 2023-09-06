@@ -1,10 +1,10 @@
-import {Engine} from '@babylonjs/core/Engines/engine';
-import {Color3, Vector3, Angle} from '@babylonjs/core/Maths/math';
-import {DirectionalLight} from '@babylonjs/core/Lights/directionalLight';
-import {ArcRotateCamera} from '@babylonjs/core/Cameras/arcRotateCamera';
-import {ShadowGenerator} from '@babylonjs/core/Lights/Shadows/shadowGenerator';
-import '@babylonjs/core/Helpers/sceneHelpers';
-import '@babylonjs/core/Lights/Shadows/shadowGeneratorSceneComponent';
+import {Engine} from '@babylonjs/core/Engines/engine.js';
+import {Color3, Vector3, Angle} from '@babylonjs/core/Maths/math.js';
+import {DirectionalLight} from '@babylonjs/core/Lights/directionalLight.js';
+import {ArcRotateCamera} from '@babylonjs/core/Cameras/arcRotateCamera.js';
+import {ShadowGenerator} from '@babylonjs/core/Lights/Shadows/shadowGenerator.js';
+import '@babylonjs/core/Helpers/sceneHelpers.js';
+import '@babylonjs/core/Lights/Shadows/shadowGeneratorSceneComponent.js';
 
 /**
  * This function is the entry point for running a demo. It handles all Babylon

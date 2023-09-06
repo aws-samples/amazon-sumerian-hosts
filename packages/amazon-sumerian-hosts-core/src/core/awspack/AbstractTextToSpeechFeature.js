@@ -1,13 +1,13 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: MIT-0
 import {compareVersions} from 'compare-versions';
-import AbstractHostFeature from '../AbstractHostFeature';
-import AnimationUtils from '../animpack/AnimationUtils';
-import MathUtils from '../MathUtils';
-import Utils from '../Utils';
-import Deferred from '../Deferred';
-import Speech from './AbstractSpeech';
-import TextToSpeechUtils from './TextToSpeechUtils';
+import AbstractHostFeature from '../AbstractHostFeature.js';
+import AnimationUtils from '../animpack/AnimationUtils.js';
+import MathUtils from '../MathUtils.js';
+import Utils from '../Utils.js';
+import Deferred from '../Deferred.js';
+import Speech from './AbstractSpeech.js';
+import TextToSpeechUtils from './TextToSpeechUtils.js';
 
 /**
  * The Amazon Polly service object.

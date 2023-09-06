@@ -12,7 +12,7 @@ import {
   Deferred,
   Version,
 } from '@amazon-sumerian-hosts/core';
-import describeEnvironment from '../EnvironmentHarness';
+import describeEnvironment from '../EnvironmentHarness.js';
 
 describeEnvironment('AbstractTextToSpeechFeature', () => {
   let mockHost;
