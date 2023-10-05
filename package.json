@@ -27,9 +27,9 @@
     "release": "npm run build-test",
     "docs": "jsdoc -c jsdoc.conf.json",
     "start": "five-server .",
-    "start-core": "... todo open browser to core folder ...",
-    "start-three": "... todo open browser to three folder ...",
-    "start-babylon": "... todo open browser to babylon folder ..."
+    "start-core": "five-server . --open=./packages/amazon-sumerian-hosts-core/test/integration_test/core",
+    "start-three": "five-server . --open=./packages/amazon-sumerian-hosts-three/examples/",
+    "start-babylon": "five-server . --open=./packages/demos-babylon/src/"
   },
   "devDependencies": {
     "cross-env": "^7.0.3",
