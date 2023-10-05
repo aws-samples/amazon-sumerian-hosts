@@ -3,7 +3,7 @@ import {Scene} from '@babylonjs/core/scene.js';
 import {Vector3} from '@babylonjs/core/Maths/math.vector.js';
 import DemoUtils from './common/demo-utils.js';
 // eslint-disable-next-line
-import {cognitoIdentityPoolId} from '../../../demo-credentials.module.js';
+import {cognitoIdentityPoolId} from '../../../demo-credentials.js';
 
 let host;
 let scene;

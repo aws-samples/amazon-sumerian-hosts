@@ -2,7 +2,7 @@
 import * as BABYLON from '@babylonjs/core/index.js';
 import {HostObject, aws} from '@amazon-sumerian-hosts/babylon';
 // eslint-disable-next-line
-import {cognitoIdentityPoolId} from '../../../../../demo-credentials.module.js';
+import {cognitoIdentityPoolId} from '../../../../../demo-credentials.js';
 
 async function main() {
   // Parse the region out of the cognito Id
