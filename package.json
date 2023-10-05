@@ -24,7 +24,7 @@
     "test": "node ./node_modules/karma/bin/karma start karma.conf.js",
     "build": "npm run format && npm run lint:fix && npm run compile-ts",
     "build-test": "npm run build && npm run test",
-    "release": "npm run build",
+    "release": "npm run build-test",
     "docs": "jsdoc -c jsdoc.conf.json",
     "start": "five-server .",
     "start-core": "... todo open browser to core folder ...",
