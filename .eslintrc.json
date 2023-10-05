@@ -24,7 +24,6 @@
     "navigator": true,
     "window": true,
     "XMLHttpRequest": true,
-    "AWS": true,
     "globalThis": true,
     "expectAsync": true
   },

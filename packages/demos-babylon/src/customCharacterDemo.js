@@ -1,3 +1,4 @@
+import AWS from 'aws-sdk';
 import {HostObject} from '@amazon-sumerian-hosts/babylon';
 import {Scene} from '@babylonjs/core/scene.js';
 import {Vector3} from '@babylonjs/core/Maths/math.vector.js';

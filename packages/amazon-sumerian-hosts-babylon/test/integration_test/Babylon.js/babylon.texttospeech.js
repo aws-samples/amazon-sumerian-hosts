@@ -1,4 +1,4 @@
-// import * as BABYLON from '@babylonjs/core/Legacy/legacy.js';
+import AWS from 'aws-sdk';
 import * as BABYLON from '@babylonjs/core/index.js';
 import {HostObject, aws} from '@amazon-sumerian-hosts/babylon';
 // eslint-disable-next-line

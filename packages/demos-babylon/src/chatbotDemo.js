@@ -1,3 +1,4 @@
+import AWS from 'aws-sdk';
 import {HostObject, aws as AwsFeatures} from '@amazon-sumerian-hosts/babylon';
 import {Scene} from '@babylonjs/core/scene.js';
 import DemoUtils from './common/demo-utils.js';
