@@ -30,13 +30,6 @@
   },
   "rules": {
     // Specific rule overrides can go here.
-    "indent": [
-      "error",
-      2,
-      {
-        "SwitchCase": 1
-      }
-    ],
     "no-var": "warn",
     "no-tabs": "warn",
     "func-names": "off",

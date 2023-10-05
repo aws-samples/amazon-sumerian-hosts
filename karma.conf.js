@@ -1,16 +1,12 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: MIT-0
 
-// FIXME: eslint prettier config currently clashes with prettier formatting
-/* eslint-disable indent */
 const TEST_BROWSERS =
   process.env.TEST_BROWSERS !== undefined
     ? process.env.TEST_BROWSERS.split(',')
         .map(s => s.trim())
         .filter(s => s !== '')
     : ['Chrome'];
-/* eslint-enable indent */
-
 console.log(`TEST_BROWSERS=${TEST_BROWSERS.join(',')}`);
 
 module.exports = function(config) {
