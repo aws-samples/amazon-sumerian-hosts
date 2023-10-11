@@ -8,7 +8,7 @@ In order for the integration tests to be runnable you will need to set up a few 
 
 ## Running the Tests
 
-Run `npm run start-three` from the repository root. This will start a local web server and open two tabs in your browser. One will contain a demo (from `packages/amazon-sumerian-hosts-three/examples`.) The other will be the list of available integration tests. From this tab you can access and exercise each test.
+Run `npm run start-three-tests` from the repository root. This will start a local web server and open a tab in your browser. The tab will contain a list of available integration tests. From this tab you can access and exercise each test.
 
-When you're finished runnin the tests, you can quit the local dev server by pressing CTRL-C in the same terminal in which you started the server.
+When you're finished running the tests, you can quit the local dev server by pressing CTRL-C in the same terminal in which you started the server.
 

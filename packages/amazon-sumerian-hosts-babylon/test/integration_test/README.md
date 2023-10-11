@@ -16,6 +16,6 @@ npm install
 
 ## Running the Tests
 
-Run `npm run start-babylon` from the repository root. This will start a local web server and open two tabs in your browser. One will provide a list of demos (from the `packages/demos-babylon` package.) The other will be the list of available integration tests. From this tab you can access and exercise each test.
+Run `npm run start-babylon-tests` from the repository root. The tab will provide a list of available integration tests. From this tab you can access and exercise each test.
 
 When you're finished runnin the tests, you can quit the local dev server by pressing CTRL-C in the same terminal in which you started the server.

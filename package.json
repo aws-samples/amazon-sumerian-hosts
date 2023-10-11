@@ -29,7 +29,9 @@
     "start": "five-server .",
     "start-core": "five-server . --open=./packages/amazon-sumerian-hosts-core/test/integration_test/core",
     "start-three": "five-server . --open=./packages/amazon-sumerian-hosts-three/examples/",
-    "start-babylon": "five-server . --open=./packages/demos-babylon/src/"
+    "start-three-tests": "five-server . --open=./packages/amazon-sumerian-hosts-three/test/integration_test/three.js/",
+    "start-babylon": "five-server . --open=./packages/demos-babylon/src/",
+    "start-babylon-tests": "five-server . --open=./packages/demos-babylon/src/"
   },
   "devDependencies": {
     "cross-env": "^7.0.3",

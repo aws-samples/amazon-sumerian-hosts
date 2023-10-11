@@ -28,29 +28,58 @@ Note, most of steps below have already been completed for you. They are provided
 
 Here we will take a look at the scripts necessary for the example code to function:
 
-- ```html
-  <!--Text to speech dependency-->
-  <script
-      type="text/javascript"
-      src="https://sdk.amazonaws.com/js/aws-sdk-2.645.0.min.js"
-  ></script>
-  ```
+> [!Note] Before you continue, make sure you've ran `npm install` at the root of
+the repo so that dependencies are installed locally.
 
-  The hosts will need to connect to Amazon Polly to convert text into audio assets. `https://sdk.amazonaws.com/js/aws-sdk-2.645.0.min.js` is a minified build of the AWS SDK for Javascript. For the latest version, see the [AWS SDK for JavaScript API Reference](https://docs.aws.amazon.com/AWSJavaScriptSDK/latest/).
 
 - ```html
-  <!--Three.js dependencies-->
-  <script src="https://cdn.jsdelivr.net/npm/three@0.127.0/build/three.min.js"></script>
+  <!-- This fetches the AWS SDK for JavaScript, and installs it as a global `AWS` variable. -->
+  <script src="../../../node_modules/aws-sdk/dist/aws-sdk.min.js"></script>
   ```
-  * Note the version after the `@` should be the same as found in the [packages.json](package.json)
 
-  This will be the core three.js build, and is required to setup a new three.js scene. Make sure to always include this file early as it is a dependency for the GLTFLoader and OrbitControls scripts.
+  This file has to be included first, so that it is available by the time the
+  rest of our code runs.
 
 - ```html
-  <!--Host build file-->
-  <script type="text/javascript" src="../dist/host.three.js"></script>
+  <!-- Define the locations for each of the libraries that we've installed so we can import them. -->
+  <script type="importmap">
+    {
+      "imports": {
+        "three": "https://cdn.jsdelivr.net/npm/three@0.127.0/build/three.module.js",
+        "three/": "https://cdn.jsdelivr.net/npm/three@0.127.0/",
+        "@amazon-sumerian-hosts/core": "../../../node_modules/@amazon-sumerian-hosts/core/src/core/index.js",
+        "@amazon-sumerian-hosts/three": "../../../node_modules/@amazon-sumerian-hosts/three/src/three.js/index.js",
+        "compare-versions": "../../../node_modules/compare-versions/lib/esm/index.js",
+        "aws-sdk": "../../demos-babylon/src/aws-sdk-global.js"
+      }
+    }
+  </script>
   ```
-  host.three.js is the build file of the Amazon Sumerian Hosts repository that is specific to the three.js rendering engine. It must be included after the three.min.js build file. This will make a module called `HOST` available to any scripts included after this.
+
+  The `importmap` script defines where dependencies are to be found, so
+  that code that has `import` statements will receive the expected libraries. For
+  example, the `imports.three` entry in the following import map (which is in JSON
+  format) defines where the `three` library will be fetched from when an import
+  statement like `import * as THREE from 'three'` is encountered in JavaScript.
+  For more info on import maps, see [Mozilla's import map
+  docs](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/script/type/importmap)
+  which also has links to broader concepts like JavaScript modules in general, and
+  the [import map spec repository on GitHub](https://github.com/WICG/import-maps)
+  which has the original ideation and links to resources for managing import maps.
+
+  The hosts will need to connect to Amazon Polly to convert text into audio
+  assets. Here we map imports to `aws-sdk` to an `aws-sdk-global.js` file that
+  exports the global `AWS` variable so that we can `import` it in our JavaScript
+  code instead of relying on the global variable everywhere that we need to use
+  it. For the latest version of the SDK, see the [AWS SDK for JavaScript API
+  Reference](https://docs.aws.amazon.com/AWSJavaScriptSDK/latest/).
+
+  > [!Note] The version after the `@` for the `three` URL should be the same as
+  found in the [package.json](package.json) to guarantee that it works. Feel
+  free to try newer versions of Three.js to see if they work, and if not then
+  restore the known working version. If you get it working with newer Three.js
+  (sometimes there are small tweaks needed from breaking changes in Three.js),
+  please submit a pull request to get it updated.
 
 Now we'll move on to the body of the html file.
 
@@ -172,7 +201,21 @@ Our hosts will need some text input so we can tell them what to say, as well as 
 
 Now we will move onto the contents of the example [script](https://developer.mozilla.org/en-US/docs/Web/API/HTMLScriptElement) tag.
 
-### Step 4. Initialize global variables
+### Step 4.1. Import dependencies
+
+This imports all of the dependencies we need into our script tag. It knows where
+to get the dependencies based on the importmap we described above.
+
+```js
+  import * as THREE from 'three';
+  import {OrbitControls} from 'three/examples/jsm/controls/OrbitControls.js';
+  import {GLTFLoader} from 'three/examples/jsm/loaders/GLTFLoader.js';
+  import * as HOST from '@amazon-sumerian-hosts/three';
+  import {cognitoIdentityPoolId} from '../../../demo-credentials.js';
+  import AWS from 'aws-sdk';
+```
+
+### Step 4.2. Initialize variables
 
 three.js requires the user to manage the render loop. We'll define an array that will be used to collect functions that need to be executed during the render loop. In addition, we'll need a way to connect our UX elements to our host objects after they've been created, so we'll keep track of those here. Take note of the names, these match up with the names of the tab UX we created earlier. This is how we'll determine which host will respond when interacting with the UX elements. Next we'll take a look inside the function called `main`. This is where we'll set up our hosts and connect them to the UX.
 
@@ -184,23 +227,24 @@ const speakers = new Map([
 ]);
 ```
 
-### [Step 5. Configuring the AWS SDK](#step5)
+### Step 5. Configuring the AWS SDK
 
-Our host will be using the [TextToSpeechFeature](https://aws-samples.github.io/amazon-sumerian-hosts/three.js_TextToSpeechFeature.html), so before we can make the host speak we need to configure the AWS SDK with our region and credentials.
+Our host will be using the [TextToSpeechFeature](https://aws-samples.github.io/amazon-sumerian-hosts/threejs_TextToSpeechFeature.html), so before we can make the host speak we need to configure the AWS SDK with our region and credentials.
 
 ```javascript
 // Initialize AWS and create Polly service objects
 AWS.config.region = 'us-west-2';
 AWS.config.credentials = new AWS.CognitoIdentityCredentials({
-  IdentityPoolId: '<Enter Cognito Identity Pool ID here>',
+  IdentityPoolId: cognitoIdentityPoolId,
 });
 ```
 
-Replace `<Enter Cognito Identity Pool ID here>` with the id you created in the [Prerequisites](#Prerequisites) section. Make sure to set the region to the one you created your Cognito Identity Pool in. Using CognitoIdentityCredentials is just one example of how you can authenticate your host to access Polly. See the [AWS SDK documentation](https://docs.aws.amazon.com/AWSJavaScriptSDK/latest/AWS/Credentials.html) to see other credentials classes you can use.
+> [!Note]
+> Here the `cognitoIdentityPoolId` variable will contain the id you created and placed inside of `demo-credentials.js` in the [Prerequisites](#Prerequisites) section. Make sure to set the region to the one you created your Cognito Identity Pool in. Using CognitoIdentityCredentials is just one example of how you can authenticate your host to access Polly. See the [AWS SDK documentation](https://docs.aws.amazon.com/AWSJavaScriptSDK/latest/AWS/Credentials.html) to see other credentials classes you can use.
 
 ### Step 6. Initializing the Host TextToSpeechFeature
 
-The [TextToSpeechFeature](https://aws-samples.github.io/amazon-sumerian-hosts/three.js_TextToSpeechFeature.html) is the host feature that communicates with Amazon Polly to generate speech audio and speechmarks and plays them back at runtime. Before this feature can be used, it must be initialized with Polly and PollyPresigner instances, as well as the version of the AWS SDK being used.
+The [TextToSpeechFeature](https://aws-samples.github.io/amazon-sumerian-hosts/threejs_TextToSpeechFeature.html) is the host feature that communicates with Amazon Polly to generate speech audio and speechmarks and plays them back at runtime. Before this feature can be used, it must be initialized with Polly and PollyPresigner instances, as well as the version of the AWS SDK being used.
 
 ```javascript
 const polly = new AWS.Polly();
@@ -208,7 +252,7 @@ const presigner = new AWS.Polly.Presigner();
 const speechInit = HOST.aws.TextToSpeechFeature.initializeService(
   polly,
   presigner,
-  window.AWS.VERSION
+  AWS.VERSION
 );
 ```
 
@@ -424,7 +468,7 @@ const host2 = createHost(
 );
 ```
 
-Here we pass all of our assets and variables to the `createHost` function. This function is where we'll create the [HostObject](https://aws-samples.github.io/amazon-sumerian-hosts/three.js_HostObject.html) and add features to it. Next we'll inspect what makes up the `createHost` function.
+Here we pass all of our assets and variables to the `createHost` function. This function is where we'll create the [HostObject](https://aws-samples.github.io/amazon-sumerian-hosts/threejs_HostObject.html) and add features to it. Next we'll inspect what makes up the `createHost` function.
 
 - ```javascript
   // Add the host to the render loop

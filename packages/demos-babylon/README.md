@@ -24,7 +24,7 @@ Start the demo server by running...
 npm run start-babylon
 ```
 
-This starts a local web server and launches two new browser tabs. The tab that will have focus will be titled **"BabylonJS Sumerian Host Demos"**. Click on any demo to give it a try. (The other tab that opens contains integration test files. You can ignore that tab.)
+This starts a local web server and launches a browser tab. The tab will be titled **"BabylonJS Sumerian Host Demos"**. Click on any demo to give it a try.
 
 When you're finished with the demos, you can quit the local dev server by pressing CTRL-C in the same terminal in which you started the server.
 
