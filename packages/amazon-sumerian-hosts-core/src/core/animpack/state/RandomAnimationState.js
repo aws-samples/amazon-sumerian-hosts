@@ -1,9 +1,9 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: MIT-0
-import AbstractState from './AbstractState';
-import StateContainerInterface from './StateContainerInterface';
-import AnimationPlayerInterface from '../AnimationPlayerInterface';
-import Utils from '../../Utils';
+import AbstractState from './AbstractState.js';
+import StateContainerInterface from './StateContainerInterface.js';
+import AnimationPlayerInterface from '../AnimationPlayerInterface.js';
+import Utils from '../../Utils.js';
 
 /**
  * Class for playing random animations at random intervals within this state.

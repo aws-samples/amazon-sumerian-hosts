@@ -8,7 +8,7 @@ import {
   HostObject,
   DefaultVisemeMap,
 } from '@amazon-sumerian-hosts/core';
-import describeEnvironment from '../EnvironmentHarness';
+import describeEnvironment from '../EnvironmentHarness.js';
 
 describeEnvironment('LipsyncFeature', () => {
   let lipsyncFeature;

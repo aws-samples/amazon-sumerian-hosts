@@ -12,6 +12,14 @@
       content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0"
     />
     <style>
+      html,
+      body {
+        margin: 0px;
+        padding: 0px;
+        height: 100%;
+        overflow: hidden;
+      }
+
       a {
         color: blue;
       }
@@ -28,10 +36,22 @@
         color: #888;
       }
     </style>
+
+    <script type="importmap">
+      {
+        "imports": {
+          "three/": "https://cdn.jsdelivr.net/npm/three@0.127.0/",
+          "@babylonjs/": "../../../../../node_modules/@babylonjs/",
+          "@amazon-sumerian-hosts/core": "../../../../../node_modules/@amazon-sumerian-hosts/core/src/core/index.js",
+          "@amazon-sumerian-hosts/babylon": "../../../../../node_modules/@amazon-sumerian-hosts/babylon/src/Babylon.js/index.js",
+          "compare-versions": "../../../../../node_modules/compare-versions/lib/esm/index.js",
+          "aws-sdk": "../../../../demos-babylon/src/aws-sdk-global.js"
+        }
+      }
+    </script>
   </head>
 
   <body>
-    <script src="https://cdn.jsdelivr.net/npm/three@0.127.0/examples/js/libs/dat.gui.min.js"></script>
-    <script type="text/javascript" src="./dist/animationTest.js"></script>
+    <script type="module" src="./babylon.animation.js"></script>
   </body>
 </html>

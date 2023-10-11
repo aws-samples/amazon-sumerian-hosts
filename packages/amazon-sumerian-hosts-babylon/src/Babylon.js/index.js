@@ -16,12 +16,12 @@ import {
   Messenger,
 } from '@amazon-sumerian-hosts/core';
 
-import PointOfInterestFeature, {AxisMap} from './PointOfInterestFeature';
-import {env} from './HostEnvironment';
-import HostObject from './HostObject';
+import PointOfInterestFeature, {AxisMap} from './PointOfInterestFeature.js';
+import {env} from './HostEnvironment.js';
+import HostObject from './HostObject.js';
 
-import aws from './awspack';
-import anim from './animpack';
+import aws from './awspack/index.js';
+import anim from './animpack/index.js';
 
 export {
   /**

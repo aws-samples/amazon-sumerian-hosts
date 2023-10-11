@@ -5,20 +5,19 @@
  * @module core/HOST
  */
 
-import Utils from './Utils';
-import MathUtils from './MathUtils';
-import Deferred from './Deferred';
-import {env} from './HostEnvironment';
-import Messenger from './Messenger';
-import AbstractHostFeature from './AbstractHostFeature';
-import HostObject from './HostObject';
-import LipsyncFeature, {DefaultVisemeMap} from './LipsyncFeature';
-import GestureFeature, {DefaultGestureWords} from './GestureFeature';
-import PointOfInterestFeature, {AxisMap} from './PointOfInterestFeature';
+import Utils from './Utils.js';
+import MathUtils from './MathUtils.js';
+import Deferred from './Deferred.js';
+import {env} from './HostEnvironment.js';
+import Messenger from './Messenger.js';
+import AbstractHostFeature from './AbstractHostFeature.js';
+import HostObject from './HostObject.js';
+import LipsyncFeature, {DefaultVisemeMap} from './LipsyncFeature.js';
+import GestureFeature, {DefaultGestureWords} from './GestureFeature.js';
+import PointOfInterestFeature, {AxisMap} from './PointOfInterestFeature.js';
 
-import animpack from './animpack';
-
-import aws from './awspack';
+import animpack from './animpack/index.js';
+import aws from './awspack/index.js';
 
 const Version = Utils.getVersion();
 

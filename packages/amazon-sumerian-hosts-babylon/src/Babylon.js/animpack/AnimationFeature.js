@@ -4,7 +4,7 @@ import {
   AnimationFeature as CoreAnimationFeature,
   AnimationTypes,
 } from '@amazon-sumerian-hosts/core';
-import SingleState from './state/SingleState';
+import SingleState from './state/SingleState.js';
 
 AnimationTypes.single = SingleState;
 export {AnimationTypes};

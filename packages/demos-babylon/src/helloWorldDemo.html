@@ -8,14 +8,22 @@
 
     <link rel="stylesheet" href="helloWorldDemo.css" />
 
-    <!-- Sumerian Host dependencies -->
-    <script
-      type="text/javascript"
-      src="https://sdk.amazonaws.com/js/aws-sdk-2.645.0.min.js"
-    ></script>
+    <script src="../../../node_modules/aws-sdk/dist/aws-sdk.min.js"></script>
+
+    <script type="importmap">
+      {
+        "imports": {
+          "@babylonjs/": "../../../node_modules/@babylonjs/",
+          "@amazon-sumerian-hosts/core": "../../../node_modules/@amazon-sumerian-hosts/core/src/core/index.js",
+          "@amazon-sumerian-hosts/babylon": "../../../node_modules/@amazon-sumerian-hosts/babylon/src/Babylon.js/index.js",
+          "compare-versions": "../../../node_modules/compare-versions/lib/esm/index.js",
+          "aws-sdk": "./aws-sdk-global.js"
+        }
+      }
+    </script>
 
     <!-- Demo logic -->
-    <script type="module" src="../dist/helloWorldDemo.js"></script>
+    <script type="module" src="./helloWorldDemo.js"></script>
   </head>
   <body>
     <div id="mainScreen" class="screen loading">

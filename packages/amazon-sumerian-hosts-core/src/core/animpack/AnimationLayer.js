@@ -1,11 +1,11 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: MIT-0
-import AbstractBlendState from './state/AbstractBlendState';
-import AnimationPlayerInterface from './AnimationPlayerInterface';
-import AnimationUtils from './AnimationUtils';
-import MathUtils from '../MathUtils';
-import Deferred from '../Deferred';
-import StateContainerInterface from './state/StateContainerInterface';
+import AbstractBlendState from './state/AbstractBlendState.js';
+import AnimationPlayerInterface from './AnimationPlayerInterface.js';
+import AnimationUtils from './AnimationUtils.js';
+import MathUtils from '../MathUtils.js';
+import Deferred from '../Deferred.js';
+import StateContainerInterface from './state/StateContainerInterface.js';
 
 /**
  * Enum for types of {@link AnimationLayer} blending.

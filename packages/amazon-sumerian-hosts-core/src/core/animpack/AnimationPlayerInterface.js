@@ -5,8 +5,8 @@
 /* eslint-disable no-empty-function */
 /* eslint-disable getter-return */
 /* eslint-disable no-useless-constructor */
-import TransitionState from './state/TransitionState';
-import Deferred from '../Deferred';
+import TransitionState from './state/TransitionState.js';
+import Deferred from '../Deferred.js';
 
 /**
  * Class factory interface for controlling playback of a collection of animations.
@@ -282,7 +282,7 @@ class AnimationPlayerInterface {
           // Blend to the new state over time
           else {
             // Make sure to transition out of any states with non-zero weight
-            const currentStates = [...this._states.values()].filter(
+            const currentStates = Array.from(this._states.values()).filter(
               s => s !== targetState && (s.weight || s.weightPending)
             );
 

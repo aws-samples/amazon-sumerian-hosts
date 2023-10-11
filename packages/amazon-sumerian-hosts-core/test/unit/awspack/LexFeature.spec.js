@@ -3,7 +3,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: MIT-0
 import {LexFeature, Version} from '@amazon-sumerian-hosts/core';
-import describeEnvironment from '../EnvironmentHarness';
+import describeEnvironment from '../EnvironmentHarness.js';
 
 describeEnvironment('LexFeature', () => {
   let lexFeature;

@@ -1,9 +1,9 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: MIT-0
 import {TextToSpeechUtils, LexUtils} from '@amazon-sumerian-hosts/core';
-import TextToSpeechFeature from './TextToSpeechFeature';
-import LexFeature from './LexFeature';
-import Speech from './Speech';
+import TextToSpeechFeature from './TextToSpeechFeature.js';
+import LexFeature from './LexFeature.js';
+import Speech from './Speech.js';
 
 /**
  * @module babylonjs/awspack

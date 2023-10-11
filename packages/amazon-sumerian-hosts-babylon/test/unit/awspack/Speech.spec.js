@@ -6,7 +6,7 @@
 /* eslint-disable no-underscore-dangle */
 import {aws} from '@amazon-sumerian-hosts/babylon';
 import {Messenger} from '@amazon-sumerian-hosts/core';
-import describeEnvironment from '../EnvironmentHarness';
+import describeEnvironment from '../EnvironmentHarness.js';
 
 describeEnvironment('Speech', () => {
   let speech;

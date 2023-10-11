@@ -1,16 +1,11 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: MIT-0
 
-// We will use the core Webpack with a few changes for unit testing
-const webpackConfig = require('./webpack.test');
-// Removing the output will stop karma from outputing chunks for the test code
-delete webpackConfig.output;
-
 const TEST_BROWSERS =
   process.env.TEST_BROWSERS !== undefined
     ? process.env.TEST_BROWSERS.split(',')
-      .map(s => s.trim())
-      .filter(s => s !== '')
+        .map(s => s.trim())
+        .filter(s => s !== '')
     : ['Chrome'];
 console.log(`TEST_BROWSERS=${TEST_BROWSERS.join(',')}`);
 
@@ -31,6 +26,10 @@ module.exports = function(config) {
 
     plugins: [
       'karma-jasmine',
+      // TODO We use karma-webpack so that JavaScript module import/export
+      // syntax works, but we might be able to instead make our own little
+      // plugin to call each entry point with native `import(0)`, and provide an
+      // `importmap` script in the HTML harness.
       'karma-webpack',
       'karma-firefox-launcher',
       'karma-chrome-launcher',
@@ -96,7 +95,7 @@ module.exports = function(config) {
     // how many browser should be started simultaneous
     concurrency: Infinity,
 
-    webpack: webpackConfig,
+    webpack: {}, // Empty, no config needed.
 
     webpackServer: {
       noInfo: true,

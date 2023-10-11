@@ -5,7 +5,7 @@
 /* eslint-disable no-underscore-dangle */
 import {anim} from '@amazon-sumerian-hosts/babylon';
 import {Deferred, LayerBlendModes} from '@amazon-sumerian-hosts/core';
-import describeEnvironment from '../../EnvironmentHarness';
+import describeEnvironment from '../../EnvironmentHarness.js';
 
 describeEnvironment('SingleState', (options = {}) => {
   let state;

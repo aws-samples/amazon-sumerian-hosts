@@ -5,17 +5,17 @@ import {
   LipsyncFeature,
   GestureFeature,
 } from '@amazon-sumerian-hosts/core';
-import {SceneLoader} from '@babylonjs/core/Loading/sceneLoader';
-import {PrecisionDate} from '@babylonjs/core/Misc/precisionDate';
-import {Observable} from '@babylonjs/core/Misc/observable';
-import {AnimationGroup} from '@babylonjs/core/Animations/animationGroup';
+import {SceneLoader} from '@babylonjs/core/Loading/sceneLoader.js';
+import {PrecisionDate} from '@babylonjs/core/Misc/precisionDate.js';
+import {Observable} from '@babylonjs/core/Misc/observable.js';
+import {AnimationGroup} from '@babylonjs/core/Animations/animationGroup.js';
 // eslint-disable-next-line no-unused-vars
-import {RawTexture} from '@babylonjs/core/Materials/Textures/rawTexture';
-import '@babylonjs/loaders';
+import {RawTexture} from '@babylonjs/core/Materials/Textures/rawTexture.js';
+import '@babylonjs/loaders/index.js';
 import AWS from 'aws-sdk';
-import anim from './animpack';
-import aws from './awspack';
-import PointOfInterestFeature from './PointOfInterestFeature';
+import anim from './animpack/index.js';
+import aws from './awspack/index.js';
+import PointOfInterestFeature from './PointOfInterestFeature.js';
 
 /**
  * @extends core/HostObject
@@ -764,7 +764,7 @@ const host = await HOST.HostUtils.createHost(scene, characterConfig, pollyConfig
    * @returns {string[]} An array of characterId's that can be used with getCharacterConfig
    */
   static getAvailableCharacters() {
-    return [...characterTypeMap.keys()];
+    return Array.from(characterTypeMap.keys());
   }
 }
 

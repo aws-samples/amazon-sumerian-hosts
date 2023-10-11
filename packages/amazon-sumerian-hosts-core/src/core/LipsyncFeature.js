@@ -1,10 +1,10 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: MIT-0
-import MathUtils from './MathUtils';
-import {Quadratic} from './animpack/Easing';
-import ManagedAnimationLayerInterface from './animpack/ManagedAnimationLayerInterface';
-import TextToSpeechFeatureDependentInterface from './awspack/TextToSpeechFeatureDependentInterface';
-import AbstractHostFeature from './AbstractHostFeature';
+import MathUtils from './MathUtils.js';
+import {Quadratic} from './animpack/Easing.js';
+import ManagedAnimationLayerInterface from './animpack/ManagedAnimationLayerInterface.js';
+import TextToSpeechFeatureDependentInterface from './awspack/TextToSpeechFeatureDependentInterface.js';
+import AbstractHostFeature from './AbstractHostFeature.js';
 
 /**
  * Default mapping of Polly viseme names to animation options objects.

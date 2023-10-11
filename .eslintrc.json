@@ -24,20 +24,11 @@
     "navigator": true,
     "window": true,
     "XMLHttpRequest": true,
-    "AWS": true,
-    "THREE": true,
-    "BABYLON": true,
+    "globalThis": true,
     "expectAsync": true
   },
   "rules": {
     // Specific rule overrides can go here.
-    "indent": [
-      "error",
-      2,
-      {
-        "SwitchCase": 1
-      }
-    ],
     "no-var": "warn",
     "no-tabs": "warn",
     "func-names": "off",
@@ -52,6 +43,9 @@
     // been built. We'll rely instead on Webpack to catch any import resolution 
     // problems.
     "import/no-unresolved": "off",
+    // Turn off default requirement for extensionless import specifiers,
+    // because that conflicts with vanilla ES Module compatibility.
+    "import/extensions": ["error", "always"], // TODO
     "no-shadow": "off",
     "no-plusplus": "off",
     "no-underscore-dangle": [

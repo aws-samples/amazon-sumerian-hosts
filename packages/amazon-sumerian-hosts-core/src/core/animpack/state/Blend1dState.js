@@ -1,8 +1,8 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: MIT-0
-import Deferred from '../../Deferred';
-import AbstractBlendState from './AbstractBlendState';
-import AnimationUtils from '../AnimationUtils';
+import Deferred from '../../Deferred.js';
+import AbstractBlendState from './AbstractBlendState.js';
+import AnimationUtils from '../AnimationUtils.js';
 
 /**
  * Class for blending N number of blend states based on a single
@@ -55,7 +55,7 @@ class Blend1dState extends AbstractBlendState {
 
     // Initialize the thresholds map
     this._thresholds = [];
-    [...this._states.values()].forEach((state, index) => {
+    Array.from(this._states.values()).forEach((state, index) => {
       this._thresholds.push({
         value: blendThresholds[index],
         name: state.name,

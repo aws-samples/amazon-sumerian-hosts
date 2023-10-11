@@ -66,11 +66,14 @@ npm install
 
 ### Building
 
-To build all packages in the repository, run:
+The Host libraries work without a build. Only the Babylon Hosts library has a build step for generating type definition files, which is totally optional for use in TypeScript projects.
+
+To run the build (which runs only the Babylon Host lib's type declaration build step), run:
 ```
 npm run build
 ```
-Distributable build artifacts will be generated into a `dist/` directory within each package folder.
+
+Distributable build artifacts (type declaration files) will be generated into a `dist/` directory inside the Babylon Host lib.
 
 ### Testing
 
@@ -82,12 +85,14 @@ Example applications for Babylon.js can be found in the `packages/demos-babylon/
 
 #### Unit Tests
 
-If you've already built the packages, you can execute the unit tests for all packages using the command:
+You can execute the unit tests for all packages using the command:
 ```
-npm run test
+npm test
 ```
 
-Alternately, you can both build and run the unit tests with a single command:
+Running the build is not necessary for running tests, as all source files as JavaScript modules that work as-is without transformation.
+
+You can run both the Babylon build and the unit tests with a single command to ensure both work at the same time:
 ```
 npm run build-test
 ```

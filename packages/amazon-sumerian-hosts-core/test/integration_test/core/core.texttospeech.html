@@ -8,27 +8,34 @@
     <meta charset="UTF-8" />
     <title>Core Host Test</title>
     <link rel="icon" href="data:;base64,iVBORw0KGgo=" />
+
+    <script src="../../../../../node_modules/aws-sdk/dist/aws-sdk.min.js"></script>
+
+    <script type="importmap">
+      {
+        "imports": {
+          "@amazon-sumerian-hosts/core": "../../../../../node_modules/@amazon-sumerian-hosts/core/src/core/index.js",
+          "compare-versions": "../../../../../node_modules/compare-versions/lib/esm/index.js",
+          "aws-sdk": "../../../../demos-babylon/src/aws-sdk-global.js"
+        }
+      }
+    </script>
   </head>
   <body>
-    <script
-      type="text/javascript"
-      src="https://sdk.amazonaws.com/js/aws-sdk-2.645.0.min.js"
-    ></script>
-    <script type="text/javascript" src="../../../dist/host.core.js"></script>
-    <script>
+    <script type="module">
+      import {cognitoIdentityPoolId} from '../../../../../demo-credentials.js';
+      import * as HOST from '@amazon-sumerian-hosts/core';
+      import AWS from 'aws-sdk';
+
       async function main() {
-
-        // This is served by webpack-dev-server and comes from demo-credentials.js in the repo root
-        // If you copy this example, you will substitute in your own cognito Pool ID
-        const config = await(await fetch("/devConfig.json")).json();
         // Parse the region out of the cognito Id
-        const region = config.cognitoIdentityPoolId.split(":")[0];
-
+        const region = cognitoIdentityPoolId.split(':')[0];
 
         // Initialize AWS and create Polly service objects
-        window.AWS.config.region = region;
-        window.AWS.config.credentials = new AWS.CognitoIdentityCredentials({
-          IdentityPoolId: config.cognitoIdentityPoolId
+        // CONTINUE import everything with esm
+        AWS.config.region = region;
+        AWS.config.credentials = new AWS.CognitoIdentityCredentials({
+          IdentityPoolId: cognitoIdentityPoolId,
         });
         const polly = new AWS.Polly();
         const presigner = new AWS.Polly.Presigner();
@@ -38,7 +45,7 @@
         await TextToSpeechFeature.initializeService(
           polly,
           presigner,
-          window.AWS.VERSION
+          AWS.VERSION
         );
 
         // Create the speaker who will deliver speeches
@@ -108,7 +115,6 @@
 
         // Test speeches
         function testSpeech() {
-
           const markMap = {
             '{"feature":"GestureFeature", "method":"switchToGesture", "args":["headShake", 0.5]}': [
               'no',

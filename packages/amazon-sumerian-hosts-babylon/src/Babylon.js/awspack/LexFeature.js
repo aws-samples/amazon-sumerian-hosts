@@ -1,9 +1,9 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: MIT-0
 import {LexFeature as CoreLexFeature} from '@amazon-sumerian-hosts/core';
-import {Engine} from '@babylonjs/core/Engines/engine';
-import '@babylonjs/core/Audio/audioSceneComponent';
-import '@babylonjs/core/Audio/audioEngine';
+import {Engine} from '@babylonjs/core/Engines/engine.js';
+import '@babylonjs/core/Audio/audioSceneComponent.js';
+import '@babylonjs/core/Audio/audioEngine.js';
 
 /**
  * @extends core/LexFeature

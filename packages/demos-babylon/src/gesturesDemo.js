@@ -1,6 +1,9 @@
+import AWS from 'aws-sdk';
 import {HostObject} from '@amazon-sumerian-hosts/babylon';
-import {Scene} from '@babylonjs/core/scene';
-import DemoUtils from './common/demo-utils';
+import {Scene} from '@babylonjs/core/scene.js';
+import DemoUtils from './common/demo-utils.js';
+// eslint-disable-next-line
+import {cognitoIdentityPoolId} from '../../../demo-credentials.js';
 
 let host;
 let scene;
@@ -15,11 +18,6 @@ async function createScene() {
   initUi();
 
   // ===== Configure the AWS SDK =====
-
-  // This is served by webpack-dev-server and comes from demo-credentials.js in the repo root
-  // If you copy this example, you will substitute in your own cognito Pool ID
-  const config = await (await fetch('/devConfig.json')).json();
-  const cognitoIdentityPoolId = config.cognitoIdentityPoolId;
 
   AWS.config.region = cognitoIdentityPoolId.split(':')[0];
   AWS.config.credentials = new AWS.CognitoIdentityCredentials({

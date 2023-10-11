@@ -4,7 +4,7 @@ import {
   SingleState as CoreSingleState,
   MathUtils,
 } from '@amazon-sumerian-hosts/core';
-import '@babylonjs/core/Animations/animatable';
+import '@babylonjs/core/Animations/animatable.js';
 
 const babylonBlendModes = {
   Override: false,

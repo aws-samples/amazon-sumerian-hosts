@@ -1,8 +1,8 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: MIT-0
-import AbstractState from './AbstractState';
-import AnimationPlayerInterface from '../AnimationPlayerInterface';
-import StateContainerInterface from './StateContainerInterface';
+import AbstractState from './AbstractState.js';
+import AnimationPlayerInterface from '../AnimationPlayerInterface.js';
+import StateContainerInterface from './StateContainerInterface.js';
 
 /**
  * Class for playing an ordered array of animation states in sequence.
@@ -114,7 +114,7 @@ class QueueState extends AnimationPlayerInterface.Mixin(
 
     // Signal the next animation is starting
     if (typeof onNext === 'function') {
-      const lastName = [...this._states.keys()][this._states.size - 1];
+      const lastName = Array.from(this._states.keys())[this._states.size - 1];
       const isQueueEnd = name === lastName;
       onNext({
         name,
@@ -148,7 +148,7 @@ class QueueState extends AnimationPlayerInterface.Mixin(
     } else {
       // Signal the next animation is starting
       if (name !== this.currentAnimation && typeof onNext === 'function') {
-        const lastName = [...this._states.keys()][this._states.size - 1];
+        const lastName = Array.from(this._states.keys())[this._states.size - 1];
         const isQueueEnd = name === lastName;
         onNext({
           name,

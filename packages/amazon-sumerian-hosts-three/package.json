@@ -3,6 +3,7 @@
   "version": "2.0.6",
   "description": "",
   "license": "MIT",
+  "type": "module",
   "author": {
     "name": "Amazon Web Services",
     "url": "https://aws.amazon.com",
@@ -13,16 +14,12 @@
     "url": "https://github.com/aws-samples/amazon-sumerian-hosts.git"
   },
   "main": "./src/three.js/index.js",
-  "exports": {
-    "import": "./src/three.js/index.js",
-    "require": "./dist/host.three.js"
-  },
   "scripts": {
   },
   "dependencies": {
     "@amazon-sumerian-hosts/core": "^2.0.0"
   },
   "peerDependencies": {
-    "three": "=0.127.0"
+    "three": ">=0.127.0"
   }
 }

@@ -1,7 +1,8 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: MIT-0
+import * as THREE from 'three';
 import {TextToSpeechFeature as CoreTextToSpeechFeature} from '@amazon-sumerian-hosts/core';
-import Speech from './Speech';
+import Speech from './Speech.js';
 
 /**
  * Threejs PositionalAudio object

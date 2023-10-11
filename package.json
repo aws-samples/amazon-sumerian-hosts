@@ -22,14 +22,16 @@
     "lint:fix": "eslint . --fix",
     "format": "prettier *.js packages/**/*.js --write",
     "test": "node ./node_modules/karma/bin/karma start karma.conf.js",
-    "build": "npm run format && npm run lint:fix && npm run compile-ts && webpack",
+    "build": "npm run format && npm run lint:fix && npm run compile-ts",
     "build-test": "npm run build && npm run test",
-    "release": "cross-env NODE_ENV=production npm run build",
+    "release": "npm run build-test",
     "docs": "jsdoc -c jsdoc.conf.json",
-    "start": "cross-env NODE_ENV=development webpack-dev-server",
-    "start-core": "cross-env ENGINE=core NODE_ENV=development webpack-dev-server",
-    "start-three": "cross-env ENGINE=three NODE_ENV=development webpack-dev-server",
-    "start-babylon": "cross-env ENGINE=babylon NODE_ENV=development webpack-dev-server"
+    "start": "five-server .",
+    "start-core": "five-server . --open=./packages/amazon-sumerian-hosts-core/test/integration_test/core",
+    "start-three": "five-server . --open=./packages/amazon-sumerian-hosts-three/examples/",
+    "start-three-tests": "five-server . --open=./packages/amazon-sumerian-hosts-three/test/integration_test/three.js/",
+    "start-babylon": "five-server . --open=./packages/demos-babylon/src/",
+    "start-babylon-tests": "five-server . --open=./packages/demos-babylon/src/"
   },
   "devDependencies": {
     "cross-env": "^7.0.3",
@@ -43,6 +45,7 @@
     "eslint-plugin-node": "^11.0.0",
     "eslint-plugin-prettier": "^3.1.2",
     "file-loader": "^6.2.0",
+    "five-server": "^0.3.1",
     "jsdoc": "^3.6.10",
     "karma": "^6.3.12",
     "karma-chrome-launcher": "^3.1.0",
@@ -53,12 +56,11 @@
     "karma-webpack": "^5.0.0",
     "prettier": "^1.19.1",
     "regenerator-runtime": "^0.13.5",
-    "terser-webpack-plugin": "^5.3.1",
     "typescript": "^4.6.3",
-    "webpack": "^5.76.0",
-    "webpack-cli": "^4.9.1",
-    "webpack-dev-server": "^4.7.3",
-    "webpack-merge": "^5.8.0"
+    "webpack": "5.76.0",
+    "webpack-cli": "4.10.0",
+    "webpack-dev-server": "4.7.3",
+    "webpack-merge": "5.8.0"
   },
   "browserslist": [
     "last 2 Chrome versions",

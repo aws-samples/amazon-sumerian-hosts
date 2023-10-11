@@ -8,7 +8,7 @@ import {
   LayerBlendModes,
   SingleState,
 } from '@amazon-sumerian-hosts/core';
-import describeEnvironment from '../../EnvironmentHarness';
+import describeEnvironment from '../../EnvironmentHarness.js';
 
 describeEnvironment('SingleState', () => {
   let state;

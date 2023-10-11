@@ -8,6 +8,7 @@
  * @see https://threejs.org/docs/#api/en/core/Clock
  */
 
+import * as THREE from 'three';
 import {
   HostObject as CoreHostObject,
   Messenger,

@@ -1,7 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: MIT-0
 import {Messenger} from '@amazon-sumerian-hosts/core';
-import describeEnvironment from './EnvironmentHarness';
+import describeEnvironment from './EnvironmentHarness.js';
 
 describeEnvironment('Messenger', () => {
   let messenger;

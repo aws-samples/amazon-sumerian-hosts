@@ -18,7 +18,7 @@ npm install
 
 Run `npm run start-core` from the repository root. This will start a local web server and open a web browser tab containing a list of available integration tests. From this tab you can access and exercise each test.
 
-When you're finished runnin the tests, you can quit the local dev server by pressing CTRL-C in the same terminal in which you started the server.
+When you're finished running the tests, you can quit the local dev server by pressing CTRL-C in the same terminal in which you started the server.
 
 
 

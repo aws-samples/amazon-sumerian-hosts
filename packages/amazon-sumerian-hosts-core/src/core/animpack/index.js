@@ -17,20 +17,20 @@ import {
   Elastic,
   Back,
   Bounce,
-} from './Easing';
-import AnimationFeature, {AnimationTypes} from './AnimationFeature';
+} from './Easing.js';
+import AnimationFeature, {AnimationTypes} from './AnimationFeature.js';
 import AnimationLayer, {
   LayerBlendModes,
   DefaultLayerBlendMode,
-} from './AnimationLayer';
-import SingleState from './state/SingleState';
-import TransitionState from './state/TransitionState';
-import FreeBlendState from './state/FreeBlendState';
-import QueueState from './state/QueueState';
-import RandomAnimationState from './state/RandomAnimationState';
-import Blend1dState from './state/Blend1dState';
-import Blend2dState from './state/Blend2dState';
-import AnimationUtils from './AnimationUtils';
+} from './AnimationLayer.js';
+import SingleState from './state/SingleState.js';
+import TransitionState from './state/TransitionState.js';
+import FreeBlendState from './state/FreeBlendState.js';
+import QueueState from './state/QueueState.js';
+import RandomAnimationState from './state/RandomAnimationState.js';
+import Blend1dState from './state/Blend1dState.js';
+import Blend2dState from './state/Blend2dState.js';
+import AnimationUtils from './AnimationUtils.js';
 
 /**
  * @namespace
