@@ -18,8 +18,8 @@ import {
   LayerBlendModes,
   DefaultLayerBlendMode,
 } from '@amazon-sumerian-hosts/core';
-import AnimationFeature, {AnimationTypes} from './AnimationFeature';
-import SingleState from './state/SingleState';
+import AnimationFeature, {AnimationTypes} from './AnimationFeature.js';
+import SingleState from './state/SingleState.js';
 
 export default {
   /**

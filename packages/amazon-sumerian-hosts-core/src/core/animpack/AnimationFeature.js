@@ -1,15 +1,15 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: MIT-0
-import AbstractHostFeature from '../AbstractHostFeature';
-import Utils from '../Utils';
-import QueueState from './state/QueueState';
-import FreeBlendState from './state/FreeBlendState';
-import Blend1dState from './state/Blend1dState';
-import Blend2dState from './state/Blend2dState';
-import SingleState from './state/SingleState';
-import RandomAnimationState from './state/RandomAnimationState';
-import AnimationLayer, {LayerBlendModes} from './AnimationLayer';
-import Deferred from '../Deferred';
+import AbstractHostFeature from '../AbstractHostFeature.js';
+import Utils from '../Utils.js';
+import QueueState from './state/QueueState.js';
+import FreeBlendState from './state/FreeBlendState.js';
+import Blend1dState from './state/Blend1dState.js';
+import Blend2dState from './state/Blend2dState.js';
+import SingleState from './state/SingleState.js';
+import RandomAnimationState from './state/RandomAnimationState.js';
+import AnimationLayer, {LayerBlendModes} from './AnimationLayer.js';
+import Deferred from '../Deferred.js';
 
 /**
  * Enum for animation state classes.

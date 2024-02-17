@@ -5,7 +5,7 @@
     "files": [],
     "references": [
         {
-            "path": "./packages/amazon-sumerian-hosts-babylon"
+            "path": "./packages/amazon-sumerian-hosts-babylon/tsconfig.json"
         }
     ],
     "compilerOptions": {
@@ -23,6 +23,10 @@
         // Don't compile anything found in node_modules
         "skipLibCheck": true,
         // Disable automatic inclusion of @types packages
-        "types": []
+        "types": [],
+		"module": "NodeNext",
+		"moduleResolution": "NodeNext",
+		// "target": "ESNext", // Not needed because we don't transform source code, we only emit declarations
+		"lib": ["DOM", "ESNext"]
     }
 }

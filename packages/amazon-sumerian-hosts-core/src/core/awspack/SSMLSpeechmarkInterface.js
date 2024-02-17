@@ -4,7 +4,7 @@
 
 /* eslint-disable max-classes-per-file */
 /* eslint-disable no-empty */
-import TextToSpeechFeatureDependentInterface from './TextToSpeechFeatureDependentInterface';
+import TextToSpeechFeatureDependentInterface from './TextToSpeechFeatureDependentInterface.js';
 
 /**
  * Class factory interface for that registers callback method when a ssml speechmark event is emitted.

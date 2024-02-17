@@ -2,13 +2,13 @@
 // SPDX-License-Identifier: MIT-0
 /* eslint-disable no-underscore-dangle */
 /* eslint-disable no-unused-vars */
-import ManagedAnimationLayerInterface from './animpack/ManagedAnimationLayerInterface';
-import {AnimationTypes} from './animpack/AnimationFeature';
-import SSMLSpeechmarkInterface from './awspack/SSMLSpeechmarkInterface';
-import AbstractHostFeature from './AbstractHostFeature';
-import {Quadratic} from './animpack/Easing';
-import MathUtils from './MathUtils';
-import Utils from './Utils';
+import ManagedAnimationLayerInterface from './animpack/ManagedAnimationLayerInterface.js';
+import {AnimationTypes} from './animpack/AnimationFeature.js';
+import SSMLSpeechmarkInterface from './awspack/SSMLSpeechmarkInterface.js';
+import AbstractHostFeature from './AbstractHostFeature.js';
+import {Quadratic} from './animpack/Easing.js';
+import MathUtils from './MathUtils.js';
+import Utils from './Utils.js';
 
 /**
  * Enum for axis directions.

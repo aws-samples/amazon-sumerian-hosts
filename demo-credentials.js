@@ -4,5 +4,5 @@
 // assigned to it:
 //   - AmazonPollyReadOnlyAccess
 //   - AmazonLexRunBotsOnly
-const cognitoIdentityPoolId = 'us-west-2:xxxx-xxxx-xxxx-xxxx';
-module.exports = cognitoIdentityPoolId;
+// eslint-disable-next-line
+export const cognitoIdentityPoolId = 'us-west-2:xxxx-xxxx-xxxx-xxxx';

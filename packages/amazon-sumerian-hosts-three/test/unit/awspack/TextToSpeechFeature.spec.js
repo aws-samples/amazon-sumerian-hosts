@@ -4,7 +4,8 @@
 /* eslint-disable no-underscore-dangle */
 import {Messenger} from '@amazon-sumerian-hosts/core';
 import {aws} from '@amazon-sumerian-hosts/three';
-import describeEnvironment from '../EnvironmentHarness';
+import * as THREE from 'three';
+import describeEnvironment from '../EnvironmentHarness.js';
 
 describeEnvironment('TextToSpeechFeature', () => {
   let mockHost;

@@ -2,9 +2,10 @@
 
 Amazon Sumerian Hosts (Hosts) is an experimental open source project that aims to make it easy to create interactive animated 3D characters for Babylon.js, three.js, and other web 3D frameworks. It leverages AWS services including [Amazon Polly](https://aws.amazon.com/polly/) (text-to-speech) and [Amazon Lex](https://aws.amazon.com/lex/) (chatbot).
 
+<!-- CONTINUE Update this after the Babylon fix -->
 > **Compatibility**
 >
-> ⚠️ Hosts is currently compatible with **BabylonJS v4** (4.2.1+). There are know issues if you try to use Hosts with BabylonJS v5. If you would like to see support for BabylonJS v5 added, comment on [this enhancement request issue](https://github.com/aws-samples/amazon-sumerian-hosts/issues/155).
+> ⚠️ Hosts is currently compatible with **BabylonJS v4** (4.2.1+). There are known issues if you try to use Hosts with BabylonJS v5. If you would like to see support for BabylonJS v5 added, comment on [this enhancement request issue](https://github.com/aws-samples/amazon-sumerian-hosts/issues/155).
 >
 > ✏️ Hosts have been tested with **Three.js v0.127.0**.
 
@@ -34,7 +35,7 @@ The easiest way to get started using the hosts is by using plugins we provide fo
 
 Visit the [aws-tools-for-babylonjs-editor](https://github.com/aws-samples/aws-tools-for-babylonjs-editor/blob/main/README.md) repository for more details.
 
-#### Using pre-built NPM modules
+#### Using NPM modules
 
 If you are creating applications outside of the Babylon.JS Editor, you can easily install the relevant Hosts module using NPM.
 
@@ -56,7 +57,20 @@ For full detail on the classes and methods available, see the [API Documentation
 
 #### Building from source
 
-Building from source is considered an advanced option. It is not recommended unless you need to heavily customize the core Hosts functionality. Instructions on how to build from source can be found in the [CONTRIBUTING](CONTRIBUTING.md) document.
+Both the core Host lib and the Three.js Host lib do not have a build. You can
+customize them by simply editing the .js files in your own fork, and simply
+running a static server to run the apps.
+
+The Babylon Host lib has a TypeScript build step *only* for creating output
+type definitions from its .js files, and is otherwise not required for running
+the Babylon demos: simply edit the JavaScript files, and start the static
+server to run the demos.
+
+If you need to build the type definitions for consumption in a TypeScript
+project, then run `npm run build` at the root of the repo (after first running
+`npm install` if you haven't already).
+
+Find more details in [CONTRIBUTING](CONTRIBUTING.md).
 
 ## Demos
 

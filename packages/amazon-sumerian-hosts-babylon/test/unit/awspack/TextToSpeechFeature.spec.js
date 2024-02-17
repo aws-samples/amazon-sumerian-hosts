@@ -4,10 +4,10 @@
 /* eslint-disable no-underscore-dangle */
 import {Messenger} from '@amazon-sumerian-hosts/core';
 import {aws} from '@amazon-sumerian-hosts/babylon';
-import {Sound} from '@babylonjs/core/Audio/sound';
-import {TransformNode} from '@babylonjs/core/Meshes/transformNode';
-import {Engine} from '@babylonjs/core/Engines/engine';
-import describeEnvironment from '../EnvironmentHarness';
+import {Sound} from '@babylonjs/core/Audio/sound.js';
+import {TransformNode} from '@babylonjs/core/Meshes/transformNode.js';
+import {Engine} from '@babylonjs/core/Engines/engine.js';
+import describeEnvironment from '../EnvironmentHarness.js';
 
 describeEnvironment('TextToSpeechFeature', options => {
   let mockHost;

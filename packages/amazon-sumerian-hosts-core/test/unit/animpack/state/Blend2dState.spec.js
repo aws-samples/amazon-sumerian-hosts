@@ -6,7 +6,7 @@
 /* eslint-disable jasmine/prefer-toHaveBeenCalledWith */
 /* eslint-disable prefer-destructuring */
 import {Blend2dState, Deferred} from '@amazon-sumerian-hosts/core';
-import describeHostEnviornment from '../../EnvironmentHarness';
+import describeHostEnviornment from '../../EnvironmentHarness.js';
 
 describeHostEnviornment('Blend2dState', () => {
   let state1;

@@ -1,7 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: MIT-0
 
-import Utils from '../Utils';
+import Utils from '../Utils.js';
 
 /**
  * A collection of useful text-to-speech functions.

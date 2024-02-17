@@ -22,49 +22,77 @@ More details can be found in [demos-babylon](https://github.com/aws-samples/amaz
 
 Before you use Hosts in your applications, you will need to set up a few thing in your AWS account. For step-by-step instructions on setting up this required infrastructure, see [AWS-Infrastructure-Setup.md](https://github.com/aws-samples/amazon-sumerian-hosts/tree/mainline2.0/AWS-Infrastructure-Setup.md) in the root of this repository.
 
-### Configurating the AWS SDK
-
-## Configuring Webpack
-
-We recommend using a module bundler such as [Webpack](https://webpack.js.org/) to package and distribute your code. As BabylonJS relies on static singletons for certain features, it may be necessary to configure Webpack so that all modules and submodules use the same instance of BabylonJS. Add the following to `module.exports.resolve`:
-
-```
-resolve: {
-  ...
-  modules: ['node_modules'],
-  alias: {
-      // configure all modules to point at the same instance of BabylonJS
-      '@babylonjs/core': path.resolve('./node_modules/@babylonjs/core')
-  }
-},
-
-```
+## Configurating the Babylon HOST app
 
 ### Step 1. Adding Script Dependencies
 
-One way to configure AWS SDK is to include dependency script:
+Here we will take a look at the scripts necessary for the example code to function:
+
+> [!Note] Before you continue, make sure you've ran `npm install` at the root of
+the repo so that dependencies are installed locally.
+
 
 - ```html
-  <!--Text to speech dependency-->
-  <script
-      type="text/javascript"
-      src="https://sdk.amazonaws.com/js/aws-sdk-2.645.0.min.js"
-  ></script>
+  <!-- This fetches the AWS SDK for JavaScript, and installs it as a global `AWS` variable. -->
+  <script src="../../../node_modules/aws-sdk/dist/aws-sdk.min.js"></script>
   ```
 
-  The hosts will need to connect to Amazon Polly to convert text into audio assets. https://sdk.amazonaws.com/js/aws-sdk-2.645.0.min.js is a minified build of the AWS SDK for Javascript. For the latest version, see the [AWS SDK for JavaScript API Reference](https://docs.aws.amazon.com/AWSJavaScriptSDK/latest/).
+  This file has to be included first, so that it is available by the time the
+  rest of our code runs.
 
-And then configure the AWS SDK with our region and credentials:
-
-- ```javascript
-  // Initialize AWS and create Polly service objects
-  window.AWS.config.region = 'us-west-2';
-  window.AWS.config.credentials = new AWS.CognitoIdentityCredentials({
-    IdentityPoolId: '<Enter Cognito Identity Pool ID here>',
-  });
+- ```html
+  <!-- Define the locations for each of the libraries that we've installed so we can import them. -->
+  <script type="importmap">
+    {
+      "imports": {
+        "three": "https://cdn.jsdelivr.net/npm/three@0.127.0/build/three.module.js",
+        "three/": "https://cdn.jsdelivr.net/npm/three@0.127.0/",
+        "@amazon-sumerian-hosts/core": "../../../node_modules/@amazon-sumerian-hosts/core/src/core/index.js",
+        "@amazon-sumerian-hosts/three": "../../../node_modules/@amazon-sumerian-hosts/three/src/three.js/index.js",
+        "compare-versions": "../../../node_modules/compare-versions/lib/esm/index.js",
+        "aws-sdk": "../../demos-babylon/src/aws-sdk-global.js"
+      }
+    }
+  </script>
   ```
 
-  Replace `<Enter Cognito Identity Pool ID here>` with the id you created in the [Prerequisites](#Prerequisites) section. Make sure to set the region to the one you created your Cognito Identity Pool in. Using CognitoIdentityCredentials is just one example of how you can authenticate your host to access Polly. See the [AWS SDK documentation](https://docs.aws.amazon.com/AWSJavaScriptSDK/latest/AWS/Credentials.html) to see other credentials classes you can use.
+  The `importmap` script defines where dependencies are to be found, so
+  that code that has `import` statements will receive the expected libraries. For
+  example, the `imports.three` entry in the following import map (which is in JSON
+  format) defines where the `three` library will be fetched from when an import
+  statement like `import * as THREE from 'three'` is encountered in JavaScript.
+  For more info on import maps, see [Mozilla's import map
+  docs](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/script/type/importmap)
+  which also has links to broader concepts like JavaScript modules in general, and
+  the [import map spec repository on GitHub](https://github.com/WICG/import-maps)
+  which has the original ideation and links to resources for managing import maps.
+
+  The hosts will need to connect to Amazon Polly to convert text into audio
+  assets. Here we map imports to `aws-sdk` to an `aws-sdk-global.js` file that
+  exports the global `AWS` variable so that we can `import` it in our JavaScript
+  code instead of relying on the global variable everywhere that we need to use
+  it. For the latest version of the SDK, see the [AWS SDK for JavaScript API
+  Reference](https://docs.aws.amazon.com/AWSJavaScriptSDK/latest/).
+
+  > [!Note] The version after the `@` for the `three` URL should be the same as
+  found in the [package.json](package.json) to guarantee that it works. Feel
+  free to try newer versions of Three.js to see if they work, and if not then
+  restore the known working version. If you get it working with newer Three.js
+  (sometimes there are small tweaks needed from breaking changes in Three.js),
+  please submit a pull request to get it updated.
+
+## Configure the AWS SDK with our region and credentials:
+
+```javascript
+// Initialize AWS and create Polly service objects
+AWS.config.region = 'us-west-2';
+AWS.config.credentials = new AWS.CognitoIdentityCredentials({
+  IdentityPoolId: cognitoIdentityPoolId,
+});
+```
+
+> [!Note]
+> Here the `cognitoIdentityPoolId` variable will contain the id you created and placed inside of `demo-credentials.js` in the [Prerequisites](#Prerequisites) section. Make sure to set the region to the one you created your Cognito Identity Pool in. Using CognitoIdentityCredentials is just one example of how you can authenticate your host to access Polly. See the [AWS SDK documentation](https://docs.aws.amazon.com/AWSJavaScriptSDK/latest/AWS/Credentials.html) to see other credentials classes you can use.
 
 ### Instantiating the Host
 
@@ -172,6 +200,14 @@ Then, you can setup a simple button used for recording microphone input purpose 
   LexFeature also supports text input as well as a list of other events for tracking recording state for instance. See [LexFeature](https://aws-samples.github.io/amazon-sumerian-hosts/core_LexFeature.html) for more details.
 
 ### Next Steps
+
 Now that you've demonstrated your hosts running locally, consider publishing them to the web via one of these related tutorials:
-- [Publishing a Web Application Using AWS Amplify](https://docs.sumerian.amazonaws.com/tutorials/create/solutions/gltf-viewer-amplify-public/)
-- [Privately Publish a Web Application Using AWS Amplify](https://docs.sumerian.amazonaws.com/tutorials/create/solutions/gltf-viewer-amplify-private/)
+
+- [Hosting a static site on AWS Amplify](https://aws.amazon.com/getting-started/hands-on/host-static-website/)
+- [Creating a static GitHub Pages site](https://docs.github.com/en/pages/getting-started-with-github-pages/creating-a-github-pages-site)
+- [Publishing a static site on Vercel from git](https://vercel.com/docs/deployments/git)
+
+If you're more advanced, you probably want to set up a server that contains your
+AWS key privately, so that it is not served publicy in via a static website.
+You'd want to require user authentication, and proxy request through your server
+so that the client-side code does not contain the key.

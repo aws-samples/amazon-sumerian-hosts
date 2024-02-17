@@ -1,10 +1,10 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: MIT-0
-import ManagedAnimationLayerInterface from './animpack/ManagedAnimationLayerInterface';
-import SSMLSpeechmarkInterface from './awspack/SSMLSpeechmarkInterface';
-import AbstractHostFeature from './AbstractHostFeature';
-import Deferred from './Deferred';
-import Utils from './Utils';
+import ManagedAnimationLayerInterface from './animpack/ManagedAnimationLayerInterface.js';
+import SSMLSpeechmarkInterface from './awspack/SSMLSpeechmarkInterface.js';
+import AbstractHostFeature from './AbstractHostFeature.js';
+import Deferred from './Deferred.js';
+import Utils from './Utils.js';
 
 /**
  * @constant

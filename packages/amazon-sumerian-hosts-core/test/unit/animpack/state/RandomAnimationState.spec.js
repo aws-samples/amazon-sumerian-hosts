@@ -9,7 +9,7 @@ import {
   RandomAnimationState,
   Utils,
 } from '@amazon-sumerian-hosts/core';
-import describeHostEnvironment from '../../EnvironmentHarness';
+import describeHostEnvironment from '../../EnvironmentHarness.js';
 
 describeHostEnvironment('RandomAnimationState', () => {
   let randomAnimState;

@@ -1,7 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: MIT-0
 /* eslint-disable no-underscore-dangle */
-import Utils from './Utils';
+import Utils from './Utils.js';
 
 /**
  * Class that can execute functions when local messages are received. Local messages

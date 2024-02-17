@@ -1,8 +1,8 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: MIT-0
-import Deferred from '../../Deferred';
-import MathUtils from '../../MathUtils';
-import AnimationUtils from '../AnimationUtils';
+import Deferred from '../../Deferred.js';
+import MathUtils from '../../MathUtils.js';
+import AnimationUtils from '../AnimationUtils.js';
 
 /**
  * Base class for a state in our animation system.

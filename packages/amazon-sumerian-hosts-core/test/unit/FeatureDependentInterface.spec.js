@@ -5,8 +5,8 @@
 /* eslint-disable jasmine/prefer-toHaveBeenCalledWith */
 /* eslint-disable no-underscore-dangle */
 import {AbstractHostFeature, HostObject} from '@amazon-sumerian-hosts/core';
-import describeEnvironment from './EnvironmentHarness';
-import FeatureDependentInterface from '../../src/core/FeatureDependentInterface';
+import describeEnvironment from './EnvironmentHarness.js';
+import FeatureDependentInterface from '../../src/core/FeatureDependentInterface.js';
 
 describeEnvironment('FeatureDependentInterface', () => {
   let hostFeature;

@@ -4,8 +4,8 @@
 /* eslint-disable no-undef */
 /* eslint-disable no-underscore-dangle */
 
-import describeHostEnvironment from '../../EnvironmentHarness';
-import FreeBlendState from '../../../../src/core/animpack/state/FreeBlendState';
+import describeHostEnvironment from '../../EnvironmentHarness.js';
+import FreeBlendState from '../../../../src/core/animpack/state/FreeBlendState.js';
 
 describeHostEnvironment('FreeBlendState', () => {
   let freeBlend;

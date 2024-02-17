@@ -5,7 +5,7 @@
 /* eslint-disable no-empty-function */
 /* eslint-disable getter-return */
 
-import Utils from '../../Utils';
+import Utils from '../../Utils.js';
 
 /**
  * Class factory interface for manipulating a collection of {@link AbstractState}.
@@ -90,12 +90,12 @@ class StateContainerInterface {
       }
 
       getStateNames() {
-        return [...this._states.keys()];
+        return Array.from(this._states.keys());
       }
 
       addState(state) {
         // Make sure the state is not already in this container
-        if ([...this._states.values()].includes(state)) {
+        if (Array.from(this._states.values()).includes(state)) {
           console.warn(
             `Cannot add animation to state ${this.name}. Animation was already added.`
           );
@@ -103,9 +103,10 @@ class StateContainerInterface {
         }
 
         // Make sure the state name is unique
-        const uniqueName = Utils.getUniqueName(state.name, [
-          ...this._states.keys(),
-        ]);
+        const uniqueName = Utils.getUniqueName(
+          state.name,
+          Array.from(this._states.keys())
+        );
 
         if (state.name !== uniqueName) {
           console.warn(
@@ -151,7 +152,7 @@ class StateContainerInterface {
         // Make sure the name is unique
         const uniqueName = Utils.getUniqueName(
           newName,
-          [...this._states.keys()].filter(s => s.name !== currentName)
+          Array.from(this._states.keys()).filter(s => s.name !== currentName)
         );
 
         if (newName !== uniqueName) {

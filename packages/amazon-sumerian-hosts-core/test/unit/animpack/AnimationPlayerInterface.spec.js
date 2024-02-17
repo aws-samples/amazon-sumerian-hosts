@@ -5,7 +5,7 @@
 /* eslint-disable jasmine/no-spec-dupes */
 /* eslint-disable no-underscore-dangle */
 import {Deferred} from '@amazon-sumerian-hosts/core';
-import AnimationPlayerInterface from '../../../src/core/animpack/AnimationPlayerInterface';
+import AnimationPlayerInterface from '../../../src/core/animpack/AnimationPlayerInterface.js';
 
 describe('AnimationPlayerInterface', () => {
   let player;

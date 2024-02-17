@@ -1,6 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: MIT-0
-import AbstractBlendState from './AbstractBlendState';
+import AbstractBlendState from './AbstractBlendState.js';
 
 /**
  * Class for blending N number of blend states.

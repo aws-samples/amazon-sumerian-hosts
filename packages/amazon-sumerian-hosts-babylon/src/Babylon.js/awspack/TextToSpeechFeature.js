@@ -4,10 +4,10 @@ import {
   AbstractTextToSpeechFeature,
   TextToSpeechFeature as CoreTextToSpeechFeature,
 } from '@amazon-sumerian-hosts/core';
-import {Sound} from '@babylonjs/core/Audio/sound';
-import {Engine} from '@babylonjs/core/Engines/engine';
-import '@babylonjs/core/Audio/audioEngine';
-import Speech from './Speech';
+import {Sound} from '@babylonjs/core/Audio/sound.js';
+import {Engine} from '@babylonjs/core/Engines/engine.js';
+import '@babylonjs/core/Audio/audioEngine.js';
+import Speech from './Speech.js';
 
 /**
  * @extends core/TextToSpeechFeature
