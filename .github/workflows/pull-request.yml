@@ -9,6 +9,9 @@ on:
 env:
   TEST_BROWSERS: ChromeHeadless
 
+permissions:
+  contents: read
+
 jobs:
   build:
     runs-on: ${{ matrix.os }}
