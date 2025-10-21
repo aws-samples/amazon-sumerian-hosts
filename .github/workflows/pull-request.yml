@@ -3,6 +3,11 @@ name: Run build/tests/lint on pull requests
 on:
   pull_request:
 
+
+permissions:
+  contents: read
+  security-events: write
+
 # By default the karma test runners use the karma 'Chrome' runner
 # This is great when running locally because the browser pops up and you get to see what it does
 # This doesn't work in Actions, however, so we set this env var to force the Headless runner
