@@ -8,6 +8,10 @@ on:
   push:
     branches: [mainline2.0]
 
+
+permissions:
+  contents: write
+
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
   push_to_gh-pages_branch:
